@@ -1,7 +1,7 @@
 package com.example.expensetracker.domain
 
-class DeleteExpenseItemUseCase {
-    fun deleteExpenseItem(currentExpenseItem: ExpenseItem){
-
+class DeleteExpenseItemUseCase(private val expensesListRepository: ExpensesListRepository) {
+    fun deleteExpenseItem(currentExpenseItem: ExpenseItem) {
+        expensesListRepository.deleteExpenseItem(currentExpenseItem)
     }
 }

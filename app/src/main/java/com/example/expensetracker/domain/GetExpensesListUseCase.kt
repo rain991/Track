@@ -1,7 +1,7 @@
 package com.example.expensetracker.domain
 
-class GetExpensesListUseCase {
+class GetExpensesListUseCase(private val expensesListRepository: ExpensesListRepository) {
     fun getExpensesList() : List<ExpenseItem>{
-    TODO()
+    return expensesListRepository.getExpensesList()
     }
 }
