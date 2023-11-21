@@ -5,6 +5,18 @@ import com.example.expensetracker.domain.ExpensesListRepository
 
 object ExpensesListRepositoryImpl : ExpensesListRepository {
     private val expensesList = mutableListOf<ExpenseItem>()
+    private var autoIncrementId = 0  // all autoIncrementId will be canceled ones the DB connected
+
+
+    override fun addExpensesItem(currentExpensesItem: ExpenseItem) {
+        if(currentExpensesItem.id== ExpenseItem.UNDEFINED_ID){
+            currentExpensesItem.id = autoIncrementId++ // post increment
+        }else{
+
+        }
+
+        expensesList.add(currentExpensesItem)
+    }
     override fun getExpensesList(): List<ExpenseItem> {
         return expensesList.toList() // gets a copy of list
     }
@@ -13,19 +25,18 @@ object ExpensesListRepositoryImpl : ExpensesListRepository {
         if (expensesList.find { it.id == expensesItemId } == null){
             TODO()
         }else{
-            return expensesList.find { it.id == expensesItemId }!! // Warning !! call, to be checked afterwards
+            return expensesList.find { it.id == expensesItemId }!! // WARNING !! call, to be checked afterwards
         }
     }
 
-    override fun addExpensesItem(currentExpensesItem: ExpenseItem) {
-        expensesList.add(currentExpensesItem)
-    }
 
     override fun deleteExpenseItem(currentExpenseItem: ExpenseItem) {
         expensesList.remove(currentExpenseItem)
     }
 
     override fun editExpenseItem(currentExpenseItem: ExpenseItem) {
-        TODO("Not yet implemented")
+        val olderExpense = getExpensesItem(currentExpenseItem.id)
+        expensesList.remove(olderExpense)
+        addExpensesItem(currentExpenseItem)
     }
 }
