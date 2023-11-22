@@ -1,4 +1,4 @@
-package com.example.expensetracker
+package com.example.expensetracker.presentation
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -16,7 +16,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-
+     //       Text(text = "Expense")
             }
         }
     }
