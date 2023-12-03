@@ -69,6 +69,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.R
+import com.example.expensetracker.data.ExpensesDB
 import java.lang.Math.abs
 import kotlin.math.round
 
@@ -160,7 +161,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                     .clip(RoundedCornerShape(8.dp))
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded += 9.0f }
                             ) {
                                 Text(text = "9", fontSize = 32.sp)
                             }
@@ -228,104 +229,119 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 Text(text = "4", fontSize = 32.sp)
                             }
                         }
-                            Row(   // 1, 2, 3 Row
+                        Row(   // 1, 2, 3 Row
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        ) {
+                            Button(
                                 modifier = Modifier
-                                    .fillMaxWidth()
+                                    .weight(1f)
                                     .padding(8.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .height(56.dp),
+                                onClick = { /* Handle button click */ }
                             ) {
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(8.dp)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(MaterialTheme.colorScheme.primary)
-                                        .height(56.dp),
-                                    onClick = { /* Handle button click */ }
-                                ) {
-                                    Text(text = "3", fontSize = 32.sp)
-                                }
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(8.dp)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(MaterialTheme.colorScheme.primary)
-                                        .height(56.dp),
-                                    onClick = { /* Handle button click */ }
-                                ) {
-                                    Text(text = "2", fontSize = 32.sp)
-                                }
-                                // Smaller button
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(8.dp)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(MaterialTheme.colorScheme.primary)
-                                        .height(56.dp),
-                                    onClick = { /* Handle button click */ }
-                                ) {
-                                    Text(text = "1", fontSize = 32.sp)
-                                }
+                                Text(text = "3", fontSize = 32.sp)
                             }
-                            Row(  // 0 and . row
+                            Button(
                                 modifier = Modifier
-                                    .fillMaxWidth()
+                                    .weight(1f)
                                     .padding(8.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .height(56.dp),
+                                onClick = { /* Handle button click */ }
                             ) {
-
-                                // Bigger button
-                                Button(
-                                    modifier = Modifier
-                                        .weight(2f)
-                                        .padding(8.dp)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(MaterialTheme.colorScheme.primary)
-                                        .height(56.dp),
-                                    onClick = { /* Handle button click */ }
-                                ) {
-                                    Text(text = "0", fontSize = 32.sp)
-                                }
-
-                                // Smaller button
-                                Button(
-                                    modifier = Modifier
-                                        .weight(1f)
-                                        .padding(8.dp)
-                                        .clip(RoundedCornerShape(8.dp))
-                                        .background(MaterialTheme.colorScheme.primary)
-                                        .height(56.dp),
-                                    onClick = { /* Handle button click */ }
-                                ) {
-                                    Text(text = ".", modifier = Modifier.fillMaxSize(), fontSize = 40.sp, textAlign = TextAlign.Center)
-                                }
+                                Text(text = "2", fontSize = 32.sp)
                             }
+                            // Smaller button
+                            Button(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(8.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .height(56.dp),
+                                onClick = { /* Handle button click */ }
+                            ) {
+                                Text(text = "1", fontSize = 32.sp)
+                            }
+                        }
+                        Row(  // 0 and . row
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(8.dp)
+                        ) {
+
+                            // Bigger button
+                            Button(
+                                modifier = Modifier
+                                    .weight(2f)
+                                    .padding(8.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .height(56.dp),
+                                onClick = { /* Handle button click */ }
+                            ) {
+                                Text(text = "0", fontSize = 32.sp)
+                            }
+
+                            // Smaller button
+                            Button(
+                                modifier = Modifier
+                                    .weight(1f)
+                                    .padding(8.dp)
+                                    .clip(RoundedCornerShape(8.dp))
+                                    .background(MaterialTheme.colorScheme.primary)
+                                    .height(56.dp),
+                                onClick = { /* Handle button click */ }
+                            ) {
+                                Text(
+                                    text = ".",
+                                    modifier = Modifier.fillMaxSize(),
+                                    fontSize = 40.sp,
+                                    textAlign = TextAlign.Center
+                                )
+                            }
+                        }
 
                     }
                 }
-                    Box(   // Right Block Box
+                Box(   // Right Block Box
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .weight(1f)
+                        .background(color = androidx.compose.ui.graphics.Color.Black)
+                ) {
+                    Column(
                         modifier = Modifier
-                            .fillMaxSize()
-                            .weight(1f)
-                            .background(color = androidx.compose.ui.graphics.Color.Black)
+                            .fillMaxWidth()
+                            .align(Alignment.TopCenter)
                     ) {
-                        Column(
+                        Button(
                             modifier = Modifier
-                                .fillMaxWidth()
-                                .align(Alignment.TopCenter)
+                                .padding(8.dp)
+                                .clip(RoundedCornerShape(8.dp))
+                                .height(56.dp),
+                            onClick = {  }
                         ) {
                             Text(
-                                text = "Right Block",
-                                fontSize = 22.sp
+                                text = "Add",
+                                modifier = Modifier.fillMaxSize(),
+                                fontSize = 40.sp,
+                                textAlign = TextAlign.Center
                             )
                         }
                     }
                 }
             }
-
-
         }
+
+
     }
+}
 
 @Composable
 fun ExpensesCardTypeSimple() {
@@ -347,7 +363,6 @@ fun TwoButtonsRow() {
             .padding(16.dp)
     ) {
 
-        // Bigger button
         Button(
             modifier = Modifier
                 .weight(2f)
@@ -360,7 +375,6 @@ fun TwoButtonsRow() {
             Text(text = "0")
         }
 
-        // Smaller button
         Button(
             modifier = Modifier
                 .weight(1f)
