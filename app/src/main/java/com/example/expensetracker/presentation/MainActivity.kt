@@ -11,12 +11,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import com.example.expensetracker.ui.theme.ExpenseTrackerTheme
+import com.example.visualisationexpensestracker.ui.theme.PagerTest
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-     //       Text(text = "Expense")
+            PagerTest()
             }
         }
     }
