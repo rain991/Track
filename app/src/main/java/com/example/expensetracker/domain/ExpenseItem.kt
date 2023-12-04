@@ -8,7 +8,7 @@ data class ExpenseItem(
     var id: Int = UNDEFINED_ID,
     val name: String,
     val date: String,
-    val enabled: Boolean,
+    val enabled: Boolean,  // WHO IS ENABLED??
     val value: Float
 ) {
 companion object{

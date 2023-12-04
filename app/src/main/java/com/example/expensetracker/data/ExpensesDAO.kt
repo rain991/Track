@@ -14,6 +14,6 @@ interface ExpensesDAO {
     suspend fun insertItem(expenseItem : ExpenseItem)
     @Delete
     suspend fun deleteItem(expenseItem : ExpenseItem)
-    @Query("SELECT * FROM Expenses")
-    suspend fun getAllItems()  : Flow<List<ExpenseItem>>
+//    @Query("SELECT * FROM Expenses")
+//    suspend fun getAllItems()  : Flow<List<ExpenseItem>>
 }
