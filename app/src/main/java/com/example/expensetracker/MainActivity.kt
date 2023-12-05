@@ -23,10 +23,9 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         expensesDAO = ExpensesDB.getInstance(applicationContext).dao
-        val testExpenseItem1 = ExpenseItem(name = "Item 1",id=  0, date = "22/11/2023", value = 15.0f, enabled = true)
-        lifecycleScope.launch {
-            expensesDAO.insertItem(testExpenseItem1)
-        }
+//        lifecycleScope.launch {
+//            expensesDAO.insertItem(testExpenseItem1)
+//        }
         setContent {
             PagerTest()
             }
