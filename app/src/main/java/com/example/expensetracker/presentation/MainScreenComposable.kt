@@ -1,4 +1,4 @@
-package com.example.visualisationexpensestracker.ui.theme
+package com.example.expensetracker.presentation
 
 import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
@@ -33,13 +33,15 @@ import com.example.visualisationexpensestracker.Presentation.ThirdScreen
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PagerTest() {
-    val pagerState = rememberPagerState(initialPage = 1)
+    val pagerState = rememberPagerState(initialPage = 1){
+        3
+    }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
     ) {
         HorizontalPager(
-            pageCount = 3,
             state = pagerState,
             modifier = Modifier.weight(1f)
         ) { page ->
