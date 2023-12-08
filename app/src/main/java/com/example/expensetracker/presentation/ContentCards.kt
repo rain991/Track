@@ -140,7 +140,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                     ) {
                         Row(modifier = Modifier.fillMaxWidth()) {
                             IconButton(onClick = { /*TODO*/ }) {  // Change Buttons Order Button
-                                Icon(imageVector = Icons.Filled.Add, contentDescription = null)
+                                Image(painterResource(R.drawable.swap_svgrepo_com),null)
                             }
                             Text(
                                 text = currentExpenseAdded.toString(),
@@ -280,7 +280,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(2f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
                                 onClick = { /* Handle button click */ }
@@ -323,7 +323,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                         Button(
                             modifier = Modifier
                                 .padding(8.dp)
-                                .clip(RoundedCornerShape(8.dp))
+                                .clip(MaterialTheme.shapes.extraLarge)
                                 .height(56.dp),
                             onClick = {  }
                         ) {
