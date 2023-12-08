@@ -2,11 +2,12 @@ package com.example.expensetracker.data
 
 import com.example.expensetracker.domain.ExpenseItem
 import com.example.expensetracker.domain.ExpensesListRepository
-
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
 object ExpensesListRepositoryImpl : ExpensesListRepository {
     private val expensesList = mutableListOf<ExpenseItem>()
-    private var autoIncrementId = 0  // all autoIncrementId will be canceled ones the DB connected
-
+    var autoIncrementId = 0  // all autoIncrementId will be canceled ones the DB connected
 
     override fun addExpensesItem(currentExpensesItem: ExpenseItem) {
         if(currentExpensesItem.id== ExpenseItem.UNDEFINED_ID){
@@ -14,11 +15,13 @@ object ExpensesListRepositoryImpl : ExpensesListRepository {
         }else{
 
         }
-
         expensesList.add(currentExpensesItem)
+//        val job = CoroutineScope(Dispatchers.IO).launch {
+//            expensesDAO.insertItem(currentExpensesItem)
+//        }
     }
-    override fun getExpensesList(): List<ExpenseItem> {
-        return expensesList.toList() // gets a copy of list
+    override fun getExpensesList(): MutableList<ExpenseItem> {
+        return expensesList.toMutableList() // gets a copy of list
     }
 
     override fun getExpensesItem(expensesItemId: Int): ExpenseItem {
