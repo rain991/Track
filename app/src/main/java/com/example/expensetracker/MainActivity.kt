@@ -11,10 +11,12 @@ import com.example.expensetracker.presentation.PagerTest
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    private lateinit var expensesDAO : ExpensesDAO
+    val expensesDAO = ExpensesDB.getInstance(applicationContext).dao
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        expensesDAO = ExpensesDB.getInstance(applicationContext).dao
+        // WARNING expensesDAO was previously private lateinit var
+
+
 //        lifecycleScope.launch {
 //            expensesDAO.insertItem(testExpenseItem1)
 //       }

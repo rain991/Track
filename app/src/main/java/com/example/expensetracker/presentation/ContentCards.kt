@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import com.example.expensetracker.data.ExpensesDAO
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -38,11 +39,13 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -75,7 +78,10 @@ import com.example.expensetracker.data.ExpensesListRepositoryImpl.autoIncrementI
 import com.example.expensetracker.data.ExpensesListRepositoryImpl.expensesList
 import com.example.expensetracker.domain.ExpenseItem
 import com.example.expensetracker.domain.ExpenseItem.Companion.UNDEFINED_ID
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.lang.Math.abs
 import kotlin.math.round
 
@@ -107,16 +113,10 @@ fun ExtendedButtonExample(
 }
 
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
-    val customShape = RoundedCornerShape(
-        topStart = 16.dp,
-        topEnd = 16.dp,
-        bottomStart = 0.dp,
-        bottomEnd = 0.dp
-    )
-    val buttonValues = listOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9")
+fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO) {
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = false, confirmValueChange = {
             when (it) {
@@ -130,6 +130,10 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
             }
         })
     var currentExpenseAdded by remember { mutableStateOf(0.0F) } // Expense adding value
+    val dbNeedsUpdate : Boolean = false
+    val scope = rememberCoroutineScope()
+
+
     if (isVisible) {
         ModalBottomSheet(
             onDismissRequest = onDismiss,
@@ -331,16 +335,14 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 .clip(MaterialTheme.shapes.extraLarge)
                                 .height(56.dp),
                             onClick = { //Adding new expense
-                                expensesList.add(
-                                    ExpenseItem(
-                                        id = autoIncrementId,
-                                        "NewName",
-                                        "08.12.2023",
-                                        true,
-                                        currentExpenseAdded
-                                    )
-
+                                val currentExpense = ExpenseItem(
+                                    id = autoIncrementId,
+                                    name="NewName",
+                                    date="08.12.2023",
+                                    enabled=true,
+                                    value=currentExpenseAdded
                                 )
+                                expensesList.add(currentExpense)  // TO BE RESTRUCTURIZED using ExpensesListRepositoryImpl methods
 
 
 
