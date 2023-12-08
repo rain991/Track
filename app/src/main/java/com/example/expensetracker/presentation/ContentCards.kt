@@ -52,7 +52,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.BlendMode.Companion.Color
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.graphics.vector.VectorPainter
@@ -114,10 +116,9 @@ fun ExtendedButtonExample(
 }
 
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO) {
+fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO) {
 
 
     val sheetState =
@@ -133,9 +134,9 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
             }
         })
     var currentExpenseAdded by remember { mutableStateOf(0.0F) } // Expense adding value
-    val dbNeedsUpdate : Boolean = false
+    val dbNeedsUpdate: Boolean = false
     val scope = rememberCoroutineScope()
-    val addToDB: (currentExpense : ExpenseItem) -> Unit = {
+    val addToDB: (currentExpense: ExpenseItem) -> Unit = {
         scope.launch {
             expensesDAO.insertItem(it)
         }
@@ -178,7 +179,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { currentExpenseAdded += 9.0f }
+                                onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 9.0f }
                             ) {
                                 Text(text = "9", fontSize = 32.sp)
                             }
@@ -189,7 +190,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { currentExpenseAdded += 8.0f }
+                                onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 8.0f }
                             ) {
                                 Text(text = "8", fontSize = 32.sp)
                             }
@@ -200,7 +201,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { currentExpenseAdded += 7.0f }
+                                onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 7.0f }
                             ) {
                                 Text(text = "7", fontSize = 32.sp)
                             }
@@ -219,7 +220,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { currentExpenseAdded += 6.0f }
+                                onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 6.0f }
                             ) {
                                 Text(text = "6", fontSize = 32.sp)
                             }
@@ -228,9 +229,12 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     .weight(1f)
                                     .padding(8.dp)
                                     .clip(MaterialTheme.shapes.large)
-                                    .background(MaterialTheme.colorScheme.primary)
+                                    .background( Brush.horizontalGradient(colorStops = arrayOf(0.0f to MaterialTheme.colorScheme.primary,
+                                        0.5f to MaterialTheme.colorScheme.onPrimaryContainer,
+                                        1f to MaterialTheme.colorScheme.primary))
+                                    )
                                     .height(56.dp),
-                                onClick = { currentExpenseAdded += 5.0f }
+                                onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 5.0f }
                             ) {
                                 Text(text = "5", fontSize = 32.sp)
                             }
@@ -241,7 +245,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { currentExpenseAdded += 4.0f }
+                                onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 4.0f }
                             ) {
                                 Text(text = "4", fontSize = 32.sp)
                             }
@@ -258,7 +262,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { currentExpenseAdded += 3.0f }
+                                onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 3.0f }
                             ) {
                                 Text(text = "3", fontSize = 32.sp)
                             }
@@ -269,7 +273,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { currentExpenseAdded += 2.0f }
+                                onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 2.0f }
                             ) {
                                 Text(text = "2", fontSize = 32.sp)
                             }
@@ -281,7 +285,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { currentExpenseAdded += 1.0f }
+                                onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 1.0f }
                             ) {
                                 Text(text = "1", fontSize = 32.sp)
                             }
@@ -344,12 +348,13 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                             onClick = { //Adding new expense
                                 val currentExpense = ExpenseItem(
                                     id = autoIncrementId,
-                                    name="NewName",
-                                    date="08.12.2023",
-                                    enabled=true,
-                                    value=currentExpenseAdded
+                                    name = "NewName",
+                                    date = "08.12.2023",
+                                    enabled = true,
+                                    value = currentExpenseAdded
                                 )
-                               ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURIZED using ExpensesListRepositoryImpl methods
+                                ExpensesListRepositoryImpl.getExpensesList()
+                                    .add(currentExpense)  // TO BE RESTRUCTURIZED using ExpensesListRepositoryImpl methods
                                 addToDB(currentExpense)
 
 
