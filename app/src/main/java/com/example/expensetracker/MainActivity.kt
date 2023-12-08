@@ -3,10 +3,12 @@ package com.example.expensetracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesDB
 import com.example.expensetracker.presentation.AppTheme
 import com.example.expensetracker.presentation.PagerTest
+import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
     private lateinit var expensesDAO : ExpensesDAO
@@ -15,7 +17,7 @@ class MainActivity : ComponentActivity() {
         expensesDAO = ExpensesDB.getInstance(applicationContext).dao
 //        lifecycleScope.launch {
 //            expensesDAO.insertItem(testExpenseItem1)
-//        }
+//       }
         setContent {
             AppTheme {
                 PagerTest()

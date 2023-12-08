@@ -4,8 +4,8 @@ import com.example.expensetracker.domain.ExpenseItem
 import com.example.expensetracker.domain.ExpensesListRepository
 
 object ExpensesListRepositoryImpl : ExpensesListRepository {
-    private val expensesList = mutableListOf<ExpenseItem>()
-    private var autoIncrementId = 0  // all autoIncrementId will be canceled ones the DB connected
+    val expensesList = mutableListOf<ExpenseItem>()
+    var autoIncrementId = 0  // all autoIncrementId will be canceled ones the DB connected
 
 
     override fun addExpensesItem(currentExpensesItem: ExpenseItem) {

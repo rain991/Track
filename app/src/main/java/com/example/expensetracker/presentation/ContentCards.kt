@@ -68,8 +68,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.R
 import com.example.expensetracker.data.ExpensesDB
+import com.example.expensetracker.data.ExpensesListRepositoryImpl.autoIncrementId
+import com.example.expensetracker.data.ExpensesListRepositoryImpl.expensesList
+import com.example.expensetracker.domain.ExpenseItem
+import com.example.expensetracker.domain.ExpenseItem.Companion.UNDEFINED_ID
+import kotlinx.coroutines.launch
 import java.lang.Math.abs
 import kotlin.math.round
 
@@ -140,7 +146,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                     ) {
                         Row(modifier = Modifier.fillMaxWidth()) {
                             IconButton(onClick = { /*TODO*/ }) {  // Change Buttons Order Button
-                                Image(painterResource(R.drawable.swap_svgrepo_com),null)
+                                Image(painterResource(R.drawable.swap_svgrepo_com), null)
                             }
                             Text(
                                 text = currentExpenseAdded.toString(),
@@ -158,7 +164,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
                                 onClick = { currentExpenseAdded += 9.0f }
@@ -169,10 +175,10 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded += 8.0f }
                             ) {
                                 Text(text = "8", fontSize = 32.sp)
                             }
@@ -180,10 +186,10 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded += 7.0f }
                             ) {
                                 Text(text = "7", fontSize = 32.sp)
                             }
@@ -199,10 +205,10 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded += 6.0f }
                             ) {
                                 Text(text = "6", fontSize = 32.sp)
                             }
@@ -210,10 +216,10 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded += 5.0f }
                             ) {
                                 Text(text = "5", fontSize = 32.sp)
                             }
@@ -221,10 +227,10 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded += 4.0f }
                             ) {
                                 Text(text = "4", fontSize = 32.sp)
                             }
@@ -238,10 +244,10 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded += 3.0f }
                             ) {
                                 Text(text = "3", fontSize = 32.sp)
                             }
@@ -249,10 +255,10 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded += 2.0f }
                             ) {
                                 Text(text = "2", fontSize = 32.sp)
                             }
@@ -261,10 +267,10 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 modifier = Modifier
                                     .weight(1f)
                                     .padding(8.dp)
-                                    .clip(RoundedCornerShape(8.dp))
+                                    .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded += 1.0f }
                             ) {
                                 Text(text = "1", fontSize = 32.sp)
                             }
@@ -283,7 +289,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                     .clip(MaterialTheme.shapes.large)
                                     .background(MaterialTheme.colorScheme.primary)
                                     .height(56.dp),
-                                onClick = { /* Handle button click */ }
+                                onClick = { currentExpenseAdded *= 10 }
                             ) {
                                 Text(text = "0", fontSize = 32.sp)
                             }
@@ -313,7 +319,6 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                     modifier = Modifier
                         .fillMaxSize()
                         .weight(1f)
-                        .background(color = androidx.compose.ui.graphics.Color.Black)
                 ) {
                     Column(
                         modifier = Modifier
@@ -325,7 +330,21 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit) {
                                 .padding(8.dp)
                                 .clip(MaterialTheme.shapes.extraLarge)
                                 .height(56.dp),
-                            onClick = {  }
+                            onClick = { //Adding new expense
+                                expensesList.add(
+                                    ExpenseItem(
+                                        id = autoIncrementId,
+                                        "NewName",
+                                        "08.12.2023",
+                                        true,
+                                        currentExpenseAdded
+                                    )
+
+                                )
+
+
+
+                            }
                         ) {
                             Text(
                                 text = "Add",

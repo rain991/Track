@@ -36,7 +36,6 @@ fun PagerTest() {
     val pagerState = rememberPagerState(initialPage = 1){
         3
     }
-
     Column(
         modifier = Modifier
             .fillMaxSize()
