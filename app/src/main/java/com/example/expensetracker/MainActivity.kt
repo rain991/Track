@@ -11,21 +11,21 @@ import com.example.expensetracker.presentation.PagerTest
 import kotlinx.coroutines.launch
 
 class MainActivity : ComponentActivity() {
-    val expensesDAO = ExpensesDB.getInstance(applicationContext).dao
+    private lateinit var expensesDAO: ExpensesDAO
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // WARNING expensesDAO was previously private lateinit var
 
-
+        expensesDAO = ExpensesDB.getInstance(applicationContext).dao
 //        lifecycleScope.launch {
 //            expensesDAO.insertItem(testExpenseItem1)
 //       }
         setContent {
             AppTheme {
-                PagerTest()
+                PagerTest(expensesDAO)
             }
 
-            }
         }
     }
+}
 

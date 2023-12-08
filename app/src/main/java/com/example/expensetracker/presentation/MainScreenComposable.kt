@@ -26,13 +26,14 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.expensetracker.data.ExpensesDAO
 import com.example.visualisationexpensestracker.Presentation.FirstScreen
 import com.example.visualisationexpensestracker.Presentation.SecondScreen
 import com.example.visualisationexpensestracker.Presentation.ThirdScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PagerTest() {
+fun PagerTest(expensesDAO : ExpensesDAO) {
     val pagerState = rememberPagerState(initialPage = 1){
         3
     }
@@ -46,9 +47,9 @@ fun PagerTest() {
         ) { page ->
             Log.d("Mylog", "Lambda in pager")
             when (page) {
-                0 -> FirstScreen()
-                1 -> SecondScreen()
-                2 -> ThirdScreen()
+                0 -> FirstScreen(expensesDAO = expensesDAO)
+                1 -> SecondScreen(expensesDAO = expensesDAO)
+                2 -> ThirdScreen(expensesDAO = expensesDAO)
             }
         }
     }

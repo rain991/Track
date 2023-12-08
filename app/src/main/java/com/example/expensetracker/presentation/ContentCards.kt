@@ -74,8 +74,9 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.R
 import com.example.expensetracker.data.ExpensesDB
+import com.example.expensetracker.data.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.ExpensesListRepositoryImpl.autoIncrementId
-import com.example.expensetracker.data.ExpensesListRepositoryImpl.expensesList
+
 import com.example.expensetracker.domain.ExpenseItem
 import com.example.expensetracker.domain.ExpenseItem.Companion.UNDEFINED_ID
 import kotlinx.coroutines.CoroutineScope
@@ -117,6 +118,8 @@ fun ExtendedButtonExample(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO) {
+
+
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = false, confirmValueChange = {
             when (it) {
@@ -132,7 +135,11 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
     var currentExpenseAdded by remember { mutableStateOf(0.0F) } // Expense adding value
     val dbNeedsUpdate : Boolean = false
     val scope = rememberCoroutineScope()
-
+    val addToDB: (currentExpense : ExpenseItem) -> Unit = {
+        scope.launch {
+            expensesDAO.insertItem(it)
+        }
+    }
 
     if (isVisible) {
         ModalBottomSheet(
@@ -342,8 +349,8 @@ fun BottomSheet(isVisible: Boolean, onDismiss:()->Unit, expensesDAO: ExpensesDAO
                                     enabled=true,
                                     value=currentExpenseAdded
                                 )
-                                expensesList.add(currentExpense)  // TO BE RESTRUCTURIZED using ExpensesListRepositoryImpl methods
-
+                               ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURIZED using ExpensesListRepositoryImpl methods
+                                addToDB(currentExpense)
 
 
                             }
