@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import com.example.expensetracker.data.ExpensesDAO
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -109,7 +110,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
         ModalBottomSheet(
             onDismissRequest = onDismiss,
             sheetState = sheetState) {
-            Row(modifier = Modifier.fillMaxWidth()) { //previously fillMaxSize
+            Row(modifier = Modifier.fillMaxHeight(0.5f).fillMaxWidth()) { //previously fillMaxSize
                 Box(
                     modifier = Modifier.weight(3.5F)
                 ) {
@@ -119,9 +120,6 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             .padding(start = 8.dp, end = 8.dp)
                     ) {
                         Row(modifier = Modifier.fillMaxWidth()) {
-                            IconButton(onClick = { /*TODO*/ }) {  // Change Buttons Order Button
-                                Image(painterResource(R.drawable.swap_svgrepo_com), null)
-                            }
                             Text(
                                 text = currentExpenseAdded.toString(),
                                 textAlign = TextAlign.Center,
@@ -306,7 +304,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             modifier = Modifier
                                 .padding(8.dp)
                                 .clip(MaterialTheme.shapes.extraLarge)
-                                .height(140.dp),  // Right box height parameters to be changed
+                                .weight(1f),  // Right box height parameters to be changed
                             onClick = {
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
@@ -333,7 +331,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             modifier = Modifier
                                 .padding(8.dp)
                                 .clip(MaterialTheme.shapes.extraLarge)
-                                .height(100.dp),
+                                .weight(1f),
                             onClick = {
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
@@ -360,7 +358,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             modifier = Modifier
                                 .padding(8.dp)
                                 .clip(MaterialTheme.shapes.extraLarge)
-                                .height(100.dp),
+                                .weight(1f),
                             onClick = {
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
