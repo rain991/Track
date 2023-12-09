@@ -1,4 +1,19 @@
 <resources>
     <string name="app_name">Expense Tracker</string>
     <string name="Lorem">Contrary to popular 000 yearprofessor atitnorum et Malorum\" (The Extremes of Good and Evil)  by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</string>
+    <string-array name="default_expenses">
+        <item>Groceries</item>
+        <item>Utilities</item>
+        <item> "Housing" </item>
+        <item> Transportation</item>
+        <item>Dining Out </item>
+        <item>Entertainment </item>
+        <item> Healthcare</item>
+        <item>Clothing and Accessories </item>
+        <item>Personal Care </item>
+        <item>Technology and Electronics </item>
+        <item>Travel </item>
+        <item>Savings and Investments </item>
+        <item> </item>
+    </string-array>
 </resources>

@@ -9,8 +9,10 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import com.example.expensetracker.data.ExpensesDAO
+import com.example.expensetracker.presentation.BottomSheet
+import com.example.expensetracker.presentation.ExpensesCardTypeSimple
+import com.example.expensetracker.presentation.ExtendedButtonExample
 import com.example.expensetracker.presentation.Header
-import kotlin.math.exp
 
 @Composable
 fun FirstScreen(expensesDAO: ExpensesDAO) { // Settings
