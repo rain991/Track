@@ -392,7 +392,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
 }
 
 @Composable
-fun ExpensesCardTypeSimple() {
+fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
