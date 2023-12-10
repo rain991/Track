@@ -1,12 +1,15 @@
 package com.example.expensetracker.presentation
 
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
 import com.example.expensetracker.domain.ExpenseItem
 
 @Composable
-fun ExpenseTrackerScreen(expenses: List<ExpenseItem>) {
-    LazyColumn {
+fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
+    LazyColumn (modifier = Modifier.fillMaxWidth()){
         items(expenses.size) { index ->
             val expense = expenses[index]
             val isDifferentDay =
@@ -25,7 +28,7 @@ fun ExpenseTrackerScreen(expenses: List<ExpenseItem>) {
             }
 
             // Карточка траты
-          //  ExpenseCard(expense)
+          ExpensesCardTypeSimple(expenseItem = expense)
         }
     }
 }

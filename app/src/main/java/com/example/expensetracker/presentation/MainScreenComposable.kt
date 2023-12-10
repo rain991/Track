@@ -27,6 +27,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.data.ExpensesDAO
+import com.example.expensetracker.domain.ExpenseItem
 import com.example.visualisationexpensestracker.Presentation.FirstScreen
 import com.example.visualisationexpensestracker.Presentation.SecondScreen
 import com.example.visualisationexpensestracker.Presentation.ThirdScreen

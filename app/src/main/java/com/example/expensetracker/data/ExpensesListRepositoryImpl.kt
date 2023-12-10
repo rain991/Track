@@ -1,13 +1,26 @@
 package com.example.expensetracker.data
 
+import android.content.Context
+import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.domain.ExpenseItem
 import com.example.expensetracker.domain.ExpensesListRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 object ExpensesListRepositoryImpl : ExpensesListRepository {
-    private val expensesList = mutableListOf<ExpenseItem>()
+    private var expensesList = mutableListOf<ExpenseItem>()
     var autoIncrementId = 0  // all autoIncrementId will be canceled ones the DB connected
+    override suspend fun setExpensesList(expensesDAO: ExpensesDAO) {
+        coroutineScope { expensesList=expensesDAO.getAll() }
+        }
+
 
     override fun addExpensesItem(currentExpensesItem: ExpenseItem) {
         if(currentExpensesItem.id== ExpenseItem.UNDEFINED_ID){

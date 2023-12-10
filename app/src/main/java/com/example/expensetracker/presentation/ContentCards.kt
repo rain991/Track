@@ -95,12 +95,12 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                     true
                 }
             }
-
         })
 
     var currentExpenseAdded by remember { mutableFloatStateOf(0.0F) } // Expense adding value
     val scope = rememberCoroutineScope()
     val addToDB: (currentExpense: ExpenseItem) -> Unit = {
+        ExpensesListRepositoryImpl.getExpensesList().add(it)
         scope.launch {
             expensesDAO.insertItem(it)
         }
@@ -110,7 +110,9 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
         ModalBottomSheet(
             onDismissRequest = onDismiss,
             sheetState = sheetState) {
-            Row(modifier = Modifier.fillMaxHeight(0.5f).fillMaxWidth()) { //previously fillMaxSize
+            Row(modifier = Modifier
+                .fillMaxHeight(0.5f)
+                .fillMaxWidth()) { //previously fillMaxSize
                 Box(
                     modifier = Modifier.weight(3.5F)
                 ) {
@@ -189,9 +191,14 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                     .weight(1f)
                                     .padding(8.dp)
                                     .clip(MaterialTheme.shapes.large)
-                                    .background( Brush.horizontalGradient(colorStops = arrayOf(0.0f to MaterialTheme.colorScheme.primary,
-                                        0.5f to MaterialTheme.colorScheme.onPrimaryContainer,
-                                        1f to MaterialTheme.colorScheme.primary))
+                                    .background(
+                                        Brush.horizontalGradient(
+                                            colorStops = arrayOf(
+                                                0.0f to MaterialTheme.colorScheme.primary,
+                                                0.5f to MaterialTheme.colorScheme.onPrimaryContainer,
+                                                1f to MaterialTheme.colorScheme.primary
+                                            )
+                                        )
                                     )
                                     .height(56.dp),
                                 onClick = { currentExpenseAdded = currentExpenseAdded * 10 + 5.0f }
@@ -397,8 +404,12 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp), shape = RoundedCornerShape(8.dp)
-    ) {
-        Text(text = stringResource(R.string.Lorem))
+    ) { // Design to be implemented soon
+        Column(modifier = Modifier.fillMaxWidth()) {
+            Text(text = expenseItem.name)
+            Text(text = expenseItem.date)
+            Text(text = expenseItem.value.toString())
+        }
     }
 }
 
