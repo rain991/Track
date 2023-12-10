@@ -12,20 +12,20 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
     LazyColumn (modifier = Modifier.fillMaxWidth()){
         items(expenses.size) { index ->
             val expense = expenses[index]
-            val isDifferentDay =
-                index == 0 || !areDatesEqual(expenses[index - 1].date, expense.date)
-            val isDifferentMonth =
-                index == 0 || !areMonthsEqual(expenses[index - 1].date, expense.date)
+//            val isDifferentDay =
+//                index == 0 || !areDatesEqual(expenses[index - 1].date, expense.date)
+//            val isDifferentMonth =
+//                index == 0 || !areMonthsEqual(expenses[index - 1].date, expense.date)
 
-            if (isDifferentDay) {
-                // Надпись с новым днем
-            //    ExpenseDayHeader(expense.date)
-            }
-
-            if (isDifferentMonth) {
-                // Надпись с новым месяцем
-               // ExpenseMonthHeader(expense.date)
-            }
+//            if (isDifferentDay) {
+//                // Надпись с новым днем
+//            //    ExpenseDayHeader(expense.date)
+//            }
+//
+//            if (isDifferentMonth) {
+//                // Надпись с новым месяцем
+//               // ExpenseMonthHeader(expense.date)
+//            }
 
             // Карточка траты
           ExpensesCardTypeSimple(expenseItem = expense)
