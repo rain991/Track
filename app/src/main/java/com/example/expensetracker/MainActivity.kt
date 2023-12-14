@@ -21,12 +21,12 @@ import kotlinx.coroutines.launch
 class MainActivity : ComponentActivity() {
     private lateinit var expensesDAO: ExpensesDAO
 
-    @OptIn(DelicateCoroutinesApi::class)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         expensesDAO = ExpensesDB.getInstance(applicationContext).dao
         CoroutineScope(Dispatchers.IO).launch { ExpensesListRepositoryImpl.setExpensesList(expensesDAO) }
-        Log.d("MyLog", "${ExpensesListRepositoryImpl.getExpensesList().size}")
+     //   Log.d("MyLog", "${ExpensesListRepositoryImpl.getExpensesList().size}")
         setContent {
             AppTheme {
                 PagerTest(expensesDAO)

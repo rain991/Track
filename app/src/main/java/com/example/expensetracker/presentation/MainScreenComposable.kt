@@ -57,7 +57,7 @@ fun Header(categoryName: String) {
             text = categoryName,
             style = TextStyle(
                 fontWeight = FontWeight.Bold,
-                fontSize = 18.sp
+                fontSize = 20.sp
             ),
             modifier = Modifier.fillMaxSize(),
             textAlign = TextAlign.Center

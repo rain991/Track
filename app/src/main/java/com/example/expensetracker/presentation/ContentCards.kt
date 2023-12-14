@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import com.example.expensetracker.data.ExpensesDAO
 import androidx.compose.foundation.layout.fillMaxSize
@@ -82,8 +83,6 @@ fun ExtendedButtonExample(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO) {
-
-
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = false,confirmValueChange = {
             when (it) {
@@ -445,6 +444,17 @@ fun TwoButtonsRow() {
         ) {
             Text(text = ".")
         }
+    }
+}
+
+@Composable
+fun MainInfoComposable(){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth().height(180.dp), shape = RoundedCornerShape(8.dp)
+    ) { // Design to be implemented soon
+       //MainInfoComposable content
+        Text(text = "Rsdfsdf")
     }
 }
 
