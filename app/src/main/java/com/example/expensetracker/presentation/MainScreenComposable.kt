@@ -1,9 +1,6 @@
 package com.example.expensetracker.presentation
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,11 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -27,7 +19,6 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.data.ExpensesDAO
-import com.example.expensetracker.domain.ExpenseItem
 import com.example.visualisationexpensestracker.Presentation.FirstScreen
 import com.example.visualisationexpensestracker.Presentation.SecondScreen
 import com.example.visualisationexpensestracker.Presentation.ThirdScreen
@@ -52,19 +43,15 @@ fun PagerTest(expensesDAO: ExpensesDAO) {
     }
 }
 
+
 @Composable
-fun Header(categoryName: String, isMenuButton: Boolean = true, isSearchButton: Boolean = true) {
+fun Header(categoryName: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (isMenuButton) {    //TO be changed to settings
-            IconButton(onClick = { /* Обработка нажатия на кнопку меню */ }) {
-                Icon(imageVector = Icons.Default.Menu, contentDescription = null)
-            }
-        }
 
         Text(
             text = categoryName,
@@ -72,14 +59,10 @@ fun Header(categoryName: String, isMenuButton: Boolean = true, isSearchButton: B
                 fontWeight = FontWeight.Bold,
                 fontSize = 18.sp
             ),
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.fillMaxSize(),
             textAlign = TextAlign.Center
         )
 
-        if (isSearchButton) {  //To be changed to statistics
-            IconButton(onClick = { /* Обработка нажатия на кнопку поиска */ }) {
-                Icon(imageVector = Icons.Default.Search, contentDescription = null)
-            }
-        }
     }
+
 }
