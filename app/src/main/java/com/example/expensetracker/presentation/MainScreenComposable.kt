@@ -34,19 +34,15 @@ import com.example.visualisationexpensestracker.Presentation.ThirdScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PagerTest(expensesDAO : ExpensesDAO) {
-    val pagerState = rememberPagerState(initialPage = 1){
-        3
-    }
+fun PagerTest(expensesDAO: ExpensesDAO) {
+    val pagerState = rememberPagerState(initialPage = 1) { 3 }
     Column(
-        modifier = Modifier
-            .fillMaxSize()
+        modifier = Modifier.fillMaxSize()
     ) {
         HorizontalPager(
             state = pagerState,
             modifier = Modifier.weight(1f)
         ) { page ->
-            Log.d("Mylog", "Lambda in pager")
             when (page) {
                 0 -> FirstScreen(expensesDAO = expensesDAO)
                 1 -> SecondScreen(expensesDAO = expensesDAO)
@@ -61,11 +57,10 @@ fun Header(categoryName: String, isMenuButton: Boolean = true, isSearchButton: B
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly,
+            .padding(12.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        if (isMenuButton) {
+        if (isMenuButton) {    //TO be changed to settings
             IconButton(onClick = { /* Обработка нажатия на кнопку меню */ }) {
                 Icon(imageVector = Icons.Default.Menu, contentDescription = null)
             }
@@ -81,7 +76,7 @@ fun Header(categoryName: String, isMenuButton: Boolean = true, isSearchButton: B
             textAlign = TextAlign.Center
         )
 
-        if (isSearchButton) {
+        if (isSearchButton) {  //To be changed to statistics
             IconButton(onClick = { /* Обработка нажатия на кнопку поиска */ }) {
                 Icon(imageVector = Icons.Default.Search, contentDescription = null)
             }

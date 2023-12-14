@@ -27,7 +27,6 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
 //               // ExpenseMonthHeader(expense.date)
 //            }
 
-            // Карточка траты
           ExpensesCardTypeSimple(expenseItem = expense)
         }
     }

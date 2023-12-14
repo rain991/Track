@@ -1,5 +1,8 @@
 package com.example.visualisationexpensestracker.Presentation
 
+import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
@@ -24,7 +27,7 @@ fun FirstScreen(expensesDAO: ExpensesDAO) { // Settings
         Header(categoryName = "Settings", isMenuButton =  false, isSearchButton = false)
         
         
-        ExtendedButtonExample (false,onClick = { isVisible = true })
+        ExtendedButtonExample (false,onClick = { isVisible = true})
         BottomSheet(isVisible = isVisible,
             onDismiss = { isVisible = false }, expensesDAO =  expensesDAO
         )
@@ -36,10 +39,8 @@ fun SecondScreen(expensesDAO: ExpensesDAO) {  // Main and Primary screen
     var isVisible by rememberSaveable { mutableStateOf(false) }
     Column(modifier = Modifier.fillMaxSize()) {// Column of Main Screen //
         Header(categoryName = "Expenses", isMenuButton =  true, isSearchButton = true)
-
         ExpensesLazyColumn(expenses = ExpensesListRepositoryImpl.getExpensesList())
-
-        ExtendedButtonExample (true,onClick = { isVisible = true })
+        ExtendedButtonExample (true,onClick = { isVisible = true})
         BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false },expensesDAO)
     }
 }
@@ -55,4 +56,5 @@ fun ThirdScreen(expensesDAO : ExpensesDAO) {  // Statistics Screen
         ExtendedButtonExample (false,onClick = { isVisible = true })
         BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false },expensesDAO)
     }
+
 }

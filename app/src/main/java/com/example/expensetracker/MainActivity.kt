@@ -26,12 +26,11 @@ class MainActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         expensesDAO = ExpensesDB.getInstance(applicationContext).dao
         CoroutineScope(Dispatchers.IO).launch { ExpensesListRepositoryImpl.setExpensesList(expensesDAO) }
-        Log.d("MyLog", "${ExpensesListRepositoryImpl.getExpensesList()}")
+        Log.d("MyLog", "${ExpensesListRepositoryImpl.getExpensesList().size}")
         setContent {
             AppTheme {
                 PagerTest(expensesDAO)
             }
-
         }
     }
 }

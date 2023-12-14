@@ -53,6 +53,8 @@ android {
 
 
 dependencies {
+    implementation("com.github.AAChartModel:AAChartCore-Kotlin:7.2.1")
+
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.wear.compose:compose-material:1.2.1")
     kapt ("androidx.room:room-compiler:2.6.1")
