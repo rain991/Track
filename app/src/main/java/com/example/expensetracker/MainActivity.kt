@@ -1,44 +1,79 @@
 package com.example.expensetracker
 
-import android.content.Context
+
 import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.annotation.RestrictTo
-import androidx.datastore.core.DataStore
-import androidx.datastore.dataStore
-import androidx.datastore.preferences.core.Preferences
-import androidx.datastore.preferences.core.booleanPreferencesKey
-import androidx.datastore.preferences.preferencesDataStore
-import androidx.lifecycle.lifecycleScope
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
+import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesDB
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.presentation.AppTheme
 import com.example.expensetracker.presentation.PagerTest
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.coroutineScope
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 
 class MainActivity : ComponentActivity() {
     private lateinit var expensesDAO: ExpensesDAO
 
-    val Context.dataStore: DataStore<Preferences> by preferencesDataStore(name = "settings")
+    private var firstLogin: Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         expensesDAO = ExpensesDB.getInstance(applicationContext).dao
-        CoroutineScope(Dispatchers.IO).launch { ExpensesListRepositoryImpl.setExpensesList(expensesDAO) }
-     //   Log.d("MyLog", "${ExpensesListRepositoryImpl.getExpensesList().size}")
+        val dataStoreManager = DataStoreManager(this)
+        CoroutineScope(Dispatchers.IO).launch {
+            ExpensesListRepositoryImpl.setExpensesList(expensesDAO)
+        }
+
+//        CoroutineScope(Dispatchers.IO).launch {
+//            firstLogin=dataStoreManager.getSettings().first().loginCount
+//        }
+//        if (firstLogin == 0) {
+//            Log.d("MyLog", "FirstLogin , $firstLogin")
+//            firstLogin++
+//        }
+//        if (firstLogin != 0) Log.d("MyLog", "SECOND LOGIN ${firstLogin}}")
+//        CoroutineScope(Dispatchers.IO).launch {
+//            // dataStoreManager.getSettings().collect{settings-> firstLogin=settings.loginCount}
+//            dataStoreManager.saveSettings(SettingsData(firstLogin))
+//        }
+
+
+
+        //   Log.d("MyLog", "${ExpensesListRepositoryImpl.getExpensesList().size}")
         setContent {
             AppTheme {
                 PagerTest(expensesDAO)
+
+                val coroutine = rememberCoroutineScope()
+                LaunchedEffect(key1 = true){
+                    coroutine.launch {
+                        firstLogin = dataStoreManager.getSettings().first().loginCount
+                    }
+                    if (firstLogin == 0) {
+                        Log.d("MyLog", "FirstLogin , $firstLogin")
+                        firstLogin++
+                    }
+                    if (firstLogin != 0) Log.d("MyLog", "SECOND LOGIN ${firstLogin}}")
+                    CoroutineScope(Dispatchers.IO).launch {
+                        dataStoreManager.saveSettings(SettingsData(firstLogin))
+                    }
+
+                }
+                // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
+
+
+
+
         }
     }
 }
