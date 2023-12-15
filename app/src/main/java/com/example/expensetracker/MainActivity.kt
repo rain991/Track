@@ -18,6 +18,7 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 
 
 class MainActivity : ComponentActivity() {
@@ -32,6 +33,28 @@ class MainActivity : ComponentActivity() {
         CoroutineScope(Dispatchers.IO).launch {
             ExpensesListRepositoryImpl.setExpensesList(expensesDAO)
         }
+        val coroutine1 = CoroutineScope(Dispatchers.IO).launch {
+            firstLogin = dataStoreManager.getSettings().first().loginCount
+            if (firstLogin != 0) {
+                firstLogin++
+                Log.d("MyLog", "SECOND LOGIN ${firstLogin}}")
+                dataStoreManager.saveSettings(SettingsData(firstLogin))
+            }
+        }
+        runBlocking {
+            coroutine1.join()
+            println("Coroutine 1 joined")
+        }
+        val coroutine2 = CoroutineScope(Dispatchers.IO).launch {
+            if (firstLogin == 0) {
+                Log.d("MyLog", "FirstLogin , $firstLogin")
+                firstLogin++
+                dataStoreManager.saveSettings(SettingsData(firstLogin))
+            }
+        }
+
+
+
 
 //        CoroutineScope(Dispatchers.IO).launch {
 //            firstLogin=dataStoreManager.getSettings().first().loginCount
@@ -46,34 +69,14 @@ class MainActivity : ComponentActivity() {
 //            dataStoreManager.saveSettings(SettingsData(firstLogin))
 //        }
 
-
-
         //   Log.d("MyLog", "${ExpensesListRepositoryImpl.getExpensesList().size}")
         setContent {
             AppTheme {
                 PagerTest(expensesDAO)
 
-                val coroutine = rememberCoroutineScope()
-                LaunchedEffect(key1 = true){
-                    coroutine.launch {
-                        firstLogin = dataStoreManager.getSettings().first().loginCount
-                    }
-                    if (firstLogin == 0) {
-                        Log.d("MyLog", "FirstLogin , $firstLogin")
-                        firstLogin++
-                    }
-                    if (firstLogin != 0) Log.d("MyLog", "SECOND LOGIN ${firstLogin}}")
-                    CoroutineScope(Dispatchers.IO).launch {
-                        dataStoreManager.saveSettings(SettingsData(firstLogin))
-                    }
 
-                }
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
-
-
-
-
         }
     }
 }
