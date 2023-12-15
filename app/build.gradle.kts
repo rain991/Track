@@ -54,8 +54,6 @@ android {
 
 dependencies {
     implementation("com.github.AAChartModel:AAChartCore-Kotlin:7.2.1")
-
-
     implementation("androidx.datastore:datastore-preferences:1.0.0")
 
     implementation("androidx.room:room-ktx:2.6.1")

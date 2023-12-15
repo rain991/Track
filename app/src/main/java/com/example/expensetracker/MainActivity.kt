@@ -36,9 +36,8 @@ class MainActivity : ComponentActivity() {
         val coroutine1 = CoroutineScope(Dispatchers.IO).launch {
             firstLogin = dataStoreManager.getSettings().first().loginCount
             if (firstLogin != 0) {
-                firstLogin++
                 Log.d("MyLog", "SECOND LOGIN ${firstLogin}}")
-                dataStoreManager.saveSettings(SettingsData(firstLogin))
+                dataStoreManager.saveSettings(SettingsData(firstLogin+1))
             }
         }
         runBlocking {
@@ -48,26 +47,9 @@ class MainActivity : ComponentActivity() {
         val coroutine2 = CoroutineScope(Dispatchers.IO).launch {
             if (firstLogin == 0) {
                 Log.d("MyLog", "FirstLogin , $firstLogin")
-                firstLogin++
-                dataStoreManager.saveSettings(SettingsData(firstLogin))
+                dataStoreManager.saveSettings(SettingsData(firstLogin+1))
             }
         }
-
-
-
-
-//        CoroutineScope(Dispatchers.IO).launch {
-//            firstLogin=dataStoreManager.getSettings().first().loginCount
-//        }
-//        if (firstLogin == 0) {
-//            Log.d("MyLog", "FirstLogin , $firstLogin")
-//            firstLogin++
-//        }
-//        if (firstLogin != 0) Log.d("MyLog", "SECOND LOGIN ${firstLogin}}")
-//        CoroutineScope(Dispatchers.IO).launch {
-//            // dataStoreManager.getSettings().collect{settings-> firstLogin=settings.loginCount}
-//            dataStoreManager.saveSettings(SettingsData(firstLogin))
-//        }
 
         //   Log.d("MyLog", "${ExpensesListRepositoryImpl.getExpensesList().size}")
         setContent {
