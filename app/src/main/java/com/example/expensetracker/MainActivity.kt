@@ -11,6 +11,7 @@ import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesDB
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.SettingsData
+import com.example.expensetracker.presentation.LoginScreen
 import com.example.expensetracker.presentation.themes.AppTheme
 import com.example.expensetracker.presentation.PagerTest
 import kotlinx.coroutines.Dispatchers
@@ -50,8 +51,8 @@ class MainActivity : ComponentActivity() {
         }
             setContent {
                 AppTheme {
-                    PagerTest(expensesDAO)
-                    //LoginComposable()
+                    //PagerTest(expensesDAO)
+                    LoginScreen()
 
                     // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
                 }

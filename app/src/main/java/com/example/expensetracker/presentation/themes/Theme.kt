@@ -9,6 +9,7 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.unit.dp
+import com.example.expensetracker.ui.theme.Typography
 import com.example.expensetracker.ui.theme.md_theme_dark_background
 import com.example.expensetracker.ui.theme.md_theme_dark_error
 import com.example.expensetracker.ui.theme.md_theme_dark_errorContainer
@@ -157,6 +158,7 @@ fun AppTheme(
     MaterialTheme(
         colorScheme = colors,
         content = content,
-        shapes = shapes
+        shapes = shapes,
+        typography = Typography
     )
 }
