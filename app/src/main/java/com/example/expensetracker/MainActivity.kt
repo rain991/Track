@@ -12,7 +12,6 @@ import com.example.expensetracker.data.ExpensesDB
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.presentation.AppTheme
-import com.example.expensetracker.presentation.LoginComposable
 import com.example.expensetracker.presentation.PagerTest
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -46,14 +45,6 @@ class MainActivity : ComponentActivity() {
                     loginCount = pref.getLoginCount()
                 )
 
-//            dataStoreManager.getSettings().collect { pref ->
-//                settingsData.setSettings(
-//                    currency = pref.getCurrency(),
-//                    budget = pref.getBudget(),
-//                    name = pref.getName(),
-//                    loginCount = pref.getLoginCount()
-//                )
-//            }
                 Log.d("MyLog", "${settingsData.getLoginCount()}")
                 settingsData.setLoginCount(settingsData.getLoginCount() + 1)
                 Log.d("MyLog", "${settingsData.getLoginCount()}")
