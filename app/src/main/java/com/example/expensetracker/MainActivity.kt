@@ -11,14 +11,11 @@ import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesDB
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.SettingsData
-import com.example.expensetracker.presentation.AppTheme
+import com.example.expensetracker.presentation.themes.AppTheme
 import com.example.expensetracker.presentation.PagerTest
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.collectIndexed
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 
