@@ -1,4 +1,7 @@
 package com.example.expensetracker.ui.theme
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.ColorScheme
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.Color
 
 //To be deleted when color changed in Theme.kt
@@ -78,7 +81,6 @@ val md_theme_dark_scrim = Color(0xFF000000)
 
 
 val seed = Color(0xFF570000)
-    //val  = Color(0xFF570000)
 val light_ = Color(0xFFA53A2D)
 val light_on = Color(0xFFFFFFFF)
 val light_Container = Color(0xFFFFDAD4)
@@ -87,3 +89,12 @@ val dark_ = Color(0xFFFFB4A8)
 val dark_on = Color(0xFF650A05)
 val dark_Container = Color(0xFF852318)
 val dark_onContainer = Color(0xFFFFDAD4)
+
+val ColorScheme.focusedTextFieldText
+@Composable
+get() = if(isSystemInDarkTheme()) Color.White else Color.Black
+
+val ColorScheme.unfocusedTextFieldText
+    @Composable
+    get() = if(isSystemInDarkTheme()) light_Container else md_theme_dark_inversePrimary
+// Probably colors to be changed
