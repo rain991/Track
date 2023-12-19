@@ -1,8 +1,10 @@
 package com.example.expensetracker.presentation
 
 import android.content.res.Configuration
+import android.graphics.drawable.VectorDrawable
 import android.util.Log
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,16 +18,12 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
@@ -41,18 +39,21 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.graphics.vector.VectorPainter
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
-import androidx.wear.compose.material.TimeText
 import com.example.expensetracker.R
 import com.example.expensetracker.data.Currency
-import com.example.expensetracker.data.USD
 import com.example.expensetracker.data.currencyList
 import com.example.expensetracker.presentation.themes.AppTheme
 import com.example.expensetracker.ui.theme.focusedTextFieldText
@@ -77,29 +78,29 @@ fun LoginScreen() {
         }
 
     }
-
 }
 
 @Composable
 private fun LoginMain() {
     Column(modifier = Modifier.padding(horizontal = 22.dp)) {
         LoginTextField(
-            label = "Your First Name",
-            trailing = "",
+            label = stringResource(R.string.loginnametextfield),
+            trailingCalendar = false,
             modifier = Modifier.fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(20.dp))
 
         LoginTextField(
             label = "Your Birthday",
-            trailing = "",
-            modifier = Modifier.fillMaxWidth()
+            trailingCalendar = true,
+            modifier = Modifier
+                .fillMaxWidth()
         )
         Spacer(modifier = Modifier.height(20.dp))
 
         LoginTextField(
             label = "Your income",
-            trailing = "",
+            trailingCalendar = false,
             modifier = Modifier.fillMaxWidth()
         )
 
@@ -113,9 +114,9 @@ private fun LoginMain() {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp),
-            onClick = { TODO() },
+            onClick = { TODO() },  // Lets start button
             colors = ButtonDefaults.buttonColors(
-                containerColor = if (isSystemInDarkTheme()) md_theme_light_primary else Black,
+                containerColor = md_theme_light_primary,
                 contentColor = Color.White
             ),
             shape = MaterialTheme.shapes.extraSmall
@@ -166,9 +167,16 @@ private fun LoginHeader() {
     }
 }
 
-
 @Composable
-private fun LoginTextField(modifier: Modifier = Modifier, label: String, trailing: String) {
+private fun LoginTextField(
+    modifier: Modifier = Modifier,
+    label: String,
+    trailingCalendar: Boolean
+) {
+
+    var currentDatePickerState by remember { mutableStateOf(false) }
+
+
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     TextField(modifier = modifier, value = "", onValueChange = {},
         label = {
@@ -179,40 +187,32 @@ private fun LoginTextField(modifier: Modifier = Modifier, label: String, trailin
             focusedPlaceholderColor = MaterialTheme.colorScheme.focusedTextFieldText
         ),
         trailingIcon = {
-            TextButton(onClick = { /*TODO*/ }) {
-                Text(
-                    text = trailing,
-                    style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
-                    color = uiColor
-                )
+            if (trailingCalendar) {
+                    IconButton(onClick = { currentDatePickerState = true }) {
+                        Icon(
+                            painter = painterResource(R.drawable.baseline_calendar_month_24),
+                            contentDescription = null,
+                            tint = uiColor
+                        )
+                    }
             }
         }
     )
-}
-
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Preview(name = "Full Preview", showSystemUi = true)
-@Composable
-fun DefaultPreview() {
-    AppTheme {
-        LoginScreen()
+    if(currentDatePickerState){
+        DatePicker()
     }
 }
 
 @Composable
-fun DateTimePicker() {
-    val timePickerState = UseCaseState()
-
-    Button(onClick = { timePickerState.show() }) {
-        Text(text = "Open DateTimePicker")
-    }
+fun DatePicker() {
+    val timePickerState = UseCaseState(visible = true)
     DateTimeDialog(state = timePickerState, selection = DateTimeSelection.Date { date ->
         Log.d("MyTag", "Selected date $date")
     }, properties = DialogProperties())
 }
 
 @Composable
-fun DateTimeSample2(closeSelection: () -> Unit) {
+fun DateTimePicker(closeSelection: () -> Unit) {
     val timePickerState = rememberUseCaseState(visible = false, embedded = false)
 
     val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
@@ -228,49 +228,62 @@ fun DateTimeSample2(closeSelection: () -> Unit) {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun CurrencyDropDownMenu() {
-    val currentCurrencyList : List<Currency> = currencyList.toList()
-    var expanded by remember { mutableStateOf(false) }
+    val uiColor = if (isSystemInDarkTheme()) Color.White else Black
+    val currentCurrencyList: List<Currency> = currencyList.toList()
+    var isExpanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(currentCurrencyList[0]) }
     ExposedDropdownMenuBox(
-        expanded = expanded,
+        expanded = isExpanded,
         onExpandedChange = {
-            expanded = !expanded
+            isExpanded = !isExpanded
         }
     ) {
-        IconButton(onClick = { expanded = !expanded }) {
-            Icon(
-                imageVector = Icons.Default.MoreVert,
-                contentDescription = "More"
-            )
-        }
-        TextField(value = selectedOptionText.ticker,
+
+        TextField(
+            value = selectedOptionText.ticker,
             readOnly = true,
             onValueChange = {},
-            label = { Text("Categories") },
+            label = { Text(stringResource(R.string.currency), style = TextStyle(color = uiColor)) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = expanded
+                    expanded = isExpanded
                 )
             },
-            colors = ExposedDropdownMenuDefaults.textFieldColors()
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            modifier = Modifier.menuAnchor()
         )
 
+
         ExposedDropdownMenu(
-            expanded = expanded,
+            expanded = isExpanded,
             onDismissRequest = {
-                expanded = false
+                isExpanded = false
             }
         ) {
             currencyList.forEach { selectionOption ->
                 DropdownMenuItem(
-                    text = { Text(text = selectionOption.ticker) },
+                    text = { Text(text = selectionOption.ticker, color = uiColor) },
                     onClick = {
                         selectedOptionText = selectionOption
-                        expanded = false
+                        isExpanded = false
                     },
-                       trailingIcon = { Image(painter = painterResource(id = selectionOption.imageResourceId), contentDescription = selectionOption.ticker)}
+                    trailingIcon = {
+                        Image(
+                            painter = painterResource(id = selectionOption.imageResourceId),
+                            contentDescription = selectionOption.ticker
+                        )
+                    }
                 )
             }
         }
+    }
+}
+
+@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+@Preview(name = "Full Preview", showSystemUi = true)
+@Composable
+fun DefaultPreview() {
+    AppTheme {
+        LoginScreen()
     }
 }

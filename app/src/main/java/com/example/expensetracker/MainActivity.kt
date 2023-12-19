@@ -11,16 +11,12 @@ import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesDB
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.SettingsData
-import com.example.expensetracker.presentation.DateTimePicker
-import com.example.expensetracker.presentation.DateTimeSample2
 import com.example.expensetracker.presentation.LoginScreen
 import com.example.expensetracker.presentation.themes.AppTheme
-import com.example.expensetracker.presentation.PagerTest
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
 
 
 class MainActivity : ComponentActivity() {

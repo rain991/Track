@@ -4,6 +4,8 @@
     <string name="app_logo">Application Logo</string>
     <string name="app_name_optimal">SpendSmart</string>
     <string name="logo_app_description">Convenient and easy-to-use expense tracker</string>
+    <string name="currency">Currency</string>
+    <string name="loginnametextfield">Your First Name</string>
     <string-array name="default_expenses">
         <item>Groceries</item>
         <item>Utilities</item>
