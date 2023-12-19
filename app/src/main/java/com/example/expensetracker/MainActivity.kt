@@ -26,9 +26,6 @@ import java.time.LocalDate
 class MainActivity : ComponentActivity() {
     private lateinit var expensesDAO: ExpensesDAO
 
-    // temporarily created variable for logincomposable
-    private lateinit var datePicker: LocalDate
-
     private val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -58,12 +55,8 @@ class MainActivity : ComponentActivity() {
             AppTheme {
                 //PagerTest(expensesDAO)
 
-                //   LoginScreen()
+                LoginScreen()
 
-               // DateTimePicker()
-                DateTimeSample2 {
-                    Log.d("MyLog", "listeners onclose selection")
-                }
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
         }

@@ -1,0 +1,17 @@
+package com.example.expensetracker.data
+
+import com.example.expensetracker.R
+class Currency(val ticker : String, val imageResourceId : Int){
+ internal fun addNewCurrency(ticker: String, imageResourceId: Int){  // internal - accesible only in its package
+     Currency(ticker, imageResourceId)
+ }
+}
+
+val USD = Currency("USD", R.drawable.usa96)
+val UAH = Currency("UAH", R.drawable.ukraine96)
+val CZK = Currency("CZK", R.drawable.czechrepublic96)
+val EUR = Currency("EUR", R.drawable.europeanunion96)
+val GBP = Currency("GBP", R.drawable.greatbritain96)
+
+
+val currencyList = mutableListOf<Currency>(USD, EUR, UAH, CZK, GBP)
