@@ -5,11 +5,13 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesDB
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.LoginViewModel
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.presentation.LoginScreen
 import com.example.expensetracker.presentation.themes.AppTheme
@@ -21,7 +23,7 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     private lateinit var expensesDAO: ExpensesDAO
-
+    private val loginViewModel by viewModels<LoginViewModel>()
     private val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
