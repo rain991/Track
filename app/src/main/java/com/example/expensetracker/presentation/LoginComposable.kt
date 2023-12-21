@@ -3,6 +3,7 @@ package com.example.expensetracker.presentation
 import android.content.res.Configuration
 import android.graphics.drawable.VectorDrawable
 import android.util.Log
+import androidx.activity.viewModels
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -31,6 +32,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -54,6 +56,7 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
 import com.example.expensetracker.data.Currency
+import com.example.expensetracker.data.LoginViewModel
 import com.example.expensetracker.data.currencyList
 import com.example.expensetracker.presentation.themes.AppTheme
 import com.example.expensetracker.ui.theme.focusedTextFieldText
@@ -66,7 +69,7 @@ import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import java.time.LocalDate
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(loginViewModel : LoginViewModel) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -74,19 +77,20 @@ fun LoginScreen() {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            LoginMain()
+            LoginMain(loginViewModel)
         }
 
     }
 }
 
 @Composable
-private fun LoginMain() {
+private fun LoginMain(loginViewModel : LoginViewModel) {
     Column(modifier = Modifier.padding(horizontal = 22.dp)) {
         LoginTextField(
             label = stringResource(R.string.loginnametextfield),
             trailingCalendar = false,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            INPUT_ID = loginViewModel.FIRSTNAME_INPUT_ID
         )
         Spacer(modifier = Modifier.height(20.dp))
 
@@ -94,14 +98,16 @@ private fun LoginMain() {
             label = "Your Birthday",
             trailingCalendar = true,
             modifier = Modifier
-                .fillMaxWidth()
+                .fillMaxWidth(),
+            INPUT_ID = loginViewModel.BIRTHDAY_INPUT_ID
         )
         Spacer(modifier = Modifier.height(20.dp))
 
         LoginTextField(
             label = "Your income",
             trailingCalendar = false,
-            modifier = Modifier.fillMaxWidth()
+            modifier = Modifier.fillMaxWidth(),
+            INPUT_ID = loginViewModel.INCOME_INPUT_ID
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -171,9 +177,9 @@ private fun LoginHeader() {
 private fun LoginTextField(
     modifier: Modifier = Modifier,
     label: String,
-    trailingCalendar: Boolean
+    trailingCalendar: Boolean,
+    INPUT_ID : MutableState<Int>  //guides in which way should LoginTextField work
 ) {
-
     var currentDatePickerState by remember { mutableStateOf(false) }
 
 
@@ -279,11 +285,11 @@ fun CurrencyDropDownMenu() {
     }
 }
 
-@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-@Preview(name = "Full Preview", showSystemUi = true)
-@Composable
-fun DefaultPreview() {
-    AppTheme {
-        LoginScreen()
-    }
-}
+//@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
+//@Preview(name = "Full Preview", showSystemUi = true)
+//@Composable
+//fun DefaultPreview() {
+//    AppTheme {
+//        LoginScreen()
+//    }
+//}

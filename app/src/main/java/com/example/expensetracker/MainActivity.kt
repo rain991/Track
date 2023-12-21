@@ -23,7 +23,7 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     private lateinit var expensesDAO: ExpensesDAO
-    private val loginViewModel by viewModels<LoginViewModel>()
+    private val loginViewModel by viewModels<LoginViewModel>()   // probably should be private later
     private val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -53,7 +53,7 @@ class MainActivity : ComponentActivity() {
             AppTheme {
                 //PagerTest(expensesDAO)
 
-                LoginScreen()
+                LoginScreen(loginViewModel)
 
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
