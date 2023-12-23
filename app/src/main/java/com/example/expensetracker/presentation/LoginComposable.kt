@@ -34,6 +34,7 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -112,7 +113,7 @@ private fun LoginMain(loginViewModel : LoginViewModel) {
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CurrencyDropDownMenu()
+        CurrencyDropDownMenu(loginViewModel)
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -181,10 +182,13 @@ private fun LoginTextField(
     INPUT_ID : MutableState<Int>  //guides in which way should LoginTextField work
 ) {
     var currentDatePickerState by remember { mutableStateOf(false) }
-
+    var textValue by remember { mutableStateOf("")}
+        var birthdayData by remember { mutableStateOf(null) } // LocalDate
+    var firstNameData by remember { mutableStateOf("") }
+    var incomeData by remember { mutableIntStateOf(0) }
 
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
-    TextField(modifier = modifier, value = "", onValueChange = {},
+    TextField(modifier = modifier, value = textValue, onValueChange = {textValue=it},
         label = {
             Text(text = label, style = MaterialTheme.typography.bodyMedium, color = uiColor)
         },
@@ -205,15 +209,15 @@ private fun LoginTextField(
         }
     )
     if(currentDatePickerState){
-        DatePicker()
+       // DatePicker(loginViewModel = )
     }
 }
 
 @Composable
-fun DatePicker() {
+fun DatePicker(loginViewModel: LoginViewModel) {
     val timePickerState = UseCaseState(visible = true)
     DateTimeDialog(state = timePickerState, selection = DateTimeSelection.Date { date ->
-        Log.d("MyTag", "Selected date $date")
+        loginViewModel.birthday=date  // null warning
     }, properties = DialogProperties())
 }
 
@@ -233,7 +237,7 @@ fun DateTimePicker(closeSelection: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CurrencyDropDownMenu() {
+fun CurrencyDropDownMenu(loginViewModel : LoginViewModel) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     val currentCurrencyList: List<Currency> = currencyList.toList()
     var isExpanded by remember { mutableStateOf(false) }
