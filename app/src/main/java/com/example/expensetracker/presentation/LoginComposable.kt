@@ -1,11 +1,8 @@
 package com.example.expensetracker.presentation
 
-import android.content.res.Configuration
-import android.graphics.drawable.VectorDrawable
+
 import android.util.Log
-import androidx.activity.viewModels
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -28,13 +25,11 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -42,15 +37,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
-import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.graphics.vector.VectorPainter
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.wear.compose.material.Icon
@@ -59,7 +50,6 @@ import com.example.expensetracker.R
 import com.example.expensetracker.data.Currency
 import com.example.expensetracker.data.LoginViewModel
 import com.example.expensetracker.data.currencyList
-import com.example.expensetracker.presentation.themes.AppTheme
 import com.example.expensetracker.ui.theme.focusedTextFieldText
 import com.example.expensetracker.ui.theme.md_theme_light_primary
 import com.example.expensetracker.ui.theme.unfocusedTextFieldText
@@ -70,7 +60,10 @@ import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import java.time.LocalDate
 
 @Composable
-fun LoginScreen(loginViewModel : LoginViewModel) {
+fun LoginScreen(
+    loginViewModel: LoginViewModel,
+    onPositiveLoginChanges: (MutableState<Boolean>) -> Unit
+) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -85,30 +78,25 @@ fun LoginScreen(loginViewModel : LoginViewModel) {
 }
 
 @Composable
-private fun LoginMain(loginViewModel : LoginViewModel) {
+private fun LoginMain(loginViewModel: LoginViewModel) {
     Column(modifier = Modifier.padding(horizontal = 22.dp)) {
         LoginTextField(
             label = stringResource(R.string.loginnametextfield),
-            trailingCalendar = false,
             modifier = Modifier.fillMaxWidth(),
-            INPUT_ID = loginViewModel.FIRSTNAME_INPUT_ID
+            INPUT_ID = loginViewModel.FIRSTNAME_INPUT_ID,
+            loginViewModel = loginViewModel
         )
         Spacer(modifier = Modifier.height(20.dp))
 
-        LoginTextField(
-            label = "Your Birthday",
-            trailingCalendar = true,
-            modifier = Modifier
-                .fillMaxWidth(),
-            INPUT_ID = loginViewModel.BIRTHDAY_INPUT_ID
-        )
+        BirthdayTextField(loginViewModel = loginViewModel,modifier = Modifier.fillMaxWidth())
+
         Spacer(modifier = Modifier.height(20.dp))
 
         LoginTextField(
             label = "Your income",
-            trailingCalendar = false,
             modifier = Modifier.fillMaxWidth(),
-            INPUT_ID = loginViewModel.INCOME_INPUT_ID
+            INPUT_ID = loginViewModel.INCOME_INPUT_ID,
+            loginViewModel = loginViewModel
         )
 
         Spacer(modifier = Modifier.height(16.dp))
@@ -178,17 +166,18 @@ private fun LoginHeader() {
 private fun LoginTextField(
     modifier: Modifier = Modifier,
     label: String,
-    trailingCalendar: Boolean,
-    INPUT_ID : MutableState<Int>  //guides in which way should LoginTextField work
+    INPUT_ID: MutableState<Int>,
+    loginViewModel: LoginViewModel //guides in which way should LoginTextField work
 ) {
-    var currentDatePickerState by remember { mutableStateOf(false) }
-    var textValue by remember { mutableStateOf("")}
-        var birthdayData by remember { mutableStateOf(null) } // LocalDate
+    var textValue by remember { mutableStateOf("") }
     var firstNameData by remember { mutableStateOf("") }
-    var incomeData by remember { mutableIntStateOf(0) }
+    val maxCharacters = 26
 
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
-    TextField(modifier = modifier, value = textValue, onValueChange = {textValue=it},
+    TextField(
+        modifier = modifier,
+        value = textValue,
+        onValueChange = { if (it.length <= maxCharacters) textValue = it },
         label = {
             Text(text = label, style = MaterialTheme.typography.bodyMedium, color = uiColor)
         },
@@ -196,28 +185,55 @@ private fun LoginTextField(
             unfocusedPlaceholderColor = MaterialTheme.colorScheme.unfocusedTextFieldText,
             focusedPlaceholderColor = MaterialTheme.colorScheme.focusedTextFieldText
         ),
+        maxLines = 1
+    )
+
+}
+
+@Composable
+private fun BirthdayTextField(
+    modifier: Modifier = Modifier,
+    loginViewModel: LoginViewModel
+) {
+   val label = "Your Birthday:"
+    var currentDatePickerState by remember { mutableStateOf(false) }
+ //   var textValue by remember { mutableStateOf("") }
+    var birthdayData by remember { mutableStateOf<LocalDate>(LocalDate.now()) }
+    val uiColor = if (isSystemInDarkTheme()) Color.White else Black
+    TextField(modifier = modifier, value = birthdayData.toString(), onValueChange = { },
+        label = {
+            Text(text = label, style = MaterialTheme.typography.bodyMedium, color = uiColor)
+        },
+        colors = TextFieldDefaults.colors(
+            unfocusedPlaceholderColor = MaterialTheme.colorScheme.unfocusedTextFieldText,
+            focusedPlaceholderColor = MaterialTheme.colorScheme.focusedTextFieldText
+        ), maxLines = 1,
         trailingIcon = {
-            if (trailingCalendar) {
-                    IconButton(onClick = { currentDatePickerState = true }) {
-                        Icon(
-                            painter = painterResource(R.drawable.baseline_calendar_month_24),
-                            contentDescription = null,
-                            tint = uiColor
-                        )
-                    }
-            }
+                IconButton(onClick = { currentDatePickerState = true }) {
+                    Icon(
+                        painter = painterResource(R.drawable.baseline_calendar_month_24),
+                        contentDescription = null,
+                        tint = uiColor
+                    )
+                }
         }
     )
-    if(currentDatePickerState){
-       // DatePicker(loginViewModel = )
+    if (currentDatePickerState) {
+        DatePicker(loginViewModel = loginViewModel, onTextValueChange = { newTextValue ->
+            birthdayData = newTextValue
+            currentDatePickerState=false
+        })
     }
 }
 
 @Composable
-fun DatePicker(loginViewModel: LoginViewModel) {
-    val timePickerState = UseCaseState(visible = true)
+private fun DatePicker(loginViewModel: LoginViewModel, onTextValueChange: (LocalDate) -> Unit) {
+    val timePickerState = rememberUseCaseState(visible = true)
+    val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
     DateTimeDialog(state = timePickerState, selection = DateTimeSelection.Date { date ->
-        loginViewModel.birthday=date  // null warning
+        loginViewModel.birthday = date  // null warning
+        onTextValueChange(date)
+        timePickerState.hide()
     }, properties = DialogProperties())
 }
 
@@ -237,7 +253,7 @@ fun DateTimePicker(closeSelection: () -> Unit) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CurrencyDropDownMenu(loginViewModel : LoginViewModel) {
+fun CurrencyDropDownMenu(loginViewModel: LoginViewModel) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     val currentCurrencyList: List<Currency> = currencyList.toList()
     var isExpanded by remember { mutableStateOf(false) }

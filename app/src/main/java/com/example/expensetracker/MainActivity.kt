@@ -6,6 +6,10 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.ExpensesDAO
@@ -14,6 +18,7 @@ import com.example.expensetracker.data.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.LoginViewModel
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.presentation.LoginScreen
+import com.example.expensetracker.presentation.PagerTest
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -45,7 +50,6 @@ class MainActivity : ComponentActivity() {
 
                 Log.d("MyLog", "${settingsData.getLoginCount()}")
                 settingsData.setLoginCount(settingsData.getLoginCount() + 1)
-                Log.d("MyLog", "${settingsData.getLoginCount()}")
                 dataStoreManager.saveSettings(settingsData)
             }
         }
@@ -54,9 +58,11 @@ class MainActivity : ComponentActivity() {
   }
         setContent {
             AppTheme {
-                //PagerTest(expensesDAO)
-
-                LoginScreen(loginViewModel)
+                var mainScreenAvailable by remember{ mutableStateOf(false) }
+                if (settingsData.getLoginCount() == 0) { LoginScreen(loginViewModel, onPositiveLoginChanges ={mainScreenAvailable=true} ) }
+                else{
+                    PagerTest(expensesDAO)
+                }
 
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
