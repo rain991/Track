@@ -47,8 +47,7 @@ class MainActivity : ComponentActivity() {
                     name = pref.getName(),
                     loginCount = pref.getLoginCount()
                 )
-
-                Log.d("MyLog", "${settingsData.getLoginCount()}")
+                Log.d("MyLog", "Login counter: ${settingsData.getLoginCount()}")
                 settingsData.setLoginCount(settingsData.getLoginCount() + 1)
                 dataStoreManager.saveSettings(settingsData)
             }
@@ -59,14 +58,13 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 var mainScreenAvailable by remember{ mutableStateOf(false) }
-                if (settingsData.getLoginCount() == 0) { LoginScreen(loginViewModel, onPositiveLoginChanges ={mainScreenAvailable=true} ) }
+                if (settingsData.getLoginCount() == 0) { LoginScreen(loginViewModel, onPositiveLoginChanges ={newMainScreenAvailable->mainScreenAvailable=newMainScreenAvailable} ) }
                 else{
                     PagerTest(expensesDAO)
                 }
-
+                if(mainScreenAvailable) PagerTest(expensesDAO = expensesDAO)
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
         }
-
     }
 }

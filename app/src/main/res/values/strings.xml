@@ -6,6 +6,8 @@
     <string name="logo_app_description">Convenient and easy-to-use expense tracker</string>
     <string name="currency">Currency</string>
     <string name="loginnametextfield">Your First Name</string>
+    <string name="lets_start">Lets start!</string>
+    <string name="your_income">Your monthly income</string>
     <string-array name="default_expenses">
         <item>Groceries</item>
         <item>Utilities</item>

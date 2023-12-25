@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.DropdownMenuItem
@@ -42,6 +43,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.wear.compose.material.Icon
@@ -53,7 +55,6 @@ import com.example.expensetracker.data.currencyList
 import com.example.expensetracker.ui.theme.focusedTextFieldText
 import com.example.expensetracker.ui.theme.md_theme_light_primary
 import com.example.expensetracker.ui.theme.unfocusedTextFieldText
-import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
@@ -62,7 +63,7 @@ import java.time.LocalDate
 @Composable
 fun LoginScreen(
     loginViewModel: LoginViewModel,
-    onPositiveLoginChanges: (MutableState<Boolean>) -> Unit
+    onPositiveLoginChanges: (Boolean) -> Unit
 ) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     Surface(modifier = Modifier.fillMaxSize()) {
@@ -71,14 +72,14 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            LoginMain(loginViewModel)
+            LoginMain(loginViewModel, onPositiveLoginChanges)
         }
 
     }
 }
 
 @Composable
-private fun LoginMain(loginViewModel: LoginViewModel) {
+private fun LoginMain(loginViewModel: LoginViewModel, onPositiveLoginChanges: (Boolean) -> Unit) {
     Column(modifier = Modifier.padding(horizontal = 22.dp)) {
         LoginTextField(
             label = stringResource(R.string.loginnametextfield),
@@ -88,12 +89,12 @@ private fun LoginMain(loginViewModel: LoginViewModel) {
         )
         Spacer(modifier = Modifier.height(20.dp))
 
-        BirthdayTextField(loginViewModel = loginViewModel,modifier = Modifier.fillMaxWidth())
+        BirthdayTextField(loginViewModel = loginViewModel, modifier = Modifier.fillMaxWidth())
 
         Spacer(modifier = Modifier.height(20.dp))
 
         LoginTextField(
-            label = "Your income",
+            label = stringResource(R.string.your_income),
             modifier = Modifier.fillMaxWidth(),
             INPUT_ID = loginViewModel.INCOME_INPUT_ID,
             loginViewModel = loginViewModel
@@ -109,7 +110,7 @@ private fun LoginMain(loginViewModel: LoginViewModel) {
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp),
-            onClick = { TODO() },  // Lets start button
+            onClick = { onPositiveLoginChanges ( true ) },  // Lets start button
             colors = ButtonDefaults.buttonColors(
                 containerColor = md_theme_light_primary,
                 contentColor = Color.White
@@ -117,12 +118,13 @@ private fun LoginMain(loginViewModel: LoginViewModel) {
             shape = MaterialTheme.shapes.extraSmall
         ) {
             Text(
-                text = "Lets start!",
+                text = stringResource(R.string.lets_start),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
             )
         }
     }
 }
+
 
 @Composable
 private fun LoginHeader() {
@@ -171,13 +173,23 @@ private fun LoginTextField(
 ) {
     var textValue by remember { mutableStateOf("") }
     var firstNameData by remember { mutableStateOf("") }
-    val maxCharacters = 26
+    var incomeData by remember { mutableStateOf("") }
 
+    val maxCharacters = 26
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     TextField(
         modifier = modifier,
         value = textValue,
-        onValueChange = { if (it.length <= maxCharacters) textValue = it },
+        onValueChange = { if (it.length <= maxCharacters){
+            textValue = it
+            if (INPUT_ID == loginViewModel.INCOME_INPUT_ID){
+                incomeData=it
+                loginViewModel.income=it.toInt()
+            }else {
+                firstNameData=it
+                loginViewModel.firstName=it
+            }
+        } },
         label = {
             Text(text = label, style = MaterialTheme.typography.bodyMedium, color = uiColor)
         },
@@ -185,7 +197,12 @@ private fun LoginTextField(
             unfocusedPlaceholderColor = MaterialTheme.colorScheme.unfocusedTextFieldText,
             focusedPlaceholderColor = MaterialTheme.colorScheme.focusedTextFieldText
         ),
-        maxLines = 1
+        maxLines = 1,
+        keyboardOptions = if (INPUT_ID == loginViewModel.INCOME_INPUT_ID){
+             KeyboardOptions (keyboardType = KeyboardType.Number)
+        }else{
+            KeyboardOptions (keyboardType = KeyboardType.Text)
+        }
     )
 
 }
@@ -195,33 +212,36 @@ private fun BirthdayTextField(
     modifier: Modifier = Modifier,
     loginViewModel: LoginViewModel
 ) {
-   val label = "Your Birthday:"
+    val label = "Your Birthday:"
     var currentDatePickerState by remember { mutableStateOf(false) }
- //   var textValue by remember { mutableStateOf("") }
     var birthdayData by remember { mutableStateOf<LocalDate>(LocalDate.now()) }
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
-    TextField(modifier = modifier, value = birthdayData.toString(), onValueChange = { },
+    TextField(modifier = modifier,
+        value = birthdayData.toString(),
+        onValueChange = { },
+        readOnly = true,
         label = {
             Text(text = label, style = MaterialTheme.typography.bodyMedium, color = uiColor)
         },
         colors = TextFieldDefaults.colors(
             unfocusedPlaceholderColor = MaterialTheme.colorScheme.unfocusedTextFieldText,
             focusedPlaceholderColor = MaterialTheme.colorScheme.focusedTextFieldText
-        ), maxLines = 1,
+        ),
+        maxLines = 1,
         trailingIcon = {
-                IconButton(onClick = { currentDatePickerState = true }) {
-                    Icon(
-                        painter = painterResource(R.drawable.baseline_calendar_month_24),
-                        contentDescription = null,
-                        tint = uiColor
-                    )
-                }
+            IconButton(onClick = { currentDatePickerState = true }) {
+                Icon(
+                    painter = painterResource(R.drawable.baseline_calendar_month_24),
+                    contentDescription = null,
+                    tint = uiColor
+                )
+            }
         }
     )
     if (currentDatePickerState) {
         DatePicker(loginViewModel = loginViewModel, onTextValueChange = { newTextValue ->
             birthdayData = newTextValue
-            currentDatePickerState=false
+            currentDatePickerState = false
         })
     }
 }
@@ -291,6 +311,7 @@ fun CurrencyDropDownMenu(loginViewModel: LoginViewModel) {
                     text = { Text(text = selectionOption.ticker, color = uiColor) },
                     onClick = {
                         selectedOptionText = selectionOption
+                        loginViewModel.currency=selectionOption  // ATTENTION
                         isExpanded = false
                     },
                     trailingIcon = {

@@ -7,20 +7,12 @@ import kotlin.random.Random
 
 
 class LoginViewModel : ViewModel() {
-    val BIRTHDAY_INPUT_ID = mutableIntStateOf(101)
     val FIRSTNAME_INPUT_ID = mutableIntStateOf(102)
-    val INCOME_INPUT_ID = mutableIntStateOf(103)
+    val INCOME_INPUT_ID = mutableIntStateOf(105)
 
     var currency: Currency? = null
     var birthday: LocalDate? = null
     var firstName: String? = null
     var income: Int? = null
-
-
 }
-// states will be here
-// also all operator, saving and either functions will be here
-// Using ViewModel
-// private val viewModelName by viewModels<LoginViewModel>()
-
-// IF any parameters needed to be passed in viewmodel class, so you should use viewmodelfactory
+// IF any parameters needed to be passed in viewmodel class, should use viewmodelfactory
