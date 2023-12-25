@@ -8,6 +8,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import com.example.expensetracker.domain.ExpenseItem
+import java.time.LocalDate
 
 @Composable
 fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
@@ -34,10 +35,10 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
     }
 }
 
-fun areDatesEqual(date1: String, date2: String): Boolean {
+fun areDatesEqual(date1: LocalDate, date2: String): Boolean {
     TODO()
 }
 
-fun areMonthsEqual(date1: String, date2: String): Boolean {
+fun areMonthsEqual(date1: LocalDate, date2: String): Boolean {
 TODO()
 }

@@ -316,8 +316,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                 val currentExpense = ExpenseItem(
                                     id = autoIncrementId,
                                     name = "NewName",
-                                    date = LocalDate.now().toString(),
-                                    enabled = true,
+                                    date = LocalDate.now().toString(),enabled = false,
                                     value = currentExpenseAdded
                                 )
                                 ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
@@ -343,8 +342,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                 val currentExpense = ExpenseItem(
                                     id = autoIncrementId,
                                     name = "NewName",
-                                    date = LocalDate.now().toString(),
-                                    enabled = true,
+                                    date = LocalDate.now().toString(),enabled = false,
                                     value = currentExpenseAdded
                                 )
                                 ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
@@ -370,8 +368,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                 val currentExpense = ExpenseItem(
                                     id = autoIncrementId,
                                     name = "NewName",
-                                    date = LocalDate.now().toString(),
-                                    enabled = true,
+                                    date = LocalDate.now().toString(),enabled = false,
                                     value = currentExpenseAdded
                                 )
                                 ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
@@ -406,7 +403,7 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
     ) { // Design to be implemented soon
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(text = expenseItem.name)
-            Text(text = expenseItem.date)
+            Text(text = expenseItem.date.toString())
             Text(text = expenseItem.value.toString())
         }
     }

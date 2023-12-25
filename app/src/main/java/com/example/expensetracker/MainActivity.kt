@@ -49,6 +49,9 @@ class MainActivity : ComponentActivity() {
                 dataStoreManager.saveSettings(settingsData)
             }
         }
+  for(i in 1..50){
+      ExpensesListRepositoryImpl.addExpensesItem(ExpensesListRepositoryImpl.generateRandomExpenseObject())
+  }
         setContent {
             AppTheme {
                 //PagerTest(expensesDAO)

@@ -8,7 +8,7 @@ data class ExpenseItem(
     var id: Int = UNDEFINED_ID,
     val name: String,
     val date: String,
-    val enabled: Boolean,  // WHO IS ENABLED??
+    val enabled: Boolean = false,  // Warning it had no default value previously, db version was not changed, could be source of error in db
     val value: Float
 ) {
 companion object{

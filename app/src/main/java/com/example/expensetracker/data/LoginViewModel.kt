@@ -3,6 +3,7 @@ package com.example.expensetracker.data
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
 import java.time.LocalDate
+import kotlin.random.Random
 
 
 class LoginViewModel : ViewModel() {
@@ -15,22 +16,7 @@ class LoginViewModel : ViewModel() {
     var firstName: String? = null
     var income: Int? = null
 
-//
-//    fun setBirthday(localDate: LocalDate){
-//        this.birthday=localDate
-//    }
-//
-//    fun setCurrency(currency: Currency){
-//        this.currency=currency
-//    }
-//
-//    fun setFirstName(firstname : String){
-//        this.firstName= firstname
-//    }
-//
-//    fun setIncome(income: Int){
-//        this.income=income
-//    }
+
 }
 // states will be here
 // also all operator, saving and either functions will be here

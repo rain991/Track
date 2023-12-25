@@ -1,19 +1,11 @@
 package com.example.expensetracker.data
 
-import android.content.Context
-import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.domain.ExpenseItem
 import com.example.expensetracker.domain.ExpensesListRepository
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
-import androidx.lifecycle.viewModelScope
 import kotlinx.coroutines.coroutineScope
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import java.time.LocalDate
+import kotlin.random.Random
+
 object ExpensesListRepositoryImpl : ExpensesListRepository {
     private var expensesList = mutableListOf<ExpenseItem>()
     var autoIncrementId = 0  // all autoIncrementId will be canceled ones the DB connected
@@ -54,5 +46,22 @@ object ExpensesListRepositoryImpl : ExpensesListRepository {
         val olderExpense = getExpensesItem(currentExpenseItem.id)
         expensesList.remove(olderExpense)
         addExpensesItem(currentExpenseItem)
+    }
+
+
+// All random elements will be deleted
+    fun generateRandomDate(): LocalDate {
+        val randomDays = Random.nextLong(3650) // 3650 дней ~ 10 лет
+        return LocalDate.now().minusDays(randomDays)
+    }
+
+    fun generateRandomExpenseObject(): ExpenseItem {
+        return ExpenseItem(
+           id= Random.nextInt(50000)+5000,
+            name = "",
+            date = generateRandomDate().toString(),
+            enabled=false,
+            value= (Random.nextInt(5000)+5).toFloat() // 5-5005
+        )
     }
 }

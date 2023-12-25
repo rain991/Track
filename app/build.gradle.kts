@@ -21,6 +21,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+//        kapt{
+//            arguments{
+//                arg("room.schemaLocation","$projectDir/schemas")
+//            }
+//        }
     }
     buildTypes {
         release {
@@ -48,6 +53,9 @@ android {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
+    }
+    kapt {   // I am not sure, about this. Related with db version error
+        generateStubs = true
     }
 }
 
