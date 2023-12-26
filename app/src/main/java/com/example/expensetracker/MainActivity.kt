@@ -6,9 +6,12 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
+import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.data.DataStoreManager
@@ -20,9 +23,11 @@ import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.presentation.LoginScreen
 import com.example.expensetracker.presentation.PagerTest
 import com.example.expensetracker.presentation.themes.AppTheme
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
 
 
@@ -31,16 +36,18 @@ class MainActivity : ComponentActivity() {
     private val loginViewModel by viewModels<LoginViewModel>()   // probably should be private later
     private val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         expensesDAO = ExpensesDB.getInstance(applicationContext).dao
         val dataStoreManager = DataStoreManager(this)
         lifecycleScope.launch(Dispatchers.IO) {
             ExpensesListRepositoryImpl.setExpensesList(expensesDAO)
         }
-        lifecycleScope.launch(Dispatchers.IO) {
-            val pref = dataStoreManager.getSettings().first()
 
-            withContext(Dispatchers.Main) {
+     //   val mCoroutineScope = CoroutineScope(Dispatchers.Main)
+        runBlocking {
+            val pref = dataStoreManager.getSettings().first()
+            withContext(Dispatchers.IO) {
                 settingsData.setSettings(
                     currency = pref.getCurrency(),
                     budget = pref.getBudget(),
@@ -52,17 +59,32 @@ class MainActivity : ComponentActivity() {
                 dataStoreManager.saveSettings(settingsData)
             }
         }
+
   for(i in 1..50){
       ExpensesListRepositoryImpl.addExpensesItem(ExpensesListRepositoryImpl.generateRandomExpenseObject())
   }
         setContent {
             AppTheme {
-                var mainScreenAvailable by remember{ mutableStateOf(false) }
-                if (settingsData.getLoginCount() == 0) { LoginScreen(loginViewModel, onPositiveLoginChanges ={newMainScreenAvailable->mainScreenAvailable=newMainScreenAvailable} ) }
-                else{
-                    PagerTest(expensesDAO)
+               val firstLogin = settingsData.getLoginCount() == 1
+                var mainScreenAvailable by remember { mutableStateOf(false) }
+
+                if (firstLogin) {
+                    LoginScreen(loginViewModel, onPositiveLoginChanges = { newMainScreenAvailable ->
+                        mainScreenAvailable = newMainScreenAvailable
+                    })
+                } else if (!mainScreenAvailable) {
+                    mainScreenAvailable = true
                 }
-                if(mainScreenAvailable) PagerTest(expensesDAO = expensesDAO)
+
+                if (mainScreenAvailable) {
+                    PagerTest(expensesDAO = expensesDAO)
+                }
+
+//                if (settingsData.getLoginCount() == 0) { LoginScreen(loginViewModel, onPositiveLoginChanges ={newMainScreenAvailable->mainScreenAvailable=newMainScreenAvailable} ) }
+//                else{
+//                    PagerTest(expensesDAO)
+//                }
+//                if(mainScreenAvailable) PagerTest(expensesDAO = expensesDAO)
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
         }
