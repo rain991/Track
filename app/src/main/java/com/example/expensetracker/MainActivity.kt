@@ -7,10 +7,12 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.Box
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +27,7 @@ import com.example.expensetracker.presentation.PagerTest
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
@@ -36,15 +39,12 @@ class MainActivity : ComponentActivity() {
     private val loginViewModel by viewModels<LoginViewModel>()   // probably should be private later
     private val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
-
         super.onCreate(savedInstanceState)
         expensesDAO = ExpensesDB.getInstance(applicationContext).dao
         val dataStoreManager = DataStoreManager(this)
         lifecycleScope.launch(Dispatchers.IO) {
             ExpensesListRepositoryImpl.setExpensesList(expensesDAO)
         }
-
-     //   val mCoroutineScope = CoroutineScope(Dispatchers.Main)
         runBlocking {
             val pref = dataStoreManager.getSettings().first()
             withContext(Dispatchers.IO) {
@@ -55,38 +55,39 @@ class MainActivity : ComponentActivity() {
                     loginCount = pref.getLoginCount()
                 )
                 Log.d("MyLog", "Login counter: ${settingsData.getLoginCount()}")
-                settingsData.setLoginCount(settingsData.getLoginCount() + 1)
+                if (settingsData.getLoginCount() != 0) settingsData.setLoginCount(settingsData.getLoginCount() + 1)
+
                 dataStoreManager.saveSettings(settingsData)
             }
         }
 
-  for(i in 1..50){
-      ExpensesListRepositoryImpl.addExpensesItem(ExpensesListRepositoryImpl.generateRandomExpenseObject())
-  }
+        for (i in 1..50) {
+            ExpensesListRepositoryImpl.addExpensesItem(ExpensesListRepositoryImpl.generateRandomExpenseObject())
+        }
         setContent {
             AppTheme {
-               val firstLogin = settingsData.getLoginCount() == 1
-                var mainScreenAvailable by remember { mutableStateOf(false) }
-
+                val firstLogin = settingsData.getLoginCount() == 0
+                var mainScreenAvailable by remember { mutableStateOf(settingsData.getLoginCount() > 0) }
                 if (firstLogin) {
                     LoginScreen(loginViewModel, onPositiveLoginChanges = { newMainScreenAvailable ->
                         mainScreenAvailable = newMainScreenAvailable
+                        settingsData.setLoginCount(settingsData.getLoginCount() + 1)
                     })
-                } else if (!mainScreenAvailable) {
-                    mainScreenAvailable = true
+                    DisposableEffect(Unit) {
+                        onDispose {
+                            CoroutineScope(Dispatchers.IO).launch {
+                                dataStoreManager.saveSettings(settingsData)
+                            }
+                        }
+                    }
                 }
-
                 if (mainScreenAvailable) {
                     PagerTest(expensesDAO = expensesDAO)
                 }
 
-//                if (settingsData.getLoginCount() == 0) { LoginScreen(loginViewModel, onPositiveLoginChanges ={newMainScreenAvailable->mainScreenAvailable=newMainScreenAvailable} ) }
-//                else{
-//                    PagerTest(expensesDAO)
-//                }
-//                if(mainScreenAvailable) PagerTest(expensesDAO = expensesDAO)
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
         }
     }
 }
+

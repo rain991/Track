@@ -110,7 +110,9 @@ private fun LoginMain(loginViewModel: LoginViewModel, onPositiveLoginChanges: (B
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp),
-            onClick = { onPositiveLoginChanges ( true ) },  // Lets start button
+            onClick = {             // Lets start button
+                onPositiveLoginChanges ( true )
+            },
             colors = ButtonDefaults.buttonColors(
                 containerColor = md_theme_light_primary,
                 contentColor = Color.White
