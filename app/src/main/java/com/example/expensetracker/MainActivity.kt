@@ -80,7 +80,7 @@ class MainActivity : ComponentActivity() {
                     }
                 }
                 if (mainScreenAvailable) {
-                    if(settingsData.getLoginCount()==0){
+                    if (settingsData.getLoginCount() == 0) {
                         settingsData.setSettings(
                             currency = loginViewModel.currency!!.ticker,
                             budget = loginViewModel.income!!.toFloat(),

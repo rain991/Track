@@ -2,6 +2,7 @@ package com.example.expensetracker.domain
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+
 @Entity(tableName = "Expenses")
 data class ExpenseItem(
     @PrimaryKey(autoGenerate = true)
