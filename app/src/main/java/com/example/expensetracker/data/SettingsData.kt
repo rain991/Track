@@ -42,7 +42,7 @@ class SettingsData(
     fun setSettings(currency: String, budget: Float, name: String, loginCount: Int) {
         this.loginCount = loginCount
         this.currency = currency
-        this.budget = budget
+        this.budget = budget // sum of all incomes
         this.name = name
     }
 }

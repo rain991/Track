@@ -56,7 +56,6 @@ class MainActivity : ComponentActivity() {
                 )
                 Log.d("MyLog", "Login counter: ${settingsData.getLoginCount()}")
                 if (settingsData.getLoginCount() != 0) settingsData.setLoginCount(settingsData.getLoginCount() + 1)
-
                 dataStoreManager.saveSettings(settingsData)
             }
         }
@@ -66,28 +65,58 @@ class MainActivity : ComponentActivity() {
         }
         setContent {
             AppTheme {
-                val firstLogin = settingsData.getLoginCount() == 0
                 var mainScreenAvailable by remember { mutableStateOf(settingsData.getLoginCount() > 0) }
-                if (firstLogin) {
+                if (!mainScreenAvailable) { // Добавити обмін данними між LoginViewModel и SettingsData
                     LoginScreen(loginViewModel, onPositiveLoginChanges = { newMainScreenAvailable ->
                         mainScreenAvailable = newMainScreenAvailable
-                        settingsData.setLoginCount(settingsData.getLoginCount() + 1)
+                        //settingsData.setLoginCount(settingsData.getLoginCount() + 1)
                     })
                     DisposableEffect(Unit) {
                         onDispose {
                             CoroutineScope(Dispatchers.IO).launch {
+                                Log.d("MyLog", "Dispose Name: ${settingsData.getName()}")
+                                Log.d("MyLog", "Dispose Currency: ${settingsData.getCurrency()}")
+                                Log.d("MyLog", "Dispose Budget: ${settingsData.getBudget()}")
                                 dataStoreManager.saveSettings(settingsData)
                             }
                         }
                     }
                 }
                 if (mainScreenAvailable) {
+                    if(settingsData.getLoginCount()==0){
+                        settingsData.setSettings(
+                            currency = loginViewModel.currency!!.ticker,
+                            budget = loginViewModel.income!!.toFloat(),
+                            name = loginViewModel.firstName!!,
+                            loginCount = (settingsData.getLoginCount() + 1)
+                        )
+                        LaunchedEffect(Unit) {
+                            withContext(Dispatchers.IO) {
+                                dataStoreManager.saveSettings(settingsData)
+                            }
+                        }
+                    }
+                    Log.d(
+                        "MyLog",
+                        "mainScreenAvailable Login counter: ${settingsData.getLoginCount()}"
+                    )
+                    Log.d("MyLog", "mainScreenAvailable Name: ${settingsData.getName()}")
+                    Log.d("MyLog", "mainScreenAvailable Currency: ${settingsData.getCurrency()}")
+                    Log.d("MyLog", "mainScreenAvailable Budget: ${settingsData.getBudget()}")
+                    Log.d(
+                        "MyLog", "mainScreenAvailable Viewmodel Name: ${loginViewModel.firstName}"
+                    )
+                    Log.d(
+                        "MyLog",
+                        "mainScreenAvailable Viewmodel Currency: ${loginViewModel.currency?.ticker}"
+                    )
+                    Log.d("MyLog", "mainScreenAvailable Viewmodel Budget: ${loginViewModel.income}")
                     PagerTest(expensesDAO = expensesDAO)
                 }
-
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
         }
     }
 }
+
 

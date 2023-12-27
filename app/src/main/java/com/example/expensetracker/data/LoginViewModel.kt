@@ -10,7 +10,7 @@ class LoginViewModel : ViewModel() {
     val FIRSTNAME_INPUT_ID = mutableIntStateOf(102)
     val INCOME_INPUT_ID = mutableIntStateOf(105)
 
-    var currency: Currency? = null
+    var currency: Currency? = USD
     var birthday: LocalDate? = null
     var firstName: String? = null
     var income: Int? = null
