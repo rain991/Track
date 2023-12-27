@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.themes
 
 object ThemeManager {
 //    var currentTheme: ColorPalette = Theme1Colors

@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
 import com.example.expensetracker.data.ExpensesDAO
 import androidx.compose.foundation.layout.fillMaxSize
@@ -82,8 +83,6 @@ fun ExtendedButtonExample(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO) {
-
-
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = false,confirmValueChange = {
             when (it) {
@@ -317,8 +316,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                 val currentExpense = ExpenseItem(
                                     id = autoIncrementId,
                                     name = "NewName",
-                                    date = LocalDate.now().toString(),
-                                    enabled = true,
+                                    date = LocalDate.now().toString(),enabled = false,
                                     value = currentExpenseAdded
                                 )
                                 ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
@@ -344,8 +342,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                 val currentExpense = ExpenseItem(
                                     id = autoIncrementId,
                                     name = "NewName",
-                                    date = LocalDate.now().toString(),
-                                    enabled = true,
+                                    date = LocalDate.now().toString(),enabled = false,
                                     value = currentExpenseAdded
                                 )
                                 ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
@@ -371,8 +368,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                 val currentExpense = ExpenseItem(
                                     id = autoIncrementId,
                                     name = "NewName",
-                                    date = LocalDate.now().toString(),
-                                    enabled = true,
+                                    date = LocalDate.now().toString(),enabled = false,
                                     value = currentExpenseAdded
                                 )
                                 ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
@@ -407,7 +403,7 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
     ) { // Design to be implemented soon
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(text = expenseItem.name)
-            Text(text = expenseItem.date)
+            Text(text = expenseItem.date.toString())
             Text(text = expenseItem.value.toString())
         }
     }
@@ -445,6 +441,17 @@ fun TwoButtonsRow() {
         ) {
             Text(text = ".")
         }
+    }
+}
+
+@Composable
+fun MainInfoComposable(){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth().height(180.dp), shape = RoundedCornerShape(8.dp)
+    ) { // Design to be implemented soon
+       //MainInfoComposable content
+        Text(text = "Rsdfsdf")
     }
 }
 

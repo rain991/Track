@@ -1,6 +1,13 @@
 <resources>
     <string name="app_name">Expense Tracker</string>
     <string name="Lorem">Contrary to popular 000 yearprofessor atitnorum et Malorum\" (The Extremes of Good and Evil)  by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</string>
+    <string name="app_logo">Application Logo</string>
+    <string name="app_name_optimal">SpendSmart</string>
+    <string name="logo_app_description">Convenient and easy-to-use expense tracker</string>
+    <string name="currency">Currency</string>
+    <string name="loginnametextfield">Your First Name</string>
+    <string name="lets_start">Lets start!</string>
+    <string name="your_income">Your monthly income</string>
     <string-array name="default_expenses">
         <item>Groceries</item>
         <item>Utilities</item>
