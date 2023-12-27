@@ -1,4 +1,4 @@
-package com.example.visualisationexpensestracker.Presentation
+package com.example.expensetracker.presentation
 
 
 import android.util.Log
@@ -38,7 +38,6 @@ fun FirstScreen(expensesDAO: ExpensesDAO) { // Settings
             modifier = Modifier
                 .padding(it)
         ) { // Settings screen
-            ExtendedButtonExample(false, onClick = { isVisible = true })
             BottomSheet(
                 isVisible = isVisible,
                 onDismiss = { isVisible = false }, expensesDAO = expensesDAO

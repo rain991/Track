@@ -13,20 +13,26 @@ object ExpensesListRepositoryImpl : ExpensesListRepository {
         coroutineScope { expensesList=expensesDAO.getAll() }
         }
 
+    override fun sortExpensesItemsAsc() {
+        expensesList = expensesList.sortedBy { it.date }.toMutableList()
+    }
+
+    override fun sortExpensesItemsDesc() {
+        expensesList = expensesList.sortedByDescending {  it.date }.toMutableList()
+    }
+
 
     override fun addExpensesItem(currentExpensesItem: ExpenseItem) {
         if(currentExpensesItem.id== ExpenseItem.UNDEFINED_ID){
             currentExpensesItem.id = autoIncrementId++ // post increment
-        }else{
-
-        }
+        }else{ }
         expensesList.add(currentExpensesItem)
 //        val job = CoroutineScope(Dispatchers.IO).launch {
 //            expensesDAO.insertItem(currentExpensesItem)
 //        }
     }
     override fun getExpensesList(): MutableList<ExpenseItem> {
-        return expensesList.toMutableList() // gets a copy of list
+        return expensesList // gets a copy of list (changed: now returns original)
     }
 
     override fun getExpensesItem(expensesItemId: Int): ExpenseItem {
@@ -51,7 +57,7 @@ object ExpensesListRepositoryImpl : ExpensesListRepository {
 
 // All random elements will be deleted
     fun generateRandomDate(): LocalDate {
-        val randomDays = Random.nextLong(3650) // 3650 дней ~ 10 лет
+        val randomDays = Random.nextLong(180)
         return LocalDate.now().minusDays(randomDays)
     }
 

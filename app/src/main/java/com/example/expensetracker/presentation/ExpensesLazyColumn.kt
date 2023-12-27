@@ -1,9 +1,6 @@
 package com.example.expensetracker.presentation
 
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,7 +16,7 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
 //                index == 0 || !areDatesEqual(expenses[index - 1].date, expense.date)
 //            val isDifferentMonth =
 //                index == 0 || !areMonthsEqual(expenses[index - 1].date, expense.date)
-
+//
 //            if (isDifferentDay) {
 //                // Надпись с новым днем
 //            //    ExpenseDayHeader(expense.date)
@@ -35,10 +32,14 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
     }
 }
 
-fun areDatesEqual(date1: LocalDate, date2: String): Boolean {
-    TODO()
+private fun areDatesEqual(date1: LocalDate, date2: LocalDate): Boolean { // year, month and day is same in dates
+    return (date1.isEqual(date2))
 }
 
-fun areMonthsEqual(date1: LocalDate, date2: String): Boolean {
-TODO()
+private fun areMonthsEqual(date1: LocalDate, date2: LocalDate): Boolean {  // year, month same
+    return (date1.month==date2.month && date1.year==date2.year)
+}
+
+private fun areYearsEqual(date1: LocalDate, date2: LocalDate): Boolean {  // year is same
+    return (date1.year==date2.year)
 }
