@@ -7,13 +7,27 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
 import com.example.expensetracker.domain.ExpenseItem
@@ -22,60 +36,104 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
+    val listState = rememberLazyListState()
+    var isScrollUpButtonNeeded by remember { mutableStateOf(false) }
+    var isScrollingUp by remember { mutableStateOf(false) }
 
-    LazyColumn(modifier = Modifier.fillMaxWidth()) {
-        items(expenses.size) { index ->
-            val expense = expenses[index]
-            var isPreviousDayDifferent = index == 0
-            var isNextDayDifferent = false
-            var isDifferentMonth = false
-            if (index > 0) {
-                isPreviousDayDifferent = !areDatesEqual(parseStringToDate(expenses[index - 1].date), parseStringToDate(expense.date))
-                isNextDayDifferent = !areDatesEqual(parseStringToDate(expenses[index + 1].date), parseStringToDate(expense.date))
-                isDifferentMonth = !areMonthsEqual(parseStringToDate(expenses[index - 1].date), parseStringToDate(expense.date))
-            }
-            Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                Column {
-                    if (index == 0) {
-                        Transactions()
-                        Spacer(modifier = Modifier.height(4.dp))
-                    }
-                    if (isDifferentMonth) {
-                        ExpenseMonthHeader(parseStringToDate(expense.date))
-                    }
-                    if (isPreviousDayDifferent) {
-                        ExpenseDayHeader(parseStringToDate(expense.date))
-                        // Spacer(modifier = Modifier.height(4.dp))
-                    }
+    Box {
+        if (isScrollUpButtonNeeded) {
+            Box(modifier = Modifier.align(Alignment.TopEnd).zIndex(1f)) {
+                FloatingActionButton(
+                    onClick = { isScrollingUp = true }, modifier = Modifier
+                        .size(52.dp)
+                        .padding(top=12.dp,end = 16.dp),
+                    shape = RoundedCornerShape(95),
+                    elevation = FloatingActionButtonDefaults.elevation(
+                        defaultElevation = 8.dp,
+                        pressedElevation = 16.dp
+                    )
+                ) {
+                    Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = null)
                 }
-                ExpensesCardTypeSimple(expenseItem = expense)
-                if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
+            }
+        }
+        LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
+            items(expenses.size) { index ->
+                val expense = expenses[index]
+                var isPreviousDayDifferent = index == 0
+                var isNextDayDifferent = false
+                var isDifferentMonth = false
+                if (index > 0 && index < expenses.size - 1) {
+                    isPreviousDayDifferent = !areDatesEqual(parseStringToDate(expenses[index - 1].date), parseStringToDate(expense.date))
+                    isNextDayDifferent = !areDatesEqual(parseStringToDate(expenses[index + 1].date), parseStringToDate(expense.date))
+                    isDifferentMonth = !areMonthsEqual(parseStringToDate(expenses[index - 1].date), parseStringToDate(expense.date))
+                }
+
+                Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                    if (isScrollingUp) LaunchedEffect(listState) {
+                        listState.animateScrollToItem(index = 0)
+                        isScrollingUp = false
+                    }
+                    isScrollUpButtonNeeded = index > 4
+                    Column {
+                        if (index == 0) {
+                            Transactions()
+                            Spacer(modifier = Modifier.height(4.dp))
+                        }
+                        if (isDifferentMonth) {
+                            ExpenseMonthHeader(parseStringToDate(expense.date))
+                        }
+                        if (isPreviousDayDifferent) {
+                            ExpenseDayHeader(parseStringToDate(expense.date))
+                            // Spacer(modifier = Modifier.height(4.dp))
+                        }
+
+                        ExpensesCardTypeSimple(expenseItem = expense)
+                        if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
+                    }
+
+                }
             }
         }
     }
-
-
 }
 
 @Composable
-fun Transactions() {
+private fun Transactions() {
     Text(text = "Transactions", style = MaterialTheme.typography.titleMedium)
 }
 
 @Composable
-fun ExpenseDayHeader(localDate: LocalDate) {
-    Row (verticalAlignment = Alignment.Bottom){
-        Text(text = "${localDate.dayOfMonth}", style = MaterialTheme.typography.titleMedium)
-        Text(text = ".${localDate.month.value}", style = MaterialTheme.typography.titleSmall)
+private fun ExpenseDayHeader(localDate: LocalDate) {
+    Row(verticalAlignment = Alignment.Bottom) {
+        Text(text = "${localDate.dayOfMonth}.", style = MaterialTheme.typography.titleMedium)
+        Text(text = "${localDate.month.value}", style = MaterialTheme.typography.titleSmall)
     }
 }
 
 @Composable
-fun ExpenseMonthHeader(localDate: LocalDate) {
+private fun ExpenseMonthHeader(localDate: LocalDate) {
     val monthResId = getMonthResID(localDate)
     val month = stringResource(id = monthResId)
     Box() {
         Text(text = month, style = MaterialTheme.typography.titleLarge)
+    }
+}
+
+@Composable
+private fun UpButton(onClick: () -> Unit) {
+    Box() {
+        FloatingActionButton(
+            onClick = onClick,
+            modifier = Modifier
+                .padding(16.dp),
+            elevation = FloatingActionButtonDefaults.elevation(
+                defaultElevation = 8.dp,
+                pressedElevation = 16.dp
+            )
+        ) {
+            Icons.Default.KeyboardArrowUp
+        }
     }
 }
 

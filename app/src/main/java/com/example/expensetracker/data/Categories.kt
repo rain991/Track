@@ -1,7 +1,6 @@
 package com.example.expensetracker.data
 
 import android.content.Context
-import androidx.compose.ui.res.stringArrayResource
 import com.example.expensetracker.R
 
 class CategoryContainer {
