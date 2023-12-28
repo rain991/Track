@@ -1,17 +1,11 @@
 package com.example.expensetracker.presentation
 
-import androidx.activity.compose.BackHandler
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.Orientation
-import androidx.compose.foundation.gestures.draggable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.defaultMinSize
 import androidx.compose.foundation.layout.fillMaxHeight
-import com.example.expensetracker.data.ExpensesDAO
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -24,7 +18,6 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetValue
@@ -40,15 +33,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expensetracker.R
+import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.ExpensesListRepositoryImpl.autoIncrementId
-
 import com.example.expensetracker.domain.ExpenseItem
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -399,7 +389,7 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp), shape = RoundedCornerShape(8.dp)
+            .padding(vertical = 8.dp), shape = RoundedCornerShape(8.dp)
     ) { // Design to be implemented soon
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(text = expenseItem.name)

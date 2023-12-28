@@ -3,11 +3,17 @@ package com.example.expensetracker.presentation
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
 import com.example.expensetracker.domain.ExpenseItem
@@ -20,41 +26,61 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
     LazyColumn(modifier = Modifier.fillMaxWidth()) {
         items(expenses.size) { index ->
             val expense = expenses[index]
-            var isDifferentDay = index == 0
+            var isPreviousDayDifferent = index == 0
+            var isNextDayDifferent = false
             var isDifferentMonth = false
             if (index > 0) {
-                isDifferentDay = !areDatesEqual(parseStringToDate(expenses[index - 1].date), parseStringToDate(expense.date))
+                isPreviousDayDifferent = !areDatesEqual(parseStringToDate(expenses[index - 1].date), parseStringToDate(expense.date))
+                isNextDayDifferent = !areDatesEqual(parseStringToDate(expenses[index + 1].date), parseStringToDate(expense.date))
                 isDifferentMonth = !areMonthsEqual(parseStringToDate(expenses[index - 1].date), parseStringToDate(expense.date))
             }
-            Column() {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    if (isDifferentDay) {
-                        ExpenseDayHeader(parseStringToDate(expense.date))
+            Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                Column {
+                    if (index == 0) {
+                        Transactions()
+                        Spacer(modifier = Modifier.height(4.dp))
                     }
-
                     if (isDifferentMonth) {
                         ExpenseMonthHeader(parseStringToDate(expense.date))
                     }
+                    if (isPreviousDayDifferent) {
+                        ExpenseDayHeader(parseStringToDate(expense.date))
+                        // Spacer(modifier = Modifier.height(4.dp))
+                    }
                 }
                 ExpensesCardTypeSimple(expenseItem = expense)
+                if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
             }
-
-
         }
     }
+
+
 }
 
-
+@Composable
+fun Transactions() {
+    Text(text = "Transactions", style = MaterialTheme.typography.titleMedium)
+}
 
 @Composable
 fun ExpenseDayHeader(localDate: LocalDate) {
-    Box() {
-        Text(text = "${localDate.dayOfMonth}")
+    Row (verticalAlignment = Alignment.Bottom){
+        Text(text = "${localDate.dayOfMonth}", style = MaterialTheme.typography.titleMedium)
+        Text(text = ".${localDate.month.value}", style = MaterialTheme.typography.titleSmall)
     }
 }
 
 @Composable
 fun ExpenseMonthHeader(localDate: LocalDate) {
+    val monthResId = getMonthResID(localDate)
+    val month = stringResource(id = monthResId)
+    Box() {
+        Text(text = month, style = MaterialTheme.typography.titleLarge)
+    }
+}
+
+
+fun getMonthResID(localDate: LocalDate): Int {
     val monthResId = when (localDate.monthValue) {
         1 -> R.string.january
         2 -> R.string.february
@@ -70,10 +96,7 @@ fun ExpenseMonthHeader(localDate: LocalDate) {
         12 -> R.string.december
         else -> R.string.unknown_month
     }
-    val month = stringResource(id = monthResId)
-    Box() {
-        Text(text = month)
-    }
+    return monthResId
 }
 
 fun parseStringToDate(dateString: String): LocalDate {
