@@ -1,9 +1,11 @@
 package com.example.expensetracker.presentation
 
+import android.view.LayoutInflater
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,6 +15,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -26,13 +29,29 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
 import com.example.expensetracker.domain.ExpenseItem
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
+import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
+import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+@Composable
+fun MainInfoComposable(){
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(180.dp), shape = RoundedCornerShape(8.dp)
+    ) {
+            PieCategoriesChart()
+    }
+}
+
 
 @Composable
 fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
@@ -42,11 +61,13 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
 
     Box {
         if (isScrollUpButtonNeeded) {
-            Box(modifier = Modifier.align(Alignment.TopEnd).zIndex(1f)) {
+            Box(modifier = Modifier
+                .align(Alignment.TopEnd)
+                .zIndex(1f)) {
                 FloatingActionButton(
                     onClick = { isScrollingUp = true }, modifier = Modifier
                         .size(52.dp)
-                        .padding(top=12.dp,end = 16.dp),
+                        .padding(top = 12.dp, end = 16.dp),
                     shape = RoundedCornerShape(95),
                     elevation = FloatingActionButtonDefaults.elevation(
                         defaultElevation = 8.dp,
@@ -135,6 +156,45 @@ private fun UpButton(onClick: () -> Unit) {
             Icons.Default.KeyboardArrowUp
         }
     }
+}
+
+
+@Composable
+fun PieCategoriesChart(){
+    AndroidView(
+        factory = { context ->
+            val view = LayoutInflater.from(context).inflate(R.layout.main_screen_pie_chart, null, false)
+            val aaChartView = view.findViewById<AAChartView>(R.id.aa_chart_view)
+            //Creating chart model
+            val aaChartModel : AAChartModel = AAChartModel()
+                .chartType(AAChartType.Area)
+                .title("title")
+                .subtitle("subtitle")
+                .backgroundColor("#4b2b7f")
+                .dataLabelsEnabled(true)//.animationType(AAChartAnimationType. EaseInCubic).animationDuration(400)
+                .series(arrayOf(
+                    AASeriesElement()
+                        .name("Tokyo")
+                        .data(arrayOf(7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6)),
+                    AASeriesElement()
+                        .name("NewYork")
+                        .data(arrayOf(0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5)),
+                    AASeriesElement()
+                        .name("London")
+                        .data(arrayOf(0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0)),
+                    AASeriesElement()
+                        .name("Berlin")
+                        .data(arrayOf(3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8))
+                )
+                )
+            aaChartView.aa_drawChartWithChartModel(aaChartModel)
+
+            view // return the view
+        }, modifier = Modifier.fillMaxSize(),
+        update = { view ->
+            // Update the view
+        }
+    )
 }
 
 

@@ -437,16 +437,6 @@ fun TwoButtonsRow() {
     }
 }
 
-@Composable
-fun MainInfoComposable(){
-    Card(
-        modifier = Modifier
-            .fillMaxWidth().height(180.dp), shape = RoundedCornerShape(8.dp)
-    ) { // Design to be implemented soon
-       //MainInfoComposable content
-        Text(text = "Rsdfsdf")
-    }
-}
 
 
 
