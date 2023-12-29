@@ -69,7 +69,8 @@ object ExpensesListRepositoryImpl : ExpensesListRepository {
             name = "",
             date = generateRandomDate().toString(),
             enabled = false,
-            value = (Random.nextInt(5000) + 5).toFloat() // 5-5005
+            value = (Random.nextInt(5000) + 5).toFloat(),
+            category = "Category1"// 5-5005
         )
     }
 }

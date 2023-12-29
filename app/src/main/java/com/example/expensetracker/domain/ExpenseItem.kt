@@ -10,6 +10,7 @@ data class ExpenseItem(
     val name: String,
     val date: String,
     val enabled: Boolean = false,  // Warning it had no default value previously, db version was not changed, could be source of error in db
+    val category : String,
     val value: Float
 ) {
 companion object{

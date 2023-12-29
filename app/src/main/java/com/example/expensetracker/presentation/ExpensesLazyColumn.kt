@@ -58,7 +58,7 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
             }
         }
         LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-            items(expenses.size) { index ->
+            items(expenses.size-1) { index ->   //  expenses.size-1 warning
                 val expense = expenses[index]
                 var isPreviousDayDifferent = index == 0
                 var isNextDayDifferent = false

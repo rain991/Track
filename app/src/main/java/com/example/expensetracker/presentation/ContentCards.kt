@@ -307,7 +307,8 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                     id = autoIncrementId,
                                     name = "NewName",
                                     date = LocalDate.now().toString(),enabled = false,
-                                    value = currentExpenseAdded
+                                    value = currentExpenseAdded,
+                                    category = "CategoryManually"
                                 )
                                 ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
                                 addToDB(currentExpense)
@@ -333,7 +334,8 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                     id = autoIncrementId,
                                     name = "NewName",
                                     date = LocalDate.now().toString(),enabled = false,
-                                    value = currentExpenseAdded
+                                    value = currentExpenseAdded,
+                                    category = "CategoryManually2"
                                 )
                                 ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
                                 addToDB(currentExpense)
@@ -359,7 +361,8 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                     id = autoIncrementId,
                                     name = "NewName",
                                     date = LocalDate.now().toString(),enabled = false,
-                                    value = currentExpenseAdded
+                                    value = currentExpenseAdded,
+                                    category = "CategoryManually3"
                                 )
                                 ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
                                 addToDB(currentExpense)
