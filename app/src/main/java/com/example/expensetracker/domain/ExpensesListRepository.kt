@@ -1,5 +1,6 @@
 package com.example.expensetracker.domain
 
+import com.example.expensetracker.data.ExpenseItem
 import com.example.expensetracker.data.ExpensesDAO
 
 interface ExpensesListRepository {

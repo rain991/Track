@@ -1,6 +1,5 @@
 package com.example.expensetracker.data
 
-import com.example.expensetracker.domain.ExpenseItem
 import com.example.expensetracker.domain.ExpensesListRepository
 import kotlinx.coroutines.coroutineScope
 import java.time.LocalDate
@@ -70,7 +69,7 @@ object ExpensesListRepositoryImpl : ExpensesListRepository {
             date = generateRandomDate().toString(),
             enabled = false,
             value = (Random.nextInt(5000) + 5).toFloat(),
-            category = "Category1"// 5-5005
+            categoryId = 1// 5-5005
         )
     }
 }

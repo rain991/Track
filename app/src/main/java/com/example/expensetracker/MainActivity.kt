@@ -14,6 +14,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.ExpenseCategoryDao
 import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesDB
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
@@ -32,11 +33,14 @@ import kotlinx.coroutines.withContext
 
 class MainActivity : ComponentActivity() {
     private lateinit var expensesDAO: ExpensesDAO
+    private lateinit var expenseCategoryDao: ExpenseCategoryDao
     private val loginViewModel by viewModels<LoginViewModel>()
     private val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        expensesDAO = ExpensesDB.getInstance(applicationContext).dao
+        val expensesDB = ExpensesDB.getInstance(applicationContext)
+        expensesDAO = expensesDB.dao
+        expenseCategoryDao = expensesDB.categoryDao
         val dataStoreManager = DataStoreManager(this)
         lifecycleScope.launch(Dispatchers.IO) {
             ExpensesListRepositoryImpl.setExpensesList(expensesDAO)
