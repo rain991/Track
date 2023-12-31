@@ -21,7 +21,7 @@ import com.example.expensetracker.data.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.LoginViewModel
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.presentation.LoginScreen
-import com.example.expensetracker.presentation.PagerTest
+import com.example.expensetracker.presentation.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -97,10 +97,8 @@ class MainActivity : ComponentActivity() {
                             }
                         }
                     }
-//                    Log.d(
-//                        "MyLog",
-//                        "mainScreenAvailable Login counter: ${settingsData.getLoginCount()}"
-//                    )
+//                    Log.d( "MyLog",
+//                        "mainScreenAvailable Login counter: ${settingsData.getLoginCount()}" )
 //                    Log.d("MyLog", "mainScreenAvailable Name: ${settingsData.getName()}")
 //                    Log.d("MyLog", "mainScreenAvailable Currency: ${settingsData.getCurrency()}")
 //                    Log.d("MyLog", "mainScreenAvailable Budget: ${settingsData.getBudget()}")
@@ -112,7 +110,10 @@ class MainActivity : ComponentActivity() {
 //                        "mainScreenAvailable Viewmodel Currency: ${loginViewModel.currency?.ticker}"
 //                    )
 //                    Log.d("MyLog", "mainScreenAvailable Viewmodel Budget: ${loginViewModel.income}")
-                    PagerTest(expensesDAO = expensesDAO)
+
+                 //   PagerTest(expensesDAO = expensesDAO)
+
+                    SimplifiedBottomSheet(isVisible = true, onDismiss = { /*TODO*/ }, expensesDAO = expensesDAO)
                 }
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
