@@ -15,7 +15,6 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -43,15 +42,7 @@ import java.time.LocalDate
 fun SimplifiedBottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO) {
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = {
-            when (it) {
-                SheetValue.Expanded -> {
-                    true
-                }
-
-                else -> {
-                    false
-                }
-            }
+            true
         })
 
     var currentExpenseAdded by remember { mutableFloatStateOf(0.0F) } // Expense adding value
@@ -70,14 +61,14 @@ fun SimplifiedBottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO
             onDismissRequest = onDismiss,
             sheetState = sheetState
         ) {
-            Row(
+            Row(   // All content
                 modifier = Modifier
                     .fillMaxHeight(0.65f)
                     .fillMaxWidth()
             ) { //previously fillMaxSize
                 Box(
                     modifier = Modifier.weight(3.5F)
-                ) {
+                ) {  // Left block box
                     Column(
                         modifier = Modifier
                             .fillMaxSize()
