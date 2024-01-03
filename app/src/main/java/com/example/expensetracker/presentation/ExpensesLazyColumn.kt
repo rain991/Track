@@ -22,6 +22,7 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -57,7 +58,7 @@ fun MainInfoComposable(){
 @Composable
 fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
     val listState = rememberLazyListState()
-    var isScrollUpButtonNeeded by remember { mutableStateOf(false) }
+    val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex>6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
 
     Box {
@@ -69,7 +70,7 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
                     onClick = { isScrollingUp = true }, modifier = Modifier
                         .size(52.dp)
                         .padding(top = 12.dp, end = 16.dp),
-                    shape = RoundedCornerShape(95),
+                    shape = RoundedCornerShape(100),
                     elevation = FloatingActionButtonDefaults.elevation(
                         defaultElevation = 8.dp,
                         pressedElevation = 16.dp
@@ -96,7 +97,6 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
                         listState.animateScrollToItem(index = 0)
                         isScrollingUp = false
                     }
-                    isScrollUpButtonNeeded = index > 4
                     Column {
                         if (index == 0) {
                             Row(modifier = Modifier.fillMaxWidth()){
