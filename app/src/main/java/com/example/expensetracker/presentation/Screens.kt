@@ -16,7 +16,7 @@ import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
 
 @Composable
-fun FirstScreen(expensesDAO: ExpensesDAO) { // Settings
+fun FirstScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) { // Settings
     var isVisible by rememberSaveable { mutableStateOf(false) }
     androidx.compose.material3.Scaffold(
         topBar = {
@@ -32,7 +32,7 @@ fun FirstScreen(expensesDAO: ExpensesDAO) { // Settings
         ) { // Settings screen
             BottomSheet(
                 isVisible = isVisible,
-                onDismiss = { isVisible = false }, expensesDAO = expensesDAO
+                onDismiss = { isVisible = false }, expensesDAO = expensesDAO, expensesListRepository =  expensesListRepositoryImpl
             )
         }
     }
@@ -40,7 +40,7 @@ fun FirstScreen(expensesDAO: ExpensesDAO) { // Settings
 }
 
 @Composable
-fun SecondScreen(expensesDAO: ExpensesDAO) {  // Main and Primary screen
+fun SecondScreen(expensesDAO: ExpensesDAO,expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Main and Primary screen
     var isVisible by rememberSaveable { mutableStateOf(false) }
 
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
@@ -59,14 +59,14 @@ fun SecondScreen(expensesDAO: ExpensesDAO) {  // Main and Primary screen
             verticalArrangement = Arrangement.spacedBy(16.dp))
                 {
                    MainInfoComposable()
-                   ExpensesLazyColumn(expenses = ExpensesListRepositoryImpl.getExpensesList())
+                   ExpensesLazyColumn(expenses = expensesListRepositoryImpl.getExpensesList())
         }
-        BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false }, expensesDAO)
+        BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false }, expensesDAO, expensesListRepository = expensesListRepositoryImpl)
     }
 }
 
 @Composable
-fun ThirdScreen(expensesDAO: ExpensesDAO) {  // Statistics Screen
+fun ThirdScreen(expensesDAO: ExpensesDAO,expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Statistics Screen
     var isVisible by rememberSaveable { mutableStateOf(false) }  // is BottomSheet visible
 
     androidx.compose.material3.Scaffold(
@@ -82,7 +82,7 @@ fun ThirdScreen(expensesDAO: ExpensesDAO) {  // Statistics Screen
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false }, expensesDAO)
+            BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false }, expensesDAO, expensesListRepository = expensesListRepositoryImpl)
         }
     }
 }

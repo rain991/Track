@@ -29,21 +29,23 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
+import org.koin.android.ext.android.inject
 
 
 class MainActivity : ComponentActivity() {
-    private lateinit var expensesDAO: ExpensesDAO
+    val expensesDao: ExpensesDAO by inject()
+    val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private lateinit var expenseCategoryDao: ExpenseCategoryDao
     private val loginViewModel by viewModels<LoginViewModel>()
     private val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val expensesDB = ExpensesDB.getInstance(applicationContext)
-        expensesDAO = expensesDB.dao
+//        expensesDao = expensesDB.dao
         expenseCategoryDao = expensesDB.categoryDao
         val dataStoreManager = DataStoreManager(this)
         lifecycleScope.launch(Dispatchers.IO) {
-            ExpensesListRepositoryImpl.setExpensesList(expensesDAO)
+            expensesListRepository.setExpensesList(expensesDao)
         }
         runBlocking {
             val pref = dataStoreManager.getSettings().first()
@@ -60,10 +62,10 @@ class MainActivity : ComponentActivity() {
             }
         }
 
-        for (i in 1..50) {
-            ExpensesListRepositoryImpl.addExpensesItem(ExpensesListRepositoryImpl.generateRandomExpenseObject())
-        }
-        ExpensesListRepositoryImpl.sortExpensesItemsDesc()
+//        for (i in 1..50) {
+//            expensesListRepository.addExpensesItem(ExpensesListRepositoryImpl.generateRandomExpenseObject())
+//        }
+        expensesListRepository.sortExpensesItemsDesc()
         setContent {
             AppTheme {
                 var mainScreenAvailable by remember { mutableStateOf(settingsData.getLoginCount() > 0) }
@@ -111,9 +113,9 @@ class MainActivity : ComponentActivity() {
 //                    )
 //                    Log.d("MyLog", "mainScreenAvailable Viewmodel Budget: ${loginViewModel.income}")
 
-                    PagerTest(expensesDAO = expensesDAO)
+                    PagerTest(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
 
-                   // SimplifiedBottomSheet(isVisible = true, onDismiss = { /*TODO*/ }, expensesDAO = expensesDAO)
+                   // SimplifiedBottomSheet(isVisible = true, onDismiss = { /*TODO*/ }, expensesDao = expensesDao)
                 }
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }

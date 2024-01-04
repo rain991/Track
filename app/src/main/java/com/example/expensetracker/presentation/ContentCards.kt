@@ -49,7 +49,6 @@ import androidx.compose.ui.unit.sp
 import com.example.expensetracker.data.ExpenseItem
 import com.example.expensetracker.data.ExpensesDAO
 import com.example.expensetracker.data.ExpensesListRepositoryImpl
-import com.example.expensetracker.data.ExpensesListRepositoryImpl.autoIncrementId
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -82,7 +81,7 @@ fun ExtendedButtonExample(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO) {
+fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO, expensesListRepository : ExpensesListRepositoryImpl) {
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = false,confirmValueChange = {
             when (it) {
@@ -99,7 +98,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
     var currentExpenseAdded by remember { mutableFloatStateOf(0.0F) } // Expense adding value
     val scope = rememberCoroutineScope()
     val addToDB: (currentExpense: ExpenseItem) -> Unit = {
-        ExpensesListRepositoryImpl.getExpensesList().add(it)
+        expensesListRepository.getExpensesList().add(it)
         scope.launch {
             expensesDAO.insertItem(it)
         }
@@ -314,13 +313,12 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             onClick = {
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
-                                    id = autoIncrementId,
                                     name = "NewName",
                                     date = LocalDate.now().toString(),enabled = false,
                                     value = currentExpenseAdded,
                                     categoryId = 2
                                 )
-                                ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
+                                expensesListRepository.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
                                 addToDB(currentExpense)
 
 
@@ -341,13 +339,12 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             onClick = {
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
-                                    id = autoIncrementId,
                                     name = "NewName",
                                     date = LocalDate.now().toString(),enabled = false,
                                     value = currentExpenseAdded,
                                     categoryId = 3
                                 )
-                                ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
+                                expensesListRepository.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
                                 addToDB(currentExpense)
 
 
@@ -368,13 +365,12 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             onClick = {
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
-                                    id = autoIncrementId,
                                     name = "NewName",
                                     date = LocalDate.now().toString(),enabled = false,
                                     value = currentExpenseAdded,
                                     categoryId = 4
                                 )
-                                ExpensesListRepositoryImpl.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
+                                expensesListRepository.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
                                 addToDB(currentExpense)
 
 

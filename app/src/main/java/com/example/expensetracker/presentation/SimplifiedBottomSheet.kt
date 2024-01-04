@@ -1,6 +1,5 @@
 package com.example.expensetracker.presentation
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -10,7 +9,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,7 +21,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.room.ColumnInfo
 import com.example.expensetracker.R
 import com.example.expensetracker.data.ExpenseItem
 import com.example.expensetracker.data.ExpensesDAO
@@ -33,7 +30,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SimplifiedBottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO) {
+fun SimplifiedBottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO, expensesListRepositoryImpl : ExpensesListRepositoryImpl) {
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = {
             true
@@ -42,7 +39,7 @@ fun SimplifiedBottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO
     var currentExpenseAdded by remember { mutableFloatStateOf(0.0F) } // Expense adding value
     val scope = rememberCoroutineScope()
     val addToDB: (currentExpense: ExpenseItem) -> Unit = {
-        ExpensesListRepositoryImpl.getExpensesList().add(it)
+        expensesListRepositoryImpl.getExpensesList().add(it)
         scope.launch {
             expensesDAO.insertItem(it)
         }
@@ -61,7 +58,7 @@ fun SimplifiedBottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO
                 Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally){
                     Text(text = stringResource(R.string.add_expenses), fontSize = 24.sp, style=MaterialTheme.typography.titleLarge)
                     Spacer(modifier = Modifier.height(40.dp))
-                    TextField(value = currentExpenseAdded, onValueChange = {}, suffix = { Text(text = "")})
+                   // TextField(value = currentExpenseAdded, onValueChange = {}, suffix = { Text(text = "")})
                 }
 
             }

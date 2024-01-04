@@ -19,10 +19,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.data.ExpensesDAO
+import com.example.expensetracker.data.ExpensesListRepositoryImpl
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PagerTest(expensesDAO: ExpensesDAO) {
+fun PagerTest(expensesDAO: ExpensesDAO,expensesListRepositoryImpl: ExpensesListRepositoryImpl) {
     val pagerState = rememberPagerState(initialPage = 1) { 3 }
     Column(
         modifier = Modifier.fillMaxSize()
@@ -32,9 +33,9 @@ fun PagerTest(expensesDAO: ExpensesDAO) {
             modifier = Modifier.weight(1f)
         ) { page ->
             when (page) {
-                0 -> FirstScreen(expensesDAO = expensesDAO)
-                1 -> SecondScreen(expensesDAO = expensesDAO)
-                2 -> ThirdScreen(expensesDAO = expensesDAO)
+                0 -> FirstScreen(expensesDAO = expensesDAO, expensesListRepositoryImpl = expensesListRepositoryImpl)
+                1 -> SecondScreen(expensesDAO = expensesDAO, expensesListRepositoryImpl = expensesListRepositoryImpl)
+                2 -> ThirdScreen(expensesDAO = expensesDAO, expensesListRepositoryImpl = expensesListRepositoryImpl)
             }
         }
     }

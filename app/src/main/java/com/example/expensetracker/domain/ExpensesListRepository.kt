@@ -10,7 +10,7 @@ interface ExpensesListRepository {
     fun sortExpensesItemsAsc()
     fun sortExpensesItemsDesc()
     fun getExpensesItem(expensesItemId: Int): ExpenseItem
-    fun addExpensesItem(currentExpensesItem : ExpenseItem)
+    suspend fun addExpensesItem(currentExpensesItem : ExpenseItem)
     fun deleteExpenseItem(currentExpenseItem: ExpenseItem)
-    fun editExpenseItem(currentExpenseItem: ExpenseItem)
+    suspend fun editExpenseItem(currentExpenseItem: ExpenseItem)
 }
