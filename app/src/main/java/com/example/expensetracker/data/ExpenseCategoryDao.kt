@@ -10,14 +10,14 @@ import androidx.room.Update
 interface ExpenseCategoryDao {
 
     @Insert
-    suspend fun insert(category: ExpenseCategoryEntity)
+    suspend fun insert(category: ExpenseCategory)
 
     @Update
-    suspend fun update(category: ExpenseCategoryEntity)
+    suspend fun update(category: ExpenseCategory)
 
     @Delete
-    suspend fun delete(category: ExpenseCategoryEntity)
+    suspend fun delete(category: ExpenseCategory)
 
     @Query("SELECT * FROM expense_categories")
-    suspend fun getAllCategories(): List<ExpenseCategoryEntity>
+    suspend fun getAllCategories(): List<ExpenseCategory>
 }
