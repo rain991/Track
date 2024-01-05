@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.home
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

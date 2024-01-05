@@ -12,8 +12,13 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.expensetracker.data.ExpensesDAO
-import com.example.expensetracker.data.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.presentation.home.BottomSheet
+import com.example.expensetracker.presentation.home.ExpensesLazyColumn
+import com.example.expensetracker.presentation.home.ExtendedButtonExample
+import com.example.expensetracker.presentation.home.Header
+import com.example.expensetracker.presentation.home.MainInfoComposable
 
 @Composable
 fun FirstScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) { // Settings
@@ -40,7 +45,7 @@ fun FirstScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesLi
 }
 
 @Composable
-fun SecondScreen(expensesDAO: ExpensesDAO,expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Main and Primary screen
+fun SecondScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Main and Primary screen
     var isVisible by rememberSaveable { mutableStateOf(false) }
 
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
@@ -66,7 +71,7 @@ fun SecondScreen(expensesDAO: ExpensesDAO,expensesListRepositoryImpl: ExpensesLi
 }
 
 @Composable
-fun ThirdScreen(expensesDAO: ExpensesDAO,expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Statistics Screen
+fun ThirdScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Statistics Screen
     var isVisible by rememberSaveable { mutableStateOf(false) }  // is BottomSheet visible
 
     androidx.compose.material3.Scaffold(

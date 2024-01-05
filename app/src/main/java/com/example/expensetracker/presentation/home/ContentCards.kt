@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.home
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.expandVertically
@@ -46,9 +46,9 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expensetracker.data.ExpenseItem
-import com.example.expensetracker.data.ExpensesDAO
-import com.example.expensetracker.data.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
@@ -370,10 +370,8 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                     value = currentExpenseAdded,
                                     categoryId = 4
                                 )
-                                expensesListRepository.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
+                                expensesListRepository.getExpensesList().add(currentExpense)
                                 addToDB(currentExpense)
-
-
                             }
 
                         ) {

@@ -1,4 +1,4 @@
-package com.example.expensetracker.data
+package com.example.expensetracker.data.models
 
 import com.example.expensetracker.R
 class Currency(val ticker : String, val imageResourceId : Int){
@@ -16,4 +16,4 @@ val CZK = Currency("CZK", R.drawable.czechrepublic96)
 
 
 
-val currencyList = mutableListOf<Currency>(USD, EUR, GBP,UAH, CZK)
+val currencyList = mutableListOf<Currency>(USD, EUR, GBP, UAH, CZK)

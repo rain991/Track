@@ -1,7 +1,7 @@
-package com.example.expensetracker.domain
+package com.example.expensetracker.domain.repository
 
-import com.example.expensetracker.data.ExpenseItem
-import com.example.expensetracker.data.ExpensesDAO
+import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.data.database.ExpensesDAO
 
 interface ExpensesListRepository {
     fun getExpensesList() : MutableList<ExpenseItem>

@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.home
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -22,10 +22,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.R
-import com.example.expensetracker.data.ExpenseItem
-import com.example.expensetracker.data.ExpensesDAO
-import com.example.expensetracker.data.ExpensesListRepositoryImpl
-import kotlinx.coroutines.launch
+import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -38,12 +36,6 @@ fun SimplifiedBottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO
 
     var currentExpenseAdded by remember { mutableFloatStateOf(0.0F) } // Expense adding value
     val scope = rememberCoroutineScope()
-    val addToDB: (currentExpense: ExpenseItem) -> Unit = {
-        expensesListRepositoryImpl.getExpensesList().add(it)
-        scope.launch {
-            expensesDAO.insertItem(it)
-        }
-    }
 
     if (isVisible) {
         ModalBottomSheet(

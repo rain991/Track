@@ -1,8 +1,8 @@
 package com.example.expensetracker
 
-import com.example.expensetracker.data.ExpensesDAO
-import com.example.expensetracker.data.ExpensesDB
-import com.example.expensetracker.data.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.database.ExpensesDB
+import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import org.koin.android.ext.koin.androidContext
 import org.koin.dsl.module
 

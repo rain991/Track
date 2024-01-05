@@ -1,4 +1,4 @@
-package com.example.expensetracker.data
+package com.example.expensetracker.data.database
 
 import android.content.Context
 import androidx.room.Database
@@ -6,6 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.models.ExpenseItem
 
 @Database(
     entities = [ExpenseItem::class, ExpenseCategory::class],

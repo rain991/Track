@@ -1,7 +1,7 @@
-package com.example.expensetracker.domain
+package com.example.expensetracker.domain.repository
 
-import com.example.expensetracker.data.ExpenseCategory
-import com.example.expensetracker.data.ExpenseCategoryDao
+import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.database.ExpenseCategoryDao
 
 interface CategoriesListRepository {
     suspend fun setCategoriesList(expenseCategoryDao: ExpenseCategoryDao)

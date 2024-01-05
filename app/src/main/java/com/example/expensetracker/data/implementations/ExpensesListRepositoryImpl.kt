@@ -1,6 +1,8 @@
-package com.example.expensetracker.data
+package com.example.expensetracker.data.implementations
 
-import com.example.expensetracker.domain.ExpensesListRepository
+import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.domain.repository.ExpensesListRepository
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
@@ -28,10 +30,10 @@ class ExpensesListRepositoryImpl(private val expensesDao: ExpensesDAO) : Expense
         if (currentExpensesItem.id == ExpenseItem.UNDEFINED_ID) {
             currentExpensesItem.id = autoIncrementId++ // post increment
         } else {
-        }
-        expensesList.add(currentExpensesItem)
-        CoroutineScope(Dispatchers.IO).launch {
-             expensesDao.insertItem(currentExpensesItem)
+            expensesList.add(currentExpensesItem)
+            CoroutineScope(Dispatchers.IO).launch {
+                expensesDao.insertItem(currentExpensesItem)
+            }
         }
     }
 

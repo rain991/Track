@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.login
 
 
 import android.util.Log
@@ -49,9 +49,9 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
-import com.example.expensetracker.data.Currency
-import com.example.expensetracker.data.LoginViewModel
-import com.example.expensetracker.data.currencyList
+import com.example.expensetracker.data.models.Currency
+import com.example.expensetracker.data.viewmodels.LoginViewModel
+import com.example.expensetracker.data.models.currencyList
 import com.example.expensetracker.ui.theme.focusedTextFieldText
 import com.example.expensetracker.ui.theme.md_theme_light_primary
 import com.example.expensetracker.ui.theme.unfocusedTextFieldText

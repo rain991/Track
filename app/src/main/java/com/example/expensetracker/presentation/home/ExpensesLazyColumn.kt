@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.home
 
 import android.view.LayoutInflater
 import androidx.compose.foundation.layout.Box
@@ -36,7 +36,7 @@ import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
-import com.example.expensetracker.data.ExpenseItem
+import com.example.expensetracker.data.models.ExpenseItem
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
@@ -104,7 +104,6 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
                                 Spacer(modifier = Modifier.width(12.dp))
                                 CustomTabSample()
                             }
-
                             Spacer(modifier = Modifier.height(4.dp))
                         }
                         if (isDifferentMonth) {

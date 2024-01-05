@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.home
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -18,12 +18,15 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expensetracker.data.ExpensesDAO
-import com.example.expensetracker.data.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.presentation.FirstScreen
+import com.example.expensetracker.presentation.SecondScreen
+import com.example.expensetracker.presentation.ThirdScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PagerTest(expensesDAO: ExpensesDAO,expensesListRepositoryImpl: ExpensesListRepositoryImpl) {
+fun PagerTest(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {
     val pagerState = rememberPagerState(initialPage = 1) { 3 }
     Column(
         modifier = Modifier.fillMaxSize()
