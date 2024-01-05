@@ -14,14 +14,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.database.ExpensesDB
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.data.SettingsData
+import com.example.expensetracker.presentation.home.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.login.LoginScreen
-import com.example.expensetracker.presentation.home.PagerTest
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -37,7 +37,7 @@ class MainActivity : ComponentActivity() {
     val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private lateinit var expenseCategoryDao: ExpenseCategoryDao
     private val loginViewModel by viewModels<LoginViewModel>()
-    private val settingsData = SettingsData()
+    val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val expensesDB = ExpensesDB.getInstance(applicationContext)
@@ -94,11 +94,13 @@ class MainActivity : ComponentActivity() {
                             loginCount = (settingsData.getLoginCount() + 1)
                         )
                         LaunchedEffect(Unit) {
-                            withContext(Dispatchers.IO) {
+                            withContext(Dispatchers.IO) {   
                                 dataStoreManager.saveSettings(settingsData)
                             }
                         }
                     }
+
+
 //                    Log.d( "MyLog",
 //                        "mainScreenAvailable Login counter: ${settingsData.getLoginCount()}" )
 //                    Log.d("MyLog", "mainScreenAvailable Name: ${settingsData.getName()}")
@@ -113,9 +115,9 @@ class MainActivity : ComponentActivity() {
 //                    )
 //                    Log.d("MyLog", "mainScreenAvailable Viewmodel Budget: ${loginViewModel.income}")
 
-                    PagerTest(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
+                  //  PagerTest(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
 
-                   // SimplifiedBottomSheet(isVisible = true, onDismiss = { /*TODO*/ }, expensesDao = expensesDao)
+                    SimplifiedBottomSheet(isVisible = true, expensesListRepositoryImpl = expensesListRepository, settingsData = settingsData)
                 }
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
