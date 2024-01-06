@@ -94,7 +94,7 @@ class MainActivity : ComponentActivity() {
                             loginCount = (settingsData.getLoginCount() + 1)
                         )
                         LaunchedEffect(Unit) {
-                            withContext(Dispatchers.IO) {   
+                            withContext(Dispatchers.IO) {
                                 dataStoreManager.saveSettings(settingsData)
                             }
                         }
@@ -115,9 +115,9 @@ class MainActivity : ComponentActivity() {
 //                    )
 //                    Log.d("MyLog", "mainScreenAvailable Viewmodel Budget: ${loginViewModel.income}")
 
-                   PagerTest(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
+                    PagerTest(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
 
-                //    SimplifiedBottomSheet(isVisible = true, expensesListRepositoryImpl = expensesListRepository, settingsData = settingsData)
+                    //    SimplifiedBottomSheet(isVisible = true, expensesListRepositoryImpl = expensesListRepository, settingsData = settingsData)
                 }
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }

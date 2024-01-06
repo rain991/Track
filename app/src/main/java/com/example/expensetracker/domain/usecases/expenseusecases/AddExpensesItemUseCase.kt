@@ -10,6 +10,5 @@ class AddExpensesItemUseCase(private val expensesListRepositoryImpl: ExpensesLis
         withContext(Dispatchers.IO){
             expensesListRepositoryImpl.addExpensesItem(currentExpensesItem)
         }
-
     }
 }
