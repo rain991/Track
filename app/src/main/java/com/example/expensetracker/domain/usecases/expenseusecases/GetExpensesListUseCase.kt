@@ -1,4 +1,4 @@
-package com.example.expensetracker.domain.usecases
+package com.example.expensetracker.domain.usecases.expenseusecases
 
 import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.domain.repository.ExpensesListRepository

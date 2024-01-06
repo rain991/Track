@@ -1,14 +1,18 @@
 package com.example.expensetracker.domain.repository
 
-import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.data.database.ExpenseCategoryDao
+import com.example.expensetracker.data.models.ExpenseCategory
 
 interface CategoriesListRepository {
-    suspend fun setCategoriesList(expenseCategoryDao: ExpenseCategoryDao)
+    suspend fun setCategoriesList(categoryDao: ExpenseCategoryDao)
 
-    fun getCategoriesList()
+    fun getCategoriesList(): MutableList<ExpenseCategory>
 
-    fun addCategorie(category : ExpenseCategory)
+    fun getCategoryItem(categoryItemId : Long): ExpenseCategory?
 
-    fun deleteCategorie(category: ExpenseCategory)
+    suspend fun addCategory(category : ExpenseCategory)
+
+    suspend fun editCategory(category : ExpenseCategory)
+
+    fun deleteCategory(category: ExpenseCategory)
 }

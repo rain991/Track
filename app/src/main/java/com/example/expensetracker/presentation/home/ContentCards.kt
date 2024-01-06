@@ -46,10 +46,12 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import kotlinx.coroutines.launch
+import org.koin.compose.koinInject
 import java.time.LocalDate
 
 
@@ -81,9 +83,9 @@ fun ExtendedButtonExample(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO, expensesListRepository : ExpensesListRepositoryImpl) {
+fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO, expensesListRepository: ExpensesListRepositoryImpl) {
     val sheetState =
-        rememberModalBottomSheetState(skipPartiallyExpanded = false,confirmValueChange = {
+        rememberModalBottomSheetState(skipPartiallyExpanded = false, confirmValueChange = {
             when (it) {
                 SheetValue.Expanded -> {
                     false
@@ -94,6 +96,8 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                 }
             }
         })
+    val composableScope = rememberCoroutineScope()
+    val addExpensesItemUseCase = koinInject<AddExpensesItemUseCase>()
 
     var currentExpenseAdded by remember { mutableFloatStateOf(0.0F) } // Expense adding value
     val scope = rememberCoroutineScope()
@@ -107,10 +111,13 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
     if (isVisible) {
         ModalBottomSheet(
             onDismissRequest = onDismiss,
-            sheetState = sheetState) {
-            Row(modifier = Modifier
-                .fillMaxHeight(0.5f)
-                .fillMaxWidth()) { //previously fillMaxSize
+            sheetState = sheetState
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxHeight(0.5f)
+                    .fillMaxWidth()
+            ) { //previously fillMaxSize
                 Box(
                     modifier = Modifier.weight(3.5F)
                 ) {
@@ -314,14 +321,13 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
                                     name = "NewName",
-                                    date = LocalDate.now().toString(),enabled = false,
+                                    date = LocalDate.now().toString(), enabled = false,
                                     value = currentExpenseAdded,
                                     categoryId = 2
                                 )
-                                expensesListRepository.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
-                                addToDB(currentExpense)
-
-
+                                composableScope.launch {
+                                    addExpensesItemUseCase.addExpensesItem(currentExpense)
+                                }
                             }
                         ) {
                             Text(
@@ -340,12 +346,13 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
                                     name = "NewName",
-                                    date = LocalDate.now().toString(),enabled = false,
+                                    date = LocalDate.now().toString(), enabled = false,
                                     value = currentExpenseAdded,
                                     categoryId = 3
                                 )
-                                expensesListRepository.getExpensesList().add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
-                                addToDB(currentExpense)
+//                                expensesListRepository.getExpensesList()
+//                                    .add(currentExpense)  // TO BE RESTRUCTURED using ExpensesListRepositoryImpl methods
+//                                addToDB(currentExpense)
 
 
                             }
@@ -366,12 +373,12 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
                                     name = "NewName",
-                                    date = LocalDate.now().toString(),enabled = false,
+                                    date = LocalDate.now().toString(), enabled = false,
                                     value = currentExpenseAdded,
                                     categoryId = 4
                                 )
-                                expensesListRepository.getExpensesList().add(currentExpense)
-                                addToDB(currentExpense)
+//                                expensesListRepository.getExpensesList().add(currentExpense)
+//                                addToDB(currentExpense)
                             }
 
                         ) {
@@ -399,7 +406,8 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = 8.dp).clickable { visible=!visible }, shape = RoundedCornerShape(8.dp)
+            .padding(vertical = 8.dp)
+            .clickable { visible = !visible }, shape = RoundedCornerShape(8.dp)
     ) { // Design to be implemented soon
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(text = expenseItem.name)
@@ -420,10 +428,12 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
                 ),
                 exit = slideOutVertically() + shrinkVertically() + fadeOut()
             ) {
-                Text("Hello",
+                Text(
+                    "Hello",
                     Modifier
                         .fillMaxWidth()
-                        .height(60.dp))
+                        .height(60.dp)
+                )
             }
 
         }

@@ -12,28 +12,23 @@ import kotlin.random.Random
 
 class ExpensesListRepositoryImpl(private val expensesDao: ExpensesDAO) : ExpensesListRepository {
     private var expensesList = mutableListOf<ExpenseItem>()
-    var autoIncrementId = 0  // all autoIncrementId will be canceled ones the DB connected
     override suspend fun setExpensesList(expensesDAO: ExpensesDAO) {
         coroutineScope { expensesList = expensesDAO.getAll() }
     }
 
-    override fun sortExpensesItemsAsc() {
+    override fun sortExpensesItemsDateAsc() {
         expensesList = expensesList.sortedBy { it.date }.toMutableList()
     }
 
-    override fun sortExpensesItemsDesc() {
+    override fun sortExpensesItemsDateDesc() {
         expensesList = expensesList.sortedByDescending { it.date }.toMutableList()
     }
 
 
     override suspend fun addExpensesItem(currentExpensesItem: ExpenseItem) {
-        if (currentExpensesItem.id == ExpenseItem.UNDEFINED_ID) {
-            currentExpensesItem.id = autoIncrementId++ // post increment
-        } else {
-            expensesList.add(currentExpensesItem)
-            CoroutineScope(Dispatchers.IO).launch {
-                expensesDao.insertItem(currentExpensesItem)
-            }
+        expensesList.add(currentExpensesItem)
+        CoroutineScope(Dispatchers.IO).launch {
+            expensesDao.insertItem(currentExpensesItem)
         }
     }
 
@@ -41,27 +36,34 @@ class ExpensesListRepositoryImpl(private val expensesDao: ExpensesDAO) : Expense
         return expensesList // gets a copy of list (changed: now returns original)
     }
 
-    override fun getExpensesItem(expensesItemId: Int): ExpenseItem {
+    override fun getExpensesItem(expensesItemId: Int): ExpenseItem? {
         if (expensesList.find { it.id == expensesItemId } == null) {
-            TODO()
+            return null
         } else {
             return expensesList.find { it.id == expensesItemId }!! // WARNING !! call, to be checked afterwards
         }
     }
 
 
-    override fun deleteExpenseItem(currentExpenseItem: ExpenseItem) {
+    override suspend fun deleteExpenseItem(currentExpenseItem: ExpenseItem) {
         expensesList.remove(currentExpenseItem)
+        coroutineScope { expensesDao.deleteItem(currentExpenseItem) }
     }
 
-    override suspend fun editExpenseItem(currentExpenseItem: ExpenseItem) {
-        val olderExpense = getExpensesItem(currentExpenseItem.id)
-        expensesList.remove(olderExpense)
-        addExpensesItem(currentExpenseItem)
+    override suspend fun editExpenseItem(newExpenseItem: ExpenseItem) {
+        val olderExpense = getExpensesItem(newExpenseItem.id)
+        if (olderExpense != null) {
+            expensesList.remove(olderExpense)
+            addExpensesItem(newExpenseItem)
+            coroutineScope {
+                expensesDao.deleteItem(olderExpense)
+                expensesDao.insertItem(newExpenseItem)
+            }
+        }
     }
 
 
-    // All random elements will be deleted
+    // All random elements will be deleted soon
     fun generateRandomDate(): LocalDate {
         val randomDays = Random.nextLong(180)
         return LocalDate.now().minusDays(randomDays)

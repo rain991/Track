@@ -80,13 +80,13 @@ fun SimplifiedBottomSheet(isVisible: Boolean, expensesListRepositoryImpl: Expens
                             value = currentExpenseAdded.toString(),
                             onValueChange = { newText ->
                                 val filteredText = newText.filter { it.isDigit() || it in setOf('.', '+', '-') }
-                                if (filteredText.isNotBlank()) {
-                                    currentExpenseAdded = filteredText.toFloatOrNull() ?: 0f
+                                if (filteredText.isNotBlank()) { currentExpenseAdded = filteredText.toFloatOrNull() ?: 0f
                                 }
                             },
                             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
                             keyboardActions = KeyboardActions(
-                                onDone = { controller?.hide() }
+                                onDone = { controller?.hide()
+                                    focusRequester.freeFocus()}
                             ),
                             maxLines = 1,
 

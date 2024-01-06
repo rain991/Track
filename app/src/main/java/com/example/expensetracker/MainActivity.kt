@@ -20,7 +20,7 @@ import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.database.ExpensesDB
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.presentation.home.SimplifiedBottomSheet
+import com.example.expensetracker.presentation.home.PagerTest
 import com.example.expensetracker.presentation.login.LoginScreen
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
@@ -65,7 +65,7 @@ class MainActivity : ComponentActivity() {
 //        for (i in 1..50) {
 //            expensesListRepository.addExpensesItem(ExpensesListRepositoryImpl.generateRandomExpenseObject())
 //        }
-        expensesListRepository.sortExpensesItemsDesc()
+        expensesListRepository.sortExpensesItemsDateDesc()
         setContent {
             AppTheme {
                 var mainScreenAvailable by remember { mutableStateOf(settingsData.getLoginCount() > 0) }
@@ -115,9 +115,9 @@ class MainActivity : ComponentActivity() {
 //                    )
 //                    Log.d("MyLog", "mainScreenAvailable Viewmodel Budget: ${loginViewModel.income}")
 
-                  //  PagerTest(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
+                   PagerTest(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
 
-                    SimplifiedBottomSheet(isVisible = true, expensesListRepositoryImpl = expensesListRepository, settingsData = settingsData)
+                //    SimplifiedBottomSheet(isVisible = true, expensesListRepositoryImpl = expensesListRepository, settingsData = settingsData)
                 }
                 // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
