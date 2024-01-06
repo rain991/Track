@@ -325,9 +325,7 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                                     value = currentExpenseAdded,
                                     categoryId = 2
                                 )
-                                composableScope.launch {
-                                    addExpensesItemUseCase.addExpensesItem(currentExpense)
-                                }
+                                composableScope.launch { addExpensesItemUseCase.addExpensesItem(currentExpense) }
                             }
                         ) {
                             Text(

@@ -9,7 +9,7 @@ import com.example.expensetracker.data.models.ExpenseItem
 
 @Dao
 interface ExpensesDAO {
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertItem(expenseItem : ExpenseItem)
     @Delete
     suspend fun deleteItem(expenseItem : ExpenseItem)
