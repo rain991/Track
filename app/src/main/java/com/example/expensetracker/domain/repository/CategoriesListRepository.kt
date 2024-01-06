@@ -14,5 +14,5 @@ interface CategoriesListRepository {
 
     suspend fun editCategory(category : ExpenseCategory)
 
-    fun deleteCategory(category: ExpenseCategory)
+    suspend fun deleteCategory(category: ExpenseCategory)
 }

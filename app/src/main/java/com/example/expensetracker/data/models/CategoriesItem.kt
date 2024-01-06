@@ -7,7 +7,7 @@ import androidx.room.PrimaryKey
 @Entity(tableName = "expense_categories")
 data class ExpenseCategory(
     @PrimaryKey(autoGenerate = true)
-    val categoryId: Long = 0,
+    var categoryId: Long = 0,
 
     @ColumnInfo(name = "name")
     val name: String,

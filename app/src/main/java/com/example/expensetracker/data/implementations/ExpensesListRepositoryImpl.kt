@@ -4,7 +4,6 @@
     import com.example.expensetracker.data.models.ExpenseItem
     import com.example.expensetracker.domain.repository.ExpensesListRepository
     import kotlinx.coroutines.Dispatchers
-    import kotlinx.coroutines.coroutineScope
     import kotlinx.coroutines.withContext
     import java.time.LocalDate
     import kotlin.random.Random
@@ -54,7 +53,7 @@
 
         override suspend fun deleteExpenseItem(currentExpenseItem: ExpenseItem) {
             expensesList.remove(currentExpenseItem)
-            coroutineScope { expensesDao.deleteItem(currentExpenseItem) }
+            withContext(Dispatchers.IO) { expensesDao.deleteItem(currentExpenseItem) }
         }
 
         override suspend fun editExpenseItem(newExpenseItem: ExpenseItem) {
@@ -62,7 +61,7 @@
             if (olderExpense != null) {
                 expensesList.remove(olderExpense)
                 addExpensesItem(newExpenseItem)
-                coroutineScope {
+                withContext(Dispatchers.IO) {
                     expensesDao.deleteItem(olderExpense)
                     expensesDao.insertItem(newExpenseItem)
                 }
