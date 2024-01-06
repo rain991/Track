@@ -5,7 +5,7 @@ import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.domain.repository.CategoriesListRepository
 import kotlinx.coroutines.coroutineScope
 
-object CategoriesListRepositoryImpl : CategoriesListRepository {
+class CategoriesListRepositoryImpl (categoryDao: ExpenseCategoryDao): CategoriesListRepository {
     private var categoriesList = mutableListOf<ExpenseCategory>()
 
     override suspend fun setCategoriesList(categoryDao: ExpenseCategoryDao) {

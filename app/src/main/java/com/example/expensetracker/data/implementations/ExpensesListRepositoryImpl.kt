@@ -29,7 +29,7 @@
                 expensesList.add(currentExpensesItem)
                 withContext(Dispatchers.IO) {
                     expensesDao.insertItem(currentExpensesItem)
-                }
+                } 
             } else {
                 currentExpensesItem.id++
                 expensesList.add(currentExpensesItem)

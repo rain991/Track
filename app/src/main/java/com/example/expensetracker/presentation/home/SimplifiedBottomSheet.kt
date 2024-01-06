@@ -38,11 +38,13 @@ import androidx.compose.ui.unit.sp
 import com.example.expensetracker.R
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
+import org.koin.compose.koinInject
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SimplifiedBottomSheet(isVisible: Boolean, expensesListRepositoryImpl: ExpensesListRepositoryImpl, settingsData: SettingsData) {
-
+    val addExpensesItemUseCase = koinInject<AddExpensesItemUseCase>()
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = {
             true
