@@ -1,9 +1,9 @@
 package com.example.expensetracker.domain.usecases.expenseusecases
 
+import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.models.ExpenseItem
-import com.example.expensetracker.domain.repository.ExpensesListRepository
 
-class GetExpensesListUseCase(private val expensesListRepository: ExpensesListRepository) {
+class GetExpensesListUseCase(private val expensesListRepository: ExpensesListRepositoryImpl) {
     fun getExpensesList() : List<ExpenseItem>{
     return expensesListRepository.getExpensesList()
     }

@@ -1,15 +1,18 @@
 package com.example.expensetracker.data.implementations
 
+import android.content.Context
+import com.example.expensetracker.R
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.domain.repository.CategoriesListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
+import kotlin.random.Random
 
 class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) : CategoriesListRepository {
     private var categoriesList = mutableListOf<ExpenseCategory>()
-
+    private var categoriesNames = categoriesList.map { it.name }
     override suspend fun setCategoriesList(categoryDao: ExpenseCategoryDao) {
         coroutineScope { categoriesList = categoryDao.getAllCategories().toMutableList() }
     }
@@ -39,7 +42,7 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
     }
 
     override suspend fun addCategory(category: ExpenseCategory) {
-        if (categoriesList.none { it.categoryId == category.categoryId }) {
+        if (categoriesList.none { it.categoryId == category.categoryId && it.name == category.name}) {
             categoriesList.add(category)
             withContext(Dispatchers.IO) {
                 categoryDao.insert(category)
@@ -57,6 +60,22 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
         categoriesList.remove(category)
         withContext(Dispatchers.IO) {
             categoryDao.delete(category)
+        }
+    }
+
+    override fun checkDefaultCategories(context: Context): Boolean {
+        val categoriesNamesFromResources = context.resources.getStringArray(R.array.default_expenses)
+        return categoriesNames.containsAll(categoriesNamesFromResources.toList())
+    }
+
+    override suspend fun addDefaultCategories(context: Context) {
+        if (!checkDefaultCategories(context)) {
+            val categoriesNamesFromResources = context.resources.getStringArray(R.array.default_expenses)
+            categoriesNames = categoriesNames.plus(categoriesNamesFromResources)
+            categoriesNames = categoriesNames.toSet().toList()
+            categoriesNames.forEach { it->
+                addCategory(ExpenseCategory(name = it, colorId = Random.nextInt(0, Int.MAX_VALUE)))
+            }
         }
     }
 }

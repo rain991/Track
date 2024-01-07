@@ -26,7 +26,7 @@ import com.example.expensetracker.presentation.ThirdScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PagerTest(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {
+fun ScreenManager(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {
     val pagerState = rememberPagerState(initialPage = 1) { 3 }
     Column(
         modifier = Modifier.fillMaxSize()

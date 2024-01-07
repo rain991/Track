@@ -17,10 +17,10 @@ import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
-import com.example.expensetracker.data.database.ExpensesDB
+import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.presentation.home.PagerTest
+import com.example.expensetracker.presentation.home.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.login.LoginScreen
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
@@ -33,20 +33,20 @@ import org.koin.android.ext.android.inject
 
 
 class MainActivity : ComponentActivity() {
-    val expensesDao: ExpensesDAO by inject()
-    val expensesListRepository: ExpensesListRepositoryImpl by inject()
-    private lateinit var expenseCategoryDao: ExpenseCategoryDao
+    private val expensesDao: ExpensesDAO by inject()
+    private val expenseCategoryDao: ExpenseCategoryDao by inject()
+    private val expensesListRepository: ExpensesListRepositoryImpl by inject()
+    private val categoriesListRepository : CategoriesListRepositoryImpl by inject()
     private val loginViewModel by viewModels<LoginViewModel>()
-    val settingsData = SettingsData()
+    private val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val expensesDB = ExpensesDB.getInstance(applicationContext)
-//        expensesDao = expensesDB.dao
-        expenseCategoryDao = expensesDB.categoryDao
         val dataStoreManager = DataStoreManager(this)
         lifecycleScope.launch(Dispatchers.IO) {
             expensesListRepository.setExpensesList(expensesDao)
+            categoriesListRepository.setCategoriesList(expenseCategoryDao)
         }
+
         runBlocking {
             val pref = dataStoreManager.getSettings().first()
             withContext(Dispatchers.IO) {
@@ -59,8 +59,10 @@ class MainActivity : ComponentActivity() {
                 Log.d("MyLog", "Login counter: ${settingsData.getLoginCount()}")
                 if (settingsData.getLoginCount() != 0) settingsData.setLoginCount(settingsData.getLoginCount() + 1)
                 dataStoreManager.saveSettings(settingsData)
+                categoriesListRepository.addDefaultCategories(this@MainActivity)
             }
         }
+
 
 //        for (i in 1..50) {
 //            expensesListRepository.addExpensesItem(ExpensesListRepositoryImpl.generateRandomExpenseObject())
@@ -115,11 +117,10 @@ class MainActivity : ComponentActivity() {
 //                    )
 //                    Log.d("MyLog", "mainScreenAvailable Viewmodel Budget: ${loginViewModel.income}")
 
-                    PagerTest(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
+                    //ScreenManager(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
 
-                    //    SimplifiedBottomSheet(isVisible = true, expensesListRepositoryImpl = expensesListRepository, settingsData = settingsData)
+                        SimplifiedBottomSheet(isVisible = true, settingsData = settingsData)
                 }
-                // val booleanValue by booleanFlow.collectAsState(initial = false) WILL BE USED FOR UI SETTINGS
             }
         }
     }
