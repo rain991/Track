@@ -56,7 +56,7 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun SimplifiedBottomSheet(isVisible: Boolean,settingsData: SettingsData) {
+fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
     val categoryList = koinInject<GetCategoryListUseCase>()
     val addExpensesItemUseCase = koinInject<AddExpensesItemUseCase>()
     val isAcceptButtonAvailable by remember { mutableStateOf(false) }
@@ -81,21 +81,26 @@ fun SimplifiedBottomSheet(isVisible: Boolean,settingsData: SettingsData) {
                     Spacer(modifier = Modifier.height(32.dp))
                     AmountInput(focusRequester, currentExpenseAdded, controller, settingsData)
                     Spacer(modifier = Modifier.height(24.dp))
-                    val lazyHorizontalState = rememberLazyStaggeredGridState()
-                    LazyHorizontalStaggeredGrid(
-                        rows = StaggeredGridCells.FixedSize(60.dp),
-                        state = lazyHorizontalState,
-                        verticalArrangement = Arrangement.spacedBy(12.dp),
-                        horizontalItemSpacing = 8.dp
-                    ) {
-                        items(count = categoryList.getCategoryList().size) { index ->
-                            CategoryCard(category = categoryList.getCategoryList()[index])
-                        }
-                    }
-
+                    CategoriesGrid(categoryList)
+                    Spacer(modifier = Modifier.height(24.dp))
 
                 }
             }
+        }
+    }
+}
+
+@Composable
+private fun CategoriesGrid(categoryList: GetCategoryListUseCase) {
+    val lazyHorizontalState = rememberLazyStaggeredGridState()
+    LazyHorizontalStaggeredGrid(modifier = Modifier.fillMaxHeight(0.25f),
+        rows = StaggeredGridCells.Adaptive(40.dp),
+        state = lazyHorizontalState,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalItemSpacing = 8.dp
+    ) {
+        items(count = categoryList.getCategoryList().size) { index ->
+            CategoryCard(category = categoryList.getCategoryList()[index])
         }
     }
 }
@@ -105,7 +110,8 @@ fun CategoryCard(category: ExpenseCategory) {
     Box(
         modifier = Modifier
             .clip(RoundedCornerShape(4.dp))
-            .background(color = Color(Random.nextLong(0xFFFFFFFF))), contentAlignment = Alignment.Center
+            .background(color = Color(Random.nextLong(0xFFFFFFFF)))
+            .padding(horizontal = 4.dp), contentAlignment = Alignment.Center
     ) {
         Text(text = category.name)
     }
@@ -155,7 +161,7 @@ private fun AmountInput(
 
 @Preview
 @Composable
-fun Preview(){
+fun Preview() {
     val currentSettings = SettingsData(5, currency = "UAH")
     SimplifiedBottomSheet(isVisible = true, settingsData = currentSettings)
 }

@@ -65,7 +65,7 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
 
     override fun checkDefaultCategories(context: Context): Boolean {
         val categoriesNamesFromResources = context.resources.getStringArray(R.array.default_expenses)
-        return categoriesNames.containsAll(categoriesNamesFromResources.toList())
+        return categoriesNames.toSet() == categoriesNamesFromResources
     }
 
     override suspend fun addDefaultCategories(context: Context) {
