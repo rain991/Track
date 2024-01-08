@@ -23,6 +23,7 @@
     <string name="december">December</string>
     <string name="unknown_month">Unknown month</string>
     <string name="add_expenses">Add expenses</string>
+    <string name="add_new_category">Add New Category</string>
 
     <string-array name="default_expenses">
         <item>Groceries</item>

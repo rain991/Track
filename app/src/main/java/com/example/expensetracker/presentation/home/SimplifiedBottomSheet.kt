@@ -1,6 +1,7 @@
 package com.example.expensetracker.presentation.home
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -81,7 +82,12 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
                     Spacer(modifier = Modifier.height(32.dp))
                     AmountInput(focusRequester, currentExpenseAdded, controller, settingsData)
                     Spacer(modifier = Modifier.height(24.dp))
-                    CategoriesGrid(categoryList)
+                    Row (modifier= Modifier.fillMaxWidth()){
+                        CategoriesGrid(categoryList)
+//                        Button(onClick = { /*Adding New Category Call*/ }) {
+//                            Icon(painter = painterResource(id = R.drawable.sharp_add_24), contentDescription = stringResource(R.string.add_new_category))
+//                        }
+                    }
                     Spacer(modifier = Modifier.height(24.dp))
 
                 }
@@ -93,27 +99,30 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
 @Composable
 private fun CategoriesGrid(categoryList: GetCategoryListUseCase) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
-    LazyHorizontalStaggeredGrid(modifier = Modifier.fillMaxHeight(0.25f),
+    LazyHorizontalStaggeredGrid(
+        modifier = Modifier.fillMaxHeight(0.25f),
         rows = StaggeredGridCells.Adaptive(40.dp),
         state = lazyHorizontalState,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalItemSpacing = 8.dp
     ) {
         items(count = categoryList.getCategoryList().size) { index ->
-            CategoryCard(category = categoryList.getCategoryList()[index])
+            CategoryCard(category = categoryList.getCategoryList()[index]) {  /*Place for onClick for CategoryCard*/ }
+            }
         }
     }
-}
+
 
 @Composable
-fun CategoryCard(category: ExpenseCategory) {
+fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
     Box(
         modifier = Modifier
+            .clickable { onClick }
             .clip(RoundedCornerShape(4.dp))
             .background(color = Color(Random.nextLong(0xFFFFFFFF)))
             .padding(horizontal = 4.dp), contentAlignment = Alignment.Center
     ) {
-        Text(text = category.name)
+        Text(text = category.name, style = MaterialTheme.typography.bodySmall)
     }
 }
 
