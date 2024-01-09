@@ -15,5 +15,6 @@ class LoginViewModel : ViewModel() {
     var birthday: LocalDate? = null
     var firstName: String? = null
     var income: Int? = null
+
 }
 // IF any parameters needed to be passed in viewmodel class, should use viewmodelfactory
