@@ -1,7 +1,6 @@
 package com.example.expensetracker.presentation.login
 
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -50,8 +49,8 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
 import com.example.expensetracker.data.models.Currency
-import com.example.expensetracker.data.viewmodels.LoginViewModel
 import com.example.expensetracker.data.models.currencyList
+import com.example.expensetracker.data.viewmodels.LoginViewModel
 import com.example.expensetracker.ui.theme.focusedTextFieldText
 import com.example.expensetracker.ui.theme.md_theme_light_primary
 import com.example.expensetracker.ui.theme.unfocusedTextFieldText
@@ -259,18 +258,7 @@ private fun DatePicker(loginViewModel: LoginViewModel, onTextValueChange: (Local
     }, properties = DialogProperties())
 }
 
-@Composable
-fun DateTimePicker(closeSelection: () -> Unit) {
-    val timePickerState = rememberUseCaseState(visible = false, embedded = false)
 
-    val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
-    DateTimeDialog(
-        state = rememberUseCaseState(visible = true, onCloseRequest = { closeSelection() }),
-        selection = DateTimeSelection.DateTime {
-            Log.d("MyLog", "Selected datetime is $it")
-        }
-    )
-}
 
 
 @OptIn(ExperimentalMaterial3Api::class)

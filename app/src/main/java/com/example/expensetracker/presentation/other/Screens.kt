@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.other
 
 
 import androidx.compose.foundation.layout.Arrangement

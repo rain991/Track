@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -47,12 +48,18 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.date_time.DateTimeDialog
+import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import org.koin.compose.koinInject
+import java.time.LocalDate
 import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
@@ -82,6 +89,9 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
                     Spacer(modifier = Modifier.height(32.dp))
                     AmountInput(focusRequester, currentExpenseAdded, controller, settingsData)
                     Spacer(modifier = Modifier.height(24.dp))
+
+
+
                     Row (modifier= Modifier.fillMaxWidth()){
                         CategoriesGrid(categoryList)
 //                        Button(onClick = { /*Adding New Category Call*/ }) {
@@ -97,21 +107,15 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
 }
 
 @Composable
-private fun CategoriesGrid(categoryList: GetCategoryListUseCase) {
-    val lazyHorizontalState = rememberLazyStaggeredGridState()
-    LazyHorizontalStaggeredGrid(
-        modifier = Modifier.fillMaxHeight(0.25f),
-        rows = StaggeredGridCells.Adaptive(40.dp),
-        state = lazyHorizontalState,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalItemSpacing = 8.dp
-    ) {
-        items(count = categoryList.getCategoryList().size) { index ->
-            CategoryCard(category = categoryList.getCategoryList()[index]) {  /*Place for onClick for CategoryCard*/ }
-            }
-        }
-    }
-
+private fun DatePicker(bottomSheetViewModel: BottomSheetViewModel) {
+    val timePickerState = rememberUseCaseState(visible = true)
+    val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
+    DateTimeDialog(state = timePickerState, selection = DateTimeSelection.Date { date ->
+//        loginViewModel.birthday = date  // null warning
+//        onTextValueChange(date)
+//        timePickerState.hide()
+    }, properties = DialogProperties())
+}
 
 @Composable
 fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
@@ -122,10 +126,25 @@ fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
             .background(color = Color(Random.nextLong(0xFFFFFFFF)))
             .padding(horizontal = 4.dp), contentAlignment = Alignment.Center
     ) {
-        Text(text = category.name, style = MaterialTheme.typography.bodySmall)
+        Text(text = category.name, style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp))
     }
 }
 
+@Composable
+private fun CategoriesGrid(categoryList: GetCategoryListUseCase) {
+    val lazyHorizontalState = rememberLazyStaggeredGridState()
+    LazyHorizontalStaggeredGrid(
+        modifier = Modifier.fillMaxHeight(0.25f),
+        rows = StaggeredGridCells.Adaptive(40.dp),
+        state = lazyHorizontalState,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
+    ) {
+        items(count = categoryList.getCategoryList().size) { index ->
+            CategoryCard(category = categoryList.getCategoryList()[index]) {  /*Place for onClick for CategoryCard*/ }
+            }
+        }
+    }
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -146,7 +165,7 @@ private fun AmountInput(
                 .focusRequester(focusRequester)
                 .width(IntrinsicSize.Min)
                 .padding(horizontal = 12.dp),
-            textStyle = MaterialTheme.typography.titleLarge.copy(fontSize = 48.sp, letterSpacing = 1.3.sp),
+            textStyle = MaterialTheme.typography.titleLarge.copy(fontSize = 52.sp, letterSpacing = 1.3.sp),
             value = currentExpenseAdded1.toString(),
             onValueChange = { newText ->
                 val filteredText = newText.filter { it.isDigit() || it in setOf('.', '+', '-') }
@@ -170,7 +189,7 @@ private fun AmountInput(
 
 @Preview
 @Composable
-fun Preview() {
+private fun Preview() {
     val currentSettings = SettingsData(5, currency = "UAH")
     SimplifiedBottomSheet(isVisible = true, settingsData = currentSettings)
 }

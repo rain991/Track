@@ -5,7 +5,9 @@ import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.database.ExpensesDB
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.LoginViewModel
+import com.example.expensetracker.data.viewmodels.MainViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.DeleteCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.EditCategoryUseCase
@@ -45,4 +47,6 @@ val domainModule = module {
 
 val viewModelModule = module {
     viewModel { LoginViewModel() }
+    viewModel { MainViewModel() }
+    viewModel { BottomSheetViewModel() }
 }
