@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
@@ -56,6 +57,7 @@ import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
+import com.example.expensetracker.presentation.other.ConfirmationButton
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
@@ -86,21 +88,21 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
                     .fillMaxHeight(0.7f)
                     .fillMaxWidth()
             ) {
-                Column(modifier = Modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
                     Text(text = stringResource(R.string.add_expenses), fontSize = 24.sp, style = MaterialTheme.typography.titleLarge)
-                    Spacer(modifier = Modifier.height(32.dp))
+                    Spacer(modifier = Modifier.height(12.dp))
                     AmountInput(focusRequester, currentExpenseAdded, controller, settingsData)
-                    Spacer(modifier = Modifier.height(24.dp))
                     DatePicker(bottomSheetViewModel = bottomSheetViewModel)
-                    Spacer(modifier = Modifier.height(24.dp))
-
-
+                    SimpleOutlinedTextFieldSample(label = "Note")
                     Row(modifier = Modifier.fillMaxWidth()) {
                         CategoriesGrid(categoryList)
 //                        Button(onClick = { /*Adding New Category Call*/ }) {
 //                            Icon(painter = painterResource(id = R.drawable.sharp_add_24), contentDescription = stringResource(R.string.add_new_category))
 //                        }
                     }
+                    ConfirmationButton(
+                        Modifier
+                            .padding(bottom = 40.dp))
                 }
             }
         }
@@ -134,17 +136,18 @@ private fun DatePicker(bottomSheetViewModel: BottomSheetViewModel) {
 }
 
 @Composable
-private fun SimpleOutlinedTextFieldSample() {
+private fun SimpleOutlinedTextFieldSample(label: String) {
     var text by remember { mutableStateOf("") }
 
     OutlinedTextField(
         value = text,
         onValueChange = { text = it },
-        label = { Text("outlinedTextField") }
+        label = { Text(label) }
     )
 }
+
 @Composable
-fun OutlinedButtonWithAnimation(text : String) {
+fun OutlinedButtonWithAnimation(text: String) {
     var isSelected by remember { mutableStateOf(false) }
 
     Button(
@@ -152,7 +155,6 @@ fun OutlinedButtonWithAnimation(text : String) {
             isSelected = !isSelected
         },
         modifier = Modifier
-            .padding(16.dp)
             .background(
                 color = if (isSelected) Color.Gray else Color.Transparent,
                 shape = MaterialTheme.shapes.medium
@@ -171,6 +173,7 @@ fun OutlinedButtonWithAnimation(text : String) {
 fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
     Box(
         modifier = Modifier
+            .heightIn(min = 1.dp, max = 25.dp)
             .clickable { onClick }
             .clip(RoundedCornerShape(4.dp))
             .background(color = Color(Random.nextLong(0xFFFFFFFF)))
@@ -184,8 +187,8 @@ fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
 private fun CategoriesGrid(categoryList: GetCategoryListUseCase) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     LazyHorizontalStaggeredGrid(
-        modifier = Modifier.fillMaxHeight(0.25f),
-        rows = StaggeredGridCells.Adaptive(40.dp),
+        modifier = Modifier.height(72.dp),
+        rows = StaggeredGridCells.Adaptive(24.dp),
         state = lazyHorizontalState,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
