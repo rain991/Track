@@ -17,7 +17,6 @@ import com.example.expensetracker.data.implementations.ExpensesListRepositoryImp
 import com.example.expensetracker.presentation.home.BottomSheet
 import com.example.expensetracker.presentation.home.ExpensesLazyColumn
 import com.example.expensetracker.presentation.home.ExtendedButtonExample
-import com.example.expensetracker.presentation.home.Header
 import com.example.expensetracker.presentation.home.MainInfoComposable
 
 @Composable

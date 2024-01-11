@@ -21,9 +21,11 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -45,7 +47,6 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
@@ -65,6 +66,7 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
+    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
     val categoryList = koinInject<GetCategoryListUseCase>()
     val addExpensesItemUseCase = koinInject<AddExpensesItemUseCase>()
     val isAcceptButtonAvailable by remember { mutableStateOf(false) }
@@ -89,17 +91,16 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
                     Spacer(modifier = Modifier.height(32.dp))
                     AmountInput(focusRequester, currentExpenseAdded, controller, settingsData)
                     Spacer(modifier = Modifier.height(24.dp))
+                    DatePicker(bottomSheetViewModel = bottomSheetViewModel)
+                    Spacer(modifier = Modifier.height(24.dp))
 
 
-
-                    Row (modifier= Modifier.fillMaxWidth()){
+                    Row(modifier = Modifier.fillMaxWidth()) {
                         CategoriesGrid(categoryList)
 //                        Button(onClick = { /*Adding New Category Call*/ }) {
 //                            Icon(painter = painterResource(id = R.drawable.sharp_add_24), contentDescription = stringResource(R.string.add_new_category))
 //                        }
                     }
-                    Spacer(modifier = Modifier.height(24.dp))
-
                 }
             }
         }
@@ -108,14 +109,63 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
 
 @Composable
 private fun DatePicker(bottomSheetViewModel: BottomSheetViewModel) {
-    val timePickerState = rememberUseCaseState(visible = true)
+    val timePickerState = rememberUseCaseState(visible = false)
     val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
-    DateTimeDialog(state = timePickerState, selection = DateTimeSelection.Date { date ->
-//        loginViewModel.birthday = date  // null warning
-//        onTextValueChange(date)
-//        timePickerState.hide()
-    }, properties = DialogProperties())
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 8.dp)
+    ) {
+        OutlinedButtonWithAnimation("Today")
+
+        OutlinedButtonWithAnimation("Yesterday")
+
+        if (selectedDate != null) {
+            Text(text = selectedDate.toString(), style = MaterialTheme.typography.bodySmall)
+        } else {
+            DateTimeDialog(state = timePickerState, selection = DateTimeSelection.Date { date ->
+                selectedDate.value = date
+                timePickerState.hide()
+            }, properties = DialogProperties())
+        }
+
+    }
+
 }
+
+@Composable
+private fun SimpleOutlinedTextFieldSample() {
+    var text by remember { mutableStateOf("") }
+
+    OutlinedTextField(
+        value = text,
+        onValueChange = { text = it },
+        label = { Text("outlinedTextField") }
+    )
+}
+@Composable
+fun OutlinedButtonWithAnimation(text : String) {
+    var isSelected by remember { mutableStateOf(false) }
+
+    Button(
+        onClick = {
+            isSelected = !isSelected
+        },
+        modifier = Modifier
+            .padding(16.dp)
+            .background(
+                color = if (isSelected) Color.Gray else Color.Transparent,
+                shape = MaterialTheme.shapes.medium
+            )
+    ) {
+        Text(
+            text = text,
+            style = if (isSelected) MaterialTheme.typography.titleSmall.copy(color = Color.White)
+            else MaterialTheme.typography.titleSmall
+        )
+    }
+}
+
 
 @Composable
 fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
@@ -142,9 +192,9 @@ private fun CategoriesGrid(categoryList: GetCategoryListUseCase) {
     ) {
         items(count = categoryList.getCategoryList().size) { index ->
             CategoryCard(category = categoryList.getCategoryList()[index]) {  /*Place for onClick for CategoryCard*/ }
-            }
         }
     }
+}
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
@@ -187,9 +237,3 @@ private fun AmountInput(
     }
 }
 
-@Preview
-@Composable
-private fun Preview() {
-    val currentSettings = SettingsData(5, currency = "UAH")
-    SimplifiedBottomSheet(isVisible = true, settingsData = currentSettings)
-}
