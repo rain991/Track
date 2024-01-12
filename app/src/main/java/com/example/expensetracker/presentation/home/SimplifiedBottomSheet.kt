@@ -9,12 +9,16 @@ import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
@@ -30,6 +34,8 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.State
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -43,6 +49,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -68,6 +75,7 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
+    val configuration = LocalConfiguration.current
     val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
     val categoryList = koinInject<GetCategoryListUseCase>()
     val addExpensesItemUseCase = koinInject<AddExpensesItemUseCase>()
@@ -87,47 +95,63 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
                 modifier = Modifier
                     .fillMaxHeight(0.7f)
                     .fillMaxWidth()
-            ) {
-                Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                    Text(text = stringResource(R.string.add_expenses), fontSize = 24.sp, style = MaterialTheme.typography.titleLarge)
-                    Spacer(modifier = Modifier.height(12.dp))
-                    AmountInput(focusRequester, currentExpenseAdded, controller, settingsData)
-                    DatePicker(bottomSheetViewModel = bottomSheetViewModel)
-                    SimpleOutlinedTextFieldSample(label = "Note")
-                    Row(modifier = Modifier.fillMaxWidth()) {
+            )
+            {
+                Box(
+                    Modifier
+                        .fillMaxSize()
+                        .windowInsetsPadding(WindowInsets.navigationBars)
+                ) {
+                    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
+                        Text(
+                            text = stringResource(R.string.add_expenses),
+                            style = MaterialTheme.typography.titleLarge.copy(fontSize = 24.sp),
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        )
+                        AmountInput(focusRequester, currentExpenseAdded, controller, settingsData)
+                        Spacer(Modifier.height(12.dp))
+                        DatePicker()
+                        SimpleOutlinedTextFieldSample(label = "Note")
                         CategoriesGrid(categoryList)
-//                        Button(onClick = { /*Adding New Category Call*/ }) {
-//                            Icon(painter = painterResource(id = R.drawable.sharp_add_24), contentDescription = stringResource(R.string.add_new_category))
-//                        }
+                        Spacer(Modifier.weight(1f))
+                        ConfirmationButton(
+                            Modifier
+                                .align(Alignment.CenterHorizontally)
+                        )
                     }
-                    ConfirmationButton(
-                        Modifier
-                            .padding(bottom = 40.dp))
                 }
+
             }
         }
     }
 }
 
 @Composable
-private fun DatePicker(bottomSheetViewModel: BottomSheetViewModel) {
-    val timePickerState = rememberUseCaseState(visible = false)
-    val selectedDate = remember { mutableStateOf<LocalDate?>(null) }
+private fun DatePicker() {
+    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val timePickerState = rememberUseCaseState(bottomSheetViewModel.timePickerState.collectAsState(initial = false).value)
+    val todayButtonState = bottomSheetViewModel.todayButtonState.collectAsState()
+    val yesterdayButtonState = bottomSheetViewModel.yesterdayButtonState.collectAsState()
+    val selectedDate = bottomSheetViewModel.datePicked.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
     ) {
-        OutlinedButtonWithAnimation("Today")
 
-        OutlinedButtonWithAnimation("Yesterday")
+        OutlinedButtonWithAnimation(OutlinedButtonText.TODAY)
 
-        if (selectedDate != null) {
+        OutlinedButtonWithAnimation(OutlinedButtonText.YESTERDAY)
+
+        if (selectedDate.value != null) {
             Text(text = selectedDate.toString(), style = MaterialTheme.typography.bodySmall)
         } else {
+            Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
+                Text(text = stringResource(R.string.other_adding_menu), style = MaterialTheme.typography.titleSmall)
+            }
             DateTimeDialog(state = timePickerState, selection = DateTimeSelection.Date { date ->
-                selectedDate.value = date
-                timePickerState.hide()
+                bottomSheetViewModel.setDatePicked(date)
+                bottomSheetViewModel.togglePickerState()
             }, properties = DialogProperties())
         }
 
@@ -146,23 +170,43 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
     )
 }
 
+enum class OutlinedButtonText {
+    TODAY, YESTERDAY
+}
+
 @Composable
-fun OutlinedButtonWithAnimation(text: String) {
-    var isSelected by remember { mutableStateOf(false) }
+private fun OutlinedButtonWithAnimation(type: OutlinedButtonText) {
+    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    lateinit var text: String
+    val isSelected: State<Boolean>
+    when (type) {
+        OutlinedButtonText.TODAY -> {
+            text = stringResource(id = R.string.today)
+            isSelected = bottomSheetViewModel.todayButtonState.collectAsState()
+        }
+
+        OutlinedButtonText.YESTERDAY -> {
+            text = stringResource(id = R.string.yesterday)
+            isSelected = bottomSheetViewModel.yesterdayButtonState.collectAsState()
+        }
+    }
 
     Button(
         onClick = {
-            isSelected = !isSelected
+            when (type) {
+                OutlinedButtonText.TODAY -> bottomSheetViewModel.setDatePicked(localDate = LocalDate.now())
+                OutlinedButtonText.YESTERDAY -> bottomSheetViewModel.setDatePicked(localDate = LocalDate.now().minusDays(1))
+            }
         },
         modifier = Modifier
             .background(
-                color = if (isSelected) Color.Gray else Color.Transparent,
+                color = if (isSelected.value) Color.Gray else Color.Transparent,
                 shape = MaterialTheme.shapes.medium
             )
     ) {
         Text(
             text = text,
-            style = if (isSelected) MaterialTheme.typography.titleSmall.copy(color = Color.White)
+            style = if (isSelected.value) MaterialTheme.typography.titleSmall.copy(color = Color.White)
             else MaterialTheme.typography.titleSmall
         )
     }
