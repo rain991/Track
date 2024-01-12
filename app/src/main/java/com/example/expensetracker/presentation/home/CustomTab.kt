@@ -103,7 +103,7 @@ private fun CustomTab(
     Box(
         modifier = modifier
             .clip(CircleShape)
-            .background(Color.White)
+            .background(White)
             .height(intrinsicSize = IntrinsicSize.Min),
     ) {
         MyTabIndicator(

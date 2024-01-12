@@ -6,17 +6,24 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
 
 class BottomSheetViewModel : ViewModel() {
+    private var _note = MutableStateFlow("")
+    val note = _note.asStateFlow()
+
     private var _timePickerState = MutableStateFlow(false) // timePicker Dialog state
     val timePickerState = _timePickerState.asStateFlow()
-
-    private var _datePicked = MutableStateFlow<LocalDate>(LocalDate.now())
+    private var _datePicked = MutableStateFlow<LocalDate>(value = LocalDate.now())
     val datePicked = _datePicked.asStateFlow()
 
-    private var _todayButtonState = MutableStateFlow(false)
-    val todayButtonState = _todayButtonState.asStateFlow()
+    private var _todayButtonActiveState = MutableStateFlow(false)
+    val todayButtonActiveState = _todayButtonActiveState.asStateFlow()
 
-    private var _yesterdayButtonState = MutableStateFlow(false)
-    val yesterdayButtonState = _yesterdayButtonState.asStateFlow()
+    private var _yesterdayButtonActiveState = MutableStateFlow(false)
+    val yesterdayButtonActiveState = _yesterdayButtonActiveState.asStateFlow()
+
+    fun setNote(note: String){
+        _note.value=note
+    }
+
     fun togglePickerState() {
         _timePickerState.value = !_timePickerState.value
     }
@@ -37,10 +44,10 @@ class BottomSheetViewModel : ViewModel() {
     }
 
     private fun setTodayButtonState(boolean: Boolean) {
-        _todayButtonState.value = boolean
+        _todayButtonActiveState.value = boolean
     }
     private fun setYesterdayButtonState(boolean: Boolean) {
-        _yesterdayButtonState.value = boolean
+        _yesterdayButtonActiveState.value = boolean
     }
 
 }

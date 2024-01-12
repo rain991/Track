@@ -65,7 +65,7 @@ import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import com.example.expensetracker.presentation.other.ConfirmationButton
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import org.koin.compose.koinInject
@@ -129,34 +129,63 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
 @Composable
 private fun DatePicker() {
     val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
-    val timePickerState = rememberUseCaseState(bottomSheetViewModel.timePickerState.collectAsState(initial = false).value)
-    val todayButtonState = bottomSheetViewModel.todayButtonState.collectAsState()
-    val yesterdayButtonState = bottomSheetViewModel.yesterdayButtonState.collectAsState()
-    val selectedDate = bottomSheetViewModel.datePicked.collectAsState()
+    val datePickerStateFlow by bottomSheetViewModel.timePickerState.collectAsState()
+    val datePickerState = UseCaseState(datePickerStateFlow)
+    val selectedDate by bottomSheetViewModel.datePicked.collectAsState()
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
     ) {
 
-        OutlinedButtonWithAnimation(OutlinedButtonText.TODAY)
+        OutlinedButtonWithAnimation(OutlinedButtonText.TODAY) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
+        OutlinedButtonWithAnimation(OutlinedButtonText.YESTERDAY) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
+        Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
+            Text(text = stringResource(R.string.other_adding_menu), style = MaterialTheme.typography.titleSmall)
+        }
+        DateTimeDialog(state = datePickerState, selection = DateTimeSelection.Date { date ->
+            bottomSheetViewModel.setDatePicked(date)
+            bottomSheetViewModel.togglePickerState()
+        }, properties = DialogProperties())
+    }
+}
 
-        OutlinedButtonWithAnimation(OutlinedButtonText.YESTERDAY)
 
-        if (selectedDate.value != null) {
-            Text(text = selectedDate.toString(), style = MaterialTheme.typography.bodySmall)
-        } else {
-            Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
-                Text(text = stringResource(R.string.other_adding_menu), style = MaterialTheme.typography.titleSmall)
-            }
-            DateTimeDialog(state = timePickerState, selection = DateTimeSelection.Date { date ->
-                bottomSheetViewModel.setDatePicked(date)
-                bottomSheetViewModel.togglePickerState()
-            }, properties = DialogProperties())
+enum class OutlinedButtonText {
+    TODAY, YESTERDAY
+}
+
+@Composable
+private fun OutlinedButtonWithAnimation(type: OutlinedButtonText, onClick: () -> Unit) {
+    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    lateinit var text: String
+    lateinit var state: State<Boolean>
+    when (type) {
+        OutlinedButtonText.TODAY -> {
+            text = stringResource(id = R.string.today)
+            state =bottomSheetViewModel.todayButtonActiveState.collectAsState()
         }
 
+        OutlinedButtonText.YESTERDAY -> {
+            text = stringResource(id = R.string.yesterday)
+            state = bottomSheetViewModel.yesterdayButtonActiveState.collectAsState()
+        }
     }
 
+    Button(
+        onClick = onClick,
+        modifier = Modifier
+            .background(
+                color = if (state.value) Color.Black else Color.Transparent,
+                shape = MaterialTheme.shapes.medium
+            )
+    ) {
+        Text(
+            text = text,
+            style = if (state.value) MaterialTheme.typography.titleSmall.copy(color = Color.White)
+            else MaterialTheme.typography.titleSmall
+        )
+    }
 }
 
 @Composable
@@ -166,52 +195,9 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
     OutlinedTextField(
         value = text,
         onValueChange = { text = it },
-        label = { Text(label) }
+        label = { Text(label) }, modifier = Modifier.padding(horizontal = 8.dp)
     )
 }
-
-enum class OutlinedButtonText {
-    TODAY, YESTERDAY
-}
-
-@Composable
-private fun OutlinedButtonWithAnimation(type: OutlinedButtonText) {
-    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
-    lateinit var text: String
-    val isSelected: State<Boolean>
-    when (type) {
-        OutlinedButtonText.TODAY -> {
-            text = stringResource(id = R.string.today)
-            isSelected = bottomSheetViewModel.todayButtonState.collectAsState()
-        }
-
-        OutlinedButtonText.YESTERDAY -> {
-            text = stringResource(id = R.string.yesterday)
-            isSelected = bottomSheetViewModel.yesterdayButtonState.collectAsState()
-        }
-    }
-
-    Button(
-        onClick = {
-            when (type) {
-                OutlinedButtonText.TODAY -> bottomSheetViewModel.setDatePicked(localDate = LocalDate.now())
-                OutlinedButtonText.YESTERDAY -> bottomSheetViewModel.setDatePicked(localDate = LocalDate.now().minusDays(1))
-            }
-        },
-        modifier = Modifier
-            .background(
-                color = if (isSelected.value) Color.Gray else Color.Transparent,
-                shape = MaterialTheme.shapes.medium
-            )
-    ) {
-        Text(
-            text = text,
-            style = if (isSelected.value) MaterialTheme.typography.titleSmall.copy(color = Color.White)
-            else MaterialTheme.typography.titleSmall
-        )
-    }
-}
-
 
 @Composable
 fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
