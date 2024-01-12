@@ -8,19 +8,39 @@
     <string name="loginnametextfield">Your First Name</string>
     <string name="lets_start">Lets start!</string>
     <string name="your_income">Your monthly income</string>
+
+    <string name="january">January</string>
+    <string name="february">February</string>
+    <string name="march">March</string>
+    <string name="april">April</string>
+    <string name="may">May</string>
+    <string name="june">June</string>
+    <string name="july">July</string>
+    <string name="august">August</string>
+    <string name="september">September</string>
+    <string name="october">October</string>
+    <string name="november">November</string>
+    <string name="december">December</string>
+    <string name="unknown_month">Unknown month</string>
+    <string name="add_expenses">Add expenses</string>
+    <string name="add_new_category">Add New Category</string>
+    <string name="other_adding_menu">Other..</string>
+
+    <string name="today">Today</string>
+    <string name="yesterday">Yesterday</string>
+
     <string-array name="default_expenses">
         <item>Groceries</item>
         <item>Utilities</item>
-        <item> "Housing" </item>
-        <item> Transportation</item>
-        <item>Dining Out </item>
-        <item>Entertainment </item>
-        <item> Healthcare</item>
-        <item>Clothing and Accessories </item>
-        <item>Personal Care </item>
-        <item>Technology and Electronics </item>
-        <item>Travel </item>
-        <item>Savings and Investments </item>
-        <item> </item>
+        <item>Housing</item>
+        <item>Transportation</item>
+        <item>Dining Out</item>
+        <item>Entertainment</item>
+        <item>Healthcare</item>
+        <item>Clothing and Accessories</item>
+        <item>Personal Care</item>
+        <item>Technology and Electronics</item>
+        <item>Travel</item>
+        <item>Savings and Investments</item>
     </string-array>
 </resources>

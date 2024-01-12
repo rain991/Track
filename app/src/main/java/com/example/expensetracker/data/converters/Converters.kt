@@ -1,6 +1,5 @@
-package com.example.expensetracker.data
+package com.example.expensetracker.data.converters
 
-import androidx.room.ProvidedTypeConverter
 import androidx.room.TypeConverter
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter

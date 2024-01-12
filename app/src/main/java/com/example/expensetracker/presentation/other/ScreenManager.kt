@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.other
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -18,11 +18,12 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expensetracker.data.ExpensesDAO
+import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun PagerTest(expensesDAO: ExpensesDAO) {
+fun ScreenManager(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {
     val pagerState = rememberPagerState(initialPage = 1) { 3 }
     Column(
         modifier = Modifier.fillMaxSize()
@@ -32,9 +33,9 @@ fun PagerTest(expensesDAO: ExpensesDAO) {
             modifier = Modifier.weight(1f)
         ) { page ->
             when (page) {
-                0 -> FirstScreen(expensesDAO = expensesDAO)
-                1 -> SecondScreen(expensesDAO = expensesDAO)
-                2 -> ThirdScreen(expensesDAO = expensesDAO)
+                0 -> FirstScreen(expensesDAO = expensesDAO, expensesListRepositoryImpl = expensesListRepositoryImpl)
+                1 -> SecondScreen(expensesDAO = expensesDAO, expensesListRepositoryImpl = expensesListRepositoryImpl)
+                2 -> ThirdScreen(expensesDAO = expensesDAO, expensesListRepositoryImpl = expensesListRepositoryImpl)
             }
         }
     }

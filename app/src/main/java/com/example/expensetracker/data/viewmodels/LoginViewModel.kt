@@ -1,9 +1,10 @@
-package com.example.expensetracker.data
+package com.example.expensetracker.data.viewmodels
 
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.lifecycle.ViewModel
+import com.example.expensetracker.data.models.Currency
+import com.example.expensetracker.data.models.USD
 import java.time.LocalDate
-import kotlin.random.Random
 
 
 class LoginViewModel : ViewModel() {
@@ -14,5 +15,6 @@ class LoginViewModel : ViewModel() {
     var birthday: LocalDate? = null
     var firstName: String? = null
     var income: Int? = null
+
 }
 // IF any parameters needed to be passed in viewmodel class, should use viewmodelfactory

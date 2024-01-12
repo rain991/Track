@@ -1,9 +1,7 @@
-package com.example.expensetracker.presentation
+package com.example.expensetracker.presentation.other
 
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -13,18 +11,16 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import com.example.expensetracker.data.ExpensesDAO
-import com.example.expensetracker.data.ExpensesListRepositoryImpl
-import com.example.expensetracker.presentation.BottomSheet
-import com.example.expensetracker.presentation.ExpensesLazyColumn
-import com.example.expensetracker.presentation.ExtendedButtonExample
-import com.example.expensetracker.presentation.Header
-import com.example.expensetracker.presentation.MainInfoComposable
+import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.presentation.home.BottomSheet
+import com.example.expensetracker.presentation.home.ExpensesLazyColumn
+import com.example.expensetracker.presentation.home.ExtendedButtonExample
+import com.example.expensetracker.presentation.home.MainInfoComposable
 
 @Composable
-fun FirstScreen(expensesDAO: ExpensesDAO) { // Settings
+fun FirstScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) { // Settings
     var isVisible by rememberSaveable { mutableStateOf(false) }
     androidx.compose.material3.Scaffold(
         topBar = {
@@ -40,7 +36,7 @@ fun FirstScreen(expensesDAO: ExpensesDAO) { // Settings
         ) { // Settings screen
             BottomSheet(
                 isVisible = isVisible,
-                onDismiss = { isVisible = false }, expensesDAO = expensesDAO
+                onDismiss = { isVisible = false }, expensesDAO = expensesDAO, expensesListRepository =  expensesListRepositoryImpl
             )
         }
     }
@@ -48,7 +44,7 @@ fun FirstScreen(expensesDAO: ExpensesDAO) { // Settings
 }
 
 @Composable
-fun SecondScreen(expensesDAO: ExpensesDAO) {  // Main and Primary screen
+fun SecondScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Main and Primary screen
     var isVisible by rememberSaveable { mutableStateOf(false) }
 
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
@@ -67,14 +63,14 @@ fun SecondScreen(expensesDAO: ExpensesDAO) {  // Main and Primary screen
             verticalArrangement = Arrangement.spacedBy(16.dp))
                 {
                    MainInfoComposable()
-                   ExpensesLazyColumn(expenses = ExpensesListRepositoryImpl.getExpensesList())
+                   ExpensesLazyColumn(expenses = expensesListRepositoryImpl.getExpensesList())
         }
-        BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false }, expensesDAO)
+        BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false }, expensesDAO, expensesListRepository = expensesListRepositoryImpl)
     }
 }
 
 @Composable
-fun ThirdScreen(expensesDAO: ExpensesDAO) {  // Statistics Screen
+fun ThirdScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Statistics Screen
     var isVisible by rememberSaveable { mutableStateOf(false) }  // is BottomSheet visible
 
     androidx.compose.material3.Scaffold(
@@ -90,7 +86,7 @@ fun ThirdScreen(expensesDAO: ExpensesDAO) {  // Statistics Screen
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false }, expensesDAO)
+            BottomSheet(isVisible = isVisible, onDismiss = { isVisible = false }, expensesDAO, expensesListRepository = expensesListRepositoryImpl)
         }
     }
 }
