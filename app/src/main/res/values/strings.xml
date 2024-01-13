@@ -24,10 +24,11 @@
     <string name="unknown_month">Unknown month</string>
     <string name="add_expenses">Add expenses</string>
     <string name="add_new_category">Add New Category</string>
-    <string name="other_adding_menu">Other..</string>
+    <string name="other_adding">Other</string>
 
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
+    <string name="other">Other</string>
 
     <string-array name="default_expenses">
         <item>Groceries</item>
