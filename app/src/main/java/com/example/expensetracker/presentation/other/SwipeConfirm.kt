@@ -35,7 +35,7 @@ import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
-import org.koin.compose.koinInject
+import org.koin.androidx.compose.koinViewModel
 import kotlin.math.roundToInt
 
 
@@ -47,7 +47,7 @@ enum class ConfirmationState {
 @OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun ConfirmationButton(modifier: Modifier = Modifier) {
-    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val acceptButtonAvailable = bottomSheetViewModel.isAcceptButtonAvailable.collectAsState(initial = false)
     val width = 350.dp
     val dragSize = 50.dp

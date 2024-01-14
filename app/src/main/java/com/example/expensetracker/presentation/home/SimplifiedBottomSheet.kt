@@ -69,6 +69,7 @@ import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import java.time.LocalDate
 import kotlin.random.Random
@@ -76,7 +77,7 @@ import kotlin.random.Random
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
-    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     //  val categoryList = koinInject<GetCategoryListUseCase>()
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
@@ -126,7 +127,7 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
 
 @Composable
 private fun DatePicker() {
-    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val datePickerStateFlow by bottomSheetViewModel.timePickerState.collectAsState()
     val datePickerState = UseCaseState(visible = datePickerStateFlow)
     val selectedDate by bottomSheetViewModel.datePicked.collectAsState()
@@ -168,7 +169,7 @@ enum class OutlinedButtonText {
 
 @Composable
 private fun OutlinedButtonWithAnimation(type: OutlinedButtonText, onClick: () -> Unit) {
-    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     lateinit var text: String
     lateinit var state: State<Boolean>
     when (type) {
@@ -201,7 +202,7 @@ private fun OutlinedButtonWithAnimation(type: OutlinedButtonText, onClick: () ->
 
 @Composable
 private fun SimpleOutlinedTextFieldSample(label: String) {
-    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val text by bottomSheetViewModel.note.collectAsState()
     OutlinedTextField(
         value = text,
@@ -213,7 +214,7 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
 
 @Composable
 fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
-    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val activeCategory = bottomSheetViewModel.categoryPicked.collectAsState()
 
     Row(
@@ -247,7 +248,7 @@ fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
 @Composable
 private fun CategoriesGrid() {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
-    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val categoryList = koinInject<GetCategoryListUseCase>().getCategoryList()
     LazyHorizontalStaggeredGrid(
         modifier = Modifier.height(72.dp),
@@ -270,7 +271,7 @@ private fun AmountInput(
     controller: SoftwareKeyboardController?,
     settingsData: SettingsData
 ) {
-    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     var currentExpense = bottomSheetViewModel.inputExpense.collectAsState()
     Row(
         modifier = Modifier.fillMaxWidth(),

@@ -17,7 +17,6 @@ import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
-import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.LoginViewModel
 import com.example.expensetracker.presentation.home.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.login.LoginScreen
@@ -37,7 +36,6 @@ class MainActivity : ComponentActivity() {
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private val categoriesListRepository : CategoriesListRepositoryImpl by inject()
     private val loginViewModel by viewModels<LoginViewModel>()
-    private val bottomSheetViewModel by viewModels<BottomSheetViewModel>()
     private val settingsData = SettingsData()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

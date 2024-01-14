@@ -48,5 +48,5 @@ val domainModule = module {
 val viewModelModule = module {
     viewModel { LoginViewModel() }
     viewModel { MainViewModel() }
-    viewModel { BottomSheetViewModel() }
+    viewModel { BottomSheetViewModel(get(), get()) }
 }
