@@ -2,19 +2,24 @@ package com.example.expensetracker.data.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
+import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
-class BottomSheetViewModel : ViewModel() {
+class BottomSheetViewModel(private val categoryList: GetCategoryListUseCase, private val addExpensesItemUseCase: AddExpensesItemUseCase) :
+    ViewModel() {
     private var _note = MutableStateFlow("")
     val note = _note.asStateFlow()
 
-    private var _inputExpense = MutableStateFlow(0.0f)
+    private var _inputExpense = MutableStateFlow<Float?>(0.0f)
     val inputExpense = _inputExpense.asStateFlow()
 
-    private var _isAcceptButtonAvailable = MutableStateFlow(false)
-    val isAcceptButtonAvailable = _isAcceptButtonAvailable.asStateFlow()
+//    private var _isAcceptButtonAvailable = MutableStateFlow(false)
+//    val isAcceptButtonAvailable = _isAcceptButtonAvailable.asStateFlow()
 
     private var _categoryPicked = MutableStateFlow<ExpenseCategory?>(null)
     val categoryPicked = _categoryPicked.asStateFlow()
@@ -30,27 +35,36 @@ class BottomSheetViewModel : ViewModel() {
     private var _yesterdayButtonActiveState = MutableStateFlow(false)
     val yesterdayButtonActiveState = _yesterdayButtonActiveState.asStateFlow()
 
+    val isAcceptButtonAvailable = combine(_inputExpense, _datePicked, _categoryPicked) { _inputExpense, _datePicked, _categoryPicked ->
+        _inputExpense != null && _inputExpense > 0.5 // && _datePicked.isBefore(LocalDate.now().plusDays(1)) && _categoryPicked!=null
+
+    }
+
     fun setNote(note: String) {
-        _note.value = note
+        _note.update {note}
     }
 
     fun setInputExpense(inputExpense: Float) {
-        _inputExpense.value = inputExpense
-        checkAcceptButtonAvailable()
+        _inputExpense.update{ inputExpense}
     }
 
-    private fun setIsAcceptButton(value : Boolean){
-        _isAcceptButtonAvailable.value=value
+    fun setCategoryPicked(category: ExpenseCategory?) {
+        if (category != null) {
+            _categoryPicked.update { it?.copy(categoryId = category.categoryId, name=category.name, colorId = category.colorId) }
+        } else _categoryPicked.update { null }
     }
 
-    private fun checkAcceptButtonAvailable(){
-        if(_inputExpense.value>0.5f && _categoryPicked.value!=null){
-            setIsAcceptButton(true)
-        }else setIsAcceptButton(false)
-    }
+
+//    private fun checkAcceptButtonAvailable() {
+//        if (_inputExpense.value != null) {
+//            if (_inputExpense.value!! > 0.5f && _categoryPicked.value != null && _datePicked.value < LocalDate.now().plusDays(1)) {
+//                setIsAcceptButton(true)
+//            }
+//        } else setIsAcceptButton(false)
+//    }
 
     fun togglePickerState() {
-        _timePickerState.value = !_timePickerState.value
+        _timePickerState.update{!_timePickerState.value }
     }
 
     fun setDatePicked(localDate: LocalDate) {
@@ -68,11 +82,11 @@ class BottomSheetViewModel : ViewModel() {
     }
 
     private fun setTodayButtonState(boolean: Boolean) {
-        _todayButtonActiveState.value = boolean
+        _todayButtonActiveState.update{boolean}
     }
 
     private fun setYesterdayButtonState(boolean: Boolean) {
-        _yesterdayButtonActiveState.value = boolean
+        _yesterdayButtonActiveState.update{boolean}
     }
 
     fun isDateInOther(localDate: LocalDate): Boolean {

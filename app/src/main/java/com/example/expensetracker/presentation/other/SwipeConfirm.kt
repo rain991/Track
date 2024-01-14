@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Done
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
@@ -26,7 +27,6 @@ import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.IntOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -34,6 +34,8 @@ import androidx.wear.compose.material.ExperimentalWearMaterialApi
 import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
+import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
+import org.koin.compose.koinInject
 import kotlin.math.roundToInt
 
 
@@ -42,21 +44,20 @@ val GreenColor = Color(0xFF2FD286)
 enum class ConfirmationState {
     Default, Confirmed
 }
-
-
 @OptIn(ExperimentalWearMaterialApi::class)
 @Composable
 fun ConfirmationButton(modifier: Modifier = Modifier) {
-
+    val bottomSheetViewModel = koinInject<BottomSheetViewModel>()
+    val acceptButtonAvailable = bottomSheetViewModel.isAcceptButtonAvailable.collectAsState(initial = false)
     val width = 350.dp
     val dragSize = 50.dp
 
     val swipeableState = rememberSwipeableState(ConfirmationState.Default)
     val sizePx = with(LocalDensity.current) { (width - dragSize).toPx() }
-    val anchors = mapOf(0f to ConfirmationState.Default, sizePx to ConfirmationState.Confirmed)
+   // val anchors = mapOf(0f to ConfirmationState.Default, sizePx to ConfirmationState.Confirmed)
     val progress by remember {
         derivedStateOf {
-            if (swipeableState.offset.value == 0f) 0f else swipeableState.offset.value / sizePx
+                if (swipeableState.offset.value == 0f) 0f else swipeableState.offset.value / sizePx
         }
     }
 
@@ -65,9 +66,17 @@ fun ConfirmationButton(modifier: Modifier = Modifier) {
             .width(width)
             .swipeable(
                 state = swipeableState,
-                anchors = anchors,
+                anchors = if (acceptButtonAvailable.value) {
+                    mapOf(
+                        0f to ConfirmationState.Default,
+                        sizePx to ConfirmationState.Confirmed
+                    )
+                } else {
+                    mapOf(0f to ConfirmationState.Default)
+                },
                 thresholds = { _, _ -> FractionalThreshold(0.5f) },
                 orientation = Orientation.Horizontal
+              //  enabled = acceptButtonAvailable.value
             )
             .background(GreenColor, RoundedCornerShape(dragSize))
     ) {
@@ -123,10 +132,4 @@ private fun DraggableControl(
 
         }
     }
-}
-
-@Preview(showBackground = true)
-@Composable
-private fun ConfirmationButtonPreview() {
-    ConfirmationButton()
 }

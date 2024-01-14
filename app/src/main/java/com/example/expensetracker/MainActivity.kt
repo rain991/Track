@@ -11,7 +11,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.database.ExpenseCategoryDao
@@ -43,7 +42,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dataStoreManager = DataStoreManager(this)
-        lifecycleScope.launch(Dispatchers.IO) {
+        CoroutineScope(Dispatchers.IO).launch {
             expensesListRepository.setExpensesList(expensesDao)
             categoriesListRepository.setCategoriesList(expenseCategoryDao)
         }
