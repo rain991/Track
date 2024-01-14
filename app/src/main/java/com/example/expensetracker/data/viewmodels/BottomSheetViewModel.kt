@@ -18,9 +18,6 @@ class BottomSheetViewModel(private val categoryList: GetCategoryListUseCase, pri
     private var _inputExpense = MutableStateFlow<Float?>(0.0f)
     val inputExpense = _inputExpense.asStateFlow()
 
-//    private var _isAcceptButtonAvailable = MutableStateFlow(false)
-//    val isAcceptButtonAvailable = _isAcceptButtonAvailable.asStateFlow()
-
     private var _categoryPicked = MutableStateFlow<ExpenseCategory?>(null)
     val categoryPicked = _categoryPicked.asStateFlow()
 
@@ -36,8 +33,7 @@ class BottomSheetViewModel(private val categoryList: GetCategoryListUseCase, pri
     val yesterdayButtonActiveState = _yesterdayButtonActiveState.asStateFlow()
 
     val isAcceptButtonAvailable = combine(_inputExpense, _datePicked, _categoryPicked) { _inputExpense, _datePicked, _categoryPicked ->
-        _inputExpense != null && _inputExpense > 0.5 // && _datePicked.isBefore(LocalDate.now().plusDays(1)) && _categoryPicked!=null
-
+        _inputExpense != null && _inputExpense > 0.5  && _datePicked.isBefore(LocalDate.now().plusDays(1)) && _categoryPicked!=null
     }
 
     fun setNote(note: String) {
@@ -50,18 +46,9 @@ class BottomSheetViewModel(private val categoryList: GetCategoryListUseCase, pri
 
     fun setCategoryPicked(category: ExpenseCategory?) {
         if (category != null) {
-            _categoryPicked.update { it?.copy(categoryId = category.categoryId, name=category.name, colorId = category.colorId) }
+            _categoryPicked.update { category }
         } else _categoryPicked.update { null }
     }
-
-
-//    private fun checkAcceptButtonAvailable() {
-//        if (_inputExpense.value != null) {
-//            if (_inputExpense.value!! > 0.5f && _categoryPicked.value != null && _datePicked.value < LocalDate.now().plusDays(1)) {
-//                setIsAcceptButton(true)
-//            }
-//        } else setIsAcceptButton(false)
-//    }
 
     fun togglePickerState() {
         _timePickerState.update{!_timePickerState.value }

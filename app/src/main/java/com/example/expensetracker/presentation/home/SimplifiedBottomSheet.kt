@@ -51,6 +51,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -78,7 +79,7 @@ import kotlin.random.Random
 @Composable
 fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    //  val categoryList = koinInject<GetCategoryListUseCase>()
+    bottomSheetViewModel.setDatePicked(LocalDate.now())
 
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
     if (isVisible) {
@@ -143,8 +144,8 @@ private fun DatePicker() {
             .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
 
-        OutlinedButtonWithAnimation(OutlinedButtonText.TODAY) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
-        OutlinedButtonWithAnimation(OutlinedButtonText.YESTERDAY) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
+        OutlinedDateButton(OutlinedButtonText.TODAY) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
+        OutlinedDateButton(OutlinedButtonText.YESTERDAY) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
 
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
             Text(text = text, style = MaterialTheme.typography.titleSmall)
@@ -168,7 +169,7 @@ enum class OutlinedButtonText {
 }
 
 @Composable
-private fun OutlinedButtonWithAnimation(type: OutlinedButtonText, onClick: () -> Unit) {
+private fun OutlinedDateButton(type: OutlinedButtonText, onClick: () -> Unit) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     lateinit var text: String
     lateinit var state: State<Boolean>
@@ -213,7 +214,7 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
 }
 
 @Composable
-fun CategoryCard(category: ExpenseCategory, onClick: () -> Unit) {
+fun CategoryCard(category: ExpenseCategory) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val activeCategory = bottomSheetViewModel.categoryPicked.collectAsState()
 
@@ -259,7 +260,7 @@ private fun CategoriesGrid() {
     ) {
         items(count = categoryList.size) { index ->
             val item = categoryList[index]
-            CategoryCard(category = item) { bottomSheetViewModel.setCategoryPicked(item) }
+            CategoryCard(category = item)
         }
     }
 }
@@ -271,6 +272,7 @@ private fun AmountInput(
     controller: SoftwareKeyboardController?,
     settingsData: SettingsData
 ) {
+    val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     var currentExpense = bottomSheetViewModel.inputExpense.collectAsState()
     Row(
@@ -294,7 +296,7 @@ private fun AmountInput(
             keyboardActions = KeyboardActions(
                 onDone = {
                     controller?.hide()
-                    focusRequester.freeFocus()
+                    focusManager.clearFocus()
                 }
             ),
             maxLines = 1,
