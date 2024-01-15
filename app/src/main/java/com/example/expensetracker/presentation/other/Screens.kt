@@ -14,9 +14,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
-import com.example.expensetracker.presentation.home.BottomSheet
+import com.example.expensetracker.presentation.bottomsheets.BottomSheet
 import com.example.expensetracker.presentation.home.ExpensesLazyColumn
-import com.example.expensetracker.presentation.home.ExtendedButtonExample
+import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExample
 import com.example.expensetracker.presentation.home.MainInfoComposable
 
 @Composable

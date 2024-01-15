@@ -1,5 +1,6 @@
-package com.example.expensetracker.presentation.other
+package com.example.expensetracker.presentation.home
 
+import android.util.Log
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.Orientation
@@ -39,7 +40,6 @@ import androidx.wear.compose.material.swipeable
 import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
-import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import kotlin.math.roundToInt
@@ -129,8 +129,9 @@ private fun DraggableControl(
             derivedStateOf { progress >= 0.8f }
         }
         LaunchedEffect(isConfirmed) {
+            Log.d("MyLog", "Coroutine launched")
             if (isConfirmed && expense.value != null && category.value != null) {
-                coroutineScope.launch {
+                Log.d("MyLog", "In checked state")
                     addExpensesItemUseCase.addExpensesItem(
                         ExpenseItem(
                             name = note.value,
@@ -139,7 +140,6 @@ private fun DraggableControl(
                             categoryId = category.value!!.categoryId.toInt()
                         )
                     )
-                }
             }
         }
         Crossfade(targetState = isConfirmed, label = "") {

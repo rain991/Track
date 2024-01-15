@@ -18,7 +18,7 @@ import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.presentation.home.SimplifiedBottomSheet
+import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.login.LoginScreen
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
@@ -40,7 +40,7 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dataStoreManager = DataStoreManager(this)
-        CoroutineScope(Dispatchers.IO).launch {
+        CoroutineScope(Dispatchers.IO).launch { // warning
             expensesListRepository.setExpensesList(expensesDao)
             categoriesListRepository.setCategoriesList(expenseCategoryDao)
         }
