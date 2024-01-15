@@ -1,5 +1,6 @@
 package com.example.expensetracker
 
+import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
@@ -47,6 +48,7 @@ val domainModule = module {
 
 val settingsModule = module{
     single{ SettingsData(get()) }
+    single { DataStoreManager(androidContext()) }
 }
 
 val viewModelModule = module {

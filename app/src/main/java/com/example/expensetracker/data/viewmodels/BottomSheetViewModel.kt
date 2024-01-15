@@ -10,6 +10,8 @@ import java.time.LocalDate
 // private val categoryList: GetCategoryListUseCase, private val addExpensesItemUseCase: AddExpensesItemUseCase
 class BottomSheetViewModel(private val mainViewModel: MainViewModel) :
     ViewModel() {
+
+
     private var _note = MutableStateFlow("")
     val note = _note.asStateFlow()
 
@@ -21,6 +23,7 @@ class BottomSheetViewModel(private val mainViewModel: MainViewModel) :
 
     private var _timePickerState = MutableStateFlow(false) // timePicker Dialog state
     val timePickerState = _timePickerState.asStateFlow()
+
     private var _datePicked = MutableStateFlow<LocalDate>(value = LocalDate.now())
     val datePicked = _datePicked.asStateFlow()
 

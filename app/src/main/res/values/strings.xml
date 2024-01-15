@@ -32,6 +32,8 @@
     <string name="add_new_expense">Add New Expense</string>
     <string name="add_expense">Add Expenses</string>
     <string name="settings">Settings</string>
+    <string name="expenses">Expenses</string>
+    <string name="statistic">Statistic</string>
 
     <string-array name="default_expenses">
         <item>Groceries</item>

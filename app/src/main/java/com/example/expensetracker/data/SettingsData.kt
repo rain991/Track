@@ -62,6 +62,5 @@ class SettingsData(
             loginCount = pref.getLoginCount()
         }
     }
-
 }
 

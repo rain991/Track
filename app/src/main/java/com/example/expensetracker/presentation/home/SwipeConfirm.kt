@@ -23,7 +23,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
@@ -39,6 +38,7 @@ import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
+import com.example.expensetracker.data.viewmodels.MainViewModel
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -113,7 +113,7 @@ private fun DraggableControl(
     progress: Float,
     addExpensesItemUseCase: AddExpensesItemUseCase, bottomSheetViewModel: BottomSheetViewModel
 ) {
-    val coroutineScope = rememberCoroutineScope()
+    val mainViewModel = koinViewModel<MainViewModel>()
     val expense = bottomSheetViewModel.inputExpense.collectAsState()
     val note = bottomSheetViewModel.note.collectAsState()
     val date = bottomSheetViewModel.datePicked.collectAsState()
@@ -132,14 +132,15 @@ private fun DraggableControl(
             Log.d("MyLog", "Coroutine launched")
             if (isConfirmed && expense.value != null && category.value != null) {
                 Log.d("MyLog", "In checked state")
-                    addExpensesItemUseCase.addExpensesItem(
-                        ExpenseItem(
-                            name = note.value,
-                            date = date.value.toString(),
-                            value = expense.value!!,
-                            categoryId = category.value!!.categoryId.toInt()
-                        )
+                addExpensesItemUseCase.addExpensesItem(
+                    ExpenseItem(
+                        name = note.value,
+                        date = date.value.toString(),
+                        value = expense.value!!,
+                        categoryId = category.value!!.categoryId.toInt()
                     )
+                )
+                mainViewModel.setBottomSheetExpanded(false)
             }
         }
         Crossfade(targetState = isConfirmed, label = "") {

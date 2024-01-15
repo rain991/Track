@@ -18,8 +18,8 @@ import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.login.LoginScreen
+import com.example.expensetracker.presentation.other.ScreenManager
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -33,9 +33,9 @@ class MainActivity : ComponentActivity() {
     private val expensesDao: ExpensesDAO by inject()
     private val expenseCategoryDao: ExpenseCategoryDao by inject()
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
-    private val categoriesListRepository : CategoriesListRepositoryImpl by inject()
+    private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
     private val loginViewModel by viewModels<LoginViewModel>()
-    private val settingsData : SettingsData by inject()
+    private val settingsData: SettingsData by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dataStoreManager = DataStoreManager(this)
@@ -50,8 +50,8 @@ class MainActivity : ComponentActivity() {
                 if (settingsData.getLoginCount() != 0) settingsData.setLoginCount(settingsData.getLoginCount() + 1)
                 dataStoreManager.saveSettings(settingsData)
 
-                if(categoriesListRepository.getCategoriesList().size==0){
-                   categoriesListRepository.addDefaultCategories(this@MainActivity)
+                if (categoriesListRepository.getCategoriesList().size == 0) {
+                    categoriesListRepository.addDefaultCategories(this@MainActivity)
                 }
             }
         }
@@ -87,9 +87,9 @@ class MainActivity : ComponentActivity() {
                         }
                     }
 
-                    //ScreenManager(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
+                    ScreenManager()
 
-                        SimplifiedBottomSheet(isVisible = true, settingsData = settingsData)
+                   // SimplifiedBottomSheet(isVisible = true, settingsData = settingsData)
                 }
             }
         }
