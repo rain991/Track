@@ -1,14 +1,6 @@
 package com.example.expensetracker.presentation.bottomsheets
 
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.expandVertically
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -19,13 +11,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material3.Button
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetValue
@@ -34,7 +21,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
@@ -42,7 +28,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -55,32 +40,7 @@ import org.koin.compose.koinInject
 import java.time.LocalDate
 
 
-@Composable
-fun ExtendedButtonExample(
-    isExpanded: Boolean,
-    onClick: () -> Unit
-) {  // ALL fill-maxsize should be checked in final version
-
-    Box(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(bottom = 16.dp, end = 16.dp),
-    ) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            verticalArrangement = Arrangement.Bottom,
-            horizontalAlignment = Alignment.End
-        ) {
-            ExtendedFloatingActionButton(
-                expanded = isExpanded,
-                onClick = onClick, //TBC
-                icon = { Icon(Icons.Filled.Edit, "Extended floating action button.") },
-                text = { Text(text = "Extended FAB") })
-        }
-    }
-}
-
-
+// WARNING bottomsheet is deprecated, should use simplifiedbottomsheet instead
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO, expensesListRepository: ExpensesListRepositoryImpl) {
@@ -395,84 +355,3 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
 
     }
 }
-
-@Composable
-fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
-    var visible by remember { mutableStateOf(false) }
-    val density = LocalDensity.current
-
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 8.dp)
-            .clickable { visible = !visible }, shape = RoundedCornerShape(8.dp)
-    ) { // Design to be implemented soon
-        Column(modifier = Modifier.fillMaxWidth()) {
-            Text(text = expenseItem.name)
-            Text(text = expenseItem.date.toString())
-            Text(text = expenseItem.value.toString())
-
-            AnimatedVisibility(
-                visible = visible,
-                enter = slideInVertically {
-                    // Slide in from 40 dp from the top.
-                    with(density) { -20.dp.roundToPx() }
-                } + expandVertically(
-                    // Expand from the bottom.
-                    expandFrom = Alignment.Bottom
-                ) + fadeIn(
-                    // Fade in with the initial alpha of 0.3f.
-                    initialAlpha = 0.3f
-                ),
-                exit = slideOutVertically() + shrinkVertically() + fadeOut()
-            ) {
-                Text(
-                    "Hello",
-                    Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
-                )
-            }
-
-        }
-    }
-}
-
-
-@Composable
-fun TwoButtonsRow() {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(16.dp)
-    ) {
-
-        Button(
-            modifier = Modifier
-                .weight(2f)
-                .padding(8.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.primary)
-                .height(56.dp),
-            onClick = { /* Handle button click */ }
-        ) {
-            Text(text = "0")
-        }
-
-        Button(
-            modifier = Modifier
-                .weight(1f)
-                .padding(8.dp)
-                .clip(RoundedCornerShape(8.dp))
-                .background(MaterialTheme.colorScheme.primary)
-                .height(56.dp),
-            onClick = { /* Handle button click */ }
-        ) {
-            Text(text = ".")
-        }
-    }
-}
-
-
-
-

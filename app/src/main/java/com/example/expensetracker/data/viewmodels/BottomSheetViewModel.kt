@@ -2,15 +2,13 @@ package com.example.expensetracker.data.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.example.expensetracker.data.models.ExpenseCategory
-import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
-import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
-
-class BottomSheetViewModel(private val categoryList: GetCategoryListUseCase, private val addExpensesItemUseCase: AddExpensesItemUseCase) :
+// private val categoryList: GetCategoryListUseCase, private val addExpensesItemUseCase: AddExpensesItemUseCase
+class BottomSheetViewModel(private val mainViewModel: MainViewModel) :
     ViewModel() {
     private var _note = MutableStateFlow("")
     val note = _note.asStateFlow()

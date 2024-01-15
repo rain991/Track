@@ -1,5 +1,6 @@
 package com.example.expensetracker
 
+import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.database.ExpensesDB
@@ -28,7 +29,6 @@ val appModule = module {
 
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
     single<CategoriesListRepositoryImpl> { CategoriesListRepositoryImpl(get()) }
-
 }
 
 val domainModule = module {
@@ -45,8 +45,12 @@ val domainModule = module {
     factory<GetCategoryListUseCase> { GetCategoryListUseCase(get()) }
 }
 
+val settingsModule = module{
+    single{ SettingsData(get()) }
+}
+
 val viewModelModule = module {
     viewModel { LoginViewModel() }
     viewModel { MainViewModel() }
-    viewModel { BottomSheetViewModel(get(), get()) }
+    viewModel { BottomSheetViewModel(get()) }
 }

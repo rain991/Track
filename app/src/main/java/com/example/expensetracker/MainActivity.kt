@@ -23,7 +23,6 @@ import com.example.expensetracker.presentation.login.LoginScreen
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -36,7 +35,7 @@ class MainActivity : ComponentActivity() {
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private val categoriesListRepository : CategoriesListRepositoryImpl by inject()
     private val loginViewModel by viewModels<LoginViewModel>()
-    private val settingsData = SettingsData()
+    private val settingsData : SettingsData by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dataStoreManager = DataStoreManager(this)
@@ -46,16 +45,11 @@ class MainActivity : ComponentActivity() {
         }
 
         runBlocking {
-            val pref = dataStoreManager.getSettings().first()
             withContext(Dispatchers.IO) {
-                settingsData.setSettings(
-                    currency = pref.getCurrency(),
-                    budget = pref.getBudget(),
-                    name = pref.getName(),
-                    loginCount = pref.getLoginCount()
-                )
+
                 if (settingsData.getLoginCount() != 0) settingsData.setLoginCount(settingsData.getLoginCount() + 1)
                 dataStoreManager.saveSettings(settingsData)
+
                 if(categoriesListRepository.getCategoriesList().size==0){
                    categoriesListRepository.addDefaultCategories(this@MainActivity)
                 }

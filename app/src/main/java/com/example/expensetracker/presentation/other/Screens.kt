@@ -6,45 +6,49 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.expensetracker.R
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.viewmodels.MainViewModel
 import com.example.expensetracker.presentation.bottomsheets.BottomSheet
-import com.example.expensetracker.presentation.home.ExpensesLazyColumn
 import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExample
+import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
+import com.example.expensetracker.presentation.home.ExpensesLazyColumn
 import com.example.expensetracker.presentation.home.MainInfoComposable
+import org.koin.compose.koinInject
 
 @Composable
-fun FirstScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) { // Settings
-    var isVisible by rememberSaveable { mutableStateOf(false) }
+fun PagerFirstScreen() { // Settings
+    val mainViewModel = koinInject<MainViewModel>()
+    val bottomSheetState = mainViewModel.isBottomSheetExpanded.collectAsState()
     androidx.compose.material3.Scaffold(
         topBar = {
-            Header(categoryName = "Settings")
+            Header(categoryName = stringResource(R.string.settings))
         },
         floatingActionButton = {
-            ExtendedButtonExample(isExpanded = false, onClick = { isVisible = true })
+            ExtendedButtonExample(isButtonExpanded = false, onClick = { mainViewModel.setBottomSheetExpanded(true) })
         }
     ) {
         Column(
             modifier = Modifier
                 .padding(it)
         ) { // Settings screen
-            BottomSheet(
-                isVisible = isVisible,
-                onDismiss = { isVisible = false }, expensesDAO = expensesDAO, expensesListRepository =  expensesListRepositoryImpl
-            )
+            SimplifiedBottomSheet(isVisible = bottomSheetState.value, settingsData = )
         }
     }
 
 }
 
 @Composable
-fun SecondScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Main and Primary screen
+fun PagerSecondScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Main and Primary screen
     var isVisible by rememberSaveable { mutableStateOf(false) }
 
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
@@ -54,7 +58,7 @@ fun SecondScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesL
 
         },
         floatingActionButton = {
-            ExtendedButtonExample(isExpanded = true, onClick = { isVisible = true })
+            ExtendedButtonExample(isButtonExpanded = true, onClick = { isVisible = true })
         }
     ) {
         Column(
@@ -70,7 +74,7 @@ fun SecondScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesL
 }
 
 @Composable
-fun ThirdScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Statistics Screen
+fun PagerThirdScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {  // Statistics Screen
     var isVisible by rememberSaveable { mutableStateOf(false) }  // is BottomSheet visible
 
     androidx.compose.material3.Scaffold(
@@ -78,7 +82,7 @@ fun ThirdScreen(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesLi
             Header(categoryName = "Statistic")
         },
         floatingActionButton = {
-            ExtendedButtonExample(isExpanded = false, onClick = { isVisible = true })
+            ExtendedButtonExample(isButtonExpanded = false, onClick = { isVisible = true })
         }
     ) { innerPadding ->
         Column(

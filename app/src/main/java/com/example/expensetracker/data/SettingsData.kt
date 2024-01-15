@@ -1,11 +1,19 @@
 package com.example.expensetracker.data
 
+import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.runBlocking
+
 class SettingsData(
-    private var loginCount: Int = 0,
-    private var name: String = "User",
-    private var budget: Float = 0f,
-    private var currency: String = "USD"
+    private val dataStoreManager: DataStoreManager
 ) {
+    private var loginCount: Int = 0
+    private var name: String = "User"
+    private var budget: Float = 0f
+    private var currency: String = "USD"
+
+    init{
+        loadSettingsData()
+    }
 
     fun getLoginCount(): Int {
         return loginCount
@@ -45,14 +53,15 @@ class SettingsData(
         this.budget = budget // sum of all incomes
         this.name = name
     }
+    private fun loadSettingsData() {
+        runBlocking {
+            val pref = dataStoreManager.getSettings().first()
+            currency = pref.getCurrency()
+            budget = pref.getBudget()
+            name = pref.getName()
+            loginCount = pref.getLoginCount()
+        }
+    }
+
 }
 
-//    companion object {
-//        private var instance: SettingsData? = null
-//        fun getInstance(): SettingsData {
-//            if (instance == null) {
-//                instance = SettingsData()
-//            }
-//            return instance!!
-//        }
-//    }
