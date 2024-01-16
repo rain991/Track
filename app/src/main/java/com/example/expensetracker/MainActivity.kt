@@ -23,6 +23,7 @@ import com.example.expensetracker.presentation.other.ScreenManager
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -34,11 +35,12 @@ class MainActivity : ComponentActivity() {
     private val expenseCategoryDao: ExpenseCategoryDao by inject()
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
+    private val dataStoreManager : DataStoreManager by inject()
     private val loginViewModel by viewModels<LoginViewModel>()
-    private val settingsData: SettingsData by inject()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val dataStoreManager = DataStoreManager(this)
+
         CoroutineScope(Dispatchers.IO).launch { // warning
             expensesListRepository.setExpensesList(expensesDao)
             categoriesListRepository.setCategoriesList(expenseCategoryDao)
@@ -46,9 +48,13 @@ class MainActivity : ComponentActivity() {
 
         runBlocking {
             withContext(Dispatchers.IO) {
+                dataStoreManager.loginCountFlow.collect {
+                    if (it != 0) {
 
-                if (settingsData.getLoginCount() != 0) settingsData.setLoginCount(settingsData.getLoginCount() + 1)
-                dataStoreManager.saveSettings(settingsData)
+                    }settingsData.setLoginCount(settingsData.getLoginCount() + 1)
+                    dataStoreManager.saveSettings(settingsData)
+                }
+
 
                 if (categoriesListRepository.getCategoriesList().size == 0) {
                     categoriesListRepository.addDefaultCategories(this@MainActivity)

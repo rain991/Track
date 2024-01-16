@@ -10,7 +10,6 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
-import org.koin.java.KoinJavaComponent.inject
 
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("UserPreferences")
 
@@ -22,23 +21,34 @@ class DataStoreManager(private val context: Context) {
         private val CURRENCY = stringPreferencesKey("user_currency")
     }
 
-    suspend fun saveSettings(loginCount: Int, name: String, budget: Float, currency: String) {
-        context.dataStore.edit { preferences ->
-            preferences[LOGIN_COUNT] = loginCount
-            preferences[NAME] = name
-            preferences[BUDGET] = budget
-            preferences[CURRENCY] = currency
+    val loginCountFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: 0 }
+    suspend fun incrementLoginCount() {
+        context.dataStore.edit{
+            val currentLoginCount = it[LOGIN_COUNT] ?: 0
+            it[LOGIN_COUNT] = currentLoginCount + 1
         }
     }
 
-    fun getSettings(): Flow<SettingsData> {
-        return context.dataStore.data.map { preferences ->
-            SettingsData(
-                currency = preferences[CURRENCY] ?: "USD",
-                budget = preferences[BUDGET] ?: 0f,
-                name = preferences[NAME] ?: "User",
-                loginCount = preferences[LOGIN_COUNT] ?: 0
-            )
+    val nameFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[NAME] ?: "" }
+    suspend fun setName(newName : String) {
+        context.dataStore.edit{
+            it[NAME] = newName
         }
     }
+
+    val budgetFlow: Flow<Float> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: 0.0f }
+    suspend fun setBudget(newBudget : Float) {
+        context.dataStore.edit{
+            it[BUDGET] = newBudget
+        }
+    }
+
+    val CurrencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[CURRENCY] ?: "USD" }
+    suspend fun setCurrency(currency: com.example.expensetracker.data.models.Currency) {
+        context.dataStore.edit{
+            it[CURRENCY] = currency.ticker
+        }
+    }
+
+
 }
