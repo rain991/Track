@@ -5,14 +5,16 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class MainViewModel : ViewModel(){
-private var _isBottomSheetExpanded = MutableStateFlow(value = false)
+class MainViewModel : ViewModel() {
+    private var _mainScreenAvailable = MutableStateFlow(value = false)
+    val mainScreenAvailable = _mainScreenAvailable.asStateFlow()
+
+
+    private var _isBottomSheetExpanded = MutableStateFlow(value = false)
     val isBottomSheetExpanded = _isBottomSheetExpanded.asStateFlow()
 
 
-
-
-    fun setBottomSheetExpanded(value : Boolean){
+    fun setBottomSheetExpanded(value: Boolean) {
         _isBottomSheetExpanded.update { value }
     }
 }

@@ -23,29 +23,29 @@ class DataStoreManager(private val context: Context) {
 
     val loginCountFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: 0 }
     suspend fun incrementLoginCount() {
-        context.dataStore.edit{
+        context.dataStore.edit {
             val currentLoginCount = it[LOGIN_COUNT] ?: 0
             it[LOGIN_COUNT] = currentLoginCount + 1
         }
     }
 
     val nameFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[NAME] ?: "" }
-    suspend fun setName(newName : String) {
-        context.dataStore.edit{
+    suspend fun setName(newName: String) {
+        context.dataStore.edit {
             it[NAME] = newName
         }
     }
 
     val budgetFlow: Flow<Float> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: 0.0f }
-    suspend fun setBudget(newBudget : Float) {
-        context.dataStore.edit{
+    suspend fun setBudget(newBudget: Float) {
+        context.dataStore.edit {
             it[BUDGET] = newBudget
         }
     }
 
     val CurrencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[CURRENCY] ?: "USD" }
     suspend fun setCurrency(currency: com.example.expensetracker.data.models.Currency) {
-        context.dataStore.edit{
+        context.dataStore.edit {
             it[CURRENCY] = currency.ticker
         }
     }

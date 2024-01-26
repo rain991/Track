@@ -7,12 +7,12 @@ import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
@@ -50,12 +50,9 @@ class MainActivity : ComponentActivity() {
             withContext(Dispatchers.IO) {
                 dataStoreManager.loginCountFlow.collect {
                     if (it != 0) {
-
-                    }settingsData.setLoginCount(settingsData.getLoginCount() + 1)
-                    dataStoreManager.saveSettings(settingsData)
+                        dataStoreManager.incrementLoginCount()
+                    }
                 }
-
-
                 if (categoriesListRepository.getCategoriesList().size == 0) {
                     categoriesListRepository.addDefaultCategories(this@MainActivity)
                 }
@@ -65,7 +62,8 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                var mainScreenAvailable by remember { mutableStateOf(settingsData.getLoginCount() > 0) }
+                val mainScreenAvailable by remember { mutableStateOf( dataStoreManager.loginCountFlow)}
+
                 if (!mainScreenAvailable) { // Добавити обмін данними між LoginViewModel и SettingsData
                     LoginScreen(loginViewModel, onPositiveLoginChanges = { newMainScreenAvailable ->
                         mainScreenAvailable = newMainScreenAvailable

@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
+import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
@@ -77,7 +78,7 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: SettingsData) {
+fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     bottomSheetViewModel.setDatePicked(LocalDate.now())
 
@@ -270,7 +271,7 @@ private fun CategoriesGrid() {
 private fun AmountInput(
     focusRequester: FocusRequester,
     controller: SoftwareKeyboardController?,
-    settingsData: SettingsData
+    settingsData: DataStoreManager
 ) {
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
