@@ -62,7 +62,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
@@ -78,7 +77,7 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: DataStoreManager) {
+fun SimplifiedBottomSheet(isVisible: Boolean, dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     bottomSheetViewModel.setDatePicked(LocalDate.now())
 
@@ -108,7 +107,7 @@ fun SimplifiedBottomSheet(isVisible: Boolean, settingsData: DataStoreManager) {
                             style = MaterialTheme.typography.titleLarge.copy(fontSize = 24.sp),
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
-                        AmountInput(focusRequester, controller, settingsData)
+                        AmountInput(focusRequester, controller, dataStoreManager)
                         Spacer(Modifier.height(12.dp))
                         DatePicker()
                         SimpleOutlinedTextFieldSample(label = "Note")
@@ -271,11 +270,12 @@ private fun CategoriesGrid() {
 private fun AmountInput(
     focusRequester: FocusRequester,
     controller: SoftwareKeyboardController?,
-    settingsData: DataStoreManager
+    dataStoreManager: DataStoreManager
 ) {
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    var currentExpense = bottomSheetViewModel.inputExpense.collectAsState()
+    val currentExpense = bottomSheetViewModel.inputExpense.collectAsState()
+    val currentCurrency = dataStoreManager.CurrencyFlow.collectAsState(initial = "USD")
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -302,7 +302,7 @@ private fun AmountInput(
             ),
             maxLines = 1,
         )
-        Text(text = settingsData.getCurrency(), style = MaterialTheme.typography.titleSmall)
+        Text(text = currentCurrency.value, style = MaterialTheme.typography.titleSmall)
     }
 }
 

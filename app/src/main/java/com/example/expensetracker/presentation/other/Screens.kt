@@ -37,7 +37,7 @@ fun PagerFirstScreen() { // Settings
             modifier = Modifier
                 .padding(it)
         ) { // Settings screen
-            SimplifiedBottomSheet(isVisible = bottomSheetState.value, settingsData = settingsData)
+            SimplifiedBottomSheet(isVisible = bottomSheetState.value, dataStoreManager = settingsData)
         }
     }
 
@@ -67,7 +67,7 @@ fun PagerSecondScreen() {  // Main and Primary screen
                    MainInfoComposable()
                    ExpensesLazyColumn(expenses = expensesListRepositoryImpl.getExpensesList())
         }
-        SimplifiedBottomSheet(isVisible = bottomSheetState.value, settingsData = settingsData)
+        SimplifiedBottomSheet(isVisible = bottomSheetState.value, dataStoreManager = settingsData)
     }
 }
 
@@ -89,7 +89,7 @@ fun PagerThirdScreen() {  // Statistics Screen
                 .fillMaxSize()
                 .padding(innerPadding)
         ) {
-            SimplifiedBottomSheet(isVisible = bottomSheetState.value, settingsData = settingsData)
+            SimplifiedBottomSheet(isVisible = bottomSheetState.value, dataStoreManager = settingsData)
         }
     }
 }

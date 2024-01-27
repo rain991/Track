@@ -6,24 +6,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.LoginViewModel
+import com.example.expensetracker.data.viewmodels.MainViewModel
 import com.example.expensetracker.presentation.login.LoginScreen
 import com.example.expensetracker.presentation.other.ScreenManager
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.FlowCollector
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.runBlocking
 import kotlinx.coroutines.withContext
@@ -35,8 +30,9 @@ class MainActivity : ComponentActivity() {
     private val expenseCategoryDao: ExpenseCategoryDao by inject()
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
-    private val dataStoreManager : DataStoreManager by inject()
+    private val dataStoreManager: DataStoreManager by inject()
     private val loginViewModel by viewModels<LoginViewModel>()
+    private val mainViewModel by viewModels<MainViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,8 +45,10 @@ class MainActivity : ComponentActivity() {
         runBlocking {
             withContext(Dispatchers.IO) {
                 dataStoreManager.loginCountFlow.collect {
-                    if (it != 0) {
-                        dataStoreManager.incrementLoginCount()
+                    if (it == 0) {
+                        mainViewModel.setMainScreenAvailable(false)
+                    } else {
+                        mainViewModel.setMainScreenAvailable(true)
                     }
                 }
                 if (categoriesListRepository.getCategoriesList().size == 0) {
@@ -62,42 +60,26 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                val mainScreenAvailable by remember { mutableStateOf( dataStoreManager.loginCountFlow)}
-
-                if (!mainScreenAvailable) { // Добавити обмін данними між LoginViewModel и SettingsData
-                    LoginScreen(loginViewModel, onPositiveLoginChanges = { newMainScreenAvailable ->
-                        mainScreenAvailable = newMainScreenAvailable
-                    })
+                val mainScreenAvailable = mainViewModel.mainScreenAvailable.collectAsState()
+                if (!mainScreenAvailable.value) { // Добавити обмін данними між LoginViewModel и SettingsData
+                    LoginScreen(loginViewModel, onPositiveLoginChanges = { mainViewModel.setMainScreenAvailable(true) })
                     DisposableEffect(Unit) {
                         onDispose {
                             CoroutineScope(Dispatchers.IO).launch {
-                                dataStoreManager.saveSettings(settingsData)
+                                //  dataStoreManager.saveSettings(settingsData)     WARNING ABOUT LOGIN COMPOSE DATA SAVING
                             }
                         }
                     }
                 }
-                if (mainScreenAvailable) {
-                    if (settingsData.getLoginCount() == 0) {
-                        settingsData.setSettings(
-                            currency = loginViewModel.currency!!.ticker,
-                            budget = loginViewModel.income!!.toFloat(),
-                            name = loginViewModel.firstName!!,
-                            loginCount = (settingsData.getLoginCount() + 1)
-                        )
-                        LaunchedEffect(Unit) {
-                            withContext(Dispatchers.IO) {
-                                dataStoreManager.saveSettings(settingsData)
-                            }
-                        }
-                    }
-
+                if (mainScreenAvailable.value) {
                     ScreenManager()
-
-                   // SimplifiedBottomSheet(isVisible = true, settingsData = settingsData)
                 }
+
+                // SimplifiedBottomSheet(isVisible = true, settingsData = settingsData)
             }
         }
     }
 }
+
 
 
