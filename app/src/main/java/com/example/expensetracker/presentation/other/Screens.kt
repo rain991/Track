@@ -18,11 +18,12 @@ import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExampl
 import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.home.ExpensesLazyColumn
 import com.example.expensetracker.presentation.home.MainInfoComposable
+import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
 fun PagerFirstScreen() { // Settings
-    val mainViewModel = koinInject<MainViewModel>()
+    val mainViewModel = koinViewModel<MainViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val bottomSheetState = mainViewModel.isBottomSheetExpanded.collectAsState()
     androidx.compose.material3.Scaffold(
@@ -45,7 +46,8 @@ fun PagerFirstScreen() { // Settings
 
 @Composable
 fun PagerSecondScreen() {  // Main and Primary screen
-    val mainViewModel = koinInject<MainViewModel>()
+    val mainViewModel = koinViewModel<MainViewModel>()
+
     val settingsData = koinInject<DataStoreManager>()
     val expensesListRepositoryImpl = koinInject<ExpensesListRepositoryImpl>()
     val bottomSheetState = mainViewModel.isBottomSheetExpanded.collectAsState()
@@ -73,7 +75,7 @@ fun PagerSecondScreen() {  // Main and Primary screen
 
 @Composable
 fun PagerThirdScreen() {  // Statistics Screen
-    val mainViewModel = koinInject<MainViewModel>()
+    val mainViewModel = koinViewModel<MainViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val bottomSheetState = mainViewModel.isBottomSheetExpanded.collectAsState()
     androidx.compose.material3.Scaffold(

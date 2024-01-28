@@ -45,12 +45,12 @@ val domainModule = module {
     factory<GetCategoryListUseCase> { GetCategoryListUseCase(get()) }
 }
 
-val settingsModule = module{
-    single { DataStoreManager(androidContext()) }
+val settingsModule = module {
+    single<DataStoreManager> { DataStoreManager(androidContext().applicationContext) }
 }
 
 val viewModelModule = module {
     viewModel { LoginViewModel() }
-    viewModel { MainViewModel() }
+    viewModel { MainViewModel(get()) }
     viewModel { BottomSheetViewModel(get()) }
 }

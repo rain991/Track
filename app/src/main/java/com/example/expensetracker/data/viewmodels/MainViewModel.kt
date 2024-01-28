@@ -1,14 +1,28 @@
 package com.example.expensetracker.data.viewmodels
 
+
 import androidx.lifecycle.ViewModel
+import com.example.expensetracker.data.DataStoreManager
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 
-class MainViewModel : ViewModel() {
+class MainViewModel(private val dataStoreManager: DataStoreManager) : ViewModel() {
+
+
+    suspend fun initMainScreenAvailable() {
+        dataStoreManager.loginCountFlow.collect { loginCount ->
+            if (loginCount == 0) {
+                setMainScreenAvailable(false)
+            } else {
+                setMainScreenAvailable(true)
+            }
+        }
+    }
+
     private var _mainScreenAvailable = MutableStateFlow(value = false)
     val mainScreenAvailable = _mainScreenAvailable.asStateFlow()
-    fun setMainScreenAvailable(value : Boolean){
+    fun setMainScreenAvailable(value: Boolean) {
         _mainScreenAvailable.update { value }
     }
 

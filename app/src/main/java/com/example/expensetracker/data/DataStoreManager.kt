@@ -43,7 +43,7 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    val CurrencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[CURRENCY] ?: "USD" }
+    val currencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[CURRENCY] ?: "USD" }
     suspend fun setCurrency(currency: com.example.expensetracker.data.models.Currency) {
         context.dataStore.edit {
             it[CURRENCY] = currency.ticker
