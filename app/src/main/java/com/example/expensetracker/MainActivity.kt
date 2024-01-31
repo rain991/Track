@@ -35,6 +35,9 @@ class MainActivity : ComponentActivity() {
 
         val mainViewModel = getViewModel<MainViewModel>()
 
+        CoroutineScope(Dispatchers.Main).launch {
+            mainViewModel.initMainScreenAvailable()
+        }
         CoroutineScope(Dispatchers.IO).launch { // warning
             expensesListRepository.setExpensesList(expensesDao)
             categoriesListRepository.setCategoriesList(expenseCategoryDao)
@@ -42,9 +45,6 @@ class MainActivity : ComponentActivity() {
                 categoriesListRepository.addDefaultCategories(this@MainActivity)
             }
 
-        }
-        CoroutineScope(Dispatchers.Main).launch {
-            mainViewModel.initMainScreenAvailable()
         }
         expensesListRepository.sortExpensesItemsDateDesc()
 

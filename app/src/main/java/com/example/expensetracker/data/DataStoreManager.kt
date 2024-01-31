@@ -4,51 +4,59 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.expensetracker.data.constants.BUDGET_DEFAULT
+import com.example.expensetracker.data.constants.LOGIN_COUNT_DEFAULT
+import com.example.expensetracker.data.constants.NAME_DEFAULT
+import com.example.expensetracker.data.models.Currency
+import com.example.expensetracker.data.models.USD
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("UserPreferences")
 
 class DataStoreManager(private val context: Context) {
-    companion object {
+    private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("UserPreferences")
+    private val dataStore = context.dataStore
+    companion object {  // remember adding new values to constants
+
+        val CURRENCY_DEFAULT: Currency = USD
+
+
         private val LOGIN_COUNT = intPreferencesKey("first_launch")
         private val NAME = stringPreferencesKey("user_name")
-        private val BUDGET = floatPreferencesKey("user_budget")
+        private val BUDGET = intPreferencesKey("user_budget")
         private val CURRENCY = stringPreferencesKey("user_currency")
     }
 
-    val loginCountFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: 0 }
+
+    val loginCountFlow: Flow<Int> = dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: LOGIN_COUNT_DEFAULT }
     suspend fun incrementLoginCount() {
-        context.dataStore.edit {
+        dataStore.edit {
             val currentLoginCount = it[LOGIN_COUNT] ?: 0
             it[LOGIN_COUNT] = currentLoginCount + 1
         }
     }
 
-    val nameFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[NAME] ?: "" }
+    val nameFlow: Flow<String> = dataStore.data.map { preferences -> preferences[NAME] ?: NAME_DEFAULT }
     suspend fun setName(newName: String) {
-        context.dataStore.edit {
+        dataStore.edit {
             it[NAME] = newName
         }
     }
 
-    val budgetFlow: Flow<Float> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: 0.0f }
-    suspend fun setBudget(newBudget: Float) {
-        context.dataStore.edit {
+    val budgetFlow: Flow<Int> = dataStore.data.map { preferences -> preferences[BUDGET] ?: BUDGET_DEFAULT }
+    suspend fun setBudget(newBudget: Int) {
+        dataStore.edit {
             it[BUDGET] = newBudget
         }
     }
 
-    val currencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[CURRENCY] ?: "USD" }
+    val currencyFlow: Flow<String> = dataStore.data.map { preferences -> preferences[CURRENCY] ?: CURRENCY_DEFAULT.ticker }
     suspend fun setCurrency(currency: com.example.expensetracker.data.models.Currency) {
-        context.dataStore.edit {
+        dataStore.edit {
             it[CURRENCY] = currency.ticker
         }
     }
-
-
 }
