@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
-import com.example.expensetracker.data.viewmodels.MainViewModel
+import com.example.expensetracker.data.viewmodels.ScreenViewModel
 import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExample
 import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.home.ExpensesLazyColumn
@@ -23,15 +23,15 @@ import org.koin.compose.koinInject
 
 @Composable
 fun PagerFirstScreen() { // Settings
-    val mainViewModel = koinViewModel<MainViewModel>()
+    val screenViewModel = koinViewModel<ScreenViewModel>()
     val settingsData = koinInject<DataStoreManager>()
-    val bottomSheetState = mainViewModel.isBottomSheetExpanded.collectAsState()
+    val bottomSheetState = screenViewModel.isBottomSheetExpanded.collectAsState()
     androidx.compose.material3.Scaffold(
         topBar = {
             Header(categoryName = stringResource(R.string.settings))
         },
         floatingActionButton = {
-            ExtendedButtonExample(isButtonExpanded = false, onClick = { mainViewModel.setBottomSheetExpanded(true) })
+            ExtendedButtonExample(isButtonExpanded = false, onClick = { screenViewModel.setBottomSheetExpanded(true) })
         }
     ) {
         Column(
@@ -46,11 +46,11 @@ fun PagerFirstScreen() { // Settings
 
 @Composable
 fun PagerSecondScreen() {  // Main and Primary screen
-    val mainViewModel = koinViewModel<MainViewModel>()
+    val screenViewModel = koinViewModel<ScreenViewModel>()
 
     val settingsData = koinInject<DataStoreManager>()
     val expensesListRepositoryImpl = koinInject<ExpensesListRepositoryImpl>()
-    val bottomSheetState = mainViewModel.isBottomSheetExpanded.collectAsState()
+    val bottomSheetState = screenViewModel.isBottomSheetExpanded.collectAsState()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             Header(categoryName = stringResource(R.string.expenses))
@@ -58,7 +58,7 @@ fun PagerSecondScreen() {  // Main and Primary screen
 
         },
         floatingActionButton = {
-            ExtendedButtonExample(isButtonExpanded = true, onClick = { mainViewModel.setBottomSheetExpanded(true) })
+            ExtendedButtonExample(isButtonExpanded = true, onClick = { screenViewModel.setBottomSheetExpanded(true) })
         }
     ) {
         Column(
@@ -75,15 +75,15 @@ fun PagerSecondScreen() {  // Main and Primary screen
 
 @Composable
 fun PagerThirdScreen() {  // Statistics Screen
-    val mainViewModel = koinViewModel<MainViewModel>()
+    val screenViewModel = koinViewModel<ScreenViewModel>()
     val settingsData = koinInject<DataStoreManager>()
-    val bottomSheetState = mainViewModel.isBottomSheetExpanded.collectAsState()
+    val bottomSheetState = screenViewModel.isBottomSheetExpanded.collectAsState()
     androidx.compose.material3.Scaffold(
         topBar = {
             Header(categoryName = stringResource(R.string.statistic))
         },
         floatingActionButton = {
-            ExtendedButtonExample(isButtonExpanded = false, onClick = { mainViewModel.setBottomSheetExpanded(true)  })
+            ExtendedButtonExample(isButtonExpanded = false, onClick = { screenViewModel.setBottomSheetExpanded(true)  })
         }
     ) { innerPadding ->
         Column(

@@ -6,12 +6,13 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.data.viewmodels.MainViewModel
+import com.example.expensetracker.data.viewmodels.ScreenViewModel
 import com.example.expensetracker.presentation.login.LoginScreen
 import com.example.expensetracker.presentation.other.ScreenManager
 import com.example.expensetracker.presentation.themes.AppTheme
@@ -33,10 +34,10 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val mainViewModel = getViewModel<MainViewModel>()
+        val screenViewModel = getViewModel<ScreenViewModel>()
 
-        CoroutineScope(Dispatchers.Main).launch {
-            mainViewModel.initMainScreenAvailable()
+        lifecycleScope.launch {
+            screenViewModel.initMainScreenAvailable()
         }
         CoroutineScope(Dispatchers.IO).launch { // warning
             expensesListRepository.setExpensesList(expensesDao)
@@ -50,9 +51,9 @@ class MainActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                val mainScreenAvailable = mainViewModel.mainScreenAvailable.collectAsState()
+                val mainScreenAvailable = screenViewModel.mainScreenAvailable.collectAsState()
                 if (!mainScreenAvailable.value) { // Добавити обмін данними між LoginViewModel и SettingsData
-                    LoginScreen(loginViewModel, onPositiveLoginChanges = { mainViewModel.setMainScreenAvailable(true) })
+                    LoginScreen(loginViewModel, onPositiveLoginChanges = { screenViewModel.setMainScreenAvailable(true) })
                 }
                 if (mainScreenAvailable.value) {
                     ScreenManager()

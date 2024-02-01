@@ -8,7 +8,7 @@ import com.example.expensetracker.data.implementations.CategoriesListRepositoryI
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.data.viewmodels.MainViewModel
+import com.example.expensetracker.data.viewmodels.ScreenViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.DeleteCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.EditCategoryUseCase
@@ -51,6 +51,6 @@ val settingsModule = module {
 
 val viewModelModule = module {
     viewModel { LoginViewModel() }
-    viewModel { MainViewModel(get()) }
+    viewModel { ScreenViewModel(get()) }
     viewModel { BottomSheetViewModel(get()) }
 }

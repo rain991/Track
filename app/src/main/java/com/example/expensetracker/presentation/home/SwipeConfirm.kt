@@ -38,7 +38,7 @@ import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
-import com.example.expensetracker.data.viewmodels.MainViewModel
+import com.example.expensetracker.data.viewmodels.ScreenViewModel
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -113,7 +113,7 @@ private fun DraggableControl(
     progress: Float,
     addExpensesItemUseCase: AddExpensesItemUseCase, bottomSheetViewModel: BottomSheetViewModel
 ) {
-    val mainViewModel = koinViewModel<MainViewModel>()
+    val screenViewModel = koinViewModel<ScreenViewModel>()
     val expense = bottomSheetViewModel.inputExpense.collectAsState()
     val note = bottomSheetViewModel.note.collectAsState()
     val date = bottomSheetViewModel.datePicked.collectAsState()
@@ -140,7 +140,7 @@ private fun DraggableControl(
                         categoryId = category.value!!.categoryId.toInt()
                     )
                 )
-                mainViewModel.setBottomSheetExpanded(false)
+                screenViewModel.setBottomSheetExpanded(false)
             }
         }
         Crossfade(targetState = isConfirmed, label = "") {

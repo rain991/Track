@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 // private val categoryList: GetCategoryListUseCase, private val addExpensesItemUseCase: AddExpensesItemUseCase
-class BottomSheetViewModel(private val mainViewModel: MainViewModel) :
+class BottomSheetViewModel(private val screenViewModel: ScreenViewModel) :
     ViewModel() {
 
 
