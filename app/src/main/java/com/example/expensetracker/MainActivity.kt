@@ -6,7 +6,9 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.compose.runtime.collectAsState
+import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
@@ -37,7 +39,13 @@ class MainActivity : ComponentActivity() {
         val screenViewModel = getViewModel<ScreenViewModel>()
 
         lifecycleScope.launch {
-            screenViewModel.initMainScreenAvailable()
+            repeatOnLifecycle(Lifecycle.State.STARTED){
+                if (uiState.isUserLoggedIn) {
+                    // Navigate to the Home screen.
+                }
+
+                screenViewModel.initMainScreenAvailable()
+            }
         }
         CoroutineScope(Dispatchers.IO).launch { // warning
             expensesListRepository.setExpensesList(expensesDao)
