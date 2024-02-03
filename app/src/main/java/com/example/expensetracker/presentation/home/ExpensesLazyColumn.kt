@@ -141,14 +141,14 @@ private fun ExpenseDayHeader(localDate: LocalDate) {
 private fun ExpenseMonthHeader(localDate: LocalDate) {
     val monthResId = getMonthResID(localDate)
     val month = stringResource(id = monthResId)
-    Box() {
+    Box {
         Text(text = month, style = MaterialTheme.typography.titleLarge)
     }
 }
 
 @Composable
 private fun UpButton(onClick: () -> Unit) {
-    Box() {
+    Box {
         FloatingActionButton(
             onClick = onClick,
             modifier = Modifier

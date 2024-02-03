@@ -4,48 +4,60 @@ import android.content.Context
 import androidx.datastore.core.DataStore
 import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
-import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
+import com.example.expensetracker.data.constants.BUDGET_DEFAULT
+import com.example.expensetracker.data.constants.LOGIN_COUNT_DEFAULT
+import com.example.expensetracker.data.constants.NAME_DEFAULT
+import com.example.expensetracker.data.models.Currency
+import com.example.expensetracker.data.models.USD
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private val Context.dataStore: DataStore<Preferences> by preferencesDataStore("UserPreferences")
+private const val PREFERENCES_NAME = "UserPreferences"
+private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(PREFERENCES_NAME)
+class DataStoreManager(private val context : Context) {
 
-class DataStoreManager(private val context: Context) {
-    companion object {
+
+    companion object {  // remember adding new values to constants
+
+        val CURRENCY_DEFAULT: Currency = USD
+
+
         private val LOGIN_COUNT = intPreferencesKey("first_launch")
         private val NAME = stringPreferencesKey("user_name")
-        private val BUDGET = floatPreferencesKey("user_budget")  // could be changed later to INT
+        private val BUDGET = intPreferencesKey("user_budget")
         private val CURRENCY = stringPreferencesKey("user_currency")
     }
 
-    suspend fun saveSettings(settingsData: SettingsData) {
-        context.dataStore.edit { preferences ->
-            preferences[LOGIN_COUNT] = settingsData.getLoginCount()
-            preferences[NAME] = settingsData.getName()
-            preferences[BUDGET] = settingsData.getBudget()
-            preferences[CURRENCY] = settingsData.getCurrency()
+
+    val loginCountFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: LOGIN_COUNT_DEFAULT }
+    suspend fun incrementLoginCount() {
+        context.dataStore.edit {
+            val currentLoginCount = it[LOGIN_COUNT] ?: 0
+            it[LOGIN_COUNT] = currentLoginCount + 1
         }
     }
 
-    fun getSettings() = context.dataStore.data.map { preferences ->
-        return@map SettingsData(
-            currency = preferences[CURRENCY] ?: "USD",
-            budget = preferences[BUDGET] ?: 0f,
-            name = preferences[NAME] ?: "User",
-            loginCount = preferences[LOGIN_COUNT] ?: 0
-        )
+    val nameFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[NAME] ?: NAME_DEFAULT }
+    suspend fun setName(newName: String) {
+        context.dataStore.edit {
+            it[NAME] = newName
+        }
+    }
+
+    val budgetFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: BUDGET_DEFAULT }
+    suspend fun setBudget(newBudget: Int) {
+        context.dataStore.edit {
+            it[BUDGET] = newBudget
+        }
+    }
+
+    val currencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[CURRENCY] ?: CURRENCY_DEFAULT.ticker }
+    suspend fun setCurrency(currency: com.example.expensetracker.data.models.Currency) {
+        context.dataStore.edit {
+            it[CURRENCY] = currency.ticker
+        }
     }
 }
-
-//    val getFirstLaunch: Flow<Boolean> = context.dataStore.data.map { preferences ->
-//        preferences[FIRST_LAUNCH] ?: true
-//    }
-//
-//    suspend fun saveFirstLaunch(isFirstLaunch: Boolean) {
-//        context.dataStore.edit { preferences ->
-//            preferences[FIRST_LAUNCH] = isFirstLaunch
-//        }
-//    }

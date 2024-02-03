@@ -23,7 +23,7 @@ import com.example.expensetracker.data.implementations.ExpensesListRepositoryImp
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ScreenManager(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: ExpensesListRepositoryImpl) {
+fun ScreenManager() {
     val pagerState = rememberPagerState(initialPage = 1) { 3 }
     Column(
         modifier = Modifier.fillMaxSize()
@@ -33,9 +33,9 @@ fun ScreenManager(expensesDAO: ExpensesDAO, expensesListRepositoryImpl: Expenses
             modifier = Modifier.weight(1f)
         ) { page ->
             when (page) {
-                0 -> FirstScreen(expensesDAO = expensesDAO, expensesListRepositoryImpl = expensesListRepositoryImpl)
-                1 -> SecondScreen(expensesDAO = expensesDAO, expensesListRepositoryImpl = expensesListRepositoryImpl)
-                2 -> ThirdScreen(expensesDAO = expensesDAO, expensesListRepositoryImpl = expensesListRepositoryImpl)
+                0 -> PagerFirstScreen()
+                1 -> PagerSecondScreen()
+                2 -> PagerThirdScreen()
             }
         }
     }

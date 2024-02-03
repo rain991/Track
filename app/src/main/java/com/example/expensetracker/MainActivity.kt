@@ -5,102 +5,65 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
-import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
-import androidx.lifecycle.lifecycleScope
+import androidx.compose.runtime.collectAsState
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.SettingsData
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.presentation.home.SimplifiedBottomSheet
+import com.example.expensetracker.data.viewmodels.ScreenManagerViewModel
 import com.example.expensetracker.presentation.login.LoginScreen
+import com.example.expensetracker.presentation.other.ScreenManager
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.getViewModel
 
 
 class MainActivity : ComponentActivity() {
     private val expensesDao: ExpensesDAO by inject()
     private val expenseCategoryDao: ExpenseCategoryDao by inject()
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
-    private val categoriesListRepository : CategoriesListRepositoryImpl by inject()
+    private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
     private val loginViewModel by viewModels<LoginViewModel>()
-    private val settingsData = SettingsData()
+    private val dataStore : DataStoreManager by inject()
+    private val screenManagerViewModel =  ScreenManagerViewModel(dataStore)
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val dataStoreManager = DataStoreManager(this)
-        lifecycleScope.launch(Dispatchers.IO) {
+
+        val screenManagerViewModel = getViewModel<ScreenManagerViewModel>()
+
+//        lifecycleScope.launch {
+//            repeatOnLifecycle(Lifecycle.State.STARTED){
+//
+//            }
+//        }
+        CoroutineScope(Dispatchers.IO).launch { // warning
             expensesListRepository.setExpensesList(expensesDao)
             categoriesListRepository.setCategoriesList(expenseCategoryDao)
-        }
-
-        runBlocking {
-            val pref = dataStoreManager.getSettings().first()
-            withContext(Dispatchers.IO) {
-                settingsData.setSettings(
-                    currency = pref.getCurrency(),
-                    budget = pref.getBudget(),
-                    name = pref.getName(),
-                    loginCount = pref.getLoginCount()
-                )
-                if (settingsData.getLoginCount() != 0) settingsData.setLoginCount(settingsData.getLoginCount() + 1)
-                dataStoreManager.saveSettings(settingsData)
-                if(categoriesListRepository.getCategoriesList().size==0){
-                   categoriesListRepository.addDefaultCategories(this@MainActivity)
-                }
+            if (categoriesListRepository.getCategoriesList().size == 0) {
+                categoriesListRepository.addDefaultCategories(this@MainActivity)
             }
+
         }
         expensesListRepository.sortExpensesItemsDateDesc()
 
         setContent {
             AppTheme {
-                var mainScreenAvailable by remember { mutableStateOf(settingsData.getLoginCount() > 0) }
-                if (!mainScreenAvailable) { // Добавити обмін данними між LoginViewModel и SettingsData
-                    LoginScreen(loginViewModel, onPositiveLoginChanges = { newMainScreenAvailable ->
-                        mainScreenAvailable = newMainScreenAvailable
-                    })
-                    DisposableEffect(Unit) {
-                        onDispose {
-                            CoroutineScope(Dispatchers.IO).launch {
-                                dataStoreManager.saveSettings(settingsData)
-                            }
-                        }
-                    }
-                }
-                if (mainScreenAvailable) {
-                    if (settingsData.getLoginCount() == 0) {
-                        settingsData.setSettings(
-                            currency = loginViewModel.currency!!.ticker,
-                            budget = loginViewModel.income!!.toFloat(),
-                            name = loginViewModel.firstName!!,
-                            loginCount = (settingsData.getLoginCount() + 1)
-                        )
-                        LaunchedEffect(Unit) {
-                            withContext(Dispatchers.IO) {
-                                dataStoreManager.saveSettings(settingsData)
-                            }
-                        }
-                    }
-
-                    //ScreenManager(expensesDAO = expensesDao, expensesListRepositoryImpl = expensesListRepository)
-
-                        SimplifiedBottomSheet(isVisible = true, settingsData = settingsData)
+                val mainScreenAvailable = screenManagerViewModel.mainScreenAvailable.collectAsState()
+                if (!mainScreenAvailable.value) {
+                    LoginScreen(loginViewModel, onPositiveLoginChanges = { screenManagerViewModel.setMainScreenAvailable(true) })
+                } else if (mainScreenAvailable.value) {
+                    ScreenManager()
                 }
             }
         }
     }
 }
+
 
 

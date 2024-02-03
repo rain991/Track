@@ -1,5 +1,6 @@
 package com.example.expensetracker
 
+import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.database.ExpensesDB
@@ -7,7 +8,8 @@ import com.example.expensetracker.data.implementations.CategoriesListRepositoryI
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.data.viewmodels.MainViewModel
+import com.example.expensetracker.data.viewmodels.MainScreenViewModel
+import com.example.expensetracker.data.viewmodels.ScreenManagerViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.DeleteCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.EditCategoryUseCase
@@ -28,7 +30,6 @@ val appModule = module {
 
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
     single<CategoriesListRepositoryImpl> { CategoriesListRepositoryImpl(get()) }
-
 }
 
 val domainModule = module {
@@ -45,8 +46,13 @@ val domainModule = module {
     factory<GetCategoryListUseCase> { GetCategoryListUseCase(get()) }
 }
 
+val settingsModule = module {
+    single<DataStoreManager> { DataStoreManager(androidContext().applicationContext) }
+}
+
 val viewModelModule = module {
     viewModel { LoginViewModel() }
-    viewModel { MainViewModel() }
-    viewModel { BottomSheetViewModel() }
+    viewModel { ScreenManagerViewModel(get()) }
+    viewModel { BottomSheetViewModel(get()) }
+    viewModel { MainScreenViewModel() }
 }
