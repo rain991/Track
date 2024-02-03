@@ -2,6 +2,7 @@ package com.example.expensetracker
 
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
@@ -9,6 +10,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
+import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
@@ -31,7 +33,7 @@ class MainActivity : ComponentActivity() {
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
     private val loginViewModel by viewModels<LoginViewModel>()
-
+    private val dataStore : DataStoreManager by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,9 +42,16 @@ class MainActivity : ComponentActivity() {
 
         lifecycleScope.launch {
             repeatOnLifecycle(Lifecycle.State.STARTED){
-                if (uiState.isUserLoggedIn) {
-                    // Navigate to the Home screen.
+                dataStore.loginCountFlow.collect{
+                    Log.d("MyLog", "login $it")
                 }
+                dataStore.currencyFlow.collect{
+                    Log.d("MyLog","currency $it " )
+                }
+//
+//                if (uiState.isUserLoggedIn) {
+//                    // Navigate to the Home screen.
+//                }
 
                 screenViewModel.initMainScreenAvailable()
             }

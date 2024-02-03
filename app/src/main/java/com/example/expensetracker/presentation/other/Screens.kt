@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
-import com.example.expensetracker.data.viewmodels.ScreenViewModel
+import com.example.expensetracker.data.viewmodels.MainScreenViewModel
 import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExample
 import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.home.ExpensesLazyColumn
@@ -23,7 +23,7 @@ import org.koin.compose.koinInject
 
 @Composable
 fun PagerFirstScreen() { // Settings
-    val screenViewModel = koinViewModel<ScreenViewModel>()
+    val screenViewModel = koinViewModel<MainScreenViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val bottomSheetState = screenViewModel.isBottomSheetExpanded.collectAsState()
     androidx.compose.material3.Scaffold(
@@ -46,7 +46,7 @@ fun PagerFirstScreen() { // Settings
 
 @Composable
 fun PagerSecondScreen() {  // Main and Primary screen
-    val screenViewModel = koinViewModel<ScreenViewModel>()
+    val screenViewModel = koinViewModel<MainScreenViewModel>()
 
     val settingsData = koinInject<DataStoreManager>()
     val expensesListRepositoryImpl = koinInject<ExpensesListRepositoryImpl>()
@@ -75,7 +75,7 @@ fun PagerSecondScreen() {  // Main and Primary screen
 
 @Composable
 fun PagerThirdScreen() {  // Statistics Screen
-    val screenViewModel = koinViewModel<ScreenViewModel>()
+    val screenViewModel = koinViewModel<MainScreenViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val bottomSheetState = screenViewModel.isBottomSheetExpanded.collectAsState()
     androidx.compose.material3.Scaffold(
