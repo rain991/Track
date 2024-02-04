@@ -57,13 +57,13 @@ import com.example.expensetracker.ui.theme.unfocusedTextFieldText
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
 @Composable
-fun LoginScreen(
-    loginViewModel: LoginViewModel,
-    onPositiveLoginChanges: (Boolean) -> Unit
-) {
+fun LoginScreen() {
+    val loginViewModel = koinViewModel<LoginViewModel>()
+
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
@@ -71,14 +71,14 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            LoginMain(loginViewModel, onPositiveLoginChanges)
+            LoginContent(loginViewModel)
         }
 
     }
 }
 
 @Composable
-private fun LoginMain(loginViewModel: LoginViewModel, onPositiveLoginChanges: (Boolean) -> Unit) {
+private fun LoginContent(loginViewModel: LoginViewModel) {
     Column(modifier = Modifier.padding(horizontal = 22.dp)) {
         LoginTextField(
             label = stringResource(R.string.loginnametextfield),
@@ -110,7 +110,7 @@ private fun LoginMain(loginViewModel: LoginViewModel, onPositiveLoginChanges: (B
                 .fillMaxWidth()
                 .height(40.dp),
             onClick = {             // Lets start button
-                onPositiveLoginChanges ( true )
+                // NAVIGATING
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = md_theme_light_primary,
@@ -315,12 +315,3 @@ fun CurrencyDropDownMenu(loginViewModel: LoginViewModel) {
         }
     }
 }
-
-//@Preview(name = "Dark Mode", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true)
-//@Preview(name = "Full Preview", showSystemUi = true)
-//@Composable
-//fun DefaultPreview() {
-//    AppTheme {
-//        LoginScreen()
-//    }
-//}

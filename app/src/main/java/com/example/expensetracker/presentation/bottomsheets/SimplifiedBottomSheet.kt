@@ -19,6 +19,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -38,6 +39,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -57,15 +59,17 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
-import com.example.expensetracker.presentation.home.ConfirmationButton
+import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
@@ -77,14 +81,15 @@ import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
-fun SimplifiedBottomSheet(isVisible: Boolean, dataStoreManager: DataStoreManager) {
+fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     bottomSheetViewModel.setDatePicked(LocalDate.now())
-
+    val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
-    if (isVisible) {
+    if (isVisible.value) {
         ModalBottomSheet(
-            onDismissRequest = {//isVisible = false
+            onDismissRequest = {
+                bottomSheetViewModel.setBottomSheetExpanded(false)
             },
             sheetState = sheetState
         ) {
@@ -113,11 +118,7 @@ fun SimplifiedBottomSheet(isVisible: Boolean, dataStoreManager: DataStoreManager
                         SimpleOutlinedTextFieldSample(label = "Note")
                         CategoriesGrid()
                         Spacer(Modifier.weight(1f))
-                        ConfirmationButton(
-                            modifier =
-                            Modifier
-                                .align(Alignment.CenterHorizontally)
-                        )
+                        AcceptButton()
                     }
                 }
 
@@ -125,6 +126,40 @@ fun SimplifiedBottomSheet(isVisible: Boolean, dataStoreManager: DataStoreManager
         }
     }
 }
+
+@Composable
+fun CategoryCard(category: ExpenseCategory) {  // should be refactored for other ViewModel usages
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val activeCategory = bottomSheetViewModel.categoryPicked.collectAsState()
+
+    Row(
+        modifier = Modifier
+            .heightIn(min = 1.dp, max = 25.dp)
+            .clickable {
+                if (activeCategory.value != category) {
+                    bottomSheetViewModel.setCategoryPicked(category)
+                } else bottomSheetViewModel.setCategoryPicked(null)
+                Log.d("MyLog", "input : {${bottomSheetViewModel.inputExpense.value}}")
+                Log.d("MyLog", "today : {${bottomSheetViewModel.todayButtonActiveState.value}}")
+                Log.d("MyLog", "yesterday : {${bottomSheetViewModel.yesterdayButtonActiveState.value}}")
+                Log.d("MyLog", "date : {${bottomSheetViewModel.datePicked.value}}")
+                Log.d("MyLog", "active category : {${activeCategory}}")
+                Log.d("MyLog", "isavailable : {${bottomSheetViewModel.isAcceptButtonAvailable}}")
+            }
+            .clip(RoundedCornerShape(4.dp))
+            .background(color = Color(Random.nextLong(0xFFFFFFFF)))
+            .padding(horizontal = 4.dp)
+    ) {
+        if (activeCategory.value != null) {
+            if (activeCategory.value == category) {
+                Icon(imageVector = Icons.Filled.Check, contentDescription = null, tint = Color.Red)
+            }
+        }
+        Text(text = category.name, style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp))
+
+    }
+}
+
 
 @Composable
 private fun DatePicker() {
@@ -213,38 +248,6 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
     )
 }
 
-@Composable
-fun CategoryCard(category: ExpenseCategory) {
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val activeCategory = bottomSheetViewModel.categoryPicked.collectAsState()
-
-    Row(
-        modifier = Modifier
-            .heightIn(min = 1.dp, max = 25.dp)
-            .clickable {
-                if (activeCategory.value != category) {
-                    bottomSheetViewModel.setCategoryPicked(category)
-                } else bottomSheetViewModel.setCategoryPicked(null)
-                Log.d("MyLog", "input : {${bottomSheetViewModel.inputExpense.value}}")
-                Log.d("MyLog", "today : {${bottomSheetViewModel.todayButtonActiveState.value}}")
-                Log.d("MyLog", "yesterday : {${bottomSheetViewModel.yesterdayButtonActiveState.value}}")
-                Log.d("MyLog", "date : {${bottomSheetViewModel.datePicked.value}}")
-                Log.d("MyLog", "active category : {${activeCategory}}")
-                Log.d("MyLog", "isavailable : {${bottomSheetViewModel.isAcceptButtonAvailable}}")
-            }
-            .clip(RoundedCornerShape(4.dp))
-            .background(color = Color(Random.nextLong(0xFFFFFFFF)))
-            .padding(horizontal = 4.dp)
-    ) {
-        if (activeCategory.value != null) {
-            if (activeCategory.value == category) {
-                Icon(imageVector = Icons.Filled.Check, contentDescription = null, tint = Color.Red)
-            }
-        }
-        Text(text = category.name, style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp))
-
-    }
-}
 
 @Composable
 private fun CategoriesGrid() {
@@ -306,3 +309,44 @@ private fun AmountInput(
     }
 }
 
+
+@Composable
+private fun AcceptButton() {
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val addExpensesItemUseCase = koinInject<AddExpensesItemUseCase>()
+    val available = bottomSheetViewModel.isAcceptButtonAvailable.collectAsState(initial = false)
+    val expense = bottomSheetViewModel.inputExpense.collectAsState()
+    val note = bottomSheetViewModel.note.collectAsState()
+    val date = bottomSheetViewModel.datePicked.collectAsState()
+    val category = bottomSheetViewModel.categoryPicked.collectAsState()
+
+    var isAddingExpenses by remember { mutableStateOf(false) }
+
+    Button(
+        onClick = {
+            if (available.value && !isAddingExpenses) {
+                isAddingExpenses = true
+                bottomSheetViewModel.setBottomSheetExpanded(false)
+            }
+        },
+        modifier = Modifier
+            .widthIn(min = 40.dp, max = 80.dp)
+            .height(24.dp)
+            .padding(bottom = 16.dp), shape = RoundedCornerShape(80)
+    ) {
+        LaunchedEffect(key1 = isAddingExpenses) {
+            if (isAddingExpenses) {
+                addExpensesItemUseCase.addExpensesItem(
+                    ExpenseItem(
+                        name = note.value,
+                        date = date.value.toString(),
+                        value = expense.value!!,
+                        categoryId = category.value!!.categoryId.toInt()
+                    )
+                )
+                isAddingExpenses = false
+            }
+        }
+        Text(text = stringResource(R.string.add_it_button), textAlign = TextAlign.Center)
+    }
+}

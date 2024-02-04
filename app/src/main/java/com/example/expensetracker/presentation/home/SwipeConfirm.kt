@@ -38,7 +38,6 @@ import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
-import com.example.expensetracker.data.viewmodels.MainScreenViewModel
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -55,11 +54,9 @@ enum class ConfirmationState {
 @Composable
 fun ConfirmationButton(modifier: Modifier = Modifier) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val addExpensesItemUseCase = koinInject<AddExpensesItemUseCase>()
     val acceptButtonAvailable = bottomSheetViewModel.isAcceptButtonAvailable.collectAsState(initial = false)
     val width = 350.dp
     val dragSize = 50.dp
-
     val swipeableState = rememberSwipeableState(ConfirmationState.Default)
     val sizePx = with(LocalDensity.current) { (width - dragSize).toPx() }
     // val anchors = mapOf(0f to ConfirmationState.Default, sizePx to ConfirmationState.Confirmed)
@@ -101,7 +98,7 @@ fun ConfirmationButton(modifier: Modifier = Modifier) {
             modifier = Modifier
                 .offset { IntOffset(swipeableState.offset.value.roundToInt(), 0) }
                 .size(dragSize),
-            progress = progress, addExpensesItemUseCase = addExpensesItemUseCase, bottomSheetViewModel = bottomSheetViewModel
+            progress = progress
         )
     }
 
@@ -110,10 +107,10 @@ fun ConfirmationButton(modifier: Modifier = Modifier) {
 @Composable
 private fun DraggableControl(
     modifier: Modifier,
-    progress: Float,
-    addExpensesItemUseCase: AddExpensesItemUseCase, bottomSheetViewModel: BottomSheetViewModel
+    progress: Float
 ) {
-    val screenViewModel = koinViewModel<MainScreenViewModel>()
+    val addExpensesItemUseCase = koinInject<AddExpensesItemUseCase>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val expense = bottomSheetViewModel.inputExpense.collectAsState()
     val note = bottomSheetViewModel.note.collectAsState()
     val date = bottomSheetViewModel.datePicked.collectAsState()
@@ -140,7 +137,7 @@ private fun DraggableControl(
                         categoryId = category.value!!.categoryId.toInt()
                     )
                 )
-                screenViewModel.setBottomSheetExpanded(false)
+                bottomSheetViewModel.setBottomSheetExpanded(false)
             }
         }
         Crossfade(targetState = isConfirmed, label = "") {

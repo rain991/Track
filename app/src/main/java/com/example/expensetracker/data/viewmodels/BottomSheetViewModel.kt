@@ -10,7 +10,13 @@ import java.time.LocalDate
 // private val categoryList: GetCategoryListUseCase, private val addExpensesItemUseCase: AddExpensesItemUseCase
 class BottomSheetViewModel(private val screenManagerViewModel: ScreenManagerViewModel) :
     ViewModel() {
+    private var _isBottomSheetExpanded = MutableStateFlow(value = false)
+    val isBottomSheetExpanded = _isBottomSheetExpanded.asStateFlow()
 
+
+    fun setBottomSheetExpanded(value: Boolean) {
+        _isBottomSheetExpanded.update { value }
+    }
 
     private var _note = MutableStateFlow("")
     val note = _note.asStateFlow()

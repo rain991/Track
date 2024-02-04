@@ -13,8 +13,7 @@ import com.example.expensetracker.data.implementations.CategoriesListRepositoryI
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.LoginViewModel
 import com.example.expensetracker.data.viewmodels.ScreenManagerViewModel
-import com.example.expensetracker.presentation.login.LoginScreen
-import com.example.expensetracker.presentation.other.ScreenManager
+import com.example.expensetracker.presentation.navigation.Navigation
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -55,11 +54,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             AppTheme {
                 val mainScreenAvailable = screenManagerViewModel.mainScreenAvailable.collectAsState()
-                if (!mainScreenAvailable.value) {
-                    LoginScreen(loginViewModel, onPositiveLoginChanges = { screenManagerViewModel.setMainScreenAvailable(true) })
-                } else if (mainScreenAvailable.value) {
-                    ScreenManager()
-                }
+                Navigation(dataStore)
             }
         }
     }
