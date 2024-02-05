@@ -7,12 +7,13 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import java.time.LocalDate
-// private val categoryList: GetCategoryListUseCase, private val addExpensesItemUseCase: AddExpensesItemUseCase
-class BottomSheetViewModel(private val screenManagerViewModel: ScreenManagerViewModel) :
+
+class BottomSheetViewModel :
     ViewModel() {
     private var _isBottomSheetExpanded = MutableStateFlow(value = false)
     val isBottomSheetExpanded = _isBottomSheetExpanded.asStateFlow()
 
+    // Create default values for fields
 
     fun setBottomSheetExpanded(value: Boolean) {
         _isBottomSheetExpanded.update { value }

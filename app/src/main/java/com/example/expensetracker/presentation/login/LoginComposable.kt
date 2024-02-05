@@ -45,12 +45,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
+import androidx.navigation.NavController
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
 import com.example.expensetracker.data.models.Currency
 import com.example.expensetracker.data.models.currencyList
 import com.example.expensetracker.data.viewmodels.LoginViewModel
+import com.example.expensetracker.presentation.navigation.Screen
 import com.example.expensetracker.ui.theme.focusedTextFieldText
 import com.example.expensetracker.ui.theme.md_theme_light_primary
 import com.example.expensetracker.ui.theme.unfocusedTextFieldText
@@ -61,7 +63,7 @@ import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
 @Composable
-fun LoginScreen() {
+fun LoginScreen(navController: NavController) {
     val loginViewModel = koinViewModel<LoginViewModel>()
 
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
@@ -71,14 +73,14 @@ fun LoginScreen() {
 
             Spacer(modifier = Modifier.height(32.dp))
 
-            LoginContent(loginViewModel)
+            LoginContent(loginViewModel, navController)
         }
 
     }
 }
 
 @Composable
-private fun LoginContent(loginViewModel: LoginViewModel) {
+private fun LoginContent(loginViewModel: LoginViewModel, navController: NavController) {
     Column(modifier = Modifier.padding(horizontal = 22.dp)) {
         LoginTextField(
             label = stringResource(R.string.loginnametextfield),
@@ -110,7 +112,7 @@ private fun LoginContent(loginViewModel: LoginViewModel) {
                 .fillMaxWidth()
                 .height(40.dp),
             onClick = {             // Lets start button
-                // NAVIGATING
+                navController.navigate(Screen.MainScreen.route)
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = md_theme_light_primary,
