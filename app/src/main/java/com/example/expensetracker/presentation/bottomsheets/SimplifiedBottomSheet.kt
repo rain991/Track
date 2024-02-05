@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
@@ -39,12 +40,12 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -59,21 +60,21 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.models.ExpenseCategory
-import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
-import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import java.time.LocalDate
@@ -114,11 +115,19 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         )
                         AmountInput(focusRequester, controller, dataStoreManager)
                         Spacer(Modifier.height(12.dp))
-                        DatePicker()
                         SimpleOutlinedTextFieldSample(label = "Note")
+                        DatePicker()
                         CategoriesGrid()
-                        Spacer(Modifier.weight(1f))
-                        AcceptButton()
+                        //  Spacer(Modifier.weight(1f))
+                        val coroutineScope = rememberCoroutineScope()
+                        AcceptButton {
+                            bottomSheetViewModel.setIsAddingNewExpense(true)
+                            coroutineScope.launch {
+                                withContext(Dispatchers.IO) {
+                                    bottomSheetViewModel.addExpense()
+                                }
+                            }
+                        }
                     }
                 }
 
@@ -311,42 +320,18 @@ private fun AmountInput(
 
 
 @Composable
-private fun AcceptButton() {
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val addExpensesItemUseCase = koinInject<AddExpensesItemUseCase>()
-    val available = bottomSheetViewModel.isAcceptButtonAvailable.collectAsState(initial = false)
-    val expense = bottomSheetViewModel.inputExpense.collectAsState()
-    val note = bottomSheetViewModel.note.collectAsState()
-    val date = bottomSheetViewModel.datePicked.collectAsState()
-    val category = bottomSheetViewModel.categoryPicked.collectAsState()
+private fun AcceptButton(onClick: () -> Unit) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        Button(
+            onClick = {
+                onClick()
+            },
+            modifier = Modifier
+                .widthIn(60.dp)
+                .wrapContentHeight(), shape = RoundedCornerShape(80)
+        ) {
 
-    var isAddingExpenses by remember { mutableStateOf(false) }
-
-    Button(
-        onClick = {
-            if (available.value && !isAddingExpenses) {
-                isAddingExpenses = true
-                bottomSheetViewModel.setBottomSheetExpanded(false)
-            }
-        },
-        modifier = Modifier
-            .widthIn(min = 40.dp, max = 80.dp)
-            .height(24.dp)
-            .padding(bottom = 16.dp), shape = RoundedCornerShape(80)
-    ) {
-        LaunchedEffect(key1 = isAddingExpenses) {
-            if (isAddingExpenses) {
-                addExpensesItemUseCase.addExpensesItem(
-                    ExpenseItem(
-                        name = note.value,
-                        date = date.value.toString(),
-                        value = expense.value!!,
-                        categoryId = category.value!!.categoryId.toInt()
-                    )
-                )
-                isAddingExpenses = false
-            }
+            Text(text = stringResource(R.string.add_it_button))
         }
-        Text(text = stringResource(R.string.add_it_button), textAlign = TextAlign.Center)
     }
 }
