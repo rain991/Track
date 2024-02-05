@@ -30,7 +30,9 @@
                     expensesDao.insertItem(currentExpensesItem)
                 } 
             } else {
-                currentExpensesItem.id++
+                while(!expensesList.none{it.id == currentExpensesItem.id}){
+                    currentExpensesItem.id++
+                }
                 expensesList.add(currentExpensesItem)
                 withContext(Dispatchers.IO) {
                     expensesDao.insertItem(currentExpensesItem)
