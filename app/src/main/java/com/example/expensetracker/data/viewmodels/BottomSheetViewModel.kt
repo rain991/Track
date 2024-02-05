@@ -11,14 +11,15 @@ import kotlinx.coroutines.flow.update
 import java.time.LocalDate
 
 class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUseCase) : ViewModel() {
+
     suspend fun addExpense() {
         combine(_isAddingNewExpense, isAcceptButtonAvailable) { isAddingNewExpense, isAcceptButtonAvailable ->
             if (isAddingNewExpense && isAcceptButtonAvailable) {
                 addExpensesItemUseCase.addExpensesItem(
                     ExpenseItem(
                         categoryId = _categoryPicked.value!!.categoryId.toInt(),
-                        name = _note.value,
-                        date = _datePicked.value.toString(),
+                        note = _note.value,
+                        date = _datePicked.value,
                         value = _inputExpense.value!!
                     )
                 )

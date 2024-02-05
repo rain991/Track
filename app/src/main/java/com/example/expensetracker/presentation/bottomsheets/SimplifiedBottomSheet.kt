@@ -84,6 +84,7 @@ import kotlin.random.Random
 @Composable
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val scope = rememberCoroutineScope()
     bottomSheetViewModel.setDatePicked(LocalDate.now())
     val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
@@ -125,6 +126,10 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                             coroutineScope.launch {
                                 withContext(Dispatchers.IO) {
                                     bottomSheetViewModel.addExpense()
+
+                                }
+                                scope.launch {
+                                    sheetState.hide()
                                 }
                             }
                         }

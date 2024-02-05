@@ -24,7 +24,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    single<ExpensesDAO> { ExpensesDB.getInstance(androidContext()).dao }
+
+
+    single<ExpensesDAO> { ExpensesDB.getInstance(androidContext()).expensesDao }
     single<ExpensesListRepositoryImpl> { ExpensesListRepositoryImpl(get()) }
 
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }

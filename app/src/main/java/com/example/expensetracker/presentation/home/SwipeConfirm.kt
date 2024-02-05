@@ -131,7 +131,7 @@ private fun DraggableControl(
                 Log.d("MyLog", "In checked state")
                 addExpensesItemUseCase.addExpensesItem(
                     ExpenseItem(
-                        name = note.value,
+                        note = note.value,
                         date = date.value.toString(),
                         value = expense.value!!,
                         categoryId = category.value!!.categoryId.toInt()

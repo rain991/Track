@@ -8,7 +8,8 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
 class App : Application() {
-    val database by lazy { ExpensesDB.getInstance(this)
+    val database by lazy {
+        ExpensesDB.getInstance(this)
     }
     override fun onCreate() {
         super.onCreate()

@@ -9,7 +9,7 @@ data class ExpenseCategory(
     @PrimaryKey(autoGenerate = true)
     var categoryId: Long = 0,
 
-    @ColumnInfo(name = "name")
+    @ColumnInfo(name = "note")
     val name: String,
 
     @ColumnInfo(name = "colorId")

@@ -38,7 +38,7 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
             .clickable { visible = !visible }, shape = RoundedCornerShape(8.dp)
     ) { // Design to be implemented soon
         Column(modifier = Modifier.fillMaxWidth()) {
-            Text(text = expenseItem.name)
+            Text(text = expenseItem.note)
             Text(text = expenseItem.date.toString())
             Text(text = expenseItem.value.toString())
 
