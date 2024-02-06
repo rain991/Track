@@ -1,24 +1,67 @@
 package com.example.expensetracker.data.viewmodels
 
 import androidx.lifecycle.ViewModel
+import com.example.expensetracker.data.converters.convertLocalDateToDate
 import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
-// private val categoryList: GetCategoryListUseCase, private val addExpensesItemUseCase: AddExpensesItemUseCase
-class BottomSheetViewModel(private val screenManagerViewModel: ScreenManagerViewModel) :
-    ViewModel() {
+
+class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUseCase) : ViewModel() {
+
+    suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        withContext(dispatcher){
+            combine(_isAddingNewExpense, isAcceptButtonAvailable) { isAddingNewExpense, isAcceptButtonAvailable ->
+                if (isAddingNewExpense && isAcceptButtonAvailable) {
+                    addExpensesItemUseCase.addExpensesItem(
+                        ExpenseItem(
+                            categoryId = _categoryPicked.value!!.categoryId,
+                            note = _note.value,
+                            date = convertLocalDateToDate(_datePicked.value),
+                            value = _inputExpense.value!!
+                        )
+                    )
+                    setCategoryPicked(DEFAULT_CATEGORY)
+                    setInputExpense(DEFAULT_EXPENSE)
+                    setDatePicked(DEFAULT_DATE)
+                    setNote(DEFAULT_NOTE)
+                    setBottomSheetExpanded(false)
+                }
+                setIsAddingNewExpense(false)
+            }
+        }
+    }
 
 
-    private var _note = MutableStateFlow("")
+    private var _isBottomSheetExpanded = MutableStateFlow(value = false)
+    val isBottomSheetExpanded = _isBottomSheetExpanded.asStateFlow()
+
+    companion object {
+        val DEFAULT_NOTE = ""
+        val DEFAULT_EXPENSE = 0.0f
+        val DEFAULT_CATEGORY = null
+        val DEFAULT_DATE = LocalDate.now()
+    }
+
+
+    fun setBottomSheetExpanded(value: Boolean) {
+        _isBottomSheetExpanded.update { value }
+    }
+
+    private var _note = MutableStateFlow(DEFAULT_NOTE)
     val note = _note.asStateFlow()
 
-    private var _inputExpense = MutableStateFlow<Float?>(0.0f)
+    private var _inputExpense = MutableStateFlow<Float?>(DEFAULT_EXPENSE)
     val inputExpense = _inputExpense.asStateFlow()
 
-    private var _categoryPicked = MutableStateFlow<ExpenseCategory?>(null)
+    private var _categoryPicked = MutableStateFlow<ExpenseCategory?>(DEFAULT_CATEGORY)
     val categoryPicked = _categoryPicked.asStateFlow()
 
     private var _timePickerState = MutableStateFlow(false) // timePicker Dialog state
@@ -33,16 +76,23 @@ class BottomSheetViewModel(private val screenManagerViewModel: ScreenManagerView
     private var _yesterdayButtonActiveState = MutableStateFlow(false)
     val yesterdayButtonActiveState = _yesterdayButtonActiveState.asStateFlow()
 
+    private var _isAddingNewExpense = MutableStateFlow(false) // Button state
+    val isAddingNewExpense = _isAddingNewExpense.asStateFlow()
+
     val isAcceptButtonAvailable = combine(_inputExpense, _datePicked, _categoryPicked) { _inputExpense, _datePicked, _categoryPicked ->
-        _inputExpense != null && _inputExpense > 0.5  && _datePicked.isBefore(LocalDate.now().plusDays(1)) && _categoryPicked!=null
+        _inputExpense != null && _inputExpense > 0.5 && _datePicked.isBefore(LocalDate.now().plusDays(1)) && _categoryPicked != null
+    }
+
+    fun setIsAddingNewExpense(value: Boolean) {
+        _isAddingNewExpense.update { value }
     }
 
     fun setNote(note: String) {
-        _note.update {note}
+        _note.update { note }
     }
 
     fun setInputExpense(inputExpense: Float) {
-        _inputExpense.update{ inputExpense}
+        _inputExpense.update { inputExpense }
     }
 
     fun setCategoryPicked(category: ExpenseCategory?) {
@@ -52,7 +102,7 @@ class BottomSheetViewModel(private val screenManagerViewModel: ScreenManagerView
     }
 
     fun togglePickerState() {
-        _timePickerState.update{!_timePickerState.value }
+        _timePickerState.update { !_timePickerState.value }
     }
 
     fun setDatePicked(localDate: LocalDate) {
@@ -61,8 +111,8 @@ class BottomSheetViewModel(private val screenManagerViewModel: ScreenManagerView
             setTodayButtonState(true)
             setYesterdayButtonState(false)
         } else if (localDate == LocalDate.now().minusDays(1)) {
-            setTodayButtonState(false)
             setYesterdayButtonState(true)
+            setTodayButtonState(false)
         } else {
             setTodayButtonState(false)
             setYesterdayButtonState(false)
@@ -70,15 +120,14 @@ class BottomSheetViewModel(private val screenManagerViewModel: ScreenManagerView
     }
 
     private fun setTodayButtonState(boolean: Boolean) {
-        _todayButtonActiveState.update{boolean}
+        _todayButtonActiveState.update { boolean }
     }
 
     private fun setYesterdayButtonState(boolean: Boolean) {
-        _yesterdayButtonActiveState.update{boolean}
+        _yesterdayButtonActiveState.update { boolean }
     }
 
     fun isDateInOther(localDate: LocalDate): Boolean {
         return (localDate != LocalDate.now() && localDate != LocalDate.now().minusDays(1))
     }
-
 }

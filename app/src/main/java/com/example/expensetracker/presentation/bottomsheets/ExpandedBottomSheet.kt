@@ -31,6 +31,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.expensetracker.data.converters.convertLocalDateToDate
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.models.ExpenseItem
@@ -280,8 +281,8 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             onClick = {
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
-                                    name = "NewName",
-                                    date = LocalDate.now().toString(), enabled = false,
+                                    note = "NewName",
+                                    date = convertLocalDateToDate(LocalDate.now()) , enabled = false,
                                     value = currentExpenseAdded,
                                     categoryId = 2
                                 )
@@ -303,8 +304,8 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             onClick = {
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
-                                    name = "NewName",
-                                    date = LocalDate.now().toString(), enabled = false,
+                                    note = "NewName",
+                                    date = convertLocalDateToDate(LocalDate.now()), enabled = false,
                                     value = currentExpenseAdded,
                                     categoryId = 3
                                 )
@@ -330,8 +331,8 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
                             onClick = {
                                 //Adding new expense
                                 val currentExpense = ExpenseItem(
-                                    name = "NewName",
-                                    date = LocalDate.now().toString(), enabled = false,
+                                    note = "NewName",
+                                    date = convertLocalDateToDate(LocalDate.now()), enabled = false,
                                     value = currentExpenseAdded,
                                     categoryId = 4
                                 )

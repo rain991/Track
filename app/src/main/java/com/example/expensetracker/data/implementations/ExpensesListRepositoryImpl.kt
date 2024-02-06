@@ -5,13 +5,13 @@
     import com.example.expensetracker.domain.repository.ExpensesListRepository
     import kotlinx.coroutines.Dispatchers
     import kotlinx.coroutines.withContext
-    import java.time.LocalDate
-    import kotlin.random.Random
 
     class ExpensesListRepositoryImpl(private val expensesDao: ExpensesDAO) : ExpensesListRepository {
         private var expensesList = mutableListOf<ExpenseItem>()
         override suspend fun setExpensesList(expensesDAO: ExpensesDAO) {
-             expensesList = expensesDAO.getAll()
+            withContext(Dispatchers.IO){
+                expensesList = expensesDAO.getAll()
+            }
         }
 
         override fun sortExpensesItemsDateAsc() {
@@ -30,7 +30,9 @@
                     expensesDao.insertItem(currentExpensesItem)
                 } 
             } else {
-                currentExpensesItem.id++
+                while(!expensesList.none{it.id == currentExpensesItem.id}){
+                    currentExpensesItem.id++
+                }
                 expensesList.add(currentExpensesItem)
                 withContext(Dispatchers.IO) {
                     expensesDao.insertItem(currentExpensesItem)
@@ -66,23 +68,5 @@
                     expensesDao.insertItem(newExpenseItem)
                 }
             }
-        }
-
-
-        // All random elements will be deleted soon
-        fun generateRandomDate(): LocalDate {
-            val randomDays = Random.nextLong(180)
-            return LocalDate.now().minusDays(randomDays)
-        }
-
-        fun generateRandomExpenseObject(): ExpenseItem {
-            return ExpenseItem(
-                id = Random.nextInt(50000) + 5000,
-                name = "",
-                date = generateRandomDate().toString(),
-                enabled = false,
-                value = (Random.nextInt(5000) + 5).toFloat(),
-                categoryId = 1// 5-5005
-            )
         }
     }

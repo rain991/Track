@@ -9,7 +9,7 @@ import com.example.expensetracker.data.implementations.ExpensesListRepositoryImp
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.LoginViewModel
 import com.example.expensetracker.data.viewmodels.MainScreenViewModel
-import com.example.expensetracker.data.viewmodels.ScreenManagerViewModel
+import com.example.expensetracker.data.viewmodels.UserDataViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.DeleteCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.EditCategoryUseCase
@@ -25,7 +25,9 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-    single<ExpensesDAO> { ExpensesDB.getInstance(androidContext()).dao }
+
+
+    single<ExpensesDAO> { ExpensesDB.getInstance(androidContext()).expensesDao }
     single<ExpensesListRepositoryImpl> { ExpensesListRepositoryImpl(get()) }
 
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
@@ -51,8 +53,8 @@ val settingsModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { LoginViewModel() }
-    viewModel { ScreenManagerViewModel(get()) }
+    viewModel { LoginViewModel(get()) }
+    viewModel { UserDataViewModel(get()) }
     viewModel { BottomSheetViewModel(get()) }
     viewModel { MainScreenViewModel() }
 }

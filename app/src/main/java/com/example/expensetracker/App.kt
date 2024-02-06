@@ -8,14 +8,16 @@ import org.koin.core.context.startKoin
 import org.koin.core.logger.Level
 
 class App : Application() {
-    val database by lazy { ExpensesDB.getInstance(this)
+    val database by lazy {
+        ExpensesDB.getInstance(this)
     }
+
     override fun onCreate() {
         super.onCreate()
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
-            modules(listOf(appModule, domainModule, settingsModule,viewModelModule))
+            modules(listOf(appModule, domainModule, settingsModule, viewModelModule))
         }
     }
 }

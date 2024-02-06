@@ -1,20 +1,27 @@
 package com.example.expensetracker.data.models
 
+import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import java.util.Date
 
 
 @Entity(tableName = "Expenses")
 data class ExpenseItem(
     @PrimaryKey(autoGenerate = true)
     var id: Int = UNDEFINED_ID,
-    val name: String,
-    val date: String,
+    @ColumnInfo(name = "value")
+    val value: Float,
+    @ColumnInfo(name = "note")
+    val note: String,
+    @ColumnInfo(name = "date")
+    val date: Date,
+    @ColumnInfo(name = "enabled")
     val enabled: Boolean = false,
-    val categoryId: Int,
-    val value: Float
+    @ColumnInfo(name = "categoryId")
+    val categoryId: Int
 ) {
     companion object {
-        const val UNDEFINED_ID = -1
+        const val UNDEFINED_ID = 0
     }
 }

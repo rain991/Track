@@ -6,7 +6,6 @@ import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.domain.repository.CategoriesListRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
@@ -14,7 +13,7 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
     private var categoriesList = mutableListOf<ExpenseCategory>()
     private var categoriesNames = categoriesList.map { it.name }
     override suspend fun setCategoriesList(categoryDao: ExpenseCategoryDao) {
-        coroutineScope { categoriesList = categoryDao.getAllCategories().toMutableList() }
+        withContext(Dispatchers.IO) { categoriesList = categoryDao.getAllCategories().toMutableList() }
     }
 
     override fun getCategoriesList(): MutableList<ExpenseCategory> {
@@ -22,15 +21,15 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
     }
 
     override fun getCategoryItem(categoryItemId: Long): ExpenseCategory? {
-        if (categoriesList.find { it.categoryId == categoryItemId } == null) {
+        if (categoriesList.find { it.categoryId.toLong() == categoryItemId } == null) {
             return null
         } else {
-            return categoriesList.find { it.categoryId == categoryItemId } // WARNING !! call, to be checked afterwards
+            return categoriesList.find { it.categoryId.toLong() == categoryItemId } // WARNING !! call, to be checked afterwards
         }
     }
 
     override suspend fun editCategory(category: ExpenseCategory) {
-        val olderCategory = getCategoryItem(category.categoryId)
+        val olderCategory = getCategoryItem(category.categoryId.toLong())
         if (olderCategory != null) {
             categoriesList.remove(olderCategory)
             addCategory(category)
@@ -42,7 +41,7 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
     }
 
     override suspend fun addCategory(category: ExpenseCategory) {
-        if (categoriesList.none { it.categoryId == category.categoryId && it.name == category.name}) {
+        if (categoriesList.none { it.categoryId == category.categoryId && it.name == category.name }) {
             categoriesList.add(category)
             withContext(Dispatchers.IO) {
                 categoryDao.insert(category)
@@ -73,8 +72,10 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
             val categoriesNamesFromResources = context.resources.getStringArray(R.array.default_expenses)
             categoriesNames = categoriesNames.plus(categoriesNamesFromResources)
             categoriesNames = categoriesNames.toSet().toList()
-            categoriesNames.forEach { it->
-                addCategory(ExpenseCategory(name = it, colorId = Random.nextInt(0, Int.MAX_VALUE)))
+            categoriesNames.forEach { it ->
+                withContext(Dispatchers.IO) {
+                    addCategory(ExpenseCategory(name = it, colorId = Random.nextLong(0, Long.MAX_VALUE)))
+                }
             }
         }
     }

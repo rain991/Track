@@ -36,6 +36,7 @@ import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
+import com.example.expensetracker.data.converters.convertDateToLocalDate
 import com.example.expensetracker.data.models.ExpenseItem
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
@@ -43,6 +44,7 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
+
 @Composable
 fun MainInfoComposable(){
     Card(
@@ -86,10 +88,10 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
                 var isPreviousDayDifferent = index == 0
                 var isNextDayDifferent = false
                 var isDifferentMonth = false
-                if (index > 0 && index < expenses.size - 1) {
-                    isPreviousDayDifferent = !areDatesEqual(parseStringToDate(expenses[index - 1].date), parseStringToDate(expense.date))
-                    isNextDayDifferent = !areDatesEqual(parseStringToDate(expenses[index + 1].date), parseStringToDate(expense.date))
-                    isDifferentMonth = !areMonthsEqual(parseStringToDate(expenses[index - 1].date), parseStringToDate(expense.date))
+                if (index > 0 && index < expenses.size - 1) {  // WARNING double transform
+                    isPreviousDayDifferent = !areDatesEqual(convertDateToLocalDate(expenses[index - 1].date), convertDateToLocalDate(expense.date))
+                    isNextDayDifferent = !areDatesEqual(convertDateToLocalDate(expenses[index + 1].date), convertDateToLocalDate(expense.date))
+                    isDifferentMonth = !areMonthsEqual(convertDateToLocalDate(expenses[index - 1].date), convertDateToLocalDate(expense.date))
                 }
 
                 Column(modifier = Modifier.padding(horizontal = 8.dp)) {
@@ -107,10 +109,10 @@ fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
                             Spacer(modifier = Modifier.height(4.dp))
                         }
                         if (isDifferentMonth) {
-                            ExpenseMonthHeader(parseStringToDate(expense.date))
+                            ExpenseMonthHeader(convertDateToLocalDate(expense.date))
                         }
                         if (isPreviousDayDifferent) {
-                            ExpenseDayHeader(parseStringToDate(expense.date))
+                            ExpenseDayHeader(convertDateToLocalDate(expense.date))
                             // Spacer(modifier = Modifier.height(4.dp))
                         }
 
