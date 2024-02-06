@@ -41,9 +41,6 @@ class ExpenseTrackerActivity : ComponentActivity() {
         }
         expensesListRepository.sortExpensesItemsDateDesc()
 
-
-
-
         setContent {
             AppTheme {
                 Navigation(dataStore, true)
