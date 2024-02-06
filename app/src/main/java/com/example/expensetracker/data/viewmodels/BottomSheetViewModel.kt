@@ -5,32 +5,37 @@ import com.example.expensetracker.data.converters.convertLocalDateToDate
 import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUseCase) : ViewModel() {
 
-    suspend fun addExpense() {
-        combine(_isAddingNewExpense, isAcceptButtonAvailable) { isAddingNewExpense, isAcceptButtonAvailable ->
-            if (isAddingNewExpense && isAcceptButtonAvailable) {
-                addExpensesItemUseCase.addExpensesItem(
-                    ExpenseItem(
-                        categoryId = _categoryPicked.value!!.categoryId,
-                        note = _note.value,
-                        date = convertLocalDateToDate(_datePicked.value),
-                        value = _inputExpense.value!!
+    suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        withContext(dispatcher){
+            combine(_isAddingNewExpense, isAcceptButtonAvailable) { isAddingNewExpense, isAcceptButtonAvailable ->
+                if (isAddingNewExpense && isAcceptButtonAvailable) {
+                    addExpensesItemUseCase.addExpensesItem(
+                        ExpenseItem(
+                            categoryId = _categoryPicked.value!!.categoryId,
+                            note = _note.value,
+                            date = convertLocalDateToDate(_datePicked.value),
+                            value = _inputExpense.value!!
+                        )
                     )
-                )
-                setCategoryPicked(DEFAULT_CATEGORY)
-                setInputExpense(DEFAULT_EXPENSE)
-                setDatePicked(DEFAULT_DATE)
-                setNote(DEFAULT_NOTE)
-                setBottomSheetExpanded(false)
+                    setCategoryPicked(DEFAULT_CATEGORY)
+                    setInputExpense(DEFAULT_EXPENSE)
+                    setDatePicked(DEFAULT_DATE)
+                    setNote(DEFAULT_NOTE)
+                    setBottomSheetExpanded(false)
+                }
+                setIsAddingNewExpense(false)
             }
-            setIsAddingNewExpense(false)
         }
     }
 
@@ -125,5 +130,4 @@ class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUs
     fun isDateInOther(localDate: LocalDate): Boolean {
         return (localDate != LocalDate.now() && localDate != LocalDate.now().minusDays(1))
     }
-
 }

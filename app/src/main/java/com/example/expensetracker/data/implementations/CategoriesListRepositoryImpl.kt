@@ -6,7 +6,6 @@ import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.domain.repository.CategoriesListRepository
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.withContext
 import kotlin.random.Random
 
@@ -14,7 +13,7 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
     private var categoriesList = mutableListOf<ExpenseCategory>()
     private var categoriesNames = categoriesList.map { it.name }
     override suspend fun setCategoriesList(categoryDao: ExpenseCategoryDao) {
-        coroutineScope { categoriesList = categoryDao.getAllCategories().toMutableList() }
+        withContext(Dispatchers.IO) { categoriesList = categoryDao.getAllCategories().toMutableList() }
     }
 
     override fun getCategoriesList(): MutableList<ExpenseCategory> {
@@ -74,7 +73,9 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
             categoriesNames = categoriesNames.plus(categoriesNamesFromResources)
             categoriesNames = categoriesNames.toSet().toList()
             categoriesNames.forEach { it->
-                addCategory(ExpenseCategory(name = it, colorId = Random.nextLong(0, Long.MAX_VALUE)))
+                withContext(Dispatchers.IO){
+                    addCategory(ExpenseCategory(name = it, colorId = Random.nextLong(0, Long.MAX_VALUE)))
+                }
             }
         }
     }

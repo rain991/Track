@@ -12,8 +12,11 @@ import com.example.expensetracker.data.constants.LOGIN_COUNT_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
 import com.example.expensetracker.data.models.Currency
 import com.example.expensetracker.data.models.USD
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.withContext
 
 
 private const val PREFERENCES_NAME = "UserPreferences"
@@ -32,31 +35,40 @@ class DataStoreManager(private val context : Context) {
 
 
     val loginCountFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: LOGIN_COUNT_DEFAULT }
-    suspend fun incrementLoginCount() {
-        context.dataStore.edit {
-            val currentLoginCount = it[LOGIN_COUNT] ?: 0
-            it[LOGIN_COUNT] = currentLoginCount + 1
+    suspend fun incrementLoginCount(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        withContext(dispatcher){
+            context.dataStore.edit {
+                val currentLoginCount = it[LOGIN_COUNT] ?: 0
+                it[LOGIN_COUNT] = currentLoginCount + 1
+            }
         }
+
     }
 
     val nameFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[NAME] ?: NAME_DEFAULT }
-    suspend fun setName(newName: String) {
-        context.dataStore.edit {
-            it[NAME] = newName
-        }
+    suspend fun setName(newName: String, dispatcher: CoroutineDispatcher = Dispatchers.IO ) {
+       withContext(dispatcher){
+           context.dataStore.edit {
+               it[NAME] = newName
+           }
+       }
     }
 
     val budgetFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: BUDGET_DEFAULT }
-    suspend fun setBudget(newBudget: Int) {
-        context.dataStore.edit {
-            it[BUDGET] = newBudget
-        }
+    suspend fun setBudget(newBudget: Int, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+       withContext(dispatcher) {
+           context.dataStore.edit {
+               it[BUDGET] = newBudget
+           }
+       }
     }
 
     val currencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[CURRENCY] ?: CURRENCY_DEFAULT.ticker }
-    suspend fun setCurrency(currency: com.example.expensetracker.data.models.Currency) {
-        context.dataStore.edit {
-            it[CURRENCY] = currency.ticker
+    suspend fun setCurrency(currency: Currency, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        withContext(dispatcher){
+            context.dataStore.edit {
+                it[CURRENCY] = currency.ticker
+            }
         }
     }
 }

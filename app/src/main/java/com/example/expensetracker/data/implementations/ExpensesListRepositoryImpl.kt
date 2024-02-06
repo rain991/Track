@@ -9,7 +9,9 @@
     class ExpensesListRepositoryImpl(private val expensesDao: ExpensesDAO) : ExpensesListRepository {
         private var expensesList = mutableListOf<ExpenseItem>()
         override suspend fun setExpensesList(expensesDAO: ExpensesDAO) {
-             expensesList = expensesDAO.getAll()
+            withContext(Dispatchers.IO){
+                expensesList = expensesDAO.getAll()
+            }
         }
 
         override fun sortExpensesItemsDateAsc() {

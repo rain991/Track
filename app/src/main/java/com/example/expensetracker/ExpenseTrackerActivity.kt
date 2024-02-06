@@ -31,7 +31,6 @@ class ExpenseTrackerActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         Log.d("MyLog", "${userDataViewModel.currentUser}")
         CoroutineScope(Dispatchers.IO).launch { // warning
-
             dataStore.incrementLoginCount()
             expensesListRepository.setExpensesList(expensesDao)
             categoriesListRepository.setCategoriesList(expenseCategoryDao)
@@ -43,9 +42,10 @@ class ExpenseTrackerActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                Navigation(dataStore, true)
+                Navigation(dataStore, userDataViewModel.currentUser.needsLogin)
             }
         }
+        Log.d("MyLog", "${userDataViewModel.currentUser}")
     }
 
 
