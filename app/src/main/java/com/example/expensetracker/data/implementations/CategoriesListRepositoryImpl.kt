@@ -22,15 +22,15 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
     }
 
     override fun getCategoryItem(categoryItemId: Long): ExpenseCategory? {
-        if (categoriesList.find { it.categoryId == categoryItemId } == null) {
+        if (categoriesList.find { it.categoryId.toLong() == categoryItemId } == null) {
             return null
         } else {
-            return categoriesList.find { it.categoryId == categoryItemId } // WARNING !! call, to be checked afterwards
+            return categoriesList.find { it.categoryId.toLong() == categoryItemId } // WARNING !! call, to be checked afterwards
         }
     }
 
     override suspend fun editCategory(category: ExpenseCategory) {
-        val olderCategory = getCategoryItem(category.categoryId)
+        val olderCategory = getCategoryItem(category.categoryId.toLong())
         if (olderCategory != null) {
             categoriesList.remove(olderCategory)
             addCategory(category)
@@ -74,7 +74,7 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
             categoriesNames = categoriesNames.plus(categoriesNamesFromResources)
             categoriesNames = categoriesNames.toSet().toList()
             categoriesNames.forEach { it->
-                addCategory(ExpenseCategory(name = it, colorId = Random.nextInt(0, Int.MAX_VALUE)))
+                addCategory(ExpenseCategory(name = it, colorId = Random.nextLong(0, Long.MAX_VALUE)))
             }
         }
     }

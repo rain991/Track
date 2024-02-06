@@ -17,9 +17,13 @@ class Converters {
         return date?.time
     }
 }
-
-
 fun convertDateToLocalDate(date: Date): LocalDate {
     val instant = Instant.ofEpochMilli(date.time)
     return instant.atZone(ZoneId.systemDefault()).toLocalDate()
+}
+
+fun convertLocalDateToDate(localDate: LocalDate): Date {
+    val zoneId: ZoneId = ZoneId.systemDefault()
+    val instant = localDate.atStartOfDay().atZone(zoneId).toInstant()
+    return Date.from(instant)
 }

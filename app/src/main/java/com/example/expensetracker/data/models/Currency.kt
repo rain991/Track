@@ -1,12 +1,14 @@
 package com.example.expensetracker.data.models
 
 import com.example.expensetracker.R
-class Currency(val ticker : String, val imageResourceId : Int){
- internal fun addNewCurrency(ticker: String, imageResourceId: Int){  // internal - accesible only in its package
-     Currency(ticker, imageResourceId)
- }
-    fun Currency.isReal(){
 
+class Currency(val ticker: String, val imageResourceId: Int) {
+    internal fun addNewCurrency(ticker: String, imageResourceId: Int) {  // internal - accesible only in its package
+        Currency(ticker, imageResourceId)
+    }
+
+    fun Currency.isReal() {
+        TODO("Check for reality of currency. Could be only network call in app. So I am not sure about it")
     }
 }
 

@@ -1,6 +1,7 @@
 package com.example.expensetracker.data.viewmodels
 
 import androidx.lifecycle.ViewModel
+import com.example.expensetracker.data.converters.convertLocalDateToDate
 import com.example.expensetracker.data.models.ExpenseCategory
 import com.example.expensetracker.data.models.ExpenseItem
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
@@ -17,9 +18,9 @@ class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUs
             if (isAddingNewExpense && isAcceptButtonAvailable) {
                 addExpensesItemUseCase.addExpensesItem(
                     ExpenseItem(
-                        categoryId = _categoryPicked.value!!.categoryId.toInt(),
+                        categoryId = _categoryPicked.value!!.categoryId,
                         note = _note.value,
-                        date = _datePicked.value,
+                        date = convertLocalDateToDate(_datePicked.value),
                         value = _inputExpense.value!!
                     )
                 )
