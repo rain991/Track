@@ -11,12 +11,14 @@ class Currency(val ticker: String, val imageResourceId: Int) {
         TODO("Check for reality of currency. Could be only network call in app. So I am not sure about it")
     }
 }
+fun findCurrencyByTicker(ticker : String) : Currency? {
+    return currencyList.find { it.ticker==ticker }
+}
 
 val USD = Currency("USD", R.drawable.usa96)
 val EUR = Currency("EUR", R.drawable.europeanunion96)
 val GBP = Currency("GBP", R.drawable.greatbritain96)
 val UAH = Currency("UAH", R.drawable.ukraine96)
 val CZK = Currency("CZK", R.drawable.czechrepublic96)
-
 
 val currencyList = mutableListOf<Currency>(USD, EUR, GBP, UAH, CZK)

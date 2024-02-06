@@ -53,7 +53,7 @@ val settingsModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { LoginViewModel() }
+    viewModel { LoginViewModel(get()) }
     viewModel { UserDataViewModel(get()) }
     viewModel { BottomSheetViewModel(get()) }
     viewModel { MainScreenViewModel() }

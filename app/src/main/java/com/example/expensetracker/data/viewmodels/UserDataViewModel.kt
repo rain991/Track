@@ -36,7 +36,7 @@ class UserDataViewModel(private val dataStoreManager: DataStoreManager) : ViewMo
             val budget = defferedBudget.await()
             val currency = defferedCurrency.await()
             val isLoggedIn = loginCounter==0
-            if (loginCounter != null && userName != null && budget != null && currency != null){
+            if (loginCounter!=null && loginCounter > 0 && userName != null && budget != null && currency != null){
                 currentUser.budget=budget
                 currentUser.currency=currency
                 currentUser.isLoggedIn = isLoggedIn
@@ -45,5 +45,4 @@ class UserDataViewModel(private val dataStoreManager: DataStoreManager) : ViewMo
             }
         }
     }
-
 }
