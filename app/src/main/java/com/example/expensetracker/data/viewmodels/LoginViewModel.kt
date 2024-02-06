@@ -8,10 +8,9 @@ import java.time.LocalDate
 
 
 class LoginViewModel : ViewModel() {
-    companion object{
-        val FIRSTNAME_INPUT_ID = mutableIntStateOf(102)
-        val INCOME_INPUT_ID = mutableIntStateOf(105)
-    }
+
+    val FIRSTNAME_INPUT_ID = mutableIntStateOf(102)
+    val INCOME_INPUT_ID = mutableIntStateOf(105)
 
 
     var currency: Currency? = USD
