@@ -15,13 +15,6 @@ import com.example.expensetracker.data.models.USD
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-data class User(
-    var username: String,
-    val isLoggedIn: Boolean,
-    var loginCount: Int,
-    var budget : Int,
-    val currency : String
-)
 
 private const val PREFERENCES_NAME = "UserPreferences"
 private val Context.dataStore: DataStore<Preferences> by preferencesDataStore(PREFERENCES_NAME)

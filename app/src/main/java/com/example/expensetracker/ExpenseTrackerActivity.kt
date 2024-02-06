@@ -5,21 +5,17 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.lifecycle.lifecycleScope
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.viewmodels.UserDataViewModel
 import com.example.expensetracker.presentation.navigation.Navigation
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
-import kotlinx.coroutines.withContext
 import org.koin.android.ext.android.inject
 
 
@@ -29,17 +25,11 @@ class ExpenseTrackerActivity : ComponentActivity() {
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
     private val dataStore: DataStoreManager by inject()
+    private val userDataViewModel : UserDataViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-
-        val defferedFirstLogin = lifecycleScope.async { dataStore.loginCountFlow.firstOrNull() == 0 }
-        runBlocking {
-            val firstLoginStatus = defferedFirstLogin.await()
-        }
-
-
+        Log.d("MyLog", "${userDataViewModel.currentUser}")
         CoroutineScope(Dispatchers.IO).launch { // warning
 
             dataStore.incrementLoginCount()
@@ -56,7 +46,7 @@ class ExpenseTrackerActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                Navigation(dataStore, firstLoginStatus)
+                Navigation(dataStore, true)
             }
         }
     }
