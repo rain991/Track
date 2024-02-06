@@ -24,10 +24,10 @@ class ExpenseTrackerActivity : ComponentActivity() {
     private val expenseCategoryDao: ExpenseCategoryDao by inject()
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
-    private val dataStore: DataStoreManager by inject()
-    private val userDataViewModel : UserDataViewModel by inject()
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        val dataStore: DataStoreManager by inject()
+        val userDataViewModel: UserDataViewModel by inject()
         super.onCreate(savedInstanceState)
         Log.d("MyLog", "${userDataViewModel.currentUser}")
         CoroutineScope(Dispatchers.IO).launch { // warning
@@ -46,12 +46,6 @@ class ExpenseTrackerActivity : ComponentActivity() {
             }
         }
         Log.d("MyLog", "${userDataViewModel.currentUser}")
-    }
-
-
-    override fun onDestroy() {
-        super.onDestroy()
-
     }
 }
 

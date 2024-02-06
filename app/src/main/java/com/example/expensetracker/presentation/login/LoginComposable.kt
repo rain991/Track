@@ -56,8 +56,10 @@ import com.example.expensetracker.ui.theme.unfocusedTextFieldText
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+
 const val FIRSTNAME_INPUT_ID = 102
 const val INCOME_INPUT_ID = 703
+
 @Composable
 fun LoginScreen(navController: NavController) {
     val loginViewModel = koinViewModel<LoginViewModel>()
@@ -76,7 +78,7 @@ fun LoginScreen(navController: NavController) {
 }
 
 @Composable
-private fun LoginContent(loginViewModel: LoginViewModel, navController: NavController, coroutineScope : CoroutineScope) {
+private fun LoginContent(loginViewModel: LoginViewModel, navController: NavController, coroutineScope: CoroutineScope) {
     Column(modifier = Modifier.padding(horizontal = 22.dp)) {
         LoginTextField(
             label = stringResource(R.string.loginnametextfield),
@@ -84,8 +86,6 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             INPUT_ID = FIRSTNAME_INPUT_ID,
             loginViewModel = loginViewModel
         )
-        Spacer(modifier = Modifier.height(20.dp))
-
         Spacer(modifier = Modifier.height(20.dp))
 
         LoginTextField(
@@ -179,16 +179,18 @@ private fun LoginTextField(
     TextField(
         modifier = modifier,
         value = textValue,
-        onValueChange = { if (it.length <= maxCharacters){
-            textValue = it
-            if (INPUT_ID == INCOME_INPUT_ID){
-                incomeData=it
-                loginViewModel.setIncomeStateFlow(it.toInt())
-            }else {
-                firstNameData=it
-                loginViewModel.setFirstNameStateFlow(it)
+        onValueChange = {
+            if (it.length <= maxCharacters) {
+                textValue = it
+                if (INPUT_ID == INCOME_INPUT_ID) {
+                    incomeData = it
+                    loginViewModel.setIncomeStateFlow(it.toInt())
+                } else {
+                    firstNameData = it
+                    loginViewModel.setFirstNameStateFlow(it)
+                }
             }
-        } },
+        },
         label = {
             Text(text = label, style = MaterialTheme.typography.bodyMedium, color = uiColor)
         },
@@ -196,11 +198,11 @@ private fun LoginTextField(
             unfocusedPlaceholderColor = MaterialTheme.colorScheme.unfocusedTextFieldText,
             focusedPlaceholderColor = MaterialTheme.colorScheme.focusedTextFieldText
         ),
-        maxLines = 1,
-        keyboardOptions = if (INPUT_ID == INCOME_INPUT_ID){
-             KeyboardOptions (keyboardType = KeyboardType.Number)
-        }else{
-            KeyboardOptions (keyboardType = KeyboardType.Text)
+        singleLine = true,
+        keyboardOptions = if (INPUT_ID == INCOME_INPUT_ID) {
+            KeyboardOptions(keyboardType = KeyboardType.Number)
+        } else {
+            KeyboardOptions(keyboardType = KeyboardType.Text)
         }
     )
 

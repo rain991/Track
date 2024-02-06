@@ -11,12 +11,13 @@ class App : Application() {
     val database by lazy {
         ExpensesDB.getInstance(this)
     }
+
     override fun onCreate() {
         super.onCreate()
         startKoin {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
-            modules(listOf(appModule, domainModule, settingsModule,viewModelModule))
+            modules(listOf(appModule, domainModule, settingsModule, viewModelModule))
         }
     }
 }

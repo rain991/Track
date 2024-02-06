@@ -41,7 +41,7 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
     }
 
     override suspend fun addCategory(category: ExpenseCategory) {
-        if (categoriesList.none { it.categoryId == category.categoryId && it.name == category.name}) {
+        if (categoriesList.none { it.categoryId == category.categoryId && it.name == category.name }) {
             categoriesList.add(category)
             withContext(Dispatchers.IO) {
                 categoryDao.insert(category)
@@ -72,8 +72,8 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
             val categoriesNamesFromResources = context.resources.getStringArray(R.array.default_expenses)
             categoriesNames = categoriesNames.plus(categoriesNamesFromResources)
             categoriesNames = categoriesNames.toSet().toList()
-            categoriesNames.forEach { it->
-                withContext(Dispatchers.IO){
+            categoriesNames.forEach { it ->
+                withContext(Dispatchers.IO) {
                     addCategory(ExpenseCategory(name = it, colorId = Random.nextLong(0, Long.MAX_VALUE)))
                 }
             }

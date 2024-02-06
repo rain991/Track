@@ -17,6 +17,7 @@ class Converters {
         return date?.time
     }
 }
+
 fun convertDateToLocalDate(date: Date): LocalDate {
     val instant = Instant.ofEpochMilli(date.time)
     return instant.atZone(ZoneId.systemDefault()).toLocalDate()
