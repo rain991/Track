@@ -24,11 +24,10 @@ class ExpenseTrackerActivity : ComponentActivity() {
     private val expenseCategoryDao: ExpenseCategoryDao by inject()
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
-
+    private val userDataViewModel: UserDataViewModel by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
-        val dataStore: DataStoreManager by inject()
-        val userDataViewModel: UserDataViewModel by inject()
         super.onCreate(savedInstanceState)
+        val dataStore : DataStoreManager by inject()
         Log.d("MyLog", "${userDataViewModel.currentUser}")
         CoroutineScope(Dispatchers.IO).launch { // warning
             dataStore.incrementLoginCount()

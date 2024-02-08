@@ -49,7 +49,7 @@ val domainModule = module {
 }
 
 val settingsModule = module {
-    single<DataStoreManager> { DataStoreManager(androidContext().applicationContext) }
+    single<DataStoreManager> { DataStoreManager(get()) } // androidContext().applicationContext
 }
 
 val viewModelModule = module {

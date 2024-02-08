@@ -62,13 +62,6 @@ fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: Expenses
 
     var currentExpenseAdded by remember { mutableFloatStateOf(0.0F) } // Expense adding value
     val scope = rememberCoroutineScope()
-    val addToDB: (currentExpense: ExpenseItem) -> Unit = {
-        expensesListRepository.getExpensesList().add(it)
-        scope.launch {
-            expensesDAO.insertItem(it)
-        }
-    }
-
     if (isVisible) {
         ModalBottomSheet(
             onDismissRequest = onDismiss,

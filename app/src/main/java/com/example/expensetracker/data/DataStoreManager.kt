@@ -1,6 +1,10 @@
 package com.example.expensetracker.data
 
 import android.content.Context
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.platform.LocalContext
+import androidx.datastore.core.DataStore
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
@@ -18,9 +22,9 @@ import kotlinx.coroutines.withContext
 
 
 private const val PREFERENCES_NAME = "UserPreferences"
+private val Context.dataStore by preferencesDataStore(PREFERENCES_NAME)
 
 class DataStoreManager(private val context: Context) {
-    private val Context.dataStore by preferencesDataStore(PREFERENCES_NAME)
 
     companion object {  // remember adding new values to constants
         val CURRENCY_DEFAULT: Currency = USD
@@ -69,4 +73,9 @@ class DataStoreManager(private val context: Context) {
             }
         }
     }
+}
+
+@Composable
+fun datastore(): DataStore<Preferences> {
+    return LocalContext.current.dataStore
 }

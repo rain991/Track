@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
-
+// Could be simplified by using dataClass for state
 class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUseCase) : ViewModel() {
 
     suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {

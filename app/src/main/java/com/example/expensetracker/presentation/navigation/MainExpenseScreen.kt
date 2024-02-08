@@ -1,5 +1,4 @@
-package com.example.expensetracker.presentation.other
-
+package com.example.expensetracker.presentation.navigation
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,33 +16,12 @@ import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExampl
 import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.home.ExpensesLazyColumn
 import com.example.expensetracker.presentation.home.MainInfoComposable
+import com.example.expensetracker.presentation.other.Header
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
-fun PagerFirstScreen() { // Settings
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val settingsData = koinInject<DataStoreManager>()
-    androidx.compose.material3.Scaffold(
-        topBar = {
-            Header(categoryName = stringResource(R.string.settings))
-        },
-        floatingActionButton = {
-            ExtendedButtonExample(isButtonExpanded = false, onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
-        }
-    ) {
-        Column(
-            modifier = Modifier
-                .padding(it)
-        ) { // Settings screen
-            SimplifiedBottomSheet(dataStoreManager = settingsData)
-        }
-    }
-
-}
-
-@Composable
-fun PagerSecondScreen() {  // Main and Primary screen
+fun MainExpenseScreen() {  // Primary screen
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val expensesListRepositoryImpl = koinInject<ExpensesListRepositoryImpl>()
@@ -61,32 +39,10 @@ fun PagerSecondScreen() {  // Main and Primary screen
             modifier = Modifier
                 .padding(it),
             verticalArrangement = Arrangement.spacedBy(16.dp))
-                {
-                   MainInfoComposable()
-                   ExpensesLazyColumn(expenses = expensesListRepositoryImpl.getExpensesList())
+        {
+            MainInfoComposable()
+            ExpensesLazyColumn(expenses = expensesListRepositoryImpl.getExpensesList())
         }
         SimplifiedBottomSheet(dataStoreManager = settingsData)
-    }
-}
-
-@Composable
-fun PagerThirdScreen() {  // Statistics Screen
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val settingsData = koinInject<DataStoreManager>()
-    androidx.compose.material3.Scaffold(
-        topBar = {
-            Header(categoryName = stringResource(R.string.statistic))
-        },
-        floatingActionButton = {
-            ExtendedButtonExample(isButtonExpanded = false, onClick = { bottomSheetViewModel.setBottomSheetExpanded(true)  })
-        }
-    ) { innerPadding ->
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(innerPadding)
-        ) {
-            SimplifiedBottomSheet(dataStoreManager = settingsData)
-        }
     }
 }
