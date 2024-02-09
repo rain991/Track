@@ -16,8 +16,4 @@ interface ExpensesListRepository {
 
     fun sortExpensesItemsDateAsc()
     fun sortExpensesItemsDateDesc()
-
-
-
-
 }
