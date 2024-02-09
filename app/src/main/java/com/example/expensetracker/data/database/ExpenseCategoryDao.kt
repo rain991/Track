@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Update
 import com.example.expensetracker.data.models.ExpenseCategory
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseCategoryDao {
@@ -20,8 +21,7 @@ interface ExpenseCategoryDao {
     suspend fun delete(category: ExpenseCategory)
 
     @Query("SELECT * FROM expense_categories")
-    suspend fun getAllCategories(): List<ExpenseCategory>
-
+    suspend fun getAllCategories(): Flow<List<ExpenseCategory>>
     @Query("DELETE FROM expense_categories")
     suspend fun deleteAllData()
 }

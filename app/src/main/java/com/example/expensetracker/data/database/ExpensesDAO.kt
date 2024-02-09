@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.expensetracker.data.models.ExpenseItem
+import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpensesDAO {
@@ -16,7 +17,7 @@ interface ExpensesDAO {
     suspend fun deleteItem(expenseItem: ExpenseItem)
 
     @Query("SELECT * FROM Expenses")
-    suspend fun getAll(): MutableList<ExpenseItem>
+    suspend fun getAll(): Flow<List<ExpenseItem>>
 }
 
 //    @Query("SELECT * FROM Expenses")
