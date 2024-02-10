@@ -33,7 +33,7 @@ class ExpenseTrackerActivity : ComponentActivity() {
             dataStore.incrementLoginCount()
             expensesListRepository.setExpensesList(expensesDao)
             categoriesListRepository.setCategoriesList(expenseCategoryDao)
-            if (categoriesListRepository.getCategoriesList().size == 0) {
+            if (categoriesListRepository.getCategoriesList().isEmpty()) {
                 categoriesListRepository.addDefaultCategories(this@ExpenseTrackerActivity)
             }
         }

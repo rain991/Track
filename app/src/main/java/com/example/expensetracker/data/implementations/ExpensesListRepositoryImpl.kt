@@ -44,10 +44,10 @@ class ExpensesListRepositoryImpl(private val expensesDao: ExpensesDAO) : Expense
     }
 
     override fun sortExpensesItemsDateAsc() {
-        expensesList = expensesList.sortedBy { it.date }.toMutableList()
+        expensesList = expensesList.sortedBy { it.date }
     }
 
     override fun sortExpensesItemsDateDesc() {
-        expensesList = expensesList.sortedByDescending { it.date }.toMutableList()
+        expensesList = expensesList.sortedByDescending { it.date }
     }
 }

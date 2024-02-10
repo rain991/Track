@@ -4,7 +4,7 @@ import com.example.expensetracker.data.implementations.CategoriesListRepositoryI
 import com.example.expensetracker.data.models.ExpenseCategory
 
 class GetCategoryUseCase(private val categoriesListRepository: CategoriesListRepositoryImpl) {
-    fun getCategory(categoryId : Long): ExpenseCategory? {
+    fun getCategory(categoryId : Int): ExpenseCategory? {
         return categoriesListRepository.getCategoryItem(categoryId)
     }
 }

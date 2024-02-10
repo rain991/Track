@@ -58,7 +58,7 @@ fun MainInfoComposable(){
 
 
 @Composable
-fun ExpensesLazyColumn(expenses: MutableList<ExpenseItem>) {
+fun ExpensesLazyColumn(expenses: List<ExpenseItem>) {
     val listState = rememberLazyListState()
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex>6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
