@@ -3,22 +3,11 @@ package com.example.expensetracker.data.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.constants.BUDGET_DEFAULT
-import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
-import com.example.expensetracker.data.constants.LOGIN_COUNT_DEFAULT
-import com.example.expensetracker.data.constants.NAME_DEFAULT
-import com.example.expensetracker.data.constants.NEEDS_LOGIN
+import com.example.expensetracker.data.models.User
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
 
-data class User(
-    var username: String = NAME_DEFAULT,
-    var needsLogin: Boolean = NEEDS_LOGIN,
-    var loginCount: Int = LOGIN_COUNT_DEFAULT,
-    var budget: Int = BUDGET_DEFAULT,
-    var currency: String = CURRENCY_DEFAULT
-)
 
 // NULL LOGIC SHOULD BE WROTE
 class UserDataViewModel(private val dataStoreManager: DataStoreManager) : ViewModel() {
