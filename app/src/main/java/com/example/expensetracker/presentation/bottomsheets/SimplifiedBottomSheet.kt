@@ -119,7 +119,6 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         //  Spacer(Modifier.weight(1f))
                         val coroutineScope = rememberCoroutineScope()
                         AcceptButton {
-                            bottomSheetViewModel.setIsAddingNewExpense(true)
                             coroutineScope.launch {
                                 withContext(Dispatchers.IO){
                                     bottomSheetViewModel.addExpense()

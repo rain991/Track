@@ -10,6 +10,5 @@ interface CategoriesListRepository {
     suspend fun addCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)
     suspend fun editCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)
     suspend fun deleteCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)
-//    suspend fun addDefaultCategories(context: Context, coroutineContext: CoroutineContext = Dispatchers.IO)
-//    fun checkDefaultCategories(context: Context): Boolean
+    suspend fun addDefaultCategories(coroutineContext: CoroutineContext = Dispatchers.IO)
 }

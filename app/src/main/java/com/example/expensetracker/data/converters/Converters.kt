@@ -1,7 +1,6 @@
 package com.example.expensetracker.data.converters
 
 import androidx.room.TypeConverter
-import java.time.Instant
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
@@ -19,8 +18,7 @@ class Converters {
 }
 
 fun convertDateToLocalDate(date: Date): LocalDate {
-    val instant = Instant.ofEpochMilli(date.time)
-    return instant.atZone(ZoneId.systemDefault()).toLocalDate()
+    return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 }
 
 fun convertLocalDateToDate(localDate: LocalDate): Date {

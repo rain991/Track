@@ -31,28 +31,21 @@ class BottomSheetViewModel(
             }
         }
     }
-//    val isAcceptButtonAvailable = combine(_inputExpense, _datePicked, _categoryPicked) { _inputExpense, _datePicked, _categoryPicked ->
-//        _inputExpense != null && _inputExpense >= 0.5 && _datePicked.isBefore(LocalDate.now().plusDays(1)) && _categoryPicked != null
-//    }
+
     suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
-                if (isAddingNewExpense.value) {
-                    addExpensesItemUseCase.addExpensesItem(
-                        ExpenseItem(
-                            categoryId = _categoryPicked.value!!.categoryId,
-                            note = _note.value,
-                            date = convertLocalDateToDate(_datePicked.value),
-                            value = _inputExpense.value!!
-                        )
-                    )
-                    setCategoryPicked(DEFAULT_CATEGORY)
-                    setInputExpense(DEFAULT_EXPENSE)
-                    setDatePicked(DEFAULT_DATE)
-                    setNote(DEFAULT_NOTE)
-                    setBottomSheetExpanded(false)
-                }
-                setIsAddingNewExpense(false)
-
+            val currentExpenseItem = ExpenseItem(
+                categoryId = _categoryPicked.value!!.categoryId,
+                note = _note.value,
+                date = convertLocalDateToDate(_datePicked.value),
+                value = _inputExpense.value!!
+            )
+            addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
+            setCategoryPicked(DEFAULT_CATEGORY)
+            setInputExpense(DEFAULT_EXPENSE)
+            setDatePicked(DEFAULT_DATE)
+            setNote(DEFAULT_NOTE)
+            setBottomSheetExpanded(false)
         }
     }
 
@@ -93,14 +86,6 @@ class BottomSheetViewModel(
     private var _yesterdayButtonActiveState = MutableStateFlow(false)
     val yesterdayButtonActiveState = _yesterdayButtonActiveState.asStateFlow()
 
-    private var _isAddingNewExpense = MutableStateFlow(false) // Button state
-    val isAddingNewExpense = _isAddingNewExpense.asStateFlow()
-
-
-
-    fun setIsAddingNewExpense(value: Boolean) {
-        _isAddingNewExpense.update { value }
-    }
 
     fun setNote(note: String) {
         _note.update { note }
