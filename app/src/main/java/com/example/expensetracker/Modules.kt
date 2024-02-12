@@ -16,7 +16,6 @@ import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategory
 import com.example.expensetracker.domain.usecases.categoriesusecases.DeleteCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.EditCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
-import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryUseCase
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import com.example.expensetracker.domain.usecases.expenseusecases.DeleteExpenseItemUseCase
 import com.example.expensetracker.domain.usecases.expenseusecases.EditExpenseItemUseCase
@@ -44,7 +43,6 @@ val domainModule = module {
     factory<AddCategoryUseCase> { AddCategoryUseCase(get()) }
     factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get()) }
     factory<EditCategoryUseCase> { EditCategoryUseCase(get()) }
-    factory<GetCategoryUseCase> { GetCategoryUseCase(get()) }
     factory<GetCategoryListUseCase> { GetCategoryListUseCase(get()) }
 }
 
@@ -55,7 +53,7 @@ val settingsModule = module {
 val viewModelModule = module {
     viewModel { LoginViewModel(get()) }
     viewModel { UserDataViewModel(get()) }
-    viewModel { BottomSheetViewModel(get()) }
+    viewModel { BottomSheetViewModel(get(), get()) }
     viewModel { MainScreenViewModel() }
     viewModel { CategoriesItemsViewModel(get()) }
     viewModel { ExpenseItemsViewModel() }

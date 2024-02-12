@@ -41,7 +41,7 @@ class ExpenseTrackerActivity : ComponentActivity() {
 
         setContent {
             AppTheme {
-                Navigation(dataStore, userDataViewModel.currentUser.needsLogin)
+                Navigation(dataStore)
             }
         }
         Log.d("MyLog", "${userDataViewModel.currentUser}")

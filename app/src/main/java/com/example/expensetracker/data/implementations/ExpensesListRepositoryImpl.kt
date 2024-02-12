@@ -16,7 +16,6 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
             }
         }
     }
-
     override suspend fun addExpensesItem(currentExpensesItem: ExpenseItem, context: CoroutineContext) {
         withContext(context = context) {
             expenseItemsDao.insertItem(currentExpensesItem)

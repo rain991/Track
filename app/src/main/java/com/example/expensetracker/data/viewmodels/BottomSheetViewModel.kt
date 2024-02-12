@@ -1,7 +1,9 @@
 package com.example.expensetracker.data.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.converters.convertLocalDateToDate
+import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
@@ -11,13 +13,27 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+
 // Could be simplified by using dataClass for state
-class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUseCase) : ViewModel() {
+class BottomSheetViewModel(
+    private val addExpensesItemUseCase: AddExpensesItemUseCase,
+    private val categoryListRepositoryImpl: CategoriesListRepositoryImpl
+) : ViewModel() {
+    var categoryList = listOf<ExpenseCategory>()
+    init {
+        viewModelScope.launch {
+            categoryListRepositoryImpl.getCategoriesList().collect() {
+                categoryList += it
+                categoryList.distinct()
+            }
+        }
+    }
 
     suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher){
+        withContext(dispatcher) {
             combine(_isAddingNewExpense, isAcceptButtonAvailable) { isAddingNewExpense, isAcceptButtonAvailable ->
                 if (isAddingNewExpense && isAcceptButtonAvailable) {
                     addExpensesItemUseCase.addExpensesItem(
