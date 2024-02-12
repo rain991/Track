@@ -37,11 +37,12 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
 import com.example.expensetracker.data.converters.convertDateToLocalDate
-import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.viewmodels.MainScreenViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -58,10 +59,12 @@ fun MainInfoComposable(){
 
 
 @Composable
-fun ExpensesLazyColumn(expenses: List<ExpenseItem>) {
+fun ExpensesLazyColumn() {
+    val mainScreenViewModel = koinViewModel<MainScreenViewModel>()
     val listState = rememberLazyListState()
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex>6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
+    val expenses = mainScreenViewModel.expensesList
 
     Box {
         if (isScrollUpButtonNeeded) {

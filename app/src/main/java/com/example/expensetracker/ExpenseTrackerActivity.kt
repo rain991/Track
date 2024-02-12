@@ -31,13 +31,8 @@ class ExpenseTrackerActivity : ComponentActivity() {
         Log.d("MyLog", "${userDataViewModel.currentUser}")
         CoroutineScope(Dispatchers.IO).launch { // warning
             dataStore.incrementLoginCount()
-            expensesListRepository.setExpensesList(expenseItemsDao)
-            categoriesListRepository.getCategoriesList(expenseCategoryDao)
-            if (categoriesListRepository.getCategoriesList().isEmpty()) {
-                categoriesListRepository.addDefaultCategories(this@ExpenseTrackerActivity)
-            }
         }
-        expensesListRepository.sortExpensesItemsDateDesc()
+        expensesListRepository.sortExpensesListDateDesc()
 
         setContent {
             AppTheme {

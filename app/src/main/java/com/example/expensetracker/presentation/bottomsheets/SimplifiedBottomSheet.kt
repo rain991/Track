@@ -67,7 +67,6 @@ import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
-import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
@@ -76,7 +75,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import java.time.LocalDate
 import kotlin.random.Random
 
@@ -124,12 +122,9 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         AcceptButton {
                             bottomSheetViewModel.setIsAddingNewExpense(true)
                             coroutineScope.launch {
-                                withContext(Dispatchers.IO) {
-                                    bottomSheetViewModel.addExpense()
-
-                                }
-                                scope.launch {
-                                    sheetState.hide()
+                                bottomSheetViewModel.addExpense()
+                                withContext(Dispatchers.Main) {
+                                    bottomSheetViewModel.setBottomSheetExpanded(false)
                                 }
                             }
                         }
@@ -182,7 +177,7 @@ private fun DatePicker() {
     val datePickerState = UseCaseState(visible = datePickerStateFlow)
     val selectedDate by bottomSheetViewModel.datePicked.collectAsState()
     var text by remember { mutableStateOf(selectedDate.toString()) }
-    if (!bottomSheetViewModel.isDateInOther(selectedDate)) {
+    if (!bottomSheetViewModel.isDateInOtherSpan(selectedDate)) {
         text = stringResource(R.string.other)
     } else {
         text = selectedDate.toString()
@@ -267,7 +262,7 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
 private fun CategoriesGrid() {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val categoryList = koinInject<GetCategoryListUseCase>().getCategoryList()
+    val categoryList = bottomSheetViewModel.categoryList
     LazyHorizontalStaggeredGrid(
         modifier = Modifier.height(72.dp),
         rows = StaggeredGridCells.Adaptive(24.dp),

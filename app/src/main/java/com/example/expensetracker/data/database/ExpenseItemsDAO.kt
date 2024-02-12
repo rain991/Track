@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseItemsDAO {
-    @Insert(onConflict = OnConflictStrategy.IGNORE) // previously REPLACE
+    @Insert(onConflict = OnConflictStrategy.REPLACE) // previously REPLACE
     suspend fun insertItem(expenseItem: ExpenseItem)
 
     @Update

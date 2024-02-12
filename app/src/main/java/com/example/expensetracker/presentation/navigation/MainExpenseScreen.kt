@@ -41,7 +41,7 @@ fun MainExpenseScreen() {  // Primary screen
             verticalArrangement = Arrangement.spacedBy(16.dp))
         {
             MainInfoComposable()
-            ExpensesLazyColumn(expenses = expensesListRepositoryImpl.getExpensesList())
+            ExpensesLazyColumn()
         }
         SimplifiedBottomSheet(dataStoreManager = settingsData)
     }
