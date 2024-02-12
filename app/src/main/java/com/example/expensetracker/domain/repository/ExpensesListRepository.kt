@@ -7,12 +7,12 @@ import kotlin.coroutines.CoroutineContext
 
 interface ExpensesListRepository {
     fun getExpensesList(): Flow<List<ExpenseItem>>
-  // fun getExpenseItem(expensesItemId: Int): ExpenseItem?
+    fun getExpenseItem(expensesItemId: Int): ExpenseItem?
 
     suspend fun addExpensesItem(currentExpensesItem: ExpenseItem, context: CoroutineContext = Dispatchers.IO)
     suspend fun deleteExpenseItem(currentExpenseItem: ExpenseItem, context: CoroutineContext = Dispatchers.IO)
     suspend fun editExpenseItem(newExpenseItem: ExpenseItem, context: CoroutineContext = Dispatchers.IO)
 
-    fun sortExpensesListDateAsc()
-    fun sortExpensesListDateDesc()
+    fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>>
+    fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>>
 }

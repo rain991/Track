@@ -17,9 +17,9 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
         return expenseItemsDao.getAll()
     }
 
-//    override fun getExpenseItem(expensesItemId: Int): ExpenseItem? {
-//        return expensesList.find { it.id == expensesItemId }
-//    }
+    override fun getExpenseItem(expensesItemId: Int): ExpenseItem? {
+        return expenseItemsDao.findExpenseById(expensesItemId)
+    }
 
 
     override suspend fun deleteExpenseItem(currentExpenseItem: ExpenseItem, context: CoroutineContext) {
@@ -32,11 +32,11 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
         expenseItemsDao.update(newExpenseItem)
     }
 
-    override fun sortExpensesListDateAsc() {
-        //expensesList = expensesList.sortedBy { it.date }
+    override fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>> {
+        return expenseItemsDao.getAllWithDateAsc()
     }
 
-    override fun sortExpensesListDateDesc() {
-        //expensesList = expensesList.sortedByDescending { it.date }
+    override fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>> {
+        return expenseItemsDao.getAllWithDateDesc()
     }
 }

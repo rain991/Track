@@ -22,6 +22,7 @@ interface ExpenseCategoryDao {
 
     @Query("SELECT * FROM expense_categories")
     fun getAllCategories(): Flow<List<ExpenseCategory>>
+
     @Query("DELETE FROM expense_categories")
     suspend fun deleteAllData()
 }

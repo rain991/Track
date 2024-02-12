@@ -22,4 +22,16 @@ interface ExpenseItemsDAO {
 
     @Query("SELECT * FROM Expenses")
     fun getAll(): Flow<List<ExpenseItem>>
+
+    @Query("SELECT * FROM Expenses ORDER BY date DESC")
+    fun getAllWithDateDesc(): Flow<List<ExpenseItem>>
+
+    @Query("SELECT * FROM Expenses ORDER BY date ASC")
+    fun getAllWithDateAsc(): Flow<List<ExpenseItem>>
+
+    @Query("SELECT * FROM Expenses WHERE id=:id")
+    fun findExpenseById(id: Int) : ExpenseItem?
+
+    @Query("SELECT * FROM Expenses WHERE note LIKE '%note%'")
+    fun findExpenseByNotes(note : String) : Flow<ExpenseItem>
 }
