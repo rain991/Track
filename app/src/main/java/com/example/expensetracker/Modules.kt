@@ -51,10 +51,10 @@ val settingsModule = module {
 }
 
 val viewModelModule = module {
+    viewModel { CategoriesItemsViewModel(get()) }
     viewModel { LoginViewModel(get()) }
     viewModel { UserDataViewModel(get()) }
     viewModel { BottomSheetViewModel(get(), get()) }
     viewModel { MainScreenViewModel(get()) }
-    viewModel { CategoriesItemsViewModel(get()) }
     viewModel { ExpenseItemsViewModel() }
 }

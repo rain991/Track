@@ -31,8 +31,8 @@ class LoginViewModel(private val dataStoreManager: DataStoreManager) : ViewModel
                 dataStoreManager.setBudget(_incomeStateFlow.value)
                 dataStoreManager.setName(_firstNameStateFlow.value)
                 dataStoreManager.setCurrency(findCurrencyByTicker(_currencyStateFlow.value) ?: USD)
+                dataStoreManager.incrementLoginCount()
             }
-
         }
     }
 

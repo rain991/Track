@@ -11,7 +11,6 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -23,6 +22,7 @@ class BottomSheetViewModel(
     private val categoryListRepositoryImpl: CategoriesListRepositoryImpl
 ) : ViewModel() {
     var categoryList = listOf<ExpenseCategory>()
+
     init {
         viewModelScope.launch {
             categoryListRepositoryImpl.getCategoriesList().collect() {
@@ -31,11 +31,12 @@ class BottomSheetViewModel(
             }
         }
     }
-
+//    val isAcceptButtonAvailable = combine(_inputExpense, _datePicked, _categoryPicked) { _inputExpense, _datePicked, _categoryPicked ->
+//        _inputExpense != null && _inputExpense >= 0.5 && _datePicked.isBefore(LocalDate.now().plusDays(1)) && _categoryPicked != null
+//    }
     suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
-            combine(_isAddingNewExpense, isAcceptButtonAvailable) { isAddingNewExpense, isAcceptButtonAvailable ->
-                if (isAddingNewExpense && isAcceptButtonAvailable) {
+                if (isAddingNewExpense.value) {
                     addExpensesItemUseCase.addExpensesItem(
                         ExpenseItem(
                             categoryId = _categoryPicked.value!!.categoryId,
@@ -51,7 +52,7 @@ class BottomSheetViewModel(
                     setBottomSheetExpanded(false)
                 }
                 setIsAddingNewExpense(false)
-            }
+
         }
     }
 
@@ -95,9 +96,7 @@ class BottomSheetViewModel(
     private var _isAddingNewExpense = MutableStateFlow(false) // Button state
     val isAddingNewExpense = _isAddingNewExpense.asStateFlow()
 
-    val isAcceptButtonAvailable = combine(_inputExpense, _datePicked, _categoryPicked) { _inputExpense, _datePicked, _categoryPicked ->
-        _inputExpense != null && _inputExpense > 0.5 && _datePicked.isBefore(LocalDate.now().plusDays(1)) && _categoryPicked != null
-    }
+
 
     fun setIsAddingNewExpense(value: Boolean) {
         _isAddingNewExpense.update { value }
@@ -143,7 +142,7 @@ class BottomSheetViewModel(
         _yesterdayButtonActiveState.update { boolean }
     }
 
-    fun isDateInOther(localDate: LocalDate): Boolean {
+    fun isDateInOtherSpan(localDate: LocalDate): Boolean {
         return (localDate != LocalDate.now() && localDate != LocalDate.now().minusDays(1))
     }
 }

@@ -1,5 +1,6 @@
 package com.example.expensetracker.presentation.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -15,6 +16,7 @@ fun Navigation(dataStoreManager: DataStoreManager) {
     val navController = rememberNavController()
     val loginCount = dataStoreManager.loginCountFlow.collectAsState(initial = 0)
     LaunchedEffect(key1 = loginCount) {
+        Log.d("MyLog", "Login count: $loginCount")
         if (loginCount.value == 0) {
             navController.navigate(Screen.LoginScreen.route)
         } else {

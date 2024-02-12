@@ -82,7 +82,6 @@ import kotlin.random.Random
 @Composable
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val scope = rememberCoroutineScope()
     bottomSheetViewModel.setDatePicked(LocalDate.now())
     val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
@@ -122,7 +121,9 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         AcceptButton {
                             bottomSheetViewModel.setIsAddingNewExpense(true)
                             coroutineScope.launch {
-                                bottomSheetViewModel.addExpense()
+                                withContext(Dispatchers.IO){
+                                    bottomSheetViewModel.addExpense()
+                                }
                                 withContext(Dispatchers.Main) {
                                     bottomSheetViewModel.setBottomSheetExpanded(false)
                                 }
@@ -153,7 +154,6 @@ fun CategoryCard(category: ExpenseCategory) {  // should be refactored for other
                 Log.d("MyLog", "yesterday : {${bottomSheetViewModel.yesterdayButtonActiveState.value}}")
                 Log.d("MyLog", "date : {${bottomSheetViewModel.datePicked.value}}")
                 Log.d("MyLog", "active category : {${activeCategory}}")
-                Log.d("MyLog", "isavailable : {${bottomSheetViewModel.isAcceptButtonAvailable}}")
             }
             .clip(RoundedCornerShape(4.dp))
             .background(color = Color(Random.nextLong(0xFFFFFFFF)))
@@ -169,6 +169,24 @@ fun CategoryCard(category: ExpenseCategory) {  // should be refactored for other
     }
 }
 
+@Composable
+private fun CategoriesGrid() {
+    val lazyHorizontalState = rememberLazyStaggeredGridState()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val categoryList = bottomSheetViewModel.categoryList
+    LazyHorizontalStaggeredGrid(
+        modifier = Modifier.height(72.dp),
+        rows = StaggeredGridCells.Adaptive(24.dp),
+        state = lazyHorizontalState,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
+    ) {
+        items(count = categoryList.size) { index ->
+            val item = categoryList[index]
+            CategoryCard(category = item)
+        }
+    }
+}
 
 @Composable
 private fun DatePicker() {
@@ -258,24 +276,7 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
 }
 
 
-@Composable
-private fun CategoriesGrid() {
-    val lazyHorizontalState = rememberLazyStaggeredGridState()
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val categoryList = bottomSheetViewModel.categoryList
-    LazyHorizontalStaggeredGrid(
-        modifier = Modifier.height(72.dp),
-        rows = StaggeredGridCells.Adaptive(24.dp),
-        state = lazyHorizontalState,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
-    ) {
-        items(count = categoryList.size) { index ->
-            val item = categoryList[index]
-            CategoryCard(category = item)
-        }
-    }
-}
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
