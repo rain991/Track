@@ -32,9 +32,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.data.converters.convertLocalDateToDate
-import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.database.ExpenseItemsDAO
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
-import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -44,7 +44,7 @@ import java.time.LocalDate
 // WARNING bottomsheet is deprecated, should use simplifiedbottomsheet instead
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expensesDAO: ExpensesDAO, expensesListRepository: ExpensesListRepositoryImpl) {
+fun BottomSheet(isVisible: Boolean, onDismiss: () -> Unit, expenseItemsDAO: ExpenseItemsDAO, expensesListRepository: ExpensesListRepositoryImpl) {
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = false, confirmValueChange = {
             when (it) {

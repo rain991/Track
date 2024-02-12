@@ -37,7 +37,7 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
 import com.example.expensetracker.data.converters.convertDateToLocalDate
-import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView

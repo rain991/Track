@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.data.models.Expenses.ExpenseItem
 
 @Composable
 fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {

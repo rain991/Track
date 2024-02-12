@@ -1,7 +1,7 @@
 package com.example.expensetracker.domain.usecases.categoriesusecases
 
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
-import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 
 class EditCategoryUseCase(private val categoriesListRepository: CategoriesListRepositoryImpl) {
     suspend fun editCategory(category: ExpenseCategory) {

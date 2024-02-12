@@ -2,8 +2,8 @@ package com.example.expensetracker.data.viewmodels
 
 import androidx.lifecycle.ViewModel
 import com.example.expensetracker.data.converters.convertLocalDateToDate
-import com.example.expensetracker.data.models.ExpenseCategory
-import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
+import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

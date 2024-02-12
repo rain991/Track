@@ -65,7 +65,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
 import com.maxkeppeker.sheets.core.models.base.UseCaseState

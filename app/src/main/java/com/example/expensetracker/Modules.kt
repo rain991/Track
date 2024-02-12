@@ -2,11 +2,13 @@ package com.example.expensetracker
 
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.database.ExpenseCategoryDao
-import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.database.ExpenseItemsDAO
 import com.example.expensetracker.data.database.ExpensesDB
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
+import com.example.expensetracker.data.viewmodels.CategoriesItemsViewModel
+import com.example.expensetracker.data.viewmodels.ExpenseItemsViewModel
 import com.example.expensetracker.data.viewmodels.LoginViewModel
 import com.example.expensetracker.data.viewmodels.MainScreenViewModel
 import com.example.expensetracker.data.viewmodels.UserDataViewModel
@@ -25,9 +27,7 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 
 val appModule = module {
-
-
-    single<ExpensesDAO> { ExpensesDB.getInstance(androidContext()).expensesDao }
+    single<ExpenseItemsDAO> { ExpensesDB.getInstance(androidContext()).expenseItemsDao }
     single<ExpensesListRepositoryImpl> { ExpensesListRepositoryImpl(get()) }
 
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
@@ -57,4 +57,6 @@ val viewModelModule = module {
     viewModel { UserDataViewModel(get()) }
     viewModel { BottomSheetViewModel(get()) }
     viewModel { MainScreenViewModel() }
+    viewModel { CategoriesItemsViewModel(get()) }
+    viewModel { ExpenseItemsViewModel() }
 }

@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.database.ExpenseCategoryDao
-import com.example.expensetracker.data.database.ExpensesDAO
+import com.example.expensetracker.data.database.ExpenseItemsDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.UserDataViewModel
@@ -20,7 +20,7 @@ import org.koin.android.ext.android.inject
 
 
 class ExpenseTrackerActivity : ComponentActivity() {
-    private val expensesDao: ExpensesDAO by inject()
+    private val expenseItemsDao: ExpenseItemsDAO by inject()
     private val expenseCategoryDao: ExpenseCategoryDao by inject()
     private val expensesListRepository: ExpensesListRepositoryImpl by inject()
     private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
@@ -31,8 +31,8 @@ class ExpenseTrackerActivity : ComponentActivity() {
         Log.d("MyLog", "${userDataViewModel.currentUser}")
         CoroutineScope(Dispatchers.IO).launch { // warning
             dataStore.incrementLoginCount()
-            expensesListRepository.setExpensesList(expensesDao)
-            categoriesListRepository.setCategoriesList(expenseCategoryDao)
+            expensesListRepository.setExpensesList(expenseItemsDao)
+            categoriesListRepository.getCategoriesList(expenseCategoryDao)
             if (categoriesListRepository.getCategoriesList().isEmpty()) {
                 categoriesListRepository.addDefaultCategories(this@ExpenseTrackerActivity)
             }

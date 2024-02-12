@@ -3,15 +3,15 @@ package com.example.expensetracker.data.database
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseCategoryDao {
-
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insert(category: ExpenseCategory)
 
     @Update
