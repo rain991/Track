@@ -30,8 +30,8 @@ interface ExpenseItemsDAO {
     fun getAllWithDateAsc(): Flow<List<ExpenseItem>>
 
     @Query("SELECT * FROM Expenses WHERE id=:id")
-    fun findExpenseById(id: Int) : ExpenseItem?
+    fun findExpenseById(id: Int): ExpenseItem?
 
-    @Query("SELECT * FROM Expenses WHERE note LIKE '%note%'")
-    fun findExpenseByNotes(note : String) : Flow<ExpenseItem>
+    @Query("SELECT * FROM Expenses WHERE note LIKE '%' || :note || '%'")
+    fun findExpenseByNotes(note: String): Flow<ExpenseItem>
 }

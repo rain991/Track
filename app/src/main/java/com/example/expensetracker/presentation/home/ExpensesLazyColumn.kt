@@ -36,6 +36,8 @@ import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
+import com.example.expensetracker.data.converters.areDatesSame
+import com.example.expensetracker.data.converters.areMonthsSame
 import com.example.expensetracker.data.converters.convertDateToLocalDate
 import com.example.expensetracker.data.viewmodels.MainScreenViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
@@ -44,16 +46,16 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 @Composable
-fun MainInfoComposable(){
+fun MainInfoComposable() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .height(180.dp), shape = RoundedCornerShape(8.dp)
     ) {
-            PieCategoriesChart()
+        PieCategoriesChart()
     }
 }
 
@@ -61,16 +63,18 @@ fun MainInfoComposable(){
 @Composable
 fun ExpensesLazyColumn() {
     val mainScreenViewModel = koinViewModel<MainScreenViewModel>()
+    val expenses by remember { mutableStateOf(mainScreenViewModel.expensesList) }
     val listState = rememberLazyListState()
-    val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex>6 } }
+    val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > 6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
-    val expenses = mainScreenViewModel.expensesList
 
     Box {
         if (isScrollUpButtonNeeded) {
-            Box(modifier = Modifier
-                .align(Alignment.TopEnd)
-                .zIndex(1f)) {
+            Box(
+                modifier = Modifier
+                    .align(Alignment.TopEnd)
+                    .zIndex(1f)
+            ) {
                 FloatingActionButton(
                     onClick = { isScrollingUp = true }, modifier = Modifier
                         .size(52.dp)
@@ -92,9 +96,13 @@ fun ExpensesLazyColumn() {
                 var isNextDayDifferent = false
                 var isDifferentMonth = false
                 if (index > 0 && index < expenses.size - 1) {  // WARNING double transform
-                    isPreviousDayDifferent = !areDatesEqual(convertDateToLocalDate(expenses[index - 1].date), convertDateToLocalDate(expense.date))
-                    isNextDayDifferent = !areDatesEqual(convertDateToLocalDate(expenses[index + 1].date), convertDateToLocalDate(expense.date))
-                    isDifferentMonth = !areMonthsEqual(convertDateToLocalDate(expenses[index - 1].date), convertDateToLocalDate(expense.date))
+                    val calendar1 = Calendar.getInstance()
+                    isPreviousDayDifferent =
+                        !areDatesSame(expenses[index - 1].date, expense.date)
+                    isNextDayDifferent =
+                        !areDatesSame(expenses[index + 1].date, expense.date)
+                    isDifferentMonth =
+                        !areMonthsSame(expenses[index - 1].date, expense.date)
                 }
 
                 Column(modifier = Modifier.padding(horizontal = 8.dp)) {
@@ -104,7 +112,7 @@ fun ExpensesLazyColumn() {
                     }
                     Column {
                         if (index == 0) {
-                            Row(modifier = Modifier.fillMaxWidth()){
+                            Row(modifier = Modifier.fillMaxWidth()) {
                                 Transactions()
                                 Spacer(modifier = Modifier.width(12.dp))
                                 CustomTabSample()
@@ -170,32 +178,33 @@ private fun UpButton(onClick: () -> Unit) {
 
 
 @Composable
-fun PieCategoriesChart(){
+fun PieCategoriesChart() {
     AndroidView(
         factory = { context ->
             val view = LayoutInflater.from(context).inflate(R.layout.main_screen_pie_chart, null, false)
             val aaChartView = view.findViewById<AAChartView>(R.id.aa_chart_view)
             //Creating chart model
-            val aaChartModel : AAChartModel = AAChartModel()
+            val aaChartModel: AAChartModel = AAChartModel()
                 .chartType(AAChartType.Area)
                 .title("title")
                 .subtitle("subtitle")
                 .backgroundColor("#4b2b7f")
                 .dataLabelsEnabled(true)//.animationType(AAChartAnimationType. EaseInCubic).animationDuration(400)
-                .series(arrayOf(
-                    AASeriesElement()
-                        .name("Tokyo")
-                        .data(arrayOf(7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6)),
-                    AASeriesElement()
-                        .name("NewYork")
-                        .data(arrayOf(0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5)),
-                    AASeriesElement()
-                        .name("London")
-                        .data(arrayOf(0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0)),
-                    AASeriesElement()
-                        .name("Berlin")
-                        .data(arrayOf(3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8))
-                )
+                .series(
+                    arrayOf(
+                        AASeriesElement()
+                            .name("Tokyo")
+                            .data(arrayOf(7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6)),
+                        AASeriesElement()
+                            .name("NewYork")
+                            .data(arrayOf(0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5)),
+                        AASeriesElement()
+                            .name("London")
+                            .data(arrayOf(0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0)),
+                        AASeriesElement()
+                            .name("Berlin")
+                            .data(arrayOf(3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8))
+                    )
                 )
             aaChartView.aa_drawChartWithChartModel(aaChartModel)
 
@@ -227,19 +236,3 @@ fun getMonthResID(localDate: LocalDate): Int {
     return monthResId
 }
 
-fun parseStringToDate(dateString: String): LocalDate {
-    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
-    return LocalDate.parse(dateString, formatter)
-}
-
-private fun areDatesEqual(date1: LocalDate, date2: LocalDate): Boolean { // year, month and day is same in dates
-    return (date1.isEqual(date2))
-}
-
-private fun areMonthsEqual(date1: LocalDate, date2: LocalDate): Boolean {  // year, month same
-    return (date1.month == date2.month && date1.year == date2.year)
-}
-
-private fun areYearsEqual(date1: LocalDate, date2: LocalDate): Boolean {  // year is same
-    return (date1.year == date2.year)
-}
