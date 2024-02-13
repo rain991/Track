@@ -38,6 +38,7 @@ import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
 import com.example.expensetracker.data.converters.areDatesSame
 import com.example.expensetracker.data.converters.areMonthsSame
+import com.example.expensetracker.data.converters.areYearsSame
 import com.example.expensetracker.data.converters.convertDateToLocalDate
 import com.example.expensetracker.data.viewmodels.MainScreenViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
@@ -46,7 +47,6 @@ import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
 import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-import java.util.Calendar
 
 @Composable
 fun MainInfoComposable() {
@@ -63,11 +63,10 @@ fun MainInfoComposable() {
 @Composable
 fun ExpensesLazyColumn() {
     val mainScreenViewModel = koinViewModel<MainScreenViewModel>()
-    val expenses by remember { mutableStateOf(mainScreenViewModel.expensesList) }
+    val expenses = mainScreenViewModel.elements
     val listState = rememberLazyListState()
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > 6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
-
     Box {
         if (isScrollUpButtonNeeded) {
             Box(
@@ -90,19 +89,20 @@ fun ExpensesLazyColumn() {
             }
         }
         LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-            items(expenses.size) { index ->   //  expenses.size-1 warning
-                val expense = expenses[index]
+            items(expenses.size) { index ->
+                val currentExpense = expenses[index]
                 var isPreviousDayDifferent = index == 0
                 var isNextDayDifferent = false
                 var isDifferentMonth = false
-                if (index > 0 && index < expenses.size - 1) {  // WARNING double transform
-                    val calendar1 = Calendar.getInstance()
+                var isDifferentYear = false
+                if (index > 0 && index < expenses.size - 1) {
                     isPreviousDayDifferent =
-                        !areDatesSame(expenses[index - 1].date, expense.date)
+                        !areDatesSame(expenses[index - 1].date, currentExpense.date)
                     isNextDayDifferent =
-                        !areDatesSame(expenses[index + 1].date, expense.date)
+                        !areDatesSame(expenses[index + 1].date, currentExpense.date)
                     isDifferentMonth =
-                        !areMonthsSame(expenses[index - 1].date, expense.date)
+                        !areMonthsSame(expenses[index + 1].date, currentExpense.date)
+                    isDifferentYear = !areYearsSame(expenses[index + 1].date, currentExpense.date)
                 }
 
                 Column(modifier = Modifier.padding(horizontal = 8.dp)) {
@@ -119,15 +119,19 @@ fun ExpensesLazyColumn() {
                             }
                             Spacer(modifier = Modifier.height(4.dp))
                         }
-                        if (isDifferentMonth) {
-                            ExpenseMonthHeader(convertDateToLocalDate(expense.date))
+                        if (isDifferentMonth || index == 0) {
+                            Row(Modifier.fillMaxWidth()) {
+                                if (isDifferentYear) ExpenseYearHeader(localDate = convertDateToLocalDate(currentExpense.date))
+                                ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
+                            }
+
                         }
                         if (isPreviousDayDifferent) {
-                            ExpenseDayHeader(convertDateToLocalDate(expense.date))
+                            ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
                             // Spacer(modifier = Modifier.height(4.dp))
                         }
 
-                        ExpensesCardTypeSimple(expenseItem = expense)
+                        ExpensesCardTypeSimple(expenseItem = currentExpense)
                         if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                     }
 
@@ -156,6 +160,14 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
     val month = stringResource(id = monthResId)
     Box {
         Text(text = month, style = MaterialTheme.typography.titleLarge)
+    }
+}
+
+@Composable
+private fun ExpenseYearHeader(localDate: LocalDate) {
+    val year = localDate.year.toString()
+    Box {
+        Text(text = year, style = MaterialTheme.typography.titleLarge)
     }
 }
 

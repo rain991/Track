@@ -10,7 +10,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExample
 import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
@@ -24,7 +23,6 @@ import org.koin.compose.koinInject
 fun MainExpenseScreen() {  // Primary screen
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val settingsData = koinInject<DataStoreManager>()
-    val expensesListRepositoryImpl = koinInject<ExpensesListRepositoryImpl>()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             Header(categoryName = stringResource(R.string.expenses))
