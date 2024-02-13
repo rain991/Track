@@ -1,41 +1,51 @@
 package com.example.expensetracker.data.viewmodels
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.converters.convertLocalDateToDate
-import com.example.expensetracker.data.models.ExpenseCategory
-import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
+import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUseCase) : ViewModel() {
+// Could be simplified by using dataClass for state
+class BottomSheetViewModel(
+    private val addExpensesItemUseCase: AddExpensesItemUseCase,
+    private val categoryListRepositoryImpl: CategoriesListRepositoryImpl
+) : ViewModel() {
+    var categoryList = listOf<ExpenseCategory>()
+
+    init {
+        viewModelScope.launch {
+            categoryListRepositoryImpl.getCategoriesList().collect() {
+                categoryList += it
+                categoryList.distinct()
+            }
+        }
+    }
 
     suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher){
-            combine(_isAddingNewExpense, isAcceptButtonAvailable) { isAddingNewExpense, isAcceptButtonAvailable ->
-                if (isAddingNewExpense && isAcceptButtonAvailable) {
-                    addExpensesItemUseCase.addExpensesItem(
-                        ExpenseItem(
-                            categoryId = _categoryPicked.value!!.categoryId,
-                            note = _note.value,
-                            date = convertLocalDateToDate(_datePicked.value),
-                            value = _inputExpense.value!!
-                        )
-                    )
-                    setCategoryPicked(DEFAULT_CATEGORY)
-                    setInputExpense(DEFAULT_EXPENSE)
-                    setDatePicked(DEFAULT_DATE)
-                    setNote(DEFAULT_NOTE)
-                    setBottomSheetExpanded(false)
-                }
-                setIsAddingNewExpense(false)
-            }
+        withContext(dispatcher) {
+            val currentExpenseItem = ExpenseItem(
+                categoryId = _categoryPicked.value!!.categoryId,
+                note = _note.value,
+                date = convertLocalDateToDate(_datePicked.value),
+                value = _inputExpense.value!!
+            )
+            addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
+            setCategoryPicked(DEFAULT_CATEGORY)
+            setInputExpense(DEFAULT_EXPENSE)
+            setDatePicked(DEFAULT_DATE)
+            setNote(DEFAULT_NOTE)
+            setBottomSheetExpanded(false)
         }
     }
 
@@ -76,16 +86,6 @@ class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUs
     private var _yesterdayButtonActiveState = MutableStateFlow(false)
     val yesterdayButtonActiveState = _yesterdayButtonActiveState.asStateFlow()
 
-    private var _isAddingNewExpense = MutableStateFlow(false) // Button state
-    val isAddingNewExpense = _isAddingNewExpense.asStateFlow()
-
-    val isAcceptButtonAvailable = combine(_inputExpense, _datePicked, _categoryPicked) { _inputExpense, _datePicked, _categoryPicked ->
-        _inputExpense != null && _inputExpense > 0.5 && _datePicked.isBefore(LocalDate.now().plusDays(1)) && _categoryPicked != null
-    }
-
-    fun setIsAddingNewExpense(value: Boolean) {
-        _isAddingNewExpense.update { value }
-    }
 
     fun setNote(note: String) {
         _note.update { note }
@@ -127,7 +127,7 @@ class BottomSheetViewModel(private val addExpensesItemUseCase: AddExpensesItemUs
         _yesterdayButtonActiveState.update { boolean }
     }
 
-    fun isDateInOther(localDate: LocalDate): Boolean {
+    fun isDateInOtherSpan(localDate: LocalDate): Boolean {
         return (localDate != LocalDate.now() && localDate != LocalDate.now().minusDays(1))
     }
 }

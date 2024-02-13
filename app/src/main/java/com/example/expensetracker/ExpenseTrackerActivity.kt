@@ -6,43 +6,33 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.database.ExpenseCategoryDao
-import com.example.expensetracker.data.database.ExpensesDAO
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
-import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.UserDataViewModel
 import com.example.expensetracker.presentation.navigation.Navigation
 import com.example.expensetracker.presentation.themes.AppTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
 
 
 class ExpenseTrackerActivity : ComponentActivity() {
-    private val expensesDao: ExpensesDAO by inject()
-    private val expenseCategoryDao: ExpenseCategoryDao by inject()
-    private val expensesListRepository: ExpensesListRepositoryImpl by inject()
-    private val categoriesListRepository: CategoriesListRepositoryImpl by inject()
-
+    private val userDataViewModel: UserDataViewModel by inject()
+    private val categoriesListRepositoryImpl : CategoriesListRepositoryImpl by inject()
     override fun onCreate(savedInstanceState: Bundle?) {
-        val dataStore: DataStoreManager by inject()
-        val userDataViewModel: UserDataViewModel by inject()
         super.onCreate(savedInstanceState)
-        Log.d("MyLog", "${userDataViewModel.currentUser}")
-        CoroutineScope(Dispatchers.IO).launch { // warning
-            dataStore.incrementLoginCount()
-            expensesListRepository.setExpensesList(expensesDao)
-            categoriesListRepository.setCategoriesList(expenseCategoryDao)
-            if (categoriesListRepository.getCategoriesList().size == 0) {
-                categoriesListRepository.addDefaultCategories(this@ExpenseTrackerActivity)
-            }
+        val dataStore : DataStoreManager by inject()
+        CoroutineScope(Dispatchers.IO).launch {
+            val actualLoginCount = dataStore.loginCountFlow.first()
+            if(actualLoginCount>0) dataStore.incrementLoginCount()
         }
-        expensesListRepository.sortExpensesItemsDateDesc()
-
+        CoroutineScope(Dispatchers.IO).launch {
+            categoriesListRepositoryImpl.addDefaultCategories()
+        }
         setContent {
             AppTheme {
-                Navigation(dataStore, userDataViewModel.currentUser.needsLogin)
+                Navigation(dataStore)
             }
         }
         Log.d("MyLog", "${userDataViewModel.currentUser}")

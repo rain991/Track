@@ -37,7 +37,7 @@ import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.expensetracker.data.converters.convertLocalDateToDate
-import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import org.koin.androidx.compose.koinViewModel
@@ -55,7 +55,7 @@ enum class ConfirmationState {
 @Composable
 fun ConfirmationButton(modifier: Modifier = Modifier) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val acceptButtonAvailable = bottomSheetViewModel.isAcceptButtonAvailable.collectAsState(initial = false)
+    val acceptButtonAvailable = false // WARNING IT IS FAKE, CHANGE REAL VALUE IN VIEWMODEL
     val width = 350.dp
     val dragSize = 50.dp
     val swipeableState = rememberSwipeableState(ConfirmationState.Default)
@@ -72,7 +72,7 @@ fun ConfirmationButton(modifier: Modifier = Modifier) {
             .width(width)
             .swipeable(
                 state = swipeableState,
-                anchors = if (acceptButtonAvailable.value) {
+                anchors = if (acceptButtonAvailable) {
                     mapOf(
                         0f to ConfirmationState.Default,
                         sizePx to ConfirmationState.Confirmed

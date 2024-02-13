@@ -65,9 +65,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
-import com.example.expensetracker.domain.usecases.categoriesusecases.GetCategoryListUseCase
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
@@ -76,7 +75,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import java.time.LocalDate
 import kotlin.random.Random
 
@@ -84,7 +82,6 @@ import kotlin.random.Random
 @Composable
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val scope = rememberCoroutineScope()
     bottomSheetViewModel.setDatePicked(LocalDate.now())
     val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
@@ -122,14 +119,12 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         //  Spacer(Modifier.weight(1f))
                         val coroutineScope = rememberCoroutineScope()
                         AcceptButton {
-                            bottomSheetViewModel.setIsAddingNewExpense(true)
                             coroutineScope.launch {
-                                withContext(Dispatchers.IO) {
+                                withContext(Dispatchers.IO){
                                     bottomSheetViewModel.addExpense()
-
                                 }
-                                scope.launch {
-                                    sheetState.hide()
+                                withContext(Dispatchers.Main) {
+                                    bottomSheetViewModel.setBottomSheetExpanded(false)
                                 }
                             }
                         }
@@ -158,7 +153,6 @@ fun CategoryCard(category: ExpenseCategory) {  // should be refactored for other
                 Log.d("MyLog", "yesterday : {${bottomSheetViewModel.yesterdayButtonActiveState.value}}")
                 Log.d("MyLog", "date : {${bottomSheetViewModel.datePicked.value}}")
                 Log.d("MyLog", "active category : {${activeCategory}}")
-                Log.d("MyLog", "isavailable : {${bottomSheetViewModel.isAcceptButtonAvailable}}")
             }
             .clip(RoundedCornerShape(4.dp))
             .background(color = Color(Random.nextLong(0xFFFFFFFF)))
@@ -174,6 +168,24 @@ fun CategoryCard(category: ExpenseCategory) {  // should be refactored for other
     }
 }
 
+@Composable
+private fun CategoriesGrid() {
+    val lazyHorizontalState = rememberLazyStaggeredGridState()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val categoryList = bottomSheetViewModel.categoryList
+    LazyHorizontalStaggeredGrid(
+        modifier = Modifier.height(72.dp),
+        rows = StaggeredGridCells.Adaptive(24.dp),
+        state = lazyHorizontalState,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
+    ) {
+        items(count = categoryList.size) { index ->
+            val item = categoryList[index]
+            CategoryCard(category = item)
+        }
+    }
+}
 
 @Composable
 private fun DatePicker() {
@@ -182,7 +194,7 @@ private fun DatePicker() {
     val datePickerState = UseCaseState(visible = datePickerStateFlow)
     val selectedDate by bottomSheetViewModel.datePicked.collectAsState()
     var text by remember { mutableStateOf(selectedDate.toString()) }
-    if (!bottomSheetViewModel.isDateInOther(selectedDate)) {
+    if (!bottomSheetViewModel.isDateInOtherSpan(selectedDate)) {
         text = stringResource(R.string.other)
     } else {
         text = selectedDate.toString()
@@ -263,24 +275,7 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
 }
 
 
-@Composable
-private fun CategoriesGrid() {
-    val lazyHorizontalState = rememberLazyStaggeredGridState()
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val categoryList = koinInject<GetCategoryListUseCase>().getCategoryList()
-    LazyHorizontalStaggeredGrid(
-        modifier = Modifier.height(72.dp),
-        rows = StaggeredGridCells.Adaptive(24.dp),
-        state = lazyHorizontalState,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
-    ) {
-        items(count = categoryList.size) { index ->
-            val item = categoryList[index]
-            CategoryCard(category = item)
-        }
-    }
-}
+
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable

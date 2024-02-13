@@ -36,18 +36,5 @@
     <string name="statistic">Statistic</string>
     <string name="add_it_button">Add it</string>
 
-    <string-array name="default_expenses">
-        <item>Groceries</item>
-        <item>Utilities</item>
-        <item>Housing</item>
-        <item>Transportation</item>
-        <item>Dining Out</item>
-        <item>Entertainment</item>
-        <item>Healthcare</item>
-        <item>Clothing and Accessories</item>
-        <item>Personal Care</item>
-        <item>Technology and Electronics</item>
-        <item>Travel</item>
-        <item>Savings and Investments</item>
-    </string-array>
+
 </resources>

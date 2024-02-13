@@ -18,8 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.expensetracker.data.database.ExpensesDAO
-import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.presentation.navigation.SettingsExpenseScreen
+import com.example.expensetracker.presentation.navigation.MainExpenseScreen
+import com.example.expensetracker.presentation.navigation.StatisticsExpenseScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -33,9 +34,9 @@ fun ScreenManager() {
             modifier = Modifier.weight(1f)
         ) { page ->
             when (page) {
-                0 -> PagerFirstScreen()
-                1 -> PagerSecondScreen()
-                2 -> PagerThirdScreen()
+                0 -> SettingsExpenseScreen()
+                1 -> MainExpenseScreen()
+                2 -> StatisticsExpenseScreen()
             }
         }
     }

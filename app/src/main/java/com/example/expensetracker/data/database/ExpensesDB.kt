@@ -6,8 +6,8 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.expensetracker.data.converters.Converters
-import com.example.expensetracker.data.models.ExpenseCategory
-import com.example.expensetracker.data.models.ExpenseItem
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
+import com.example.expensetracker.data.models.Expenses.ExpenseItem
 
 @Database(
     entities = [ExpenseItem::class, ExpenseCategory::class],
@@ -15,7 +15,7 @@ import com.example.expensetracker.data.models.ExpenseItem
 )
 @TypeConverters(Converters::class)
 abstract class ExpensesDB : RoomDatabase() {
-    abstract val expensesDao: ExpensesDAO
+    abstract val expenseItemsDao: ExpenseItemsDAO
     abstract val categoryDao: ExpenseCategoryDao
 
     companion object {

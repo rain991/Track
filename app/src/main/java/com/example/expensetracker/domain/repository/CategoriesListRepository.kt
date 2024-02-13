@@ -1,23 +1,14 @@
 package com.example.expensetracker.domain.repository
 
-import android.content.Context
-import com.example.expensetracker.data.database.ExpenseCategoryDao
-import com.example.expensetracker.data.models.ExpenseCategory
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.Flow
+import kotlin.coroutines.CoroutineContext
 
 interface CategoriesListRepository {
-    suspend fun setCategoriesList(categoryDao: ExpenseCategoryDao)
-
-    fun getCategoriesList(): MutableList<ExpenseCategory>
-
-    fun getCategoryItem(categoryItemId: Long): ExpenseCategory?
-
-    suspend fun addCategory(category: ExpenseCategory)
-
-    suspend fun editCategory(category: ExpenseCategory)
-
-    suspend fun deleteCategory(category: ExpenseCategory)
-
-    fun checkDefaultCategories(context: Context): Boolean
-
-    suspend fun addDefaultCategories(context: Context)
+    suspend fun getCategoriesList(context: CoroutineContext= Dispatchers.IO) : Flow<List<ExpenseCategory>>
+    suspend fun addCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)
+    suspend fun editCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)
+    suspend fun deleteCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)
+    suspend fun addDefaultCategories(coroutineContext: CoroutineContext = Dispatchers.IO)
 }
