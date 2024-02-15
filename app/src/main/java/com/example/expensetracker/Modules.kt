@@ -1,9 +1,11 @@
 package com.example.expensetracker
 
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.database.CurrencyDao
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpenseItemsDAO
 import com.example.expensetracker.data.database.ExpensesDB
+import com.example.expensetracker.data.database.IdeaDao
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
@@ -32,6 +34,10 @@ val appModule = module {
 
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
     single<CategoriesListRepositoryImpl> { CategoriesListRepositoryImpl(get()) }
+
+    single<CurrencyDao>{ ExpensesDB.getInstance(androidContext()).currencyDao }
+
+    single<IdeaDao>{ ExpensesDB.getInstance(androidContext()).ideaDao }
 }
 
 val domainModule = module {

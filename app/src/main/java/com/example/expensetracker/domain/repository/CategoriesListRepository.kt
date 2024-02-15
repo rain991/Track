@@ -5,7 +5,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
 
-interface CategoriesListRepository {
+interface CategoriesListRepository {  // addDefaultCategories should be deleted soon
     suspend fun getCategoriesList(context: CoroutineContext= Dispatchers.IO) : Flow<List<ExpenseCategory>>
     suspend fun addCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)
     suspend fun editCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)
