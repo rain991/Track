@@ -19,7 +19,7 @@ import java.util.Date
 )
 data class ExpenseItem(
     @PrimaryKey(autoGenerate = true)
-    var id: Int = 0,
+    val id: Int = 0,
     @ColumnInfo(name = "value")
     val value: Float,
     @ColumnInfo(name = "note")

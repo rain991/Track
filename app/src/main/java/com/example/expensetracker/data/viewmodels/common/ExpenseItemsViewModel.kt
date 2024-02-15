@@ -1,4 +1,4 @@
-package com.example.expensetracker.data.viewmodels
+package com.example.expensetracker.data.viewmodels.common
 
 import androidx.lifecycle.ViewModel
 

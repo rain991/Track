@@ -1,4 +1,4 @@
-package com.example.expensetracker.data.viewmodels
+package com.example.expensetracker.data.viewmodels.mainScreen
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel

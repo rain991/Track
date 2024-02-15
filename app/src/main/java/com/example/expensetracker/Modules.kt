@@ -10,13 +10,13 @@ import com.example.expensetracker.data.implementations.CategoriesListRepositoryI
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.implementations.IdeaListRepositoryImpl
-import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
-import com.example.expensetracker.data.viewmodels.CategoriesItemsViewModel
-import com.example.expensetracker.data.viewmodels.ExpenseItemsViewModel
-import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.data.viewmodels.MainScreenFeedViewModel
-import com.example.expensetracker.data.viewmodels.MainScreenViewModel
 import com.example.expensetracker.data.viewmodels.UserDataViewModel
+import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
+import com.example.expensetracker.data.viewmodels.common.CategoriesItemsViewModel
+import com.example.expensetracker.data.viewmodels.common.ExpenseItemsViewModel
+import com.example.expensetracker.data.viewmodels.login.LoginViewModel
+import com.example.expensetracker.data.viewmodels.mainScreen.MainScreenFeedViewModel
+import com.example.expensetracker.data.viewmodels.mainScreen.MainScreenViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.DeleteCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.EditCategoryUseCase
@@ -41,7 +41,7 @@ val appModule = module {
     single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
 
     single<IdeaDao>{ ExpensesDB.getInstance(androidContext()).ideaDao }
-    single<IdeaListRepositoryImpl>{IdeaListRepositoryImpl(get())}
+    single<IdeaListRepositoryImpl>{ IdeaListRepositoryImpl(get()) }
 }
 
 val domainModule = module {

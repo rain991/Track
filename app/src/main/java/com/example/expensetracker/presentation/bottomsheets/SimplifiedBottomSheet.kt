@@ -66,7 +66,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
-import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
+import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
@@ -163,7 +163,7 @@ fun CategoryCard(category: ExpenseCategory) {  // should be refactored for other
                 Icon(imageVector = Icons.Filled.Check, contentDescription = null, tint = Color.Red)
             }
         }
-        Text(text = category.name, style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp))
+        Text(text = category.note, style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp))
 
     }
 }

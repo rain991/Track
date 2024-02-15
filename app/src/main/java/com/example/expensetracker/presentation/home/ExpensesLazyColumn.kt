@@ -40,7 +40,7 @@ import com.example.expensetracker.data.converters.areDatesSame
 import com.example.expensetracker.data.converters.areMonthsSame
 import com.example.expensetracker.data.converters.areYearsSame
 import com.example.expensetracker.data.converters.convertDateToLocalDate
-import com.example.expensetracker.data.viewmodels.MainScreenViewModel
+import com.example.expensetracker.data.viewmodels.mainScreen.MainScreenViewModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
 import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView

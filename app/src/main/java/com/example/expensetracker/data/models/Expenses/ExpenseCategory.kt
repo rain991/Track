@@ -11,7 +11,7 @@ data class ExpenseCategory(
     var categoryId: Int = 0,
 
     @ColumnInfo(name = "note")
-    val name: String,
+    val note: String,
 
     @ColumnInfo(name = "colorId")
     val colorId: Long

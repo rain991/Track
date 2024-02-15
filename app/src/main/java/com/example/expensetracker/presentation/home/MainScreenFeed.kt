@@ -5,9 +5,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import com.example.expensetracker.data.viewmodels.MainScreenFeedViewModel
+import com.example.expensetracker.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import java.lang.reflect.Modifier
