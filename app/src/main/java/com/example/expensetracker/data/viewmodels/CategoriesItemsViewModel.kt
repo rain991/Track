@@ -31,7 +31,8 @@ class CategoriesItemsViewModel(private val categoriesListRepositoryImpl: Categor
             ExpenseCategory(categoryId = 9, name = "Personal Care", colorId = Random.nextLong(0, Long.MAX_VALUE)),
             ExpenseCategory(categoryId = 10, name = "Technology and Electronics", colorId = Random.nextLong(0, Long.MAX_VALUE)),
             ExpenseCategory(categoryId = 11, name = "Savings and Investments", colorId = Random.nextLong(0, Long.MAX_VALUE)),
-            ExpenseCategory(categoryId = 12, name = "Unique", colorId = Random.nextLong(0, Long.MAX_VALUE))
+            ExpenseCategory(categoryId = 12, name = "Unique", colorId = Random.nextLong(0, Long.MAX_VALUE)),
+            ExpenseCategory(categoryId = 13, name = "Other", colorId = Random.nextLong(0, Long.MAX_VALUE))
         )
     }
 }

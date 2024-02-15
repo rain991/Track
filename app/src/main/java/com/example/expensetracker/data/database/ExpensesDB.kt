@@ -8,15 +8,19 @@ import androidx.room.TypeConverters
 import com.example.expensetracker.data.converters.Converters
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.models.idea.Idea
+import com.example.expensetracker.data.models.other.Currency
 
 @Database(
-    entities = [ExpenseItem::class, ExpenseCategory::class],
+    entities = [ExpenseItem::class, ExpenseCategory::class, Idea::class, Currency::class],
     version = 1
 )
 @TypeConverters(Converters::class)
 abstract class ExpensesDB : RoomDatabase() {
     abstract val expenseItemsDao: ExpenseItemsDAO
     abstract val categoryDao: ExpenseCategoryDao
+    abstract val currencyDao : CurrencyDao
+    abstract val ideaDao : IdeaDao
 
     companion object {
         private var INSTANCE: ExpensesDB? = null
@@ -31,7 +35,7 @@ abstract class ExpensesDB : RoomDatabase() {
             return Room.databaseBuilder(
                 context.applicationContext,
                 ExpensesDB::class.java, "main.db"
-            ).build()
+            ).createFromAsset("database/currency.db").build()
         }
     }
 }

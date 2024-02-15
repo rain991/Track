@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
+// to implement changes of default_categories colors, should be defined migration proccess (?)
 @Entity(tableName = "expense_categories")
 data class ExpenseCategory(
     @PrimaryKey(autoGenerate = true)

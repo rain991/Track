@@ -16,7 +16,6 @@ import java.util.Date
         onUpdate = ForeignKey.CASCADE
     )]
 )
-
 data class Idea(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
