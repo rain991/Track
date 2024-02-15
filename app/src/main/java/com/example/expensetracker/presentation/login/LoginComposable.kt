@@ -243,17 +243,14 @@ fun CurrencyDropDownMenu(loginViewModel: LoginViewModel) { // extractions
         ) {
             currentCurrencyList.forEach { selectionOption ->
                 DropdownMenuItem(
-                    text = { Text(text = selectionOption.ticker, color = uiColor) },
+                    text = { Text(text = selectionOption.name, color = uiColor) },
                     onClick = {
                         selectedOptionText = selectionOption
-                        loginViewModel.setCurrencyStateFlow(selectionOption.ticker)  // ATTENTION
+                        loginViewModel.setCurrencyStateFlow(selectionOption)
                         isExpanded = false
                     },
                     trailingIcon = {
-                        Image(
-                            painter = painterResource(id = selectionOption.imageResourceId),
-                            contentDescription = selectionOption.ticker
-                        )
+                        Text(text = selectionOption.ticker, color = uiColor)
                     }
                 )
             }

@@ -10,10 +10,10 @@ import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.expensetracker.data.constants.BUDGET_DEFAULT
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.LOGIN_COUNT_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
-import com.example.expensetracker.data.viewmodels.Currency
-import com.example.expensetracker.data.viewmodels.USD
+import com.example.expensetracker.data.models.currency.Currency
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -27,9 +27,7 @@ private val Context.dataStore by preferencesDataStore(PREFERENCES_NAME)
 class DataStoreManager(private val context: Context) {
 
     companion object {  // remember adding new values to constants
-        val CURRENCY_DEFAULT: Currency = USD
-
-
+        val currencyDefault = CURRENCY_DEFAULT
         private val LOGIN_COUNT = intPreferencesKey("first_launch")
         private val NAME = stringPreferencesKey("user_name")
         private val BUDGET = intPreferencesKey("user_budget")

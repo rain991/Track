@@ -1,6 +1,8 @@
 package com.example.expensetracker.data.constants
 
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
+import com.example.expensetracker.data.models.currency.Currency
+import com.example.expensetracker.data.models.currency.CurrencyTypes
 import kotlin.random.Random
 
 // Other constants (objects of class as Currency) in DataStoreManager
@@ -9,7 +11,7 @@ const val NAME_DEFAULT: String = "User"
 const val LOGIN_COUNT_DEFAULT = 0
 const val NEEDS_LOGIN: Boolean = true
 const val BUDGET_DEFAULT: Int = 0
-const val CURRENCY_DEFAULT: String = "USD"
+val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.DEFAULT)
 
 val DEFAULT_CATEGORIES = listOf<ExpenseCategory>(
     ExpenseCategory(categoryId = 1, note = "Groceries", colorId = Random.nextLong(0, Long.MAX_VALUE)),

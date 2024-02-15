@@ -42,17 +42,17 @@ class LoginViewModel(
 
 
     suspend fun addToDataStore(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        if (_incomeStateFlow.value != BUDGET_DEFAULT && _firstNameStateFlow.value != NAME_DEFAULT) {
+        if (_incomeStateFlow.value != BUDGET_DEFAULT && _firstNameStateFlow.value.isNotEmpty()) {
             withContext(dispatcher) {
                 dataStoreManager.setBudget(_incomeStateFlow.value)
                 dataStoreManager.setName(_firstNameStateFlow.value)
-                dataStoreManager.setCurrency(findCurrencyByTicker(_currencyStateFlow.value) ?: USD)
+                dataStoreManager.setCurrency(_currencyStateFlow.value)
                 dataStoreManager.incrementLoginCount()
             }
         }
     }
 
-    fun setCurrencyStateFlow(currency: String) {
+    fun setCurrencyStateFlow(currency: Currency) {
         _currencyStateFlow.update { currency }
     }
 
