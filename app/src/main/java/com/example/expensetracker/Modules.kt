@@ -10,6 +10,7 @@ import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.CategoriesItemsViewModel
 import com.example.expensetracker.data.viewmodels.ExpenseItemsViewModel
 import com.example.expensetracker.data.viewmodels.LoginViewModel
+import com.example.expensetracker.data.viewmodels.MainScreenFeedViewModel
 import com.example.expensetracker.data.viewmodels.MainScreenViewModel
 import com.example.expensetracker.data.viewmodels.UserDataViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategoryUseCase
@@ -57,4 +58,5 @@ val viewModelModule = module {
     viewModel { BottomSheetViewModel(get(), get()) }
     viewModel { MainScreenViewModel(get()) }
     viewModel { ExpenseItemsViewModel() }
+    viewModel { MainScreenFeedViewModel() }
 }
