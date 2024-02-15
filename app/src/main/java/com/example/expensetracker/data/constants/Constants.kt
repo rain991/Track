@@ -7,9 +7,9 @@ import kotlin.random.Random
 
 const val NAME_DEFAULT: String = "User"
 const val LOGIN_COUNT_DEFAULT = 0
-const val NEEDS_LOGIN : Boolean = true
-const val BUDGET_DEFAULT : Int = 0
-const val CURRENCY_DEFAULT : String = "USD"
+const val NEEDS_LOGIN: Boolean = true
+const val BUDGET_DEFAULT: Int = 0
+const val CURRENCY_DEFAULT: String = "USD"
 
 val DEFAULT_CATEGORIES = listOf<ExpenseCategory>(
     ExpenseCategory(categoryId = 1, note = "Groceries", colorId = Random.nextLong(0, Long.MAX_VALUE)),
@@ -23,5 +23,6 @@ val DEFAULT_CATEGORIES = listOf<ExpenseCategory>(
     ExpenseCategory(categoryId = 9, note = "Personal Care", colorId = Random.nextLong(0, Long.MAX_VALUE)),
     ExpenseCategory(categoryId = 10, note = "Technology and Electronics", colorId = Random.nextLong(0, Long.MAX_VALUE)),
     ExpenseCategory(categoryId = 11, note = "Savings and Investments", colorId = Random.nextLong(0, Long.MAX_VALUE)),
-    ExpenseCategory(categoryId = 12, note = "Unique", colorId = Random.nextLong(0, Long.MAX_VALUE))
+    ExpenseCategory(categoryId = 12, note = "Unique", colorId = Random.nextLong(0, Long.MAX_VALUE)),
+    ExpenseCategory(categoryId = 13, note = "Other", colorId = Random.nextLong(0, Long.MAX_VALUE))
 )

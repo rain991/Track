@@ -46,8 +46,6 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
-import com.example.expensetracker.data.viewmodels.Currency
-import com.example.expensetracker.data.viewmodels.currencyList
 import com.example.expensetracker.data.viewmodels.login.LoginViewModel
 import com.example.expensetracker.presentation.navigation.Screen
 import com.example.expensetracker.ui.theme.focusedTextFieldText
@@ -210,9 +208,9 @@ private fun LoginTextField(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CurrencyDropDownMenu(loginViewModel: LoginViewModel) {
+fun CurrencyDropDownMenu(loginViewModel: LoginViewModel) { // extractions
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
-    val currentCurrencyList: List<Currency> = currencyList.toList()
+    val currentCurrencyList = loginViewModel.currencyList
     var isExpanded by remember { mutableStateOf(false) }
     var selectedOptionText by remember { mutableStateOf(currentCurrencyList[0]) }
     ExposedDropdownMenuBox(
@@ -243,7 +241,7 @@ fun CurrencyDropDownMenu(loginViewModel: LoginViewModel) {
                 isExpanded = false
             }
         ) {
-            currencyList.forEach { selectionOption ->
+            currentCurrencyList.forEach { selectionOption ->
                 DropdownMenuItem(
                     text = { Text(text = selectionOption.ticker, color = uiColor) },
                     onClick = {

@@ -9,7 +9,7 @@ import com.example.expensetracker.data.converters.Converters
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.data.models.idea.Idea
-import com.example.expensetracker.data.models.other.Currency
+import com.example.expensetracker.data.models.currency.Currency
 
 @Database(
     entities = [ExpenseItem::class, ExpenseCategory::class, Idea::class, Currency::class],

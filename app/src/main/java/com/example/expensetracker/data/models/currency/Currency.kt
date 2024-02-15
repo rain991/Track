@@ -1,4 +1,4 @@
-package com.example.expensetracker.data.models.other
+package com.example.expensetracker.data.models.currency
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -12,5 +12,5 @@ data class Currency (
     @PrimaryKey
     val ticker : String,
     val name : String,
-    val type : CurrencyTypes,
+    val type : CurrencyTypes
 )

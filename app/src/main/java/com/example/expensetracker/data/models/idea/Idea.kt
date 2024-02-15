@@ -3,7 +3,7 @@ package com.example.expensetracker.data.models.idea
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
-import com.example.expensetracker.data.models.other.Currency
+import com.example.expensetracker.data.models.currency.Currency
 import java.util.Date
 
 @Entity(

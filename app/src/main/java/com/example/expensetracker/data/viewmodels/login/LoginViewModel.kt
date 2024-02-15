@@ -1,19 +1,35 @@
 package com.example.expensetracker.data.viewmodels.login
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.constants.BUDGET_DEFAULT
 import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
+import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
+import com.example.expensetracker.data.models.currency.Currency
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class LoginViewModel(private val dataStoreManager: DataStoreManager) : ViewModel() {
+class LoginViewModel(
+    private val dataStoreManager: DataStoreManager,
+    private val currencyListRepositoryImpl: CurrencyListRepositoryImpl
+) : ViewModel() {
+    var currencyList = listOf<Currency>()
+    init {
+        viewModelScope.launch {
+            currencyListRepositoryImpl.getCurrencyList().collect{
+                currencyList = it
+            }
+        }
+    }
+
     private var _currencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
     val currencyStateFlow = _currencyStateFlow.asStateFlow()
 
@@ -23,9 +39,11 @@ class LoginViewModel(private val dataStoreManager: DataStoreManager) : ViewModel
     private var _incomeStateFlow = MutableStateFlow(BUDGET_DEFAULT)
     val incomeStateFlow = _incomeStateFlow.asStateFlow()
 
-    suspend fun addToDataStore(dispatcher : CoroutineDispatcher = Dispatchers.IO) {
-        if (_incomeStateFlow.value != BUDGET_DEFAULT && _firstNameStateFlow.value != NAME_DEFAULT){
-            withContext(dispatcher){
+
+
+    suspend fun addToDataStore(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        if (_incomeStateFlow.value != BUDGET_DEFAULT && _firstNameStateFlow.value != NAME_DEFAULT) {
+            withContext(dispatcher) {
                 dataStoreManager.setBudget(_incomeStateFlow.value)
                 dataStoreManager.setName(_firstNameStateFlow.value)
                 dataStoreManager.setCurrency(findCurrencyByTicker(_currencyStateFlow.value) ?: USD)

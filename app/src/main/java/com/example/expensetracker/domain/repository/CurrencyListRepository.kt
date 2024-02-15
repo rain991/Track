@@ -1,6 +1,6 @@
 package com.example.expensetracker.domain.repository
 
-import com.example.expensetracker.data.models.other.Currency
+import com.example.expensetracker.data.models.currency.Currency
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
