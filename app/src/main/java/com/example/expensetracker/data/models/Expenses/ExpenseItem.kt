@@ -2,11 +2,21 @@ package com.example.expensetracker.data.models.Expenses
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
+import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import java.util.Date
 
 
-@Entity(tableName = "Expenses")
+@Entity(
+    tableName = "Expenses",
+    foreignKeys = [ForeignKey(
+        entity = ExpenseCategory::class,
+        parentColumns = ["categoryId"],
+        childColumns = ["categoryId"],
+        onDelete = ForeignKey.CASCADE,
+        onUpdate = ForeignKey.CASCADE
+    )]
+)
 data class ExpenseItem(
     @PrimaryKey(autoGenerate = true)
     var id: Int = 0,
