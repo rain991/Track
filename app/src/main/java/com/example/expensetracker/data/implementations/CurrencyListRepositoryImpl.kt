@@ -1,24 +1,25 @@
 package com.example.expensetracker.data.implementations
 
+import com.example.expensetracker.data.database.CurrencyDao
 import com.example.expensetracker.data.models.other.Currency
 import com.example.expensetracker.domain.repository.CurrencyListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
 
-class CurrencyListRepositoryImpl : CurrencyListRepository {
+class CurrencyListRepositoryImpl(private val currencyDao: CurrencyDao) : CurrencyListRepository {
     override suspend fun getCurrencyList(context: CoroutineContext): Flow<List<Currency>> {
-        TODO("Not yet implemented")
+        return currencyDao.getAllData()
     }
 
     override suspend fun addCurrency(currency: Currency, context: CoroutineContext) {
-        TODO("Not yet implemented")
+        currencyDao.insert(currency)
     }
 
     override suspend fun editCurrency(currency: Currency, context: CoroutineContext) {
-        TODO("Not yet implemented")
+        currencyDao.update(currency)
     }
 
     override suspend fun deleteCurrency(currency: Currency, context: CoroutineContext) {
-        TODO("Not yet implemented")
+        currencyDao.delete(currency)
     }
 }

@@ -7,7 +7,9 @@ import com.example.expensetracker.data.database.ExpenseItemsDAO
 import com.example.expensetracker.data.database.ExpensesDB
 import com.example.expensetracker.data.database.IdeaDao
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
+import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
+import com.example.expensetracker.data.implementations.IdeaListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.CategoriesItemsViewModel
 import com.example.expensetracker.data.viewmodels.ExpenseItemsViewModel
@@ -36,8 +38,10 @@ val appModule = module {
     single<CategoriesListRepositoryImpl> { CategoriesListRepositoryImpl(get()) }
 
     single<CurrencyDao>{ ExpensesDB.getInstance(androidContext()).currencyDao }
+    single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
 
     single<IdeaDao>{ ExpensesDB.getInstance(androidContext()).ideaDao }
+    single<IdeaListRepositoryImpl>{IdeaListRepositoryImpl(get())}
 }
 
 val domainModule = module {
