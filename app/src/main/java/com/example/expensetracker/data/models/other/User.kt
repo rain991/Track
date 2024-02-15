@@ -1,4 +1,4 @@
-package com.example.expensetracker.data.models
+package com.example.expensetracker.data.models.other
 
 import com.example.expensetracker.data.constants.BUDGET_DEFAULT
 import com.example.expensetracker.data.constants.CURRENCY_DEFAULT

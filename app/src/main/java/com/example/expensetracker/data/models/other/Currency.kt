@@ -1,4 +1,4 @@
-package com.example.expensetracker.data.database
+package com.example.expensetracker.data.models.other
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
@@ -11,6 +11,7 @@ enum class CurrencyTypes {
 data class Currency (
     @PrimaryKey
     val ticker : String,
+    val name : String,
     val type : CurrencyTypes,
     val imageResourceId : Int
 )

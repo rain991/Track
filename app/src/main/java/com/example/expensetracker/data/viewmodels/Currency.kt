@@ -1,4 +1,4 @@
-package com.example.expensetracker.data.models
+package com.example.expensetracker.data.viewmodels
 
 import com.example.expensetracker.R
 

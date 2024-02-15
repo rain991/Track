@@ -5,8 +5,6 @@ import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.constants.BUDGET_DEFAULT
 import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
-import com.example.expensetracker.data.models.USD
-import com.example.expensetracker.data.models.findCurrencyByTicker
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

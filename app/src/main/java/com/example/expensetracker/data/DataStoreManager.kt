@@ -12,8 +12,8 @@ import androidx.datastore.preferences.preferencesDataStore
 import com.example.expensetracker.data.constants.BUDGET_DEFAULT
 import com.example.expensetracker.data.constants.LOGIN_COUNT_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
-import com.example.expensetracker.data.models.Currency
-import com.example.expensetracker.data.models.USD
+import com.example.expensetracker.data.viewmodels.Currency
+import com.example.expensetracker.data.viewmodels.USD
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

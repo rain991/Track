@@ -46,8 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
-import com.example.expensetracker.data.models.Currency
-import com.example.expensetracker.data.models.currencyList
+import com.example.expensetracker.data.viewmodels.Currency
+import com.example.expensetracker.data.viewmodels.currencyList
 import com.example.expensetracker.data.viewmodels.LoginViewModel
 import com.example.expensetracker.presentation.navigation.Screen
 import com.example.expensetracker.ui.theme.focusedTextFieldText
