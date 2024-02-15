@@ -13,5 +13,4 @@ data class Currency (
     val ticker : String,
     val name : String,
     val type : CurrencyTypes,
-    val imageResourceId : Int
 )
