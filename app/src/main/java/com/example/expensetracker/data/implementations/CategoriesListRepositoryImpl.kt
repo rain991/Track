@@ -1,6 +1,5 @@
 package com.example.expensetracker.data.implementations
 
-import com.example.expensetracker.data.constants.DEFAULT_CATEGORIES
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.domain.repository.CategoriesListRepository
@@ -29,15 +28,6 @@ class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) 
     override suspend fun deleteCategory(category: ExpenseCategory, context: CoroutineContext) {
         withContext(context = context) {
             categoryDao.delete(category)
-        }
-    }
-
-    override suspend fun addDefaultCategories(coroutineContext: CoroutineContext) {
-        val localDefaultCategories = DEFAULT_CATEGORIES
-        localDefaultCategories.forEach { it ->
-            withContext(coroutineContext) {
-                addCategory(it)
-            }
         }
     }
 }

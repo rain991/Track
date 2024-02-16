@@ -12,7 +12,6 @@ import com.example.expensetracker.data.implementations.ExpensesListRepositoryImp
 import com.example.expensetracker.data.implementations.IdeaListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.UserDataViewModel
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
-import com.example.expensetracker.data.viewmodels.common.CategoriesItemsViewModel
 import com.example.expensetracker.data.viewmodels.login.LoginViewModel
 import com.example.expensetracker.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.expensetracker.data.viewmodels.mainScreen.MainScreenViewModel
@@ -61,7 +60,6 @@ val settingsModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { CategoriesItemsViewModel(get()) }
     viewModel { LoginViewModel(get(), get()) }
     viewModel { UserDataViewModel(get()) }
     viewModel { BottomSheetViewModel(get(), get()) }
