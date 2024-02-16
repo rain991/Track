@@ -7,6 +7,8 @@ import kotlin.random.Random
 
 // Other constants (objects of class as Currency) in DataStoreManager
 
+const val DB_PATH = "database/expense_tracker.db"
+
 const val NAME_DEFAULT: String = "User"
 const val LOGIN_COUNT_DEFAULT = 0
 const val NEEDS_LOGIN: Boolean = true
