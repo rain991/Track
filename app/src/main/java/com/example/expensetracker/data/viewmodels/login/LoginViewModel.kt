@@ -12,6 +12,7 @@ import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -24,9 +25,7 @@ class LoginViewModel(
     var currencyList = listOf<Currency>()
     init {
         viewModelScope.launch {
-            currencyListRepositoryImpl.getCurrencyList().collect{
-                currencyList = it
-            }
+          currencyList = currencyListRepositoryImpl.getCurrencyList().first()
         }
     }
 
@@ -38,7 +37,6 @@ class LoginViewModel(
 
     private var _incomeStateFlow = MutableStateFlow(BUDGET_DEFAULT)
     val incomeStateFlow = _incomeStateFlow.asStateFlow()
-
 
 
     suspend fun addToDataStore(dispatcher: CoroutineDispatcher = Dispatchers.IO) {

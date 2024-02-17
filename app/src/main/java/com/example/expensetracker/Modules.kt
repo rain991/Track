@@ -52,7 +52,7 @@ val domainModule = module {
     factory<AddCategoryUseCase> { AddCategoryUseCase(get()) }
     factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get()) }
     factory<EditCategoryUseCase> { EditCategoryUseCase(get()) }
-    factory<GetCategoryListUseCase> { GetCategoryListUseCase(get()) }
+    factory<GetCategoryListUseCase> { GetCategoryListUseCase() }
 }
 
 val settingsModule = module {
