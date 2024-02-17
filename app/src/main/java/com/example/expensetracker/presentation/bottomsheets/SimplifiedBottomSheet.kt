@@ -96,7 +96,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
             val focusRequester = remember { FocusRequester() }
             Column(   // All content
                 modifier = Modifier
-                    .fillMaxHeight(0.7f)
+                    .fillMaxHeight(0.65f)
                     .fillMaxWidth()
             )
             {
