@@ -15,6 +15,7 @@ import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExampl
 import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
 import com.example.expensetracker.presentation.home.ExpensesLazyColumn
 import com.example.expensetracker.presentation.home.MainInfoComposable
+import com.example.expensetracker.presentation.home.MainScreenFeed
 import com.example.expensetracker.presentation.other.Header
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -36,8 +37,9 @@ fun MainExpenseScreen() {  // Primary screen
         Column(
             modifier = Modifier
                 .padding(it),
-            verticalArrangement = Arrangement.spacedBy(16.dp))
+            verticalArrangement = Arrangement.spacedBy(8.dp)) //12.dp
         {
+            MainScreenFeed()
             MainInfoComposable()
             ExpensesLazyColumn()
         }

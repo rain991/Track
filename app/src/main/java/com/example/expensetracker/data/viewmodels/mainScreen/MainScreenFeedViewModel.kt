@@ -23,13 +23,14 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     private val _cardIndex = MutableStateFlow(0)
     val cardIndex = _cardIndex.asStateFlow()
 
-    private val _maxPagerIndex = MutableStateFlow(ideaList.lastIndex + BASIC_CARD_COUNT_IN_FEED)
+    private val _maxPagerIndex = MutableStateFlow(ideaList.lastIndex + BASIC_CARD_COUNT_IN_FEED - 1)
     val maxPagerIndex = _maxPagerIndex.asStateFlow()
     init {
         viewModelScope.launch {
             ideaListRepositoryImpl.getIdeasList().collect{
                 ideaList = it
             }
+            callNextCard()
         }
     }
 
