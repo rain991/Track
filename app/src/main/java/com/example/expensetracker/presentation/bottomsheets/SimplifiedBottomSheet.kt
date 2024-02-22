@@ -1,8 +1,8 @@
 package com.example.expensetracker.presentation.bottomsheets
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,9 +15,9 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
@@ -50,7 +50,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -76,7 +75,6 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-import kotlin.random.Random
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
@@ -136,35 +134,35 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
 }
 
 @Composable
-fun CategoryCard(category: ExpenseCategory) {  // should be refactored for other ViewModel usages
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val activeCategory = bottomSheetViewModel.categoryPicked.collectAsState()
-
-    Row(
-        modifier = Modifier
-            .heightIn(min = 1.dp, max = 25.dp)
-            .clickable {
-                if (activeCategory.value != category) {
-                    bottomSheetViewModel.setCategoryPicked(category)
-                } else bottomSheetViewModel.setCategoryPicked(null)
-                Log.d("MyLog", "input : {${bottomSheetViewModel.inputExpense.value}}")
-                Log.d("MyLog", "today : {${bottomSheetViewModel.todayButtonActiveState.value}}")
-                Log.d("MyLog", "yesterday : {${bottomSheetViewModel.yesterdayButtonActiveState.value}}")
-                Log.d("MyLog", "date : {${bottomSheetViewModel.datePicked.value}}")
-                Log.d("MyLog", "active category : {${activeCategory}}")
+fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (ExpenseCategory) -> Unit) {
+//    Box(modifier = Modifier
+//        .height(32.dp)
+//        .clip(MaterialTheme.shapes.medium)
+//        .clickable {
+//            onSelect(category)
+//        }) {
+//        Row {
+//           AnimatedVisibility(visible = isSelected) {
+//               Icon(imageVector = Icons.Filled.Check, contentDescription = stringResource(R.string.checked_category_add_exp))
+//           }
+//            Text(text = category.note, style = MaterialTheme.typography.labelMedium)
+//        }
+//    }
+    Button(modifier = Modifier.height(32.dp), onClick = { onSelect(category) }) {
+        Row(horizontalArrangement = Arrangement.SpaceBetween){
+            AnimatedVisibility(visible = isSelected) {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = stringResource(R.string.checked_category_add_exp),
+                    modifier = Modifier.size(22.dp),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
             }
-            .clip(RoundedCornerShape(4.dp))
-            .background(color = Color(Random.nextLong(0xFFFFFFFF)))
-            .padding(horizontal = 4.dp)
-    ) {
-        if (activeCategory.value != null) {
-            if (activeCategory.value == category) {
-                Icon(imageVector = Icons.Filled.Check, contentDescription = null, tint = Color.Red)
-            }
+            Text(text = category.note, style = MaterialTheme.typography.bodyMedium)
         }
-        Text(text = category.note, style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp))
 
     }
+
 }
 
 @Composable
@@ -172,19 +170,58 @@ private fun CategoriesGrid() {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val categoryList = bottomSheetViewModel.categoryList
+    val selected = bottomSheetViewModel.categoryPicked.collectAsState()
     LazyHorizontalStaggeredGrid(
-        modifier = Modifier.height(72.dp),
-        rows = StaggeredGridCells.Adaptive(24.dp),
+        modifier = Modifier.height(80.dp),
+        rows = StaggeredGridCells.Fixed(2),
         state = lazyHorizontalState,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
     ) {
         items(count = categoryList.size) { index ->
             val item = categoryList[index]
-            CategoryCard(category = item)
+            CategoryChip(
+                category = item,
+                isSelected = (selected.value == item),
+                onSelect = { bottomSheetViewModel.setCategoryPicked(item) })
         }
     }
 }
+
+
+//@Composable
+//fun CategoryCard(category: ExpenseCategory) {  // should be refactored for other ViewModel usages
+//    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+//    val activeCategory = bottomSheetViewModel.categoryPicked.collectAsState()
+//
+//    Row(
+//        modifier = Modifier
+//            .heightIn(min = 1.dp, max = 25.dp)
+//            .clickable {
+//                if (activeCategory.value != category) {
+//                    bottomSheetViewModel.setCategoryPicked(category)
+//                } else bottomSheetViewModel.setCategoryPicked(null)
+//                Log.d("MyLog", "input : {${bottomSheetViewModel.inputExpense.value}}")
+//                Log.d("MyLog", "today : {${bottomSheetViewModel.todayButtonActiveState.value}}")
+//                Log.d("MyLog", "yesterday : {${bottomSheetViewModel.yesterdayButtonActiveState.value}}")
+//                Log.d("MyLog", "date : {${bottomSheetViewModel.datePicked.value}}")
+//                Log.d("MyLog", "active category : {${activeCategory}}")
+//            }
+//            .clip(RoundedCornerShape(4.dp))
+//            .background(color = Color(Random.nextLong(0xFFFFFFFF)))
+//            .padding(horizontal = 4.dp)
+//    ) {
+//        if (activeCategory.value != null) {
+//            if (activeCategory.value == category) {
+//                Icon(imageVector = Icons.Filled.Check, contentDescription = null, tint = Color.Red)
+//            }
+//        }
+//        Text(text = category.note, style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp))
+//
+//    }
+//}
+//
+
 
 @Composable
 private fun DatePicker() {
