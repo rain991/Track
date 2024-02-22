@@ -8,6 +8,7 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -20,25 +21,32 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainScreenFeed() {  // should have VM as parameter, because public
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
-    val list = mainScreenFeedViewModel.ideaList
+    val ideaList = mainScreenFeedViewModel.ideaList
     val currentIndex = mainScreenFeedViewModel.cardIndex.collectAsState()
-    val pagerState = rememberPagerState { mainScreenFeedViewModel.maxPagerIndex.value }
-    HorizontalPager(modifier = Modifier.fillMaxWidth().height(140.dp),state = pagerState ,contentPadding = PaddingValues(horizontal = 8.dp)) { page ->
-    when (page) {
-        0 -> Main_FeedCard(mainScreenFeedViewModel = mainScreenFeedViewModel)
-        1 -> NewIdea_FeedCard(mainScreenFeedViewModel = mainScreenFeedViewModel)
-    }
+    val pagerState = rememberPagerState(pageCount = { mainScreenFeedViewModel.maxPagerIndex.value })
+    HorizontalPager(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(140.dp),
+        state = pagerState,
+        beyondBoundsPageCount = 2,
+        contentPadding = PaddingValues(horizontal = 8.dp)
+    ) { index ->
+        when (index) {
+            0 -> Main_FeedCard()
+            1 -> NewIdea_FeedCard(mainScreenFeedViewModel = mainScreenFeedViewModel)
+        }
     }
 }
 
 @Composable
-private fun Main_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
+private fun Main_FeedCard() {
+    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     Card(
         modifier = Modifier
-            .fillMaxWidth()
             .height(140.dp), shape = RoundedCornerShape(8.dp)
     ) {
-        Text(text = mainScreenFeedViewModel.cardIndex.toString())
+        Text(text = mainScreenFeedViewModel.cardIndex.toString(), style = MaterialTheme.typography.bodyMedium)
     }
 }
 
@@ -46,11 +54,9 @@ private fun Main_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
 private fun NewIdea_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
     Card(
         modifier = Modifier
-            .fillMaxWidth()
             .height(140.dp), shape = RoundedCornerShape(8.dp)
     ) {
-        Text(text = mainScreenFeedViewModel.cardIndex.toString())
+        Text(text = mainScreenFeedViewModel.cardIndex.toString(), style = MaterialTheme.typography.bodyMedium)
     }
 }
-
 

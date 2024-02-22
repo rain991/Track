@@ -135,7 +135,7 @@ private fun DraggableControl(
                         note = note.value,
                         date = convertLocalDateToDate(date.value),
                         value = expense.value!!,
-                        categoryId = category.value!!.categoryId.toInt()
+                        categoryId = category.value!!.categoryId
                     )
                 )
                 bottomSheetViewModel.setBottomSheetExpanded(false)

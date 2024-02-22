@@ -19,18 +19,21 @@ import kotlin.coroutines.CoroutineContext
 
 class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepositoryImpl) : ViewModel() {
     var ideaList = listOf<Idea>()
-
     private val _cardIndex = MutableStateFlow(0)
     val cardIndex = _cardIndex.asStateFlow()
 
-    private val _maxPagerIndex = MutableStateFlow(ideaList.lastIndex + BASIC_CARD_COUNT_IN_FEED - 1)
+    private val _maxPagerIndex = MutableStateFlow(ideaList.size + BASIC_CARD_COUNT_IN_FEED)
     val maxPagerIndex = _maxPagerIndex.asStateFlow()
+
+//    private val _needsUpdatePosition = MutableStateFlow(false)
+//    val needsUpdatePosition = _needsUpdatePosition.asStateFlow()
+
     init {
         viewModelScope.launch {
             ideaListRepositoryImpl.getIdeasList().collect{
                 ideaList = it
             }
-            callNextCard()
+             callNextCard()
         }
     }
 
@@ -38,6 +41,7 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
         withContext(dispatcher){
             delay(if (_cardIndex.value==0 || _cardIndex==_maxPagerIndex) FEED_CARD_DELAY_SLOW else FEED_CARD_DELAY_FAST)
             if(_cardIndex.value!=_maxPagerIndex.value) incrementCardIndex() else setCardIndex(0)
+            callNextCard()
         }
     }
     private fun setCardIndex(index : Int){
