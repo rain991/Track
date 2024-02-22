@@ -14,6 +14,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+
+
 // ExpenseTrackerTheme is currently not used
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,

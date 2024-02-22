@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
@@ -149,8 +150,8 @@ private fun Transactions() {
 @Composable
 private fun ExpenseDayHeader(localDate: LocalDate) {
     Row(verticalAlignment = Alignment.Bottom) {
-        Text(text = "${localDate.dayOfMonth}.", style = MaterialTheme.typography.titleMedium)
-        Text(text = "${localDate.month.value}", style = MaterialTheme.typography.titleSmall)
+        Text(text = "${localDate.dayOfMonth}.", style = MaterialTheme.typography.titleMedium.copy(fontSize = 24.sp))
+        Text(text = "${localDate.month.value}", style = MaterialTheme.typography.titleSmall) // warning titleSmall not defined
     }
 }
 
@@ -159,7 +160,7 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
     val monthResId = getMonthResID(localDate)
     val month = stringResource(id = monthResId)
     Box {
-        Text(text = month, style = MaterialTheme.typography.titleLarge)
+        Text(text = month, style = MaterialTheme.typography.titleMedium)
     }
 }
 
@@ -167,7 +168,7 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
 private fun ExpenseYearHeader(localDate: LocalDate) {
     val year = localDate.year.toString()
     Box {
-        Text(text = year, style = MaterialTheme.typography.titleLarge)
+        Text(text = year, style = MaterialTheme.typography.titleMedium)
     }
 }
 

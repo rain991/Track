@@ -108,7 +108,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
                         Text(
                             text = stringResource(R.string.add_expenses),
-                            style = MaterialTheme.typography.titleLarge.copy(fontSize = 24.sp),
+                            style = MaterialTheme.typography.titleMedium,  // should test bodyMedium
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                         AmountInput(focusRequester, controller, dataStoreManager)
@@ -209,7 +209,7 @@ private fun DatePicker() {
         OutlinedDateButton(OutlinedButtonText.YESTERDAY) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
 
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
-            Text(text = text, style = MaterialTheme.typography.titleSmall)
+            Text(text = text, style = MaterialTheme.typography.bodyMedium)
         }
         DateTimeDialog(
             state = datePickerState,
@@ -256,9 +256,9 @@ private fun OutlinedDateButton(type: OutlinedButtonText, onClick: () -> Unit) {
     ) {
         Text(
             text = text,
-            style = if (state.value) MaterialTheme.typography.titleSmall.copy(color = Color.White)
-            else MaterialTheme.typography.titleSmall
-        )
+            style = MaterialTheme.typography.bodyMedium
+        )  //if (state.value) MaterialTheme.typography.titleSmall.copy(color = Color.White)
+           //else MaterialTheme.typography.titleSmall
     }
 }
 
@@ -298,7 +298,7 @@ private fun AmountInput(
                 .focusRequester(focusRequester)
                 .width(IntrinsicSize.Min)
                 .padding(horizontal = 12.dp),
-            textStyle = MaterialTheme.typography.titleLarge.copy(fontSize = 54.sp, letterSpacing = 1.3.sp),
+            textStyle = MaterialTheme.typography.titleMedium.copy(fontSize = 54.sp, letterSpacing = 1.3.sp),
             value = currentExpense.value.toString(),
             onValueChange = { newText ->
                 bottomSheetViewModel.setInputExpense(newText.toFloat())

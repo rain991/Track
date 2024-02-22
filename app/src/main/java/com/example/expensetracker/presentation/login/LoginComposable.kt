@@ -208,7 +208,7 @@ private fun LoginHeader() {
                     )
                     Text(
                         text = stringResource(id = R.string.logo_app_description),
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         minLines = 2
                     )
                 }
