@@ -1,4 +1,4 @@
-package com.example.compose
+package com.example.expensetracker.presentation.themes.YellowTheme
 import androidx.compose.ui.graphics.Color
 
 val md_theme_light_primary = Color(0xFF6A5F00)

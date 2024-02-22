@@ -108,19 +108,18 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
                         Text(
                             text = stringResource(R.string.add_expenses),
-                            style = MaterialTheme.typography.titleMedium,  // should test bodyMedium
+                            style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                         AmountInput(focusRequester, controller, dataStoreManager)
                         Spacer(Modifier.height(12.dp))
-                        SimpleOutlinedTextFieldSample(label = "Note")
+                        SimpleOutlinedTextFieldSample(label = stringResource(R.string.your_note_adding_exp))
                         DatePicker()
                         CategoriesGrid()
-                        //  Spacer(Modifier.weight(1f))
                         val coroutineScope = rememberCoroutineScope()
                         AcceptButton {
                             coroutineScope.launch {
-                                withContext(Dispatchers.IO){
+                                withContext(Dispatchers.IO) {
                                     bottomSheetViewModel.addExpense()
                                 }
                                 withContext(Dispatchers.Main) {
@@ -258,7 +257,7 @@ private fun OutlinedDateButton(type: OutlinedButtonText, onClick: () -> Unit) {
             text = text,
             style = MaterialTheme.typography.bodyMedium
         )  //if (state.value) MaterialTheme.typography.titleSmall.copy(color = Color.White)
-           //else MaterialTheme.typography.titleSmall
+        //else MaterialTheme.typography.titleSmall
     }
 }
 
@@ -273,8 +272,6 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
         maxLines = 2
     )
 }
-
-
 
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -298,7 +295,11 @@ private fun AmountInput(
                 .focusRequester(focusRequester)
                 .width(IntrinsicSize.Min)
                 .padding(horizontal = 12.dp),
-            textStyle = MaterialTheme.typography.titleMedium.copy(fontSize = 54.sp, letterSpacing = 1.3.sp),
+            textStyle = MaterialTheme.typography.titleMedium.copy(
+                fontSize = 54.sp,
+                letterSpacing = 1.3.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
             value = currentExpense.value.toString(),
             onValueChange = { newText ->
                 bottomSheetViewModel.setInputExpense(newText.toFloat())

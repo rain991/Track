@@ -34,6 +34,7 @@ fun MainExpenseScreen() {  // Primary screen
             ExtendedButtonExample(isButtonExpanded = true, onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
         }
     ) {
+//        val offset = remember { mutableFloatStateOf(0f) }
         Column(
             modifier = Modifier
                 .padding(it),
