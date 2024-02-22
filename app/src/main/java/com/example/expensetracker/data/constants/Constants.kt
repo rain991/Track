@@ -5,6 +5,7 @@ import com.example.expensetracker.data.models.currency.CurrencyTypes
 
 // Other constants (objects of class as Currency) in DataStoreManager
 const val DB_PATH = "database/expense_tracker.db"
+const val MIN_SUPPORTED_YEAR = 2000
 
 // user
 const val NAME_DEFAULT: String = "User"
