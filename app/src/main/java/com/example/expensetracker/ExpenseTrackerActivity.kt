@@ -8,7 +8,7 @@ import androidx.activity.compose.setContent
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.viewmodels.UserDataViewModel
 import com.example.expensetracker.presentation.navigation.Navigation
-import com.example.expensetracker.presentation.themes.AppTheme
+import com.example.expensetracker.ui.theme.ExpenseTrackerTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -24,7 +24,7 @@ class ExpenseTrackerActivity : ComponentActivity() {
             if(actualLoginCount>0) dataStore.incrementLoginCount()
         }
         setContent {
-            AppTheme {
+            ExpenseTrackerTheme {
                 Navigation(dataStore)
             }
         }
