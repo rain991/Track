@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.expensetracker.data.models.Expenses.ExpenseCategory
+import com.example.expensetracker.data.models.expenses.ExpenseCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao

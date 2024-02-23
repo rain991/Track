@@ -1,6 +1,6 @@
 package com.example.expensetracker.domain.repository
 
-import com.example.expensetracker.data.models.Expenses.ExpenseCategory
+import com.example.expensetracker.data.models.expenses.ExpenseCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext

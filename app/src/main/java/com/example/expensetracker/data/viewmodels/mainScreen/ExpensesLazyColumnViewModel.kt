@@ -4,7 +4,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
-import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.models.expenses.ExpenseItem
 import kotlinx.coroutines.launch
 
 class ExpensesLazyColumnViewModel(expensesListRepositoryImpl: ExpensesListRepositoryImpl) : ViewModel() {

@@ -1,4 +1,4 @@
-package com.example.expensetracker.data.models.Expenses
+package com.example.expensetracker.data.models.expenses
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

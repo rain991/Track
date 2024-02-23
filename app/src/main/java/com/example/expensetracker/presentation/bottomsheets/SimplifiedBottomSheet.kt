@@ -60,7 +60,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.models.Expenses.ExpenseCategory
+import com.example.expensetracker.data.models.expenses.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog

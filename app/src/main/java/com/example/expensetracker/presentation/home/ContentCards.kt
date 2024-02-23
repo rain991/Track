@@ -24,7 +24,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.dp
-import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.models.expenses.ExpenseItem
 
 @Composable
 fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
@@ -36,7 +36,7 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
             .fillMaxWidth()
             .padding(vertical = 8.dp)
             .clickable { visible = !visible }, shape = RoundedCornerShape(8.dp)
-    ) { // Design to be implemented soon
+    ) {
         Column(modifier = Modifier.fillMaxWidth()) {
             Text(text = expenseItem.note)
             Text(text = expenseItem.date.toString())

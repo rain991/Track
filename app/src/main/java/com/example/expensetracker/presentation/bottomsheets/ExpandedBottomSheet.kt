@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.example.expensetracker.data.converters.convertLocalDateToDate
 import com.example.expensetracker.data.database.ExpenseItemsDAO
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
-import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.models.expenses.ExpenseItem
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject

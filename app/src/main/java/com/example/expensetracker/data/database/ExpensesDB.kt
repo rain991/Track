@@ -7,8 +7,8 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.expensetracker.data.constants.DB_PATH
 import com.example.expensetracker.data.converters.Converters
-import com.example.expensetracker.data.models.Expenses.ExpenseCategory
-import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.models.expenses.ExpenseCategory
+import com.example.expensetracker.data.models.expenses.ExpenseItem
 import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.models.idea.Idea
 
