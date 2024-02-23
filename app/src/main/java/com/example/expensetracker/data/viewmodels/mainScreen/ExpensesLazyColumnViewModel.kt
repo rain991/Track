@@ -7,12 +7,13 @@ import com.example.expensetracker.data.implementations.ExpensesListRepositoryImp
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import kotlinx.coroutines.launch
 
-class MainScreenViewModel(expensesListRepositoryImpl: ExpensesListRepositoryImpl) : ViewModel() {
+class ExpensesLazyColumnViewModel(expensesListRepositoryImpl: ExpensesListRepositoryImpl) : ViewModel() {
     private val _elements = mutableStateListOf<ExpenseItem>()
     val elements : List<ExpenseItem> = _elements
     init {
         viewModelScope.launch {
             expensesListRepositoryImpl.getSortedExpensesListDateDesc().collect {
+                _elements.clear()
                 _elements.addAll(it)
             }
         }
