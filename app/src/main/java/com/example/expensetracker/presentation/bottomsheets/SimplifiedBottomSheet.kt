@@ -1,6 +1,5 @@
 package com.example.expensetracker.presentation.bottomsheets
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -45,7 +44,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -60,7 +58,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.models.expenses.ExpenseCategory
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
@@ -72,7 +70,7 @@ import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
@@ -266,8 +264,6 @@ private fun AmountInput(
             value = currentExpense.value.toString(),
             onValueChange = { newText ->
                 bottomSheetViewModel.setInputExpense(newText.toFloat())
-                Log.d("MyLog", "input22: ${newText.toFloat()}")
-                Log.d("MyLog", "VM: ${bottomSheetViewModel.inputExpense.value}")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(

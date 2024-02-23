@@ -1,7 +1,7 @@
 package com.example.expensetracker.data.implementations
 
 import com.example.expensetracker.data.database.ExpenseItemsDAO
-import com.example.expensetracker.data.models.expenses.ExpenseItem
+import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.domain.repository.ExpensesListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

@@ -37,7 +37,7 @@ import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
 import com.example.expensetracker.data.converters.convertLocalDateToDate
-import com.example.expensetracker.data.models.expenses.ExpenseItem
+import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import org.koin.androidx.compose.koinViewModel
