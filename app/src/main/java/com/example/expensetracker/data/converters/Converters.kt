@@ -24,7 +24,6 @@ class Converters {
             else -> throw IllegalArgumentException("Unknown currency type: $value")
         }
     }
-
     @TypeConverter
     fun toCurrencyType(currencyType: CurrencyTypes): String {
         return currencyType.name

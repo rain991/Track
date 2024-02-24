@@ -20,15 +20,16 @@ class ExpensesLazyColumnViewModel(
     val categoriesList: List<ExpenseCategory> = _categoriesList
     init {
         viewModelScope.launch {
+            categoriesListRepositoryImpl.getCategoriesList().collect {
+                _categoriesList.clear()
+                _categoriesList.addAll(it)
+            }
+        }
+        viewModelScope.launch {
             expensesListRepositoryImpl.getSortedExpensesListDateDesc().collect {
                 _expensesList.clear()
                 _expensesList.addAll(it)
             }
-            categoriesListRepositoryImpl.getCategoriesList().collect{
-                _categoriesList.clear()
-                _categoriesList.addAll(it)
-            }
-
         }
     }
 }

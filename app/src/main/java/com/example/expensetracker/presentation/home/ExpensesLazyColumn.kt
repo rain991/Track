@@ -1,5 +1,6 @@
 package com.example.expensetracker.presentation.home
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -84,8 +85,15 @@ fun ExpensesLazyColumn() {
             }
         }
         LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
+            Log.d("MyLog", "categories list size ${categoriesList.size}")
+            Log.d("MyLog", "expenses list size ${expensesList.size}")
             items(expensesList.size) { index ->
                 val currentExpense = expensesList[index]
+                Log.d("MyLog", "currency category ${currentExpense.categoryId}")
+                val currentCategory = categoriesList.find{
+                     it.categoryId == currentExpense.categoryId
+                }
+                Log.d("MyLog", "$currentCategory.note")
                 var isPreviousDayDifferent = index == 0
                 var isNextDayDifferent = false
                 var isPreviousMonthDifferent = false
@@ -118,13 +126,16 @@ fun ExpensesLazyColumn() {
                                 Spacer(modifier = Modifier.width(4.dp))
                                 ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
                             }
-
                         }
                         if (isPreviousDayDifferent) {
                             ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
                         }
 
-                        ExpensesCardTypeSimple(expenseItem = currentExpense)
+                        ExpensesCardTypeSimple(
+                            expenseItem = currentExpense,
+                          //  expenseCategory = currentCategory!!
+                        ) // ALERT !! CALL, should be replaced soon
+
                         if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                     }
 

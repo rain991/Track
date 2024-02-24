@@ -14,5 +14,5 @@ data class ExpenseCategory(
     val note: String,
 
     @ColumnInfo(name = "colorId")
-    val colorId: Long
+    val colorId: String
 )

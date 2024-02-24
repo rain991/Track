@@ -40,7 +40,7 @@ import org.koin.compose.koinInject
 import kotlin.math.absoluteValue
 
 @Composable
-fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
+fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) { //, expenseCategory: ExpenseCategory
     val dataStoreManager = koinInject<DataStoreManager>()
     var expanded by remember { mutableStateOf(false) }
     val density = LocalDensity.current
@@ -58,40 +58,37 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
                 .fillMaxWidth()
                 .padding(vertical = 4.dp, horizontal = 4.dp)
         ) { // column contains 2 separate rows, for typical and expanded content
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {// warning Modifier.fillMaxHeight()
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { // containing non-expanded content
+                Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Top) {// warning Modifier.fillMaxHeight()
                     if (expenseItem.note.isNotEmpty()) {
-                        Text(text = if (expenseItem.note.length < 8) "Note: ${expenseItem.note}" else expenseItem.note)
+                        Text(
+                            text = if (expenseItem.note.length < 8) "Note: ${expenseItem.note}" else expenseItem.note,
+                            style = MaterialTheme.typography.bodyMedium
+                        )
+                    } else {
+                       // Text(text = expenseCategory.note, style = MaterialTheme.typography.bodyMedium)
                     }
                     Text(text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date))
                 }
                 ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value, isExpanded = expanded)
             }
             // Expanded content
-            AnimatedVisibility(
-                visible = expanded,
-                enter = slideInVertically {
-                    with(density) { -60.dp.roundToPx() }
-                } + expandVertically(
-                    expandFrom = Alignment.Bottom
-                ) + fadeIn(
-                    initialAlpha = 0.3f
-                ),
-                exit = slideOutVertically() + shrinkVertically() + fadeOut()
-            ) {
-                Text(
-                    "Hello"
-                    // Modifier.height(60.dp)
-                )
+            AnimatedVisibility(visible = expanded, enter = slideInVertically {
+                with(density) { -60.dp.roundToPx() }
+            } + expandVertically(
+                expandFrom = Alignment.Bottom
+            ) + fadeIn(
+                initialAlpha = 0.3f
+            ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
+                Text("Hello")
             }
-
         }
     }
 }
 
 @Composable
 private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: String, isExpanded: Boolean) {
-    Card(elevation = CardDefaults.cardElevation(defaultElevation = 10.dp, focusedElevation = 10.dp), modifier = Modifier.padding(4.dp)) {
+    Card(elevation = CardDefaults.cardElevation(defaultElevation = 12.dp, focusedElevation = 14.dp), modifier = Modifier.padding(4.dp)) {
         Column(
             modifier = Modifier
                 .animateContentSize()
@@ -101,10 +98,8 @@ private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: Stri
         ) {
             Text(
                 text = if (expenseItem.value.absoluteValue % 1.0 >= 0.001) expenseItem.value.toString() else expenseItem.value.toInt()
-                    .toString(),
-                style = MaterialTheme.typography.bodyLarge.copy(
-                    color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    fontSize = 24.sp
+                    .toString(), style = MaterialTheme.typography.bodyLarge.copy(
+                    color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 24.sp
                 )
             )
             Text(text = currentCurrencyName, style = MaterialTheme.typography.bodyMedium)
@@ -112,10 +107,3 @@ private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: Stri
     }
 
 }
-//@Preview(showSystemUi = true, showBackground = true)
-//@Composable
-//fun Preview(){
-//    val expenseCategory = ExpenseCategory(categoryId = 10, note = "CategoryName", colorId = Color.Red.value.toLong() )
-//    val expenseItem = ExpenseItem(value = 500.5f, note = "My note", categoryId = expenseCategory.categoryId, date = convertLocalDateToDate(LocalDate.now()) )
-//        ExpensesCardTypeSimple(expenseItem = expenseItem)
-//}

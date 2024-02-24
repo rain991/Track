@@ -8,7 +8,7 @@ import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) : CategoriesListRepository {
-    override suspend fun getCategoriesList(context: CoroutineContext): Flow<List<ExpenseCategory>> {
+    override fun getCategoriesList(): Flow<List<ExpenseCategory>> {
         return categoryDao.getAllCategories()
     }
 
