@@ -57,7 +57,8 @@ fun MainInfoComposable() {
 @Composable
 fun ExpensesLazyColumn() {
     val expensesLazyColumnViewModel = koinViewModel<ExpensesLazyColumnViewModel>()
-    val expenses = expensesLazyColumnViewModel.elements
+    val expensesList = expensesLazyColumnViewModel.expensesList
+    val categoriesList = expensesLazyColumnViewModel.categoriesList
     val listState = rememberLazyListState()
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > 6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
@@ -83,19 +84,19 @@ fun ExpensesLazyColumn() {
             }
         }
         LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-            items(expenses.size) { index ->
-                val currentExpense = expenses[index]
+            items(expensesList.size) { index ->
+                val currentExpense = expensesList[index]
                 var isPreviousDayDifferent = index == 0
                 var isNextDayDifferent = false
                 var isPreviousMonthDifferent = false
                 var isPreviousYearDifferent = false
                 if (index > 0) {
-                    isPreviousDayDifferent = !areDatesSame(expenses[index - 1].date, currentExpense.date)
-                    isPreviousMonthDifferent = !areMonthsSame(expenses[index - 1].date, currentExpense.date)
-                    isPreviousYearDifferent = !areYearsSame(expenses[index - 1].date, currentExpense.date)
+                    isPreviousDayDifferent = !areDatesSame(expensesList[index - 1].date, currentExpense.date)
+                    isPreviousMonthDifferent = !areMonthsSame(expensesList[index - 1].date, currentExpense.date)
+                    isPreviousYearDifferent = !areYearsSame(expensesList[index - 1].date, currentExpense.date)
                 }
-                if (index < expenses.size - 1) {
-                    isNextDayDifferent = !areDatesSame(expenses[index + 1].date, currentExpense.date)
+                if (index < expensesList.size - 1) {
+                    isNextDayDifferent = !areDatesSame(expensesList[index + 1].date, currentExpense.date)
                 }
                 Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                     if (isScrollingUp) LaunchedEffect(listState) {

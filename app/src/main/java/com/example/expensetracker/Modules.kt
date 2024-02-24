@@ -63,6 +63,6 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get(), get()) }
     viewModel { UserDataViewModel(get()) }
     viewModel { BottomSheetViewModel(get(), get()) }
-    viewModel { ExpensesLazyColumnViewModel(get()) }
+    viewModel { ExpensesLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
 }
