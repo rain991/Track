@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -30,9 +31,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.converters.extractAdditionalDateInformation
 import com.example.expensetracker.data.converters.extractDayOfWeekFromDate
@@ -67,22 +70,20 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
                         .fillMaxHeight(),
                     verticalArrangement = Arrangement.Top
                 ) {// warning Modifier.fillMaxHeight()
-                    Row(horizontalArrangement = Arrangement.Center) {
+                    Row(
+                        horizontalArrangement = Arrangement.Center, modifier = Modifier
+                            .weight(1f).fillMaxWidth()
+                            .padding(2.dp)
+                    ) {
                         if (expenseItem.note.isNotEmpty()) {
-                            Text(
-                                text = if (expenseItem.note.length < 8) "Note: ${expenseItem.note}" else expenseItem.note,
-                                style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.weight(1f), textAlign = TextAlign.Center
-                            )
+                            noteCard(expenseItem = expenseItem)
                         } else {
-                            Text(
-                                text = expenseCategory.note, style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.weight(1f), textAlign = TextAlign.Center
-                            )
+                            categoryCard(category = expenseCategory)
                         }
                     }
-
-                    Text(text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date))
+                    Row(modifier = Modifier.padding(4.dp), verticalAlignment = Alignment.Bottom) {
+                        Text(text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date))
+                    }
                 }
                 ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value, isExpanded = expanded)
             }
@@ -122,6 +123,41 @@ private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: Stri
 }
 
 @Composable
-private fun categoryCard() {
+private fun categoryCard(category: ExpenseCategory) {
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
+        modifier = Modifier
+            .height(28.dp),
+        colors = CardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary,
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    ) {
+        Text(
+            text = category.note,
+            style = MaterialTheme.typography.bodyMedium,
+            textAlign = TextAlign.Center
+        )
+    }
+}
 
+@Composable
+private fun noteCard(expenseItem: ExpenseItem) {
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp), modifier = Modifier
+            .height(28.dp),
+        colors = CardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary,
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    ) {
+        Text(
+            text = if (expenseItem.note.length < 8) stringResource(R.string.note_exp_list, expenseItem.note) else expenseItem.note,
+            style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center, modifier = Modifier.weight(1f)
+        )
+    }
 }

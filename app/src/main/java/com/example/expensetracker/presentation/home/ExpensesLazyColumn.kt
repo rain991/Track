@@ -138,7 +138,6 @@ fun ExpensesLazyColumn() {
 
                         if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                     }
-
                 }
             }
         }
