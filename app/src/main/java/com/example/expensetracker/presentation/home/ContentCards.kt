@@ -1,6 +1,7 @@
 package com.example.expensetracker.presentation.home
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.expandVertically
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
@@ -15,6 +16,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
@@ -46,6 +48,8 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
+            .animateContentSize()
+            .height(if (expanded) 150.dp else 100.dp)
             .padding(vertical = 8.dp)
             .clickable { expanded = !expanded }, shape = MaterialTheme.shapes.medium
     ) {
@@ -55,19 +59,19 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
                 .padding(vertical = 4.dp, horizontal = 4.dp)
         ) { // column contains 2 separate rows, for typical and expanded content
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center ) {// warning Modifier.fillMaxHeight()
+                Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Center) {// warning Modifier.fillMaxHeight()
                     if (expenseItem.note.isNotEmpty()) {
                         Text(text = if (expenseItem.note.length < 8) "Note: ${expenseItem.note}" else expenseItem.note)
                     }
                     Text(text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date))
                 }
-                ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value)
+                ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value, isExpanded = expanded)
             }
             // Expanded content
             AnimatedVisibility(
                 visible = expanded,
                 enter = slideInVertically {
-                    with(density) { -20.dp.roundToPx() }
+                    with(density) { -60.dp.roundToPx() }
                 } + expandVertically(
                     expandFrom = Alignment.Bottom
                 ) + fadeIn(
@@ -76,10 +80,8 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
                 exit = slideOutVertically() + shrinkVertically() + fadeOut()
             ) {
                 Text(
-                    "Hello",
-                    Modifier
-                        .fillMaxWidth()
-                        .height(60.dp)
+                    "Hello"
+                    // Modifier.height(60.dp)
                 )
             }
 
@@ -88,20 +90,26 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) {
 }
 
 @Composable
-private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName : String){
-   Card(elevation = CardDefaults.cardElevation(defaultElevation = 2.dp, focusedElevation = 12.dp)){
-       Column(modifier = Modifier.fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
-           Text(
-               text = if (expenseItem.value.absoluteValue % 1.0 >= 0.001) expenseItem.value.toString() else expenseItem.value.toInt()
-                   .toString(),
-               style = MaterialTheme.typography.bodyLarge.copy(
-                   color = MaterialTheme.colorScheme.onPrimaryContainer,
-                   fontSize = 24.sp
-               )
-           )
-           Text(text = currentCurrencyName, style = MaterialTheme.typography.bodyMedium)
-       }
-   }
+private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: String, isExpanded: Boolean) {
+    Card(elevation = CardDefaults.cardElevation(defaultElevation = 10.dp, focusedElevation = 10.dp), modifier = Modifier.padding(4.dp)) {
+        Column(
+            modifier = Modifier
+                .animateContentSize()
+                .size(if (isExpanded) 110.dp else 100.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            Text(
+                text = if (expenseItem.value.absoluteValue % 1.0 >= 0.001) expenseItem.value.toString() else expenseItem.value.toInt()
+                    .toString(),
+                style = MaterialTheme.typography.bodyLarge.copy(
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    fontSize = 24.sp
+                )
+            )
+            Text(text = currentCurrencyName, style = MaterialTheme.typography.bodyMedium)
+        }
+    }
 
 }
 //@Preview(showSystemUi = true, showBackground = true)
