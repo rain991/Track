@@ -288,7 +288,7 @@ private fun AcceptButton(onClick: () -> Unit) {
                 .widthIn(60.dp)
                 .wrapContentHeight().padding(bottom = 4.dp), shape = RoundedCornerShape(80)
         ) {
-            Text(text = stringResource(R.string.add_it_button), style = MaterialTheme.typography.bodyLarge)
+            Text(text = stringResource(R.string.add_it_button), style = MaterialTheme.typography.bodyLarge.copy(letterSpacing = 1.sp))
         }
     }
 }

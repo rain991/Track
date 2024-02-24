@@ -30,17 +30,19 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.converters.extractAdditionalDateInformation
 import com.example.expensetracker.data.converters.extractDayOfWeekFromDate
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import org.koin.compose.koinInject
 import kotlin.math.absoluteValue
 
 @Composable
-fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) { //, expenseCategory: ExpenseCategory
+fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCategory) {
     val dataStoreManager = koinInject<DataStoreManager>()
     var expanded by remember { mutableStateOf(false) }
     val density = LocalDensity.current
@@ -59,15 +61,27 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem) { //, expenseCategory: Expe
                 .padding(vertical = 4.dp, horizontal = 4.dp)
         ) { // column contains 2 separate rows, for typical and expanded content
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { // containing non-expanded content
-                Column(modifier = Modifier.fillMaxHeight(), verticalArrangement = Arrangement.Top) {// warning Modifier.fillMaxHeight()
-                    if (expenseItem.note.isNotEmpty()) {
-                        Text(
-                            text = if (expenseItem.note.length < 8) "Note: ${expenseItem.note}" else expenseItem.note,
-                            style = MaterialTheme.typography.bodyMedium
-                        )
-                    } else {
-                       // Text(text = expenseCategory.note, style = MaterialTheme.typography.bodyMedium)
+                Column(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Top
+                ) {// warning Modifier.fillMaxHeight()
+                    Row(horizontalArrangement = Arrangement.Center) {
+                        if (expenseItem.note.isNotEmpty()) {
+                            Text(
+                                text = if (expenseItem.note.length < 8) "Note: ${expenseItem.note}" else expenseItem.note,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f), textAlign = TextAlign.Center
+                            )
+                        } else {
+                            Text(
+                                text = expenseCategory.note, style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.weight(1f), textAlign = TextAlign.Center
+                            )
+                        }
                     }
+
                     Text(text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date))
                 }
                 ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value, isExpanded = expanded)
@@ -105,5 +119,9 @@ private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: Stri
             Text(text = currentCurrencyName, style = MaterialTheme.typography.bodyMedium)
         }
     }
+}
+
+@Composable
+private fun categoryCard() {
 
 }

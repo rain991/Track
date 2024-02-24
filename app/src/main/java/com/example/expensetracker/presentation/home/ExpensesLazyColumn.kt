@@ -133,7 +133,7 @@ fun ExpensesLazyColumn() {
 
                         ExpensesCardTypeSimple(
                             expenseItem = currentExpense,
-                          //  expenseCategory = currentCategory!!
+                            expenseCategory = currentCategory!!
                         ) // ALERT !! CALL, should be replaced soon
 
                         if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
