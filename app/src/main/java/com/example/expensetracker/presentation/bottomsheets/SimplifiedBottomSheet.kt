@@ -77,6 +77,7 @@ import java.time.LocalDate
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val context = LocalContext.current
+    val warning = stringResource(id = R.string.warning_bottom_sheet_exp)
     bottomSheetViewModel.setDatePicked(LocalDate.now())
     val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
@@ -126,7 +127,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                                     }
                                 }
                             } else {
-                                Toast.makeText(context, "Select category or type correct expense value", Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, warning, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }

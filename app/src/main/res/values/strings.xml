@@ -41,6 +41,7 @@
     <string name="yesterday_add_exp">Yesterday</string>
     <string name="selected_date_add_exp">Selected date</string>
     <string name="note_exp_list">Note: %1$s</string>
+    <string name="warning_bottom_sheet_exp">Select category or type correct expense value</string>
 
 
 </resources>
