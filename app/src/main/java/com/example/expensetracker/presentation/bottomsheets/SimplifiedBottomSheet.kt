@@ -1,5 +1,6 @@
 package com.example.expensetracker.presentation.bottomsheets
 
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -47,6 +48,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
@@ -74,6 +76,7 @@ import java.time.LocalDate
 @Composable
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val context = LocalContext.current
     bottomSheetViewModel.setDatePicked(LocalDate.now())
     val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
@@ -110,13 +113,20 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         CategoriesGrid()
                         val coroutineScope = rememberCoroutineScope()
                         AcceptButton {
-                            coroutineScope.launch {
-                                withContext(Dispatchers.IO) {
-                                    bottomSheetViewModel.addExpense()
+                            if (bottomSheetViewModel.categoryPicked.value != null && bottomSheetViewModel.datePicked.value.isBefore(
+                                    LocalDate.now().plusDays(1)
+                                ) && bottomSheetViewModel.inputExpense.value != null && bottomSheetViewModel.inputExpense.value!! >0
+                            ) {
+                                coroutineScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        bottomSheetViewModel.addExpense()
+                                    }
+                                    withContext(Dispatchers.Main) {
+                                        bottomSheetViewModel.setBottomSheetExpanded(false)
+                                    }
                                 }
-                                withContext(Dispatchers.Main) {
-                                    bottomSheetViewModel.setBottomSheetExpanded(false)
-                                }
+                            } else {
+                                Toast.makeText(context, "Select category or type correct expense value", Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -126,6 +136,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
         }
     }
 }
+
 @Composable
 fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (ExpenseCategory) -> Unit) {
     Button(modifier = Modifier.height(32.dp), onClick = { onSelect(category) }) {
@@ -144,6 +155,7 @@ fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (Expe
     }
 
 }
+
 @Composable
 private fun CategoriesGrid() {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
@@ -166,6 +178,7 @@ private fun CategoriesGrid() {
         }
     }
 }
+
 @Composable
 private fun DatePicker() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
@@ -184,8 +197,14 @@ private fun DatePicker() {
             .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
 
-        OutlinedDateButton(text = stringResource(R.string.today_add_exp), isSelected = (selectedDate== LocalDate.now())) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
-        OutlinedDateButton(text = stringResource(R.string.yesterday_add_exp), isSelected = (selectedDate== LocalDate.now().minusDays(1))) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
+        OutlinedDateButton(
+            text = stringResource(R.string.today_add_exp),
+            isSelected = (selectedDate == LocalDate.now())
+        ) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
+        OutlinedDateButton(
+            text = stringResource(R.string.yesterday_add_exp),
+            isSelected = (selectedDate == LocalDate.now().minusDays(1))
+        ) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
 
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
             Text(text = text, style = MaterialTheme.typography.bodyMedium)
@@ -202,12 +221,13 @@ private fun DatePicker() {
         )
     }
 }
+
 @Composable
 private fun OutlinedDateButton(text: String, isSelected: Boolean, onSelect: () -> Unit) {
     Button(
         onClick = onSelect
     ) {
-        Row(horizontalArrangement = Arrangement.SpaceBetween){
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
             AnimatedVisibility(visible = isSelected) {
                 Icon(
                     imageVector = Icons.Filled.Check,
@@ -224,6 +244,7 @@ private fun OutlinedDateButton(text: String, isSelected: Boolean, onSelect: () -
 
     }
 }
+
 @Composable
 private fun OutlinedTextField(label: String) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
@@ -277,6 +298,7 @@ private fun AmountInput(
         Text(text = currentCurrency.value, style = MaterialTheme.typography.titleSmall)
     }
 }
+
 @Composable
 private fun AcceptButton(onClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
@@ -286,7 +308,8 @@ private fun AcceptButton(onClick: () -> Unit) {
             },
             modifier = Modifier
                 .widthIn(60.dp)
-                .wrapContentHeight().padding(bottom = 4.dp), shape = RoundedCornerShape(80)
+                .wrapContentHeight()
+                .padding(bottom = 4.dp), shape = RoundedCornerShape(80)
         ) {
             Text(text = stringResource(R.string.add_it_button), style = MaterialTheme.typography.bodyLarge.copy(letterSpacing = 1.sp))
         }

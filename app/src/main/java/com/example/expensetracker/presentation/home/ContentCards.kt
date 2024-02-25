@@ -12,6 +12,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -147,7 +148,7 @@ private fun categoryCard(category: ExpenseCategory) {
 private fun noteCard(expenseItem: ExpenseItem) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp), modifier = Modifier
-            .height(28.dp),
+            .height(28.dp).absolutePadding(left=8.dp, right =8.dp),
         colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -157,7 +158,8 @@ private fun noteCard(expenseItem: ExpenseItem) {
     ) {
         Text(
             text = if (expenseItem.note.length < 8) stringResource(R.string.note_exp_list, expenseItem.note) else expenseItem.note,
-            style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center, modifier = Modifier.weight(1f)
+            style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center//, modifier = Modifier.weight(1f)
         )
+        
     }
 }
