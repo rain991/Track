@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation.home
+package com.example.expensetracker.presentation.common
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize

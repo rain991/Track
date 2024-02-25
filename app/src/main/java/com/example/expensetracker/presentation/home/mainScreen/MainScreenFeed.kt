@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation.home
+package com.example.expensetracker.presentation.home.mainScreen
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues

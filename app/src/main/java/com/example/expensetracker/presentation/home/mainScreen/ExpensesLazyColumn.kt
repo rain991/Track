@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation.home
+package com.example.expensetracker.presentation.home.mainScreen
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
@@ -41,19 +41,11 @@ import com.example.expensetracker.data.converters.areMonthsSame
 import com.example.expensetracker.data.converters.areYearsSame
 import com.example.expensetracker.data.converters.convertDateToLocalDate
 import com.example.expensetracker.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
+import com.example.expensetracker.presentation.common.CustomTabSample
+import com.example.expensetracker.presentation.common.ExpensesCardTypeSimple
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
-@Composable
-fun MainInfoComposable() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(120.dp), shape = RoundedCornerShape(8.dp)
-    ) {
-
-    }
-}
 
 @Composable
 fun ExpensesLazyColumn() {

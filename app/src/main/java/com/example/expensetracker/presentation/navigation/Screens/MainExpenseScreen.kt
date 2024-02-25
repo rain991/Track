@@ -13,9 +13,9 @@ import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExample
 import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
-import com.example.expensetracker.presentation.home.ExpensesLazyColumn
-import com.example.expensetracker.presentation.home.MainInfoComposable
-import com.example.expensetracker.presentation.home.MainScreenFeed
+import com.example.expensetracker.presentation.home.mainScreen.ExpensesLazyColumn
+import com.example.expensetracker.presentation.home.mainScreen.MainInfoComposable
+import com.example.expensetracker.presentation.home.mainScreen.MainScreenFeed
 import com.example.expensetracker.presentation.other.Header
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject

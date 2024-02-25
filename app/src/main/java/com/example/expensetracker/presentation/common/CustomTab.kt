@@ -1,4 +1,4 @@
-package com.example.expensetracker.presentation.home
+package com.example.expensetracker.presentation.common
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
