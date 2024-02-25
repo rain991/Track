@@ -12,7 +12,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.absolutePadding
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -74,7 +73,7 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
                     Row(
                         horizontalArrangement = Arrangement.Center, modifier = Modifier
                             .weight(1f).fillMaxWidth()
-                            .padding(2.dp)
+                          //  .padding(2.dp)
                     ) {
                         if (expenseItem.note.isNotEmpty()) {
                             noteCard(expenseItem = expenseItem)
@@ -96,7 +95,7 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
             ) + fadeIn(
                 initialAlpha = 0.3f
             ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
-                Text("Hello")
+                Text("Hello",Modifier.height(32.dp))
             }
         }
     }
@@ -104,7 +103,7 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
 
 @Composable
 private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: String, isExpanded: Boolean) {
-    Card(elevation = CardDefaults.cardElevation(defaultElevation = 12.dp, focusedElevation = 14.dp), modifier = Modifier.padding(4.dp)) {
+    Card(elevation = CardDefaults.cardElevation(defaultElevation = 22.dp, focusedElevation = 14.dp), modifier = Modifier.padding(4.dp)) {
         Column(
             modifier = Modifier
                 .animateContentSize()
@@ -128,13 +127,13 @@ private fun categoryCard(category: ExpenseCategory) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
         modifier = Modifier
-            .height(28.dp),
+            .height(28.dp).padding(2.dp),
         colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
             disabledContainerColor = MaterialTheme.colorScheme.primary,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+        ), shape = MaterialTheme.shapes.small
     ) {
         Text(
             text = category.note,
@@ -148,13 +147,13 @@ private fun categoryCard(category: ExpenseCategory) {
 private fun noteCard(expenseItem: ExpenseItem) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp), modifier = Modifier
-            .height(28.dp).absolutePadding(left=8.dp, right =8.dp),
+            .height(28.dp).padding(2.dp),
         colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
             disabledContainerColor = MaterialTheme.colorScheme.primary,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+        ), shape = MaterialTheme.shapes.small
     ) {
         Text(
             text = if (expenseItem.note.length < 8) stringResource(R.string.note_exp_list, expenseItem.note) else expenseItem.note,

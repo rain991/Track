@@ -90,8 +90,8 @@ fun ExpensesLazyColumn() {
             items(expensesList.size) { index ->
                 val currentExpense = expensesList[index]
                 Log.d("MyLog", "currency category ${currentExpense.categoryId}")
-                val currentCategory = categoriesList.find{
-                     it.categoryId == currentExpense.categoryId
+                val currentCategory = categoriesList.find {
+                    it.categoryId == currentExpense.categoryId
                 }
                 Log.d("MyLog", "$currentCategory.note")
                 var isPreviousDayDifferent = index == 0
@@ -146,34 +146,37 @@ fun ExpensesLazyColumn() {
 
 @Composable
 private fun Transactions() {
-    Text(text = "Transactions", style = MaterialTheme.typography.titleMedium)
+    Text(text = "Transactions", style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
 }
 
 @Composable
 private fun ExpenseDayHeader(localDate: LocalDate) {
     Row(verticalAlignment = Alignment.Bottom) {
-        Text(text = "${localDate.dayOfMonth}.", style = MaterialTheme.typography.titleMedium.copy(fontSize = 24.sp))
-        Text(text = "${localDate.month.value}", style = MaterialTheme.typography.titleSmall) // warning titleSmall not defined
+        Text(
+            text = "${localDate.dayOfMonth}.",
+            style = MaterialTheme.typography.titleMedium.copy(fontSize = 24.sp, color = MaterialTheme.colorScheme.onPrimaryContainer)
+        )
+        Text(
+            text = "${localDate.month.value}",
+            style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+        ) // warning titleSmall not defined
     }
 }
-
 @Composable
 private fun ExpenseMonthHeader(localDate: LocalDate) {
     val monthResId = getMonthResID(localDate)
     val month = stringResource(id = monthResId)
     Box {
-        Text(text = month, style = MaterialTheme.typography.titleMedium)
+        Text(text = month, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
     }
 }
-
 @Composable
 private fun ExpenseYearHeader(localDate: LocalDate) {
     val year = localDate.year.toString()
     Box {
-        Text(text = year, style = MaterialTheme.typography.titleMedium)
+        Text(text = year, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
     }
 }
-
 @Composable
 private fun UpButton(onClick: () -> Unit) {
     Box {
