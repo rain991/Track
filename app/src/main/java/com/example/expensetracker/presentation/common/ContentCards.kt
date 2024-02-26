@@ -1,6 +1,5 @@
 package com.example.expensetracker.presentation.common
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.expandVertically
@@ -48,6 +47,8 @@ import com.example.expensetracker.data.converters.extractDayOfWeekFromDate
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
 import kotlin.math.absoluteValue
 
@@ -83,7 +84,7 @@ fun ExpensesCardTypeSimple(
                 ) {
                     Row(
                         horizontalArrangement = Arrangement.Center, modifier = Modifier
-                            .wrapContentHeight() //weight 1f
+                            .wrapContentHeight()
                             .fillMaxWidth()
                     ) {
                         if (expenseItem.note.isNotEmpty()) {
@@ -94,12 +95,19 @@ fun ExpensesCardTypeSimple(
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Row(modifier = Modifier.padding(4.dp), verticalAlignment = Alignment.Bottom) {
-                        Text(text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date))
+
+
+
+
+
+                        Text(
+                            text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date),
+                            style = MaterialTheme.typography.bodyMedium
+                        )
                     }
                     if (expanded) {
                         Spacer(modifier = Modifier.weight(0.7f))
                     }
-
                     Row(
                         modifier = Modifier
                             .wrapContentWidth()
@@ -111,15 +119,21 @@ fun ExpensesCardTypeSimple(
                         ) + fadeIn(
                             initialAlpha = 0.3f
                         ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
-                            val text = remember{ mutableStateOf("") }
-                            LaunchedEffect(key1 = expanded){
-                                text.value = expensesLazyColumnViewModel.requestCountInMonthNotion(
-                                    expenseItem = expenseItem,
-                                    expenseCategory = expenseCategory
-                                )
-                                Log.d("MyLog", "result from lf : $text")
+                            val text = remember { mutableStateOf("") }
+                            LaunchedEffect(key1 = Unit) {
+                                withContext(Dispatchers.IO) {
+                                    text.value = expensesLazyColumnViewModel.requestCountInMonthNotion(
+                                        expenseItem = expenseItem,
+                                        expenseCategory = expenseCategory
+                                    )
+                                }
                             }
-                            Text(text = text.value, style = MaterialTheme.typography.labelMedium)
+                            Text(
+                                text = text.value,
+                                style = MaterialTheme.typography.bodyMedium,
+                                modifier = Modifier.padding(2.dp),
+                                textAlign = TextAlign.Center
+                            )
                         }
                     }
                     if (expanded) {

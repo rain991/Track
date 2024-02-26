@@ -36,5 +36,5 @@ interface ExpenseItemsDAO {
     fun findExpenseByNotes(note: String): Flow<ExpenseItem>
 
     @Query("SELECT * FROM Expenses WHERE categoryId=:categoryId AND date BETWEEN :start AND :end ")
-    fun findExpensesInTimeSpan(start : Long, end : Long, categoryId: Int) : Flow<List<ExpenseItem>>
+    fun findExpensesInTimeSpan(start : Long, end : Long, categoryId: Int) : List<ExpenseItem>
 }

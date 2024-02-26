@@ -17,5 +17,5 @@ interface ExpensesListRepository {
 
     fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>>
     fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>>
-    fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category : ExpenseCategory): Flow<List<ExpenseItem>>
+    fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category : ExpenseCategory): List<ExpenseItem>
 }
