@@ -1,13 +1,15 @@
 package com.example.expensetracker.presentation.common
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
-import androidx.compose.animation.expandVertically
+import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkVertically
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.slideInHorizontally
+import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -37,7 +39,11 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.R
@@ -52,6 +58,7 @@ import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
 import kotlin.math.absoluteValue
 
+
 @Composable
 fun ExpensesCardTypeSimple(
     expenseItem: ExpenseItem,
@@ -62,7 +69,6 @@ fun ExpensesCardTypeSimple(
     var expanded by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     val currentCurrency = dataStoreManager.currencyFlow.collectAsState(initial = "USD")
-
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -95,41 +101,93 @@ fun ExpensesCardTypeSimple(
                     }
                     Spacer(modifier = Modifier.weight(1f))
                     Row(modifier = Modifier.padding(4.dp), verticalAlignment = Alignment.Bottom) {
+                        val text = remember { mutableStateOf("") }
+                        LaunchedEffect(key1 = Unit) {
+                            withContext(Dispatchers.IO) {
+                                text.value = expensesLazyColumnViewModel.requestSumExpensesInMonthNotion(
+                                    expenseItem = expenseItem,
+                                    expenseCategory = expenseCategory
+                                )
+                            }
+                        }
+                        val resultedNotion = if (!expanded) {
+                            extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date)
+                        } else {
+                            text.value
+                        }
+                        AnimatedContent(targetState = resultedNotion, label = "horizontalTextChange", transitionSpec = {
+                            slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
+                        }) {
+                            Text(
+                                text = if (!expanded) {
+                                    buildAnnotatedString {
+                                        append(it)
+                                    }
+                                } else {
+                                    buildAnnotatedString {
+                                        withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
+                                            append("${expenseCategory.note} this month: ")
+                                        }
+                                        withStyle(
+                                            style = SpanStyle(
+                                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                                fontSize = 20.sp, fontWeight = FontWeight.SemiBold
+                                            )
+                                        ) {
+                                            append(it)
+                                        }
+                                        withStyle(
+                                            style = SpanStyle(
+                                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                                fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                                            )
+                                        ) {
+                                            append(" ")
+                                            append(currentCurrency.value)
+                                        }
 
-
-
-
-
-                        Text(
-                            text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date),
-                            style = MaterialTheme.typography.bodyMedium
-                        )
+                                    }
+                                }, textAlign = TextAlign.Center
+                            )
+                        }
                     }
                     if (expanded) {
                         Spacer(modifier = Modifier.weight(0.7f))
                     }
                     Row(
                         modifier = Modifier
-                            .wrapContentWidth()
+                            .wrapContentWidth().padding(start = 6.dp)
                     ) {
-                        AnimatedVisibility(visible = expanded, enter = slideInVertically {
+                        AnimatedVisibility(visible = expanded, enter = slideInHorizontally {
                             with(density) { -60.dp.roundToPx() }
-                        } + expandVertically(
-                            expandFrom = Alignment.Bottom
+                        } + expandHorizontally(
+                            expandFrom = Alignment.Start
                         ) + fadeIn(
                             initialAlpha = 0.3f
-                        ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
-                            val text = remember { mutableStateOf("") }
+                        ), exit = slideOutHorizontally() + shrinkHorizontally() + fadeOut()) {
+                            val notion = remember { mutableStateOf("") }
                             LaunchedEffect(key1 = Unit) {
                                 withContext(Dispatchers.IO) {
-                                    text.value = expensesLazyColumnViewModel.requestCountInMonthNotion(
+                                    notion.value = expensesLazyColumnViewModel.requestCountInMonthNotion(
                                         expenseItem = expenseItem,
                                         expenseCategory = expenseCategory
                                     )
                                 }
                             }
                             Text(
-                                text = text.value,
+                                text = buildAnnotatedString {
+                                    withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
+                                        append("${expenseCategory.note} expenses: ")
+                                    }
+                                    withStyle(
+                                        style = SpanStyle(
+                                            color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 20.sp,
+                                            fontWeight = FontWeight.SemiBold
+                                        )
+                                    ) {
+                                        append(notion.value)
+                                    }
+                                },
                                 style = MaterialTheme.typography.bodyMedium,
                                 modifier = Modifier.padding(2.dp),
                                 textAlign = TextAlign.Center

@@ -49,7 +49,26 @@ class ExpensesLazyColumnViewModel(
             endOfSpan = endDate,
             category = expenseCategory
         )
-        return "${expenseCategory.note} this month: ${result.size}"
+        return "${result.size}"
+    }
+
+    fun requestSumExpensesInMonthNotion(expenseItem: ExpenseItem, expenseCategory: ExpenseCategory): String {
+        val calendar = Calendar.getInstance()
+        calendar.time = expenseItem.date
+        calendar.set(Calendar.DAY_OF_MONTH, 1)
+        val startDate = calendar.time
+
+        val endCalendar = calendar.clone() as Calendar
+        endCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+        val endDate = endCalendar.time
+
+        val result = expensesListRepositoryImpl.getExpensesByCategoryInTimeSpan(
+            startOfSpan = startDate,
+            endOfSpan = endDate,
+            category = expenseCategory
+        )
+        val sum = result.sumOf { it.value.toInt() } // warning Crypto
+        return "$sum"
     }
 
 }
