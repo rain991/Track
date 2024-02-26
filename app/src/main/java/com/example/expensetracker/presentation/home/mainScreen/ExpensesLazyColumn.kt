@@ -1,11 +1,11 @@
-package com.example.expensetracker.presentation.home
+package com.example.expensetracker.presentation.home.mainScreen
 
-import android.view.LayoutInflater
+import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -13,10 +13,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
-import androidx.compose.material3.Card
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -31,7 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.viewinterop.AndroidView
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
@@ -40,45 +38,33 @@ import com.example.expensetracker.data.converters.areDatesSame
 import com.example.expensetracker.data.converters.areMonthsSame
 import com.example.expensetracker.data.converters.areYearsSame
 import com.example.expensetracker.data.converters.convertDateToLocalDate
-import com.example.expensetracker.data.viewmodels.MainScreenViewModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartModel
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartType
-import com.github.aachartmodel.aainfographics.aachartcreator.AAChartView
-import com.github.aachartmodel.aainfographics.aachartcreator.AASeriesElement
+import com.example.expensetracker.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
+import com.example.expensetracker.presentation.common.CustomTabSample
+import com.example.expensetracker.presentation.common.ExpensesCardTypeSimple
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-
-@Composable
-fun MainInfoComposable() {
-    Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(180.dp), shape = RoundedCornerShape(8.dp)
-    ) {
-        PieCategoriesChart()
-    }
-}
 
 
 @Composable
 fun ExpensesLazyColumn() {
-    val mainScreenViewModel = koinViewModel<MainScreenViewModel>()
-    val expenses = mainScreenViewModel.elements
+    val expensesLazyColumnViewModel = koinViewModel<ExpensesLazyColumnViewModel>()
+    val expensesList = expensesLazyColumnViewModel.expensesList
+    val categoriesList = expensesLazyColumnViewModel.categoriesList
     val listState = rememberLazyListState()
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > 6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
     Box {
-        if (isScrollUpButtonNeeded) {
-            Box(
-                modifier = Modifier
-                    .align(Alignment.TopEnd)
-                    .zIndex(1f)
-            ) {
+        Box(
+            modifier = Modifier
+                .align(Alignment.TopEnd)
+                .zIndex(1f)
+        ) {
+            AnimatedVisibility(visible = isScrollUpButtonNeeded) {
                 FloatingActionButton(
                     onClick = { isScrollingUp = true }, modifier = Modifier
                         .size(52.dp)
                         .padding(top = 12.dp, end = 16.dp),
-                    shape = RoundedCornerShape(100),
+                    shape = MaterialTheme.shapes.extraLarge,
                     elevation = FloatingActionButtonDefaults.elevation(
                         defaultElevation = 8.dp,
                         pressedElevation = 16.dp
@@ -89,22 +75,27 @@ fun ExpensesLazyColumn() {
             }
         }
         LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-            items(expenses.size) { index ->
-                val currentExpense = expenses[index]
+            Log.d("MyLog", "categories list size ${categoriesList.size}")
+            Log.d("MyLog", "expenses list size ${expensesList.size}")
+            items(expensesList.size) { index ->
+                val currentExpense = expensesList[index]
+                Log.d("MyLog", "currency category ${currentExpense.categoryId}")
+                val currentCategory = categoriesList.find {
+                    it.categoryId == currentExpense.categoryId
+                }
+                Log.d("MyLog", "$currentCategory.note")
                 var isPreviousDayDifferent = index == 0
                 var isNextDayDifferent = false
-                var isDifferentMonth = false
-                var isDifferentYear = false
-                if (index > 0 && index < expenses.size - 1) {
-                    isPreviousDayDifferent =
-                        !areDatesSame(expenses[index - 1].date, currentExpense.date)
-                    isNextDayDifferent =
-                        !areDatesSame(expenses[index + 1].date, currentExpense.date)
-                    isDifferentMonth =
-                        !areMonthsSame(expenses[index + 1].date, currentExpense.date)
-                    isDifferentYear = !areYearsSame(expenses[index + 1].date, currentExpense.date)
+                var isPreviousMonthDifferent = false
+                var isPreviousYearDifferent = false
+                if (index > 0) {
+                    isPreviousDayDifferent = !areDatesSame(expensesList[index - 1].date, currentExpense.date)
+                    isPreviousMonthDifferent = !areMonthsSame(expensesList[index - 1].date, currentExpense.date)
+                    isPreviousYearDifferent = !areYearsSame(expensesList[index - 1].date, currentExpense.date)
                 }
-
+                if (index < expensesList.size - 1) {
+                    isNextDayDifferent = !areDatesSame(expensesList[index + 1].date, currentExpense.date)
+                }
                 Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                     if (isScrollingUp) LaunchedEffect(listState) {
                         listState.animateScrollToItem(index = 0)
@@ -119,22 +110,24 @@ fun ExpensesLazyColumn() {
                             }
                             Spacer(modifier = Modifier.height(4.dp))
                         }
-                        if (isDifferentMonth || index == 0) {
+                        if (isPreviousMonthDifferent || index == 0) {
                             Row(Modifier.fillMaxWidth()) {
-                                if (isDifferentYear) ExpenseYearHeader(localDate = convertDateToLocalDate(currentExpense.date))
+                                if (isPreviousYearDifferent) ExpenseYearHeader(localDate = convertDateToLocalDate(currentExpense.date))
+                                Spacer(modifier = Modifier.width(4.dp))
                                 ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
                             }
-
                         }
                         if (isPreviousDayDifferent) {
                             ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
-                            // Spacer(modifier = Modifier.height(4.dp))
                         }
 
-                        ExpensesCardTypeSimple(expenseItem = currentExpense)
+                        ExpensesCardTypeSimple(
+                            expenseItem = currentExpense,
+                            expenseCategory = currentCategory!!, expensesLazyColumnViewModel = expensesLazyColumnViewModel
+                        ) // ALERT !! CALL, should be replaced soon
+
                         if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                     }
-
                 }
             }
         }
@@ -143,14 +136,20 @@ fun ExpensesLazyColumn() {
 
 @Composable
 private fun Transactions() {
-    Text(text = "Transactions", style = MaterialTheme.typography.titleMedium)
+    Text(text = "Transactions", style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
 }
 
 @Composable
 private fun ExpenseDayHeader(localDate: LocalDate) {
     Row(verticalAlignment = Alignment.Bottom) {
-        Text(text = "${localDate.dayOfMonth}.", style = MaterialTheme.typography.titleMedium)
-        Text(text = "${localDate.month.value}", style = MaterialTheme.typography.titleSmall)
+        Text(
+            text = "${localDate.dayOfMonth}.",
+            style = MaterialTheme.typography.titleMedium.copy(fontSize = 24.sp, color = MaterialTheme.colorScheme.onPrimaryContainer)
+        )
+        Text(
+            text = "${localDate.month.value}",
+            style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+        ) // warning titleSmall not defined
     }
 }
 
@@ -159,7 +158,7 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
     val monthResId = getMonthResID(localDate)
     val month = stringResource(id = monthResId)
     Box {
-        Text(text = month, style = MaterialTheme.typography.titleLarge)
+        Text(text = month, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
     }
 }
 
@@ -167,7 +166,7 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
 private fun ExpenseYearHeader(localDate: LocalDate) {
     val year = localDate.year.toString()
     Box {
-        Text(text = year, style = MaterialTheme.typography.titleLarge)
+        Text(text = year, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
     }
 }
 
@@ -187,47 +186,6 @@ private fun UpButton(onClick: () -> Unit) {
         }
     }
 }
-
-
-@Composable
-fun PieCategoriesChart() {
-    AndroidView(
-        factory = { context ->
-            val view = LayoutInflater.from(context).inflate(R.layout.main_screen_pie_chart, null, false)
-            val aaChartView = view.findViewById<AAChartView>(R.id.aa_chart_view)
-            //Creating chart model
-            val aaChartModel: AAChartModel = AAChartModel()
-                .chartType(AAChartType.Area)
-                .title("title")
-                .subtitle("subtitle")
-                .backgroundColor("#4b2b7f")
-                .dataLabelsEnabled(true)//.animationType(AAChartAnimationType. EaseInCubic).animationDuration(400)
-                .series(
-                    arrayOf(
-                        AASeriesElement()
-                            .name("Tokyo")
-                            .data(arrayOf(7.0, 6.9, 9.5, 14.5, 18.2, 21.5, 25.2, 26.5, 23.3, 18.3, 13.9, 9.6)),
-                        AASeriesElement()
-                            .name("NewYork")
-                            .data(arrayOf(0.2, 0.8, 5.7, 11.3, 17.0, 22.0, 24.8, 24.1, 20.1, 14.1, 8.6, 2.5)),
-                        AASeriesElement()
-                            .name("London")
-                            .data(arrayOf(0.9, 0.6, 3.5, 8.4, 13.5, 17.0, 18.6, 17.9, 14.3, 9.0, 3.9, 1.0)),
-                        AASeriesElement()
-                            .name("Berlin")
-                            .data(arrayOf(3.9, 4.2, 5.7, 8.5, 11.9, 15.2, 17.0, 16.6, 14.2, 10.3, 6.6, 4.8))
-                    )
-                )
-            aaChartView.aa_drawChartWithChartModel(aaChartModel)
-
-            view // return the view
-        }, modifier = Modifier.fillMaxSize(),
-        update = { view ->
-            // Update the view
-        }
-    )
-}
-
 
 fun getMonthResID(localDate: LocalDate): Int {
     val monthResId = when (localDate.monthValue) {

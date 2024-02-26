@@ -3,7 +3,7 @@ package com.example.expensetracker.data.viewmodels
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.models.User
+import com.example.expensetracker.data.models.other.User
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch

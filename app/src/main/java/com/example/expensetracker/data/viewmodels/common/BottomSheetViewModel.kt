@@ -1,5 +1,6 @@
-package com.example.expensetracker.data.viewmodels
+package com.example.expensetracker.data.viewmodels.common
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.converters.convertLocalDateToDate
@@ -21,37 +22,37 @@ class BottomSheetViewModel(
     private val addExpensesItemUseCase: AddExpensesItemUseCase,
     private val categoryListRepositoryImpl: CategoriesListRepositoryImpl
 ) : ViewModel() {
-    var categoryList = listOf<ExpenseCategory>()
+    private val _categoryList = mutableStateListOf<ExpenseCategory>()
+    val categoryList: List<ExpenseCategory> = _categoryList
 
     init {
         viewModelScope.launch {
-            categoryListRepositoryImpl.getCategoriesList().collect() {
-                categoryList += it
-                categoryList.distinct()
+            categoryListRepositoryImpl.getCategoriesList().collect {
+                _categoryList.clear()
+                _categoryList.addAll(it)
             }
         }
     }
 
     suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
-            val currentExpenseItem = ExpenseItem(
-                categoryId = _categoryPicked.value!!.categoryId,
-                note = _note.value,
-                date = convertLocalDateToDate(_datePicked.value),
-                value = _inputExpense.value!!
-            )
-            addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
-            setCategoryPicked(DEFAULT_CATEGORY)
-            setInputExpense(DEFAULT_EXPENSE)
-            setDatePicked(DEFAULT_DATE)
-            setNote(DEFAULT_NOTE)
-            setBottomSheetExpanded(false)
-        }
+            withContext(dispatcher) {
+                val currentExpenseItem = ExpenseItem(
+                    categoryId = _categoryPicked.value!!.categoryId,
+                    note = _note.value,
+                    date = convertLocalDateToDate(_datePicked.value),
+                    value = _inputExpense.value!!
+                )
+                addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
+                setCategoryPicked(DEFAULT_CATEGORY)
+                setInputExpense(DEFAULT_EXPENSE)
+                setDatePicked(DEFAULT_DATE)
+                setNote(DEFAULT_NOTE)
+                setBottomSheetExpanded(false)
+            }
     }
-
-
-    private var _isBottomSheetExpanded = MutableStateFlow(value = false)
+        private var _isBottomSheetExpanded = MutableStateFlow(value = false)
     val isBottomSheetExpanded = _isBottomSheetExpanded.asStateFlow()
+
 
     companion object {
         val DEFAULT_NOTE = ""

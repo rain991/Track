@@ -46,9 +46,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
-import com.example.expensetracker.data.models.Currency
-import com.example.expensetracker.data.models.currencyList
-import com.example.expensetracker.data.viewmodels.LoginViewModel
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
+import com.example.expensetracker.data.viewmodels.login.LoginViewModel
 import com.example.expensetracker.presentation.navigation.Screen
 import com.example.expensetracker.ui.theme.focusedTextFieldText
 import com.example.expensetracker.ui.theme.md_theme_light_primary
@@ -57,15 +56,15 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+// consts to ENUM
 const val FIRSTNAME_INPUT_ID = 102
 const val INCOME_INPUT_ID = 703
 
+//val uiColor = if (isSystemInDarkTheme()) Color.White else Black
 @Composable
 fun LoginScreen(navController: NavController) {
     val loginViewModel = koinViewModel<LoginViewModel>()
     val coroutineScope = rememberCoroutineScope()
-
-    val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             LoginHeader()
@@ -97,7 +96,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
 
         Spacer(modifier = Modifier.height(16.dp))
 
-        CurrencyDropDownMenu(loginViewModel)
+        CurrencyDropDownMenu()
 
         Spacer(modifier = Modifier.height(16.dp))
 
@@ -121,6 +120,60 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                 text = stringResource(R.string.lets_start),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun CurrencyDropDownMenu() {
+    val loginViewModel = koinViewModel<LoginViewModel>()
+    val uiColor = if (isSystemInDarkTheme()) Color.White else Black
+    var isExpanded by remember { mutableStateOf(false) }
+    val currentCurrencyList = loginViewModel.currencyList
+    val isCurrentListEmpty by remember { mutableStateOf(loginViewModel.currencyList.isEmpty()) }
+    var selectedOptionText by remember { if (isCurrentListEmpty) mutableStateOf(CURRENCY_DEFAULT) else mutableStateOf(currentCurrencyList[0]) }
+    ExposedDropdownMenuBox(
+        expanded = isExpanded,
+        onExpandedChange = {
+            isExpanded = !isExpanded
+        }
+    ) {
+
+        TextField(
+            value = selectedOptionText.ticker,
+            readOnly = true,
+            onValueChange = {},
+            label = { Text(stringResource(R.string.currency), style = TextStyle(color = uiColor)) },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(
+                    expanded = isExpanded
+                )
+            },
+            colors = ExposedDropdownMenuDefaults.textFieldColors(),
+            modifier = Modifier.menuAnchor()
+        )
+
+
+        ExposedDropdownMenu(
+            expanded = isExpanded,
+            onDismissRequest = {
+                isExpanded = false
+            }
+        ) {
+            currentCurrencyList.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(text = selectionOption.name, color = uiColor) },
+                    onClick = {
+                        selectedOptionText = selectionOption
+                        loginViewModel.setCurrencyStateFlow(selectionOption)
+                        isExpanded = false
+                    },
+                    trailingIcon = {
+                        Text(text = selectionOption.ticker, color = uiColor)
+                    }
+                )
+            }
         }
     }
 }
@@ -155,7 +208,7 @@ private fun LoginHeader() {
                     )
                     Text(
                         text = stringResource(id = R.string.logo_app_description),
-                        style = MaterialTheme.typography.titleSmall,
+                        style = MaterialTheme.typography.bodyMedium,
                         minLines = 2
                     )
                 }
@@ -208,57 +261,3 @@ private fun LoginTextField(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CurrencyDropDownMenu(loginViewModel: LoginViewModel) {
-    val uiColor = if (isSystemInDarkTheme()) Color.White else Black
-    val currentCurrencyList: List<Currency> = currencyList.toList()
-    var isExpanded by remember { mutableStateOf(false) }
-    var selectedOptionText by remember { mutableStateOf(currentCurrencyList[0]) }
-    ExposedDropdownMenuBox(
-        expanded = isExpanded,
-        onExpandedChange = {
-            isExpanded = !isExpanded
-        }
-    ) {
-
-        TextField(
-            value = selectedOptionText.ticker,
-            readOnly = true,
-            onValueChange = {},
-            label = { Text(stringResource(R.string.currency), style = TextStyle(color = uiColor)) },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = isExpanded
-                )
-            },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
-            modifier = Modifier.menuAnchor()
-        )
-
-
-        ExposedDropdownMenu(
-            expanded = isExpanded,
-            onDismissRequest = {
-                isExpanded = false
-            }
-        ) {
-            currencyList.forEach { selectionOption ->
-                DropdownMenuItem(
-                    text = { Text(text = selectionOption.ticker, color = uiColor) },
-                    onClick = {
-                        selectedOptionText = selectionOption
-                        loginViewModel.setCurrencyStateFlow(selectionOption.ticker)  // ATTENTION
-                        isExpanded = false
-                    },
-                    trailingIcon = {
-                        Image(
-                            painter = painterResource(id = selectionOption.imageResourceId),
-                            contentDescription = selectionOption.ticker
-                        )
-                    }
-                )
-            }
-        }
-    }
-}

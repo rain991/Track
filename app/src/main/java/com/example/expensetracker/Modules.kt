@@ -1,17 +1,20 @@
 package com.example.expensetracker
 
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.database.CurrencyDao
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpenseItemsDAO
 import com.example.expensetracker.data.database.ExpensesDB
+import com.example.expensetracker.data.database.IdeaDao
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
+import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
-import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
-import com.example.expensetracker.data.viewmodels.CategoriesItemsViewModel
-import com.example.expensetracker.data.viewmodels.ExpenseItemsViewModel
-import com.example.expensetracker.data.viewmodels.LoginViewModel
-import com.example.expensetracker.data.viewmodels.MainScreenViewModel
+import com.example.expensetracker.data.implementations.IdeaListRepositoryImpl
 import com.example.expensetracker.data.viewmodels.UserDataViewModel
+import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
+import com.example.expensetracker.data.viewmodels.login.LoginViewModel
+import com.example.expensetracker.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
+import com.example.expensetracker.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.DeleteCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.EditCategoryUseCase
@@ -31,6 +34,12 @@ val appModule = module {
 
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
     single<CategoriesListRepositoryImpl> { CategoriesListRepositoryImpl(get()) }
+
+    single<CurrencyDao>{ ExpensesDB.getInstance(androidContext()).currencyDao }
+    single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
+
+    single<IdeaDao>{ ExpensesDB.getInstance(androidContext()).ideaDao }
+    single<IdeaListRepositoryImpl>{ IdeaListRepositoryImpl(get()) }
 }
 
 val domainModule = module {
@@ -43,7 +52,7 @@ val domainModule = module {
     factory<AddCategoryUseCase> { AddCategoryUseCase(get()) }
     factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get()) }
     factory<EditCategoryUseCase> { EditCategoryUseCase(get()) }
-    factory<GetCategoryListUseCase> { GetCategoryListUseCase(get()) }
+    factory<GetCategoryListUseCase> { GetCategoryListUseCase() }
 }
 
 val settingsModule = module {
@@ -51,10 +60,9 @@ val settingsModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { CategoriesItemsViewModel(get()) }
-    viewModel { LoginViewModel(get()) }
+    viewModel { LoginViewModel(get(), get()) }
     viewModel { UserDataViewModel(get()) }
     viewModel { BottomSheetViewModel(get(), get()) }
-    viewModel { MainScreenViewModel(get()) }
-    viewModel { ExpenseItemsViewModel() }
+    viewModel { ExpensesLazyColumnViewModel(get(), get()) }
+    viewModel { MainScreenFeedViewModel(get()) }
 }

@@ -1,10 +1,12 @@
 package com.example.expensetracker.data.implementations
 
 import com.example.expensetracker.data.database.ExpenseItemsDAO
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.domain.repository.ExpensesListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import java.util.Date
 import kotlin.coroutines.CoroutineContext
 
 class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) : ExpensesListRepository {
@@ -13,6 +15,7 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
             expenseItemsDao.insertItem(currentExpensesItem)
         }
     }
+
     override fun getExpensesList(): Flow<List<ExpenseItem>> {
         return expenseItemsDao.getAll()
     }
@@ -38,5 +41,9 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
 
     override fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>> {
         return expenseItemsDao.getAllWithDateDesc()
+    }
+
+    override fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: ExpenseCategory): List<ExpenseItem> {
+        return expenseItemsDao.findExpensesInTimeSpan(start = startOfSpan.time, end = endOfSpan.time, categoryId = category.categoryId)
     }
 }

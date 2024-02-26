@@ -1,8 +1,7 @@
 package com.example.expensetracker.presentation.bottomsheets
 
-import android.util.Log
-import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
+import android.widget.Toast
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -40,7 +38,6 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.State
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,12 +45,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.SoftwareKeyboardController
@@ -66,7 +61,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
-import com.example.expensetracker.data.viewmodels.BottomSheetViewModel
+import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
@@ -76,12 +71,13 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-import kotlin.random.Random
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val context = LocalContext.current
+    val warning = stringResource(id = R.string.warning_bottom_sheet_exp)
     bottomSheetViewModel.setDatePicked(LocalDate.now())
     val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
@@ -96,7 +92,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
             val focusRequester = remember { FocusRequester() }
             Column(   // All content
                 modifier = Modifier
-                    .fillMaxHeight(0.7f)
+                    .fillMaxHeight(0.65f)
                     .fillMaxWidth()
             )
             {
@@ -108,24 +104,30 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
                         Text(
                             text = stringResource(R.string.add_expenses),
-                            style = MaterialTheme.typography.titleLarge.copy(fontSize = 24.sp),
+                            style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
                         AmountInput(focusRequester, controller, dataStoreManager)
                         Spacer(Modifier.height(12.dp))
-                        SimpleOutlinedTextFieldSample(label = "Note")
+                        OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
                         DatePicker()
                         CategoriesGrid()
-                        //  Spacer(Modifier.weight(1f))
                         val coroutineScope = rememberCoroutineScope()
                         AcceptButton {
-                            coroutineScope.launch {
-                                withContext(Dispatchers.IO){
-                                    bottomSheetViewModel.addExpense()
+                            if (bottomSheetViewModel.categoryPicked.value != null && bottomSheetViewModel.datePicked.value.isBefore(
+                                    LocalDate.now().plusDays(1)
+                                ) && bottomSheetViewModel.inputExpense.value != null && bottomSheetViewModel.inputExpense.value!! >0
+                            ) {
+                                coroutineScope.launch {
+                                    withContext(Dispatchers.IO) {
+                                        bottomSheetViewModel.addExpense()
+                                    }
+                                    withContext(Dispatchers.Main) {
+                                        bottomSheetViewModel.setBottomSheetExpanded(false)
+                                    }
                                 }
-                                withContext(Dispatchers.Main) {
-                                    bottomSheetViewModel.setBottomSheetExpanded(false)
-                                }
+                            } else {
+                                Toast.makeText(context, warning, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -137,35 +139,22 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
 }
 
 @Composable
-fun CategoryCard(category: ExpenseCategory) {  // should be refactored for other ViewModel usages
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val activeCategory = bottomSheetViewModel.categoryPicked.collectAsState()
-
-    Row(
-        modifier = Modifier
-            .heightIn(min = 1.dp, max = 25.dp)
-            .clickable {
-                if (activeCategory.value != category) {
-                    bottomSheetViewModel.setCategoryPicked(category)
-                } else bottomSheetViewModel.setCategoryPicked(null)
-                Log.d("MyLog", "input : {${bottomSheetViewModel.inputExpense.value}}")
-                Log.d("MyLog", "today : {${bottomSheetViewModel.todayButtonActiveState.value}}")
-                Log.d("MyLog", "yesterday : {${bottomSheetViewModel.yesterdayButtonActiveState.value}}")
-                Log.d("MyLog", "date : {${bottomSheetViewModel.datePicked.value}}")
-                Log.d("MyLog", "active category : {${activeCategory}}")
+fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (ExpenseCategory) -> Unit) {
+    Button(modifier = Modifier.height(32.dp), onClick = { onSelect(category) }) {
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            AnimatedVisibility(visible = isSelected) {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = stringResource(R.string.checked_category_add_exp),
+                    modifier = Modifier.height(28.dp),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
             }
-            .clip(RoundedCornerShape(4.dp))
-            .background(color = Color(Random.nextLong(0xFFFFFFFF)))
-            .padding(horizontal = 4.dp)
-    ) {
-        if (activeCategory.value != null) {
-            if (activeCategory.value == category) {
-                Icon(imageVector = Icons.Filled.Check, contentDescription = null, tint = Color.Red)
-            }
+            Text(text = category.note, style = MaterialTheme.typography.bodyMedium)
         }
-        Text(text = category.name, style = MaterialTheme.typography.bodySmall.copy(fontSize = 16.sp))
 
     }
+
 }
 
 @Composable
@@ -173,16 +162,20 @@ private fun CategoriesGrid() {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val categoryList = bottomSheetViewModel.categoryList
+    val selected = bottomSheetViewModel.categoryPicked.collectAsState()
     LazyHorizontalStaggeredGrid(
-        modifier = Modifier.height(72.dp),
-        rows = StaggeredGridCells.Adaptive(24.dp),
+        modifier = Modifier.height(84.dp),
+        rows = StaggeredGridCells.Fixed(2),
         state = lazyHorizontalState,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
     ) {
         items(count = categoryList.size) { index ->
             val item = categoryList[index]
-            CategoryCard(category = item)
+            CategoryChip(
+                category = item,
+                isSelected = (selected.value == item),
+                onSelect = { bottomSheetViewModel.setCategoryPicked(item) })
         }
     }
 }
@@ -205,11 +198,17 @@ private fun DatePicker() {
             .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
 
-        OutlinedDateButton(OutlinedButtonText.TODAY) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
-        OutlinedDateButton(OutlinedButtonText.YESTERDAY) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
+        OutlinedDateButton(
+            text = stringResource(R.string.today_add_exp),
+            isSelected = (selectedDate == LocalDate.now())
+        ) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
+        OutlinedDateButton(
+            text = stringResource(R.string.yesterday_add_exp),
+            isSelected = (selectedDate == LocalDate.now().minusDays(1))
+        ) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
 
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
-            Text(text = text, style = MaterialTheme.typography.titleSmall)
+            Text(text = text, style = MaterialTheme.typography.bodyMedium)
         }
         DateTimeDialog(
             state = datePickerState,
@@ -224,46 +223,31 @@ private fun DatePicker() {
     }
 }
 
-
-enum class OutlinedButtonText {
-    TODAY, YESTERDAY
-}
-
 @Composable
-private fun OutlinedDateButton(type: OutlinedButtonText, onClick: () -> Unit) {
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    lateinit var text: String
-    lateinit var state: State<Boolean>
-    when (type) {
-        OutlinedButtonText.TODAY -> {
-            text = stringResource(id = R.string.today)
-            state = bottomSheetViewModel.todayButtonActiveState.collectAsState()
-        }
-
-        OutlinedButtonText.YESTERDAY -> {
-            text = stringResource(id = R.string.yesterday)
-            state = bottomSheetViewModel.yesterdayButtonActiveState.collectAsState()
-        }
-    }
-
+private fun OutlinedDateButton(text: String, isSelected: Boolean, onSelect: () -> Unit) {
     Button(
-        onClick = onClick,
-        modifier = Modifier
-            .background(
-                color = if (state.value) Color.Black else Color.Transparent,
-                shape = MaterialTheme.shapes.medium
-            )
+        onClick = onSelect
     ) {
-        Text(
-            text = text,
-            style = if (state.value) MaterialTheme.typography.titleSmall.copy(color = Color.White)
-            else MaterialTheme.typography.titleSmall
-        )
+        Row(horizontalArrangement = Arrangement.SpaceBetween) {
+            AnimatedVisibility(visible = isSelected) {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = stringResource(R.string.selected_date_add_exp),
+                    modifier = Modifier.height(22.dp),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+            Text(
+                text = text,
+                style = MaterialTheme.typography.bodyMedium
+            )
+        }
+
     }
 }
 
 @Composable
-private fun SimpleOutlinedTextFieldSample(label: String) {
+private fun OutlinedTextField(label: String) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val text by bottomSheetViewModel.note.collectAsState()
     OutlinedTextField(
@@ -274,10 +258,6 @@ private fun SimpleOutlinedTextFieldSample(label: String) {
     )
 }
 
-
-
-
-@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 private fun AmountInput(
     focusRequester: FocusRequester,
@@ -298,12 +278,14 @@ private fun AmountInput(
                 .focusRequester(focusRequester)
                 .width(IntrinsicSize.Min)
                 .padding(horizontal = 12.dp),
-            textStyle = MaterialTheme.typography.titleLarge.copy(fontSize = 54.sp, letterSpacing = 1.3.sp),
+            textStyle = MaterialTheme.typography.titleMedium.copy(
+                fontSize = 54.sp,
+                letterSpacing = 1.3.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            ),
             value = currentExpense.value.toString(),
             onValueChange = { newText ->
                 bottomSheetViewModel.setInputExpense(newText.toFloat())
-                Log.d("MyLog", "input22: ${newText.toFloat()}")
-                Log.d("MyLog", "VM: ${bottomSheetViewModel.inputExpense.value}")
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
@@ -318,7 +300,6 @@ private fun AmountInput(
     }
 }
 
-
 @Composable
 private fun AcceptButton(onClick: () -> Unit) {
     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
@@ -328,10 +309,10 @@ private fun AcceptButton(onClick: () -> Unit) {
             },
             modifier = Modifier
                 .widthIn(60.dp)
-                .wrapContentHeight(), shape = RoundedCornerShape(80)
+                .wrapContentHeight()
+                .padding(bottom = 4.dp), shape = RoundedCornerShape(80)
         ) {
-
-            Text(text = stringResource(R.string.add_it_button))
+            Text(text = stringResource(R.string.add_it_button), style = MaterialTheme.typography.bodyLarge.copy(letterSpacing = 0.9.sp))
         }
     }
 }

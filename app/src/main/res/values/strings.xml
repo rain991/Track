@@ -35,6 +35,13 @@
     <string name="expenses">Expenses</string>
     <string name="statistic">Statistic</string>
     <string name="add_it_button">Add it</string>
+    <string name="your_note_adding_exp">Your Note</string>
+    <string name="checked_category_add_exp">checked category</string>
+    <string name="today_add_exp">Today</string>
+    <string name="yesterday_add_exp">Yesterday</string>
+    <string name="selected_date_add_exp">Selected date</string>
+    <string name="note_exp_list">Note: %1$s</string>
+    <string name="warning_bottom_sheet_exp">Select category or type correct expense value</string>
 
 
 </resources>
