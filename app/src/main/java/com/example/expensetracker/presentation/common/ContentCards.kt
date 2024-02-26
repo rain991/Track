@@ -13,12 +13,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -64,17 +66,17 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 4.dp, horizontal = 4.dp)
-        ) { // column contains 2 separate rows, for typical and expanded content
+        ) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { // containing non-expanded content
                 Column(
                     modifier = Modifier
-                        .weight(1f)
-                        .fillMaxHeight(),
+                        .weight(1f),
                     verticalArrangement = Arrangement.Top
                 ) {// warning Modifier.fillMaxHeight()
                     Row(
                         horizontalArrangement = Arrangement.Center, modifier = Modifier
-                            .weight(1f).fillMaxWidth()
+                            .wrapContentHeight() //weight 1f
+                            .fillMaxWidth()
                     ) {
                         if (expenseItem.note.isNotEmpty()) {
                             noteCard(expenseItem = expenseItem)
@@ -82,22 +84,41 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
                             categoryCard(category = expenseCategory)
                         }
                     }
+                    Spacer(modifier = Modifier.weight(1f))
                     Row(modifier = Modifier.padding(4.dp), verticalAlignment = Alignment.Bottom) {
                         Text(text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date))
                     }
+                    if(expanded){
+                        Spacer(modifier = Modifier.weight(0.7f))
+                    }
+
+                    Row(modifier = Modifier
+                        .wrapContentWidth()
+                    ) { // Expanded content
+                        AnimatedVisibility(visible = expanded, enter = slideInVertically {
+                            with(density) { -60.dp.roundToPx() }
+                        } + expandVertically(
+                            expandFrom = Alignment.Bottom
+                        ) + fadeIn(
+                            initialAlpha = 0.3f
+                        ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
+                            Text("Text")
+                        }
+                    }
+                    if(expanded){
+                        Spacer(modifier = Modifier.weight(1f))
+                    }
+
+
+
                 }
                 ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value, isExpanded = expanded)
-            }
-            // Expanded content
-            AnimatedVisibility(visible = expanded, enter = slideInVertically {
-                with(density) { -60.dp.roundToPx() }
-            } + expandVertically(
-                expandFrom = Alignment.Bottom
-            ) + fadeIn(
-                initialAlpha = 0.3f
-            ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
-                Text("Hello",Modifier.height(32.dp))
-            }
+
+
+
+            } // non-expanded ends
+
+
         }
     }
 }
@@ -127,8 +148,7 @@ private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: Stri
 private fun categoryCard(category: ExpenseCategory) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
-        modifier = Modifier
-            .wrapContentSize(),
+        modifier = Modifier.wrapContentSize(),
         colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -136,11 +156,11 @@ private fun categoryCard(category: ExpenseCategory) {
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         ), shape = MaterialTheme.shapes.small
     ) {
-        Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)){
+        Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)) {
             Text(
                 text = category.note,
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp),
-               // textAlign = TextAlign.Center,modifier = Modifier
+                textAlign = TextAlign.Center
             )
         }
 
@@ -150,8 +170,7 @@ private fun categoryCard(category: ExpenseCategory) {
 @Composable
 private fun noteCard(expenseItem: ExpenseItem) {
     Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp), modifier = Modifier
-            .height(28.dp).padding(2.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp), modifier = Modifier.wrapContentSize(),
         colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -159,10 +178,11 @@ private fun noteCard(expenseItem: ExpenseItem) {
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         ), shape = MaterialTheme.shapes.small
     ) {
-        Text(
-            text = if (expenseItem.note.length < 8) stringResource(R.string.note_exp_list, expenseItem.note) else expenseItem.note,
-            style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
-        )
-        
+        Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)) {
+            Text(
+                text = if (expenseItem.note.length < 8) stringResource(R.string.note_exp_list, expenseItem.note) else expenseItem.note,
+                style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
+            )
+        }
     }
 }

@@ -19,7 +19,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -134,7 +134,7 @@ private fun CustomTab(
 @Composable
 fun CustomTabSample() {
     val (selected, setSelected) = remember {
-        mutableStateOf(0)
+        mutableIntStateOf(0)
     }
 
     CustomTab(
