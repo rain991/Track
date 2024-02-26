@@ -10,6 +10,7 @@ import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,6 +18,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -73,7 +75,6 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
                     Row(
                         horizontalArrangement = Arrangement.Center, modifier = Modifier
                             .weight(1f).fillMaxWidth()
-                          //  .padding(2.dp)
                     ) {
                         if (expenseItem.note.isNotEmpty()) {
                             noteCard(expenseItem = expenseItem)
@@ -127,7 +128,7 @@ private fun categoryCard(category: ExpenseCategory) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
         modifier = Modifier
-            .height(28.dp).padding(2.dp),
+            .wrapContentSize(),
         colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -135,11 +136,14 @@ private fun categoryCard(category: ExpenseCategory) {
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         ), shape = MaterialTheme.shapes.small
     ) {
-        Text(
-            text = category.note,
-            style = MaterialTheme.typography.bodyMedium,
-            textAlign = TextAlign.Center
-        )
+        Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)){
+            Text(
+                text = category.note,
+                style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp),
+               // textAlign = TextAlign.Center,modifier = Modifier
+            )
+        }
+
     }
 }
 
@@ -157,7 +161,7 @@ private fun noteCard(expenseItem: ExpenseItem) {
     ) {
         Text(
             text = if (expenseItem.note.length < 8) stringResource(R.string.note_exp_list, expenseItem.note) else expenseItem.note,
-            style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center//, modifier = Modifier.weight(1f)
+            style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
         )
         
     }

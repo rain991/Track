@@ -46,7 +46,8 @@ private fun Main_FeedCard() {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     Card(
         modifier = Modifier
-            .height(140.dp).padding(horizontal =8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
+            .height(140.dp)
+            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
             disabledContainerColor = MaterialTheme.colorScheme.primary,
@@ -59,16 +60,20 @@ private fun Main_FeedCard() {
 
 @Composable
 private fun NewIdea_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
+
+    val value = mainScreenFeedViewModel.cardIndex.collectAsState()
     Card(
         modifier = Modifier
-            .height(140.dp).padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
+            .height(140.dp)
+            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
             disabledContainerColor = MaterialTheme.colorScheme.primary,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
-        Text(text = mainScreenFeedViewModel.cardIndex.toString(), style = MaterialTheme.typography.bodyMedium)
+
+        Text(text = value.value.toString(), style = MaterialTheme.typography.bodyMedium)
     }
 }
 
