@@ -1,5 +1,6 @@
 package com.example.expensetracker.presentation.common
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.expandVertically
@@ -27,6 +28,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,15 +47,21 @@ import com.example.expensetracker.data.converters.extractAdditionalDateInformati
 import com.example.expensetracker.data.converters.extractDayOfWeekFromDate
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
 import org.koin.compose.koinInject
 import kotlin.math.absoluteValue
 
 @Composable
-fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCategory) {
+fun ExpensesCardTypeSimple(
+    expenseItem: ExpenseItem,
+    expenseCategory: ExpenseCategory,
+    expensesLazyColumnViewModel: ExpensesLazyColumnViewModel
+) {
     val dataStoreManager = koinInject<DataStoreManager>()
     var expanded by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     val currentCurrency = dataStoreManager.currencyFlow.collectAsState(initial = "USD")
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -67,12 +75,12 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
                 .fillMaxWidth()
                 .padding(vertical = 4.dp, horizontal = 4.dp)
         ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) { // containing non-expanded content
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 Column(
                     modifier = Modifier
                         .weight(1f),
                     verticalArrangement = Arrangement.Top
-                ) {// warning Modifier.fillMaxHeight()
+                ) {
                     Row(
                         horizontalArrangement = Arrangement.Center, modifier = Modifier
                             .wrapContentHeight() //weight 1f
@@ -88,13 +96,14 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
                     Row(modifier = Modifier.padding(4.dp), verticalAlignment = Alignment.Bottom) {
                         Text(text = extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = expenseItem.date))
                     }
-                    if(expanded){
+                    if (expanded) {
                         Spacer(modifier = Modifier.weight(0.7f))
                     }
 
-                    Row(modifier = Modifier
-                        .wrapContentWidth()
-                    ) { // Expanded content
+                    Row(
+                        modifier = Modifier
+                            .wrapContentWidth()
+                    ) {
                         AnimatedVisibility(visible = expanded, enter = slideInVertically {
                             with(density) { -60.dp.roundToPx() }
                         } + expandVertically(
@@ -102,23 +111,23 @@ fun ExpensesCardTypeSimple(expenseItem: ExpenseItem, expenseCategory: ExpenseCat
                         ) + fadeIn(
                             initialAlpha = 0.3f
                         ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
-                            Text("Text")
+                            val text = remember{ mutableStateOf("") }
+                            LaunchedEffect(key1 = expanded){
+                                text.value = expensesLazyColumnViewModel.requestCountInMonthNotion(
+                                    expenseItem = expenseItem,
+                                    expenseCategory = expenseCategory
+                                )
+                                Log.d("MyLog", "result from lf : $text")
+                            }
+                            Text(text = text.value, style = MaterialTheme.typography.labelMedium)
                         }
                     }
-                    if(expanded){
+                    if (expanded) {
                         Spacer(modifier = Modifier.weight(1f))
                     }
-
-
-
                 }
                 ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value, isExpanded = expanded)
-
-
-
-            } // non-expanded ends
-
-
+            }
         }
     }
 }

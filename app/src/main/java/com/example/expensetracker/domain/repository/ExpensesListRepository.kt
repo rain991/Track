@@ -1,8 +1,10 @@
 package com.example.expensetracker.domain.repository
 
+import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
+import java.util.Date
 import kotlin.coroutines.CoroutineContext
 
 interface ExpensesListRepository {
@@ -15,4 +17,5 @@ interface ExpensesListRepository {
 
     fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>>
     fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>>
+    fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category : ExpenseCategory): Flow<List<ExpenseItem>>
 }

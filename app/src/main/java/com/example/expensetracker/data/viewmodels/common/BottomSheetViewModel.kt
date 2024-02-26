@@ -27,7 +27,7 @@ class BottomSheetViewModel(
 
     init {
         viewModelScope.launch {
-            categoryListRepositoryImpl.getCategoriesList().collect() {
+            categoryListRepositoryImpl.getCategoriesList().collect {
                 _categoryList.clear()
                 _categoryList.addAll(it)
             }

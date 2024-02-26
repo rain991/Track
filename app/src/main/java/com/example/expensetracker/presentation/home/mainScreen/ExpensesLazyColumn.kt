@@ -2,7 +2,6 @@ package com.example.expensetracker.presentation.home.mainScreen
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -44,7 +43,6 @@ import com.example.expensetracker.presentation.common.CustomTabSample
 import com.example.expensetracker.presentation.common.ExpensesCardTypeSimple
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
-
 
 
 @Composable
@@ -125,7 +123,7 @@ fun ExpensesLazyColumn() {
 
                         ExpensesCardTypeSimple(
                             expenseItem = currentExpense,
-                            expenseCategory = currentCategory!!
+                            expenseCategory = currentCategory!!, expensesLazyColumnViewModel = expensesLazyColumnViewModel
                         ) // ALERT !! CALL, should be replaced soon
 
                         if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
@@ -154,6 +152,7 @@ private fun ExpenseDayHeader(localDate: LocalDate) {
         ) // warning titleSmall not defined
     }
 }
+
 @Composable
 private fun ExpenseMonthHeader(localDate: LocalDate) {
     val monthResId = getMonthResID(localDate)
@@ -162,6 +161,7 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
         Text(text = month, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
     }
 }
+
 @Composable
 private fun ExpenseYearHeader(localDate: LocalDate) {
     val year = localDate.year.toString()
@@ -169,6 +169,7 @@ private fun ExpenseYearHeader(localDate: LocalDate) {
         Text(text = year, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
     }
 }
+
 @Composable
 private fun UpButton(onClick: () -> Unit) {
     Box {
