@@ -42,6 +42,8 @@
     <string name="selected_date_add_exp">Selected date</string>
     <string name="note_exp_list">Note: %1$s</string>
     <string name="warning_bottom_sheet_exp">Select category or type correct expense value</string>
+    <string name="empty_exp_lazyColumn_title">You haven\'t added expenses yet</string>
+    <string name="empty_exp_lazyColumn_additional1">Try it out using button in right bottom corner, it is available in every app screen</string>
 
 
 </resources>

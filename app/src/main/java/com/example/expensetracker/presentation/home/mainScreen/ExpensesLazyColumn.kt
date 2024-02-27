@@ -2,10 +2,12 @@ package com.example.expensetracker.presentation.home.mainScreen
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -89,12 +91,16 @@ fun ExpensesLazyColumn() {
                 var isPreviousMonthDifferent = false
                 var isPreviousYearDifferent = false
                 if (index > 0) {
-                    isPreviousDayDifferent = !areDatesSame(expensesList[index - 1].date, currentExpense.date)
-                    isPreviousMonthDifferent = !areMonthsSame(expensesList[index - 1].date, currentExpense.date)
-                    isPreviousYearDifferent = !areYearsSame(expensesList[index - 1].date, currentExpense.date)
+                    isPreviousDayDifferent =
+                        !areDatesSame(expensesList[index - 1].date, currentExpense.date)
+                    isPreviousMonthDifferent =
+                        !areMonthsSame(expensesList[index - 1].date, currentExpense.date)
+                    isPreviousYearDifferent =
+                        !areYearsSame(expensesList[index - 1].date, currentExpense.date)
                 }
                 if (index < expensesList.size - 1) {
-                    isNextDayDifferent = !areDatesSame(expensesList[index + 1].date, currentExpense.date)
+                    isNextDayDifferent =
+                        !areDatesSame(expensesList[index + 1].date, currentExpense.date)
                 }
                 Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                     if (isScrollingUp) LaunchedEffect(listState) {
@@ -112,7 +118,11 @@ fun ExpensesLazyColumn() {
                         }
                         if (isPreviousMonthDifferent || index == 0) {
                             Row(Modifier.fillMaxWidth()) {
-                                if (isPreviousYearDifferent) ExpenseYearHeader(localDate = convertDateToLocalDate(currentExpense.date))
+                                if (isPreviousYearDifferent) ExpenseYearHeader(
+                                    localDate = convertDateToLocalDate(
+                                        currentExpense.date
+                                    )
+                                )
                                 Spacer(modifier = Modifier.width(4.dp))
                                 ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
                             }
@@ -120,10 +130,10 @@ fun ExpensesLazyColumn() {
                         if (isPreviousDayDifferent) {
                             ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
                         }
-
                         ExpensesCardTypeSimple(
                             expenseItem = currentExpense,
-                            expenseCategory = currentCategory!!, expensesLazyColumnViewModel = expensesLazyColumnViewModel
+                            expenseCategory = currentCategory!!,
+                            expensesLazyColumnViewModel = expensesLazyColumnViewModel
                         ) // ALERT !! CALL, should be replaced soon
 
                         if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
@@ -136,7 +146,30 @@ fun ExpensesLazyColumn() {
 
 @Composable
 private fun Transactions() {
-    Text(text = "Transactions", style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
+    Text(
+        text = "Transactions",
+        style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+    )
+}
+
+@Composable
+private fun emptyLazyColumnPlacement() {
+    Box(modifier = Modifier.fillMaxSize()) {
+        Column(
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(
+                text = stringResource(R.string.empty_exp_lazyColumn_title),
+                style = MaterialTheme.typography.titleMedium
+            )
+            Text(
+                text = stringResource(R.string.empty_exp_lazyColumn_additional1),
+                style = MaterialTheme.typography.bodyLarge
+            )
+        }
+
+    }
 }
 
 @Composable
@@ -144,7 +177,10 @@ private fun ExpenseDayHeader(localDate: LocalDate) {
     Row(verticalAlignment = Alignment.Bottom) {
         Text(
             text = "${localDate.dayOfMonth}.",
-            style = MaterialTheme.typography.titleMedium.copy(fontSize = 24.sp, color = MaterialTheme.colorScheme.onPrimaryContainer)
+            style = MaterialTheme.typography.titleMedium.copy(
+                fontSize = 24.sp,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
         )
         Text(
             text = "${localDate.month.value}",
@@ -158,7 +194,10 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
     val monthResId = getMonthResID(localDate)
     val month = stringResource(id = monthResId)
     Box {
-        Text(text = month, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
+        Text(
+            text = month,
+            style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+        )
     }
 }
 
@@ -166,7 +205,10 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
 private fun ExpenseYearHeader(localDate: LocalDate) {
     val year = localDate.year.toString()
     Box {
-        Text(text = year, style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer))
+        Text(
+            text = year,
+            style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+        )
     }
 }
 
