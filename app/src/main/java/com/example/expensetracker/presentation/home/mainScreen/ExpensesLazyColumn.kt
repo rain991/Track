@@ -98,74 +98,81 @@ fun ExpensesLazyColumn() {
                 Transactions()
             }
             Spacer(modifier = Modifier.height(4.dp))
-            LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-                items(expensesList.size) { index ->
-                    val currentExpense = expensesList[index]
-                    val currentCategory = categoriesList.find {
-                        it.categoryId == currentExpense.categoryId
-                    }
-                    var isPreviousDayDifferent = index == 0
-                    var isNextDayDifferent = false
-                    var isPreviousMonthDifferent = false
-                    var isPreviousYearDifferent = false
-                    if (index > 0) {
-                        isPreviousDayDifferent =
-                            !areDatesSame(expensesList[index - 1].date, currentExpense.date)
-                        isPreviousMonthDifferent =
-                            !areMonthsSame(expensesList[index - 1].date, currentExpense.date)
-                        isPreviousYearDifferent =
-                            !areYearsSame(expensesList[index - 1].date, currentExpense.date)
-                    }
-                    if (index < expensesList.size - 1) {
-                        isNextDayDifferent =
-                            !areDatesSame(expensesList[index + 1].date, currentExpense.date)
-                    }
-                    Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                        if (isScrollingUp) LaunchedEffect(listState) {
-                            listState.animateScrollToItem(index = 0)
-                            isScrollingUp = false
+            if(expensesList.isEmpty()){
+                emptyLazyColumnPlacement()
+            }else {
+                LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
+                    items(expensesList.size) { index ->
+                        val currentExpense = expensesList[index]
+                        val currentCategory = categoriesList.find {
+                            it.categoryId == currentExpense.categoryId
                         }
-                        Column {
-                            if (isPreviousMonthDifferent || index == 0) {
-                                Row(
-                                    Modifier
-                                        .fillMaxWidth()
-                                        .padding(horizontal = 4.dp), verticalAlignment = Alignment.Bottom
-                                ) {
-                                    if (isPreviousYearDifferent) {
-                                        ExpenseYearHeader(
-                                            localDate = convertDateToLocalDate(
-                                                currentExpense.date
+                        var isPreviousDayDifferent = index == 0
+                        var isNextDayDifferent = false
+                        var isPreviousMonthDifferent = false
+                        var isPreviousYearDifferent = false
+                        if (index > 0) {
+                            isPreviousDayDifferent =
+                                !areDatesSame(expensesList[index - 1].date, currentExpense.date)
+                            isPreviousMonthDifferent =
+                                !areMonthsSame(expensesList[index - 1].date, currentExpense.date)
+                            isPreviousYearDifferent =
+                                !areYearsSame(expensesList[index - 1].date, currentExpense.date)
+                        }
+                        if (index < expensesList.size - 1) {
+                            isNextDayDifferent =
+                                !areDatesSame(expensesList[index + 1].date, currentExpense.date)
+                        }
+                        Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                            if (isScrollingUp) LaunchedEffect(listState) {
+                                listState.animateScrollToItem(index = 0)
+                                isScrollingUp = false
+                            }
+                            Column {
+                                if (isPreviousMonthDifferent || index == 0) {
+                                    Row(
+                                        Modifier
+                                            .fillMaxWidth()
+                                            .padding(horizontal = 4.dp), verticalAlignment = Alignment.Bottom
+                                    ) {
+                                        if (isPreviousYearDifferent) {
+                                            ExpenseYearHeader(
+                                                localDate = convertDateToLocalDate(
+                                                    currentExpense.date
+                                                )
                                             )
+                                            Spacer(modifier = Modifier.width(2.dp))
+                                        }
+                                        Spacer(modifier = Modifier.width(4.dp))
+                                        ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
+                                        Text(
+                                            text = ",",
+                                            style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
                                         )
-                                        Spacer(modifier = Modifier.width(2.dp))
+                                        ExpenseDayHeader(
+                                            localDate = convertDateToLocalDate(currentExpense.date),
+                                            isPastSmallMarkupNeeded = false
+                                        )
                                     }
-                                    Spacer(modifier = Modifier.width(4.dp))
-                                    ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
-                                    Text(
-                                        text = ",",
-                                        style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
-                                    )
-                                    ExpenseDayHeader(
-                                        localDate = convertDateToLocalDate(currentExpense.date),
-                                        isPastSmallMarkupNeeded = false
-                                    )
+                                    Spacer(modifier = Modifier.height(4.dp))
                                 }
-                                Spacer(modifier = Modifier.height(4.dp))
+                                if (isPreviousDayDifferent && index != 0 && !isPreviousMonthDifferent && !isPreviousYearDifferent) {
+                                    ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
+                                }
+                                ExpensesCardTypeSimple(
+                                    expenseItem = currentExpense,
+                                    expenseCategory = currentCategory!!,
+                                    expensesLazyColumnViewModel = expensesLazyColumnViewModel
+                                ) // ALERT !! CALL, should be replaced soon
+                                if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                             }
-                            if (isPreviousDayDifferent && index != 0 && !isPreviousMonthDifferent && !isPreviousYearDifferent) {
-                                ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
-                            }
-                            ExpensesCardTypeSimple(
-                                expenseItem = currentExpense,
-                                expenseCategory = currentCategory!!,
-                                expensesLazyColumnViewModel = expensesLazyColumnViewModel
-                            ) // ALERT !! CALL, should be replaced soon
-                            if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                         }
                     }
                 }
             }
+
+
+
         }
     }
 }
