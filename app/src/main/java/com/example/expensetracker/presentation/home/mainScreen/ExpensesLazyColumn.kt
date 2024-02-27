@@ -22,6 +22,7 @@ import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -55,6 +56,7 @@ fun ExpensesLazyColumn() {
     val listState = rememberLazyListState()
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > 6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
+    val isScrolledBelowState = expensesLazyColumnViewModel.isScrolledBelow.collectAsState()
     Box {
         Box(
             modifier = Modifier
@@ -63,14 +65,17 @@ fun ExpensesLazyColumn() {
         ) {
             AnimatedVisibility(visible = isScrollUpButtonNeeded) {
                 FloatingActionButton(
-                    onClick = { isScrollingUp = true }, modifier = Modifier
+                    onClick = { isScrollingUp = true },
+                    modifier = Modifier
                         .size(52.dp)
-                        .padding(top = 32.dp, end = 16.dp),
+                        .padding(top = 16.dp, end = 16.dp),
                     shape = MaterialTheme.shapes.extraLarge,
                     elevation = FloatingActionButtonDefaults.elevation(
                         defaultElevation = 8.dp,
                         pressedElevation = 16.dp
-                    )
+                    ),
+                    containerColor = MaterialTheme.colorScheme.primaryContainer,
+                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
                 ) {
                     Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = null)
                 }
@@ -88,7 +93,7 @@ fun ExpensesLazyColumn() {
             Box(
                 modifier = Modifier
                     .wrapContentWidth()
-                    .padding(start = 12.dp, bottom = 4.dp)
+                    .padding(start = 12.dp, bottom = if (isScrolledBelowState.value) 4.dp else 0.dp)
             ) {
                 Transactions()
             }
@@ -127,15 +132,18 @@ fun ExpensesLazyColumn() {
                                         .fillMaxWidth()
                                         .padding(horizontal = 4.dp), verticalAlignment = Alignment.Bottom
                                 ) {
-                                    if (isPreviousYearDifferent) ExpenseYearHeader(
-                                        localDate = convertDateToLocalDate(
-                                            currentExpense.date
+                                    if (isPreviousYearDifferent) {
+                                        ExpenseYearHeader(
+                                            localDate = convertDateToLocalDate(
+                                                currentExpense.date
+                                            )
                                         )
-                                    )
+                                        Spacer(modifier = Modifier.width(2.dp))
+                                    }
                                     Spacer(modifier = Modifier.width(4.dp))
                                     ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
                                     Text(
-                                        text = ", ",
+                                        text = ",",
                                         style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
                                     )
                                     ExpenseDayHeader(
@@ -145,7 +153,7 @@ fun ExpensesLazyColumn() {
                                 }
                                 Spacer(modifier = Modifier.height(4.dp))
                             }
-                            if (isPreviousDayDifferent && index != 0) {
+                            if (isPreviousDayDifferent && index != 0 && !isPreviousMonthDifferent && !isPreviousYearDifferent) {
                                 ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
                             }
                             ExpensesCardTypeSimple(
@@ -159,8 +167,6 @@ fun ExpensesLazyColumn() {
                 }
             }
         }
-
-
     }
 }
 
@@ -198,7 +204,7 @@ private fun ExpenseDayHeader(localDate: LocalDate, isPastSmallMarkupNeeded: Bool
         Text(
             text = "${localDate.dayOfMonth}",
             style = MaterialTheme.typography.titleMedium.copy(
-                fontSize = if (isPastSmallMarkupNeeded) 24.sp else 28.sp,
+                fontSize = if (isPastSmallMarkupNeeded) 24.sp else 26.sp,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         )
