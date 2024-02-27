@@ -7,6 +7,9 @@ import com.example.expensetracker.data.implementations.CategoriesListRepositoryI
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -18,6 +21,9 @@ class ExpensesLazyColumnViewModel(
     val expensesList: List<ExpenseItem> = _expensesList
     private val _categoriesList = mutableStateListOf<ExpenseCategory>()
     val categoriesList: List<ExpenseCategory> = _categoriesList
+
+    private val _isScrolledBelow = MutableStateFlow(value = false)
+    val isScrolledBelow = _isScrolledBelow.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -32,6 +38,10 @@ class ExpensesLazyColumnViewModel(
                 _expensesList.addAll(it)
             }
         }
+    }
+
+    fun setScrolledBelow(firstVisibleIndex: Int) {
+        _isScrolledBelow.update { firstVisibleIndex != 0 }
     }
 
     fun requestCountInMonthNotion(expenseItem: ExpenseItem, expenseCategory: ExpenseCategory): String {

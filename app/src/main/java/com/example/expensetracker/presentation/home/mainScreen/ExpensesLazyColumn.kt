@@ -27,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -74,6 +75,13 @@ fun ExpensesLazyColumn() {
                 ) {
                     Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = null)
                 }
+            }
+        }
+        LaunchedEffect(key1 = listState){
+            snapshotFlow {
+                listState.firstVisibleItemIndex
+            }.collect{
+                index -> expensesLazyColumnViewModel.setScrolledBelow(index)
             }
         }
         LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
@@ -135,7 +143,6 @@ fun ExpensesLazyColumn() {
                             expenseCategory = currentCategory!!,
                             expensesLazyColumnViewModel = expensesLazyColumnViewModel
                         ) // ALERT !! CALL, should be replaced soon
-
                         if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                     }
                 }
