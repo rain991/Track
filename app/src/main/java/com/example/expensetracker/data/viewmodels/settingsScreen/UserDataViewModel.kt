@@ -1,4 +1,4 @@
-package com.example.expensetracker.data.viewmodels
+package com.example.expensetracker.data.viewmodels.settingsScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -7,12 +7,9 @@ import com.example.expensetracker.data.models.other.User
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.launch
-
-
 // NULL LOGIC SHOULD BE WROTE
 class UserDataViewModel(private val dataStoreManager: DataStoreManager) : ViewModel() {
     val currentUser = User()
-
     init {
         viewModelScope.launch {
             val defferedLoginCount = viewModelScope.async { dataStoreManager.loginCountFlow.firstOrNull() }
@@ -28,13 +25,11 @@ class UserDataViewModel(private val dataStoreManager: DataStoreManager) : ViewMo
             if (loginCounter!=null && loginCounter > -1 ){
                 currentUser.needsLogin = needsLogin
                 currentUser.loginCount = loginCounter
-
                 if( userName != null && budget != null && currency != null){
                     currentUser.budget=budget
                     currentUser.currency=currency
                     currentUser.username=userName
                 }
-
             }
         }
     }

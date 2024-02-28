@@ -10,11 +10,12 @@ import com.example.expensetracker.data.implementations.CategoriesListRepositoryI
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.implementations.IdeaListRepositoryImpl
-import com.example.expensetracker.data.viewmodels.UserDataViewModel
+import com.example.expensetracker.data.viewmodels.settingsScreen.UserDataViewModel
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.login.LoginViewModel
 import com.example.expensetracker.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
 import com.example.expensetracker.data.viewmodels.mainScreen.MainScreenFeedViewModel
+import com.example.expensetracker.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.DeleteCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.EditCategoryUseCase
@@ -65,4 +66,5 @@ val viewModelModule = module {
     viewModel { BottomSheetViewModel(get(), get()) }
     viewModel { ExpensesLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
+    viewModel { SettingsViewModel(get()) }
 }
