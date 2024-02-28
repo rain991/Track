@@ -44,6 +44,8 @@
     <string name="warning_bottom_sheet_exp">Select category or type correct expense value</string>
     <string name="empty_exp_lazyColumn_title">You haven\'t added expenses yet</string>
     <string name="empty_exp_lazyColumn_additional1">Try it out using button in right bottom corner, it is available in every app screen</string>
+    <string name="greetings_settings_screen">Hello, %1$s</string>
+    <string name="your_preferences_settings_screen">Your preferences</string>
 
 
 </resources>

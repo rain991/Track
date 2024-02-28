@@ -16,6 +16,6 @@ val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", C
 
 // ideas feed
 const val BASIC_CARD_COUNT_IN_FEED = 2
-const val FEED_CARD_DELAY_SLOW = 4000L
-const val FEED_CARD_DELAY_FAST = 3000L
+const val FEED_CARD_DELAY_SLOW = 6000L
+const val FEED_CARD_DELAY_FAST = 4000L
 
