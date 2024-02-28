@@ -45,7 +45,10 @@
     <string name="empty_exp_lazyColumn_title">You haven\'t added expenses yet</string>
     <string name="empty_exp_lazyColumn_additional1">Try it out using button in right bottom corner, it is available in every app screen</string>
     <string name="greetings_settings_screen">Hello, %1$s</string>
-    <string name="your_preferences_settings_screen">Your preferences</string>
+    <string name="your_preferences_settings_screen">Preferences</string>
+    <string name="theme_settings_screen">Theme</string>
+    <string name="preferable_currency_settings_screen">Preferable currency</string>
+    <string name="use_device_theme_settings_screen">Use device theme</string>
 
 
 </resources>
