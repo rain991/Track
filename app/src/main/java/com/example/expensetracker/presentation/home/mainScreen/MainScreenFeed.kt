@@ -1,6 +1,5 @@
 package com.example.expensetracker.presentation.home.mainScreen
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -37,7 +36,6 @@ fun MainScreenFeed() {  // should have VM as parameter, because public
         while (true) {
             delay(if (currentIndex.value == 0 || currentIndex.value == maxIndex.value) FEED_CARD_DELAY_SLOW else FEED_CARD_DELAY_FAST)
             mainScreenFeedViewModel.incrementCardIndex()
-            Log.d("MyLog", "currentFeed index : ${currentIndex.value}")
         }
     }
     LaunchedEffect(currentIndex.value) {

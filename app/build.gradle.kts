@@ -61,6 +61,8 @@ dependencies {
     implementation("io.insert-koin:koin-android:3.5.3")
     implementation ("io.insert-koin:koin-androidx-compose:3.5.3")
 
+    implementation ("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation ("com.squareup.retrofit2:converter-gson:2.9.0")
 
     implementation("androidx.room:room-ktx:2.6.1")
     implementation("androidx.wear.compose:compose-material:1.3.0")
