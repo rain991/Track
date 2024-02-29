@@ -17,23 +17,37 @@ class SettingsViewModel(private val dataStoreManager: DataStoreManager, currency
 
     private val _currencyList = mutableStateListOf<Currency>()
     val currencyList: List<Currency> = _currencyList
+
     init {
         viewModelScope.launch {
-             currencyListRepositoryImpl.getCurrencyList().collect{
+            currencyListRepositoryImpl.getCurrencyList().collect {
                 _currencyList.clear()
-                 _currencyList.addAll(it)
+                _currencyList.addAll(it)
             }
         }
+        viewModelScope.launch {
+
+        }
     }
+
+
     private var _preferableCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
     val preferableCurrencyStateFlow = _preferableCurrencyStateFlow.asStateFlow()
     private var _firstAdditionalCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
     val firstAdditionalCurrencyStateFlow = _firstAdditionalCurrencyStateFlow.asStateFlow()
     private var _secondAdditionalCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
     val secondAdditionalCurrencyStateFlow = _secondAdditionalCurrencyStateFlow.asStateFlow()
-    fun setPreferableCurrency(value : Currency){ _preferableCurrencyStateFlow.update { value } }
-    fun setFirstAdditionalCurrency(value : Currency){ _firstAdditionalCurrencyStateFlow.update { value } }
-    fun setSecondAdditionalCurrency(value : Currency){ _secondAdditionalCurrencyStateFlow.update { value } }
+    fun setPreferableCurrency(value: Currency) {
+        _preferableCurrencyStateFlow.update { value }
+    }
+
+    fun setFirstAdditionalCurrency(value: Currency) {
+        _firstAdditionalCurrencyStateFlow.update { value }
+    }
+
+    fun setSecondAdditionalCurrency(value: Currency) {
+        _secondAdditionalCurrencyStateFlow.update { value }
+    }
 
     val showPagesNameFlow = dataStoreManager.isShowPageName
     suspend fun setShowPagesNameFlow(value: Boolean) {

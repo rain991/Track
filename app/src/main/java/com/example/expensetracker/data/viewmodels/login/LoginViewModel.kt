@@ -42,7 +42,7 @@ class LoginViewModel(
             withContext(dispatcher) {
                 dataStoreManager.setBudget(_incomeStateFlow.value)
                 dataStoreManager.setName(_firstNameStateFlow.value)
-                dataStoreManager.setCurrency(_currencyStateFlow.value)
+                dataStoreManager.setPreferableCurrency(_currencyStateFlow.value)
                 dataStoreManager.incrementLoginCount()
             }
         }

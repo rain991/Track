@@ -267,7 +267,7 @@ private fun AmountInput(
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val currentExpense = bottomSheetViewModel.inputExpense.collectAsState()
-    val currentCurrency = dataStoreManager.currencyFlow.collectAsState(initial = "USD")
+    val currentCurrency = dataStoreManager.preferableCurrencyFlow.collectAsState(initial = "USD")
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
