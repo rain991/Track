@@ -23,15 +23,16 @@ private const val PREFERENCES_NAME = "UserPreferences"
 private val Context.dataStore by preferencesDataStore(PREFERENCES_NAME)
 
 class DataStoreManager(private val context: Context) {
-    companion object {  // remember adding new values to constants
+    companion object {
         val currencyDefault = CURRENCY_DEFAULT
         private val LOGIN_COUNT = intPreferencesKey("first_launch")
         private val NAME = stringPreferencesKey("user_name")
         private val BUDGET = intPreferencesKey("user_budget")
         private val CURRENCY = stringPreferencesKey("user_currency")
         private val SHOW_PAGE_NAME = booleanPreferencesKey("show_page_name")
+        private val USE_SYSTEM_THEME = booleanPreferencesKey("use_system_theme")
+        private val PREFERABLE_THEME = stringPreferencesKey("Yellow")
     }
-
     val loginCountFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: LOGIN_COUNT_DEFAULT }
     suspend fun incrementLoginCount(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {

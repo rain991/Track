@@ -67,11 +67,9 @@ class ExpensesLazyColumnViewModel(
         calendar.time = expenseItem.date
         calendar.set(Calendar.DAY_OF_MONTH, 1)
         val startDate = calendar.time
-
         val endCalendar = calendar.clone() as Calendar
         endCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH))
         val endDate = endCalendar.time
-
         val result = expensesListRepositoryImpl.getExpensesByCategoryInTimeSpan(
             startOfSpan = startDate,
             endOfSpan = endDate,
