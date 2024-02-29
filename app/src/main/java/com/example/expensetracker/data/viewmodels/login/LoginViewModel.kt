@@ -28,7 +28,6 @@ class LoginViewModel(
           currencyList = currencyListRepositoryImpl.getCurrencyList().first()
         }
     }
-
     private var _currencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
     val currencyStateFlow = _currencyStateFlow.asStateFlow()
 
@@ -37,7 +36,6 @@ class LoginViewModel(
 
     private var _incomeStateFlow = MutableStateFlow(BUDGET_DEFAULT)
     val incomeStateFlow = _incomeStateFlow.asStateFlow()
-
 
     suspend fun addToDataStore(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         if (_incomeStateFlow.value != BUDGET_DEFAULT && _firstNameStateFlow.value.isNotEmpty()) {
@@ -61,6 +59,4 @@ class LoginViewModel(
     fun setIncomeStateFlow(income: Int) {
         _incomeStateFlow.update { income }
     }
-
-
 }

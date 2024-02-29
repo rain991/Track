@@ -27,6 +27,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -93,9 +94,10 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             loginViewModel = loginViewModel
         )
         Spacer(modifier = Modifier.height(16.dp))
+        val currencySelectedState = loginViewModel.currencyStateFlow.collectAsState()
         CurrencyDropDownMenu(
             currencyList = loginViewModel.currencyList,
-            selectedOption = loginViewModel.currencyStateFlow.value,
+            selectedOption = currencySelectedState.value,
             onSelect = {
                 loginViewModel.setCurrencyStateFlow(it)
             })
@@ -104,7 +106,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             modifier = Modifier
                 .fillMaxWidth()
                 .height(40.dp),
-            onClick = { // Lets start button
+            onClick = {
                 coroutineScope.launch {
                     loginViewModel.addToDataStore()
                 }

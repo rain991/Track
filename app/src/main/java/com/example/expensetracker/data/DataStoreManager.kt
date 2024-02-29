@@ -29,7 +29,7 @@ class DataStoreManager(private val context: Context) {
         private val LOGIN_COUNT = intPreferencesKey("first_launch")
         private val NAME = stringPreferencesKey("user_name")
         private val BUDGET = intPreferencesKey("user_budget")
-        private val CURRENCY = stringPreferencesKey("user_currency")
+        private val PREFERABLE_CURRENCY = stringPreferencesKey("user_currency_preferable")
         private val SHOW_PAGE_NAME = booleanPreferencesKey("show_page_name")
         private val USE_SYSTEM_THEME = booleanPreferencesKey("use_system_theme")
         private val PREFERABLE_THEME = stringPreferencesKey("Yellow")
@@ -62,11 +62,11 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    val currencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[CURRENCY] ?: CURRENCY_DEFAULT.ticker }
+    val currencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[PREFERABLE_CURRENCY] ?: CURRENCY_DEFAULT.ticker }
     suspend fun setCurrency(currency: Currency, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             context.dataStore.edit {
-                it[CURRENCY] = currency.ticker
+                it[PREFERABLE_CURRENCY] = currency.ticker
             }
         }
     }

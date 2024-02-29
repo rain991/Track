@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
@@ -30,6 +31,7 @@ import com.example.expensetracker.data.constants.NAME_DEFAULT
 import com.example.expensetracker.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.expensetracker.data.constants.USE_SYSTEM_THEME_DEFAULT
 import com.example.expensetracker.data.viewmodels.settingsScreen.SettingsViewModel
+import com.example.expensetracker.presentation.login.CurrencyDropDownMenu
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -47,6 +49,10 @@ fun SettingsHeader(modifier: Modifier, dataStoreManager: DataStoreManager) {
 
 @Composable
 fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
+    val settingsViewModel = koinViewModel<SettingsViewModel>()
+    val preferableCurrencyState = settingsViewModel.preferableCurrencyStateFlow.collectAsState()
+    val firstAdditionalCurrencyState = settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState()
+    val secondAdditionalCurrencyState = settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState()
     Box(modifier = modifier) {
         Column(Modifier.wrapContentSize()) {
             Text(
@@ -56,28 +62,53 @@ fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
                 modifier = Modifier.padding(start = 4.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Row (Modifier.fillMaxWidth()){
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     stringResource(R.string.preferable_currency_settings_screen),
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     modifier = Modifier.padding(start = 4.dp)
                 )
+                Box(Modifier.width(140.dp)){
+                    CurrencyDropDownMenu(
+                        currencyList = settingsViewModel.currencyList,
+                        selectedOption = preferableCurrencyState.value,
+                        onSelect = {
+                            settingsViewModel.setPreferableCurrency(it)
+                        })
+                }
+
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row (Modifier.fillMaxWidth()){
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     text = stringResource(R.string.extra_currency_settings_screen),
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     modifier = Modifier.padding(start = 4.dp)
                 )
+                Box(Modifier.width(140.dp)){
+                    CurrencyDropDownMenu(
+                        currencyList = settingsViewModel.currencyList,
+                        selectedOption = firstAdditionalCurrencyState.value,
+                        onSelect = {
+                            settingsViewModel.setFirstAdditionalCurrency(it)
+                        })
+                }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row (Modifier.fillMaxWidth()){
+            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
                 Text(
                     text = stringResource(R.string.extra_currency_settings_screen),
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     modifier = Modifier.padding(start = 4.dp)
                 )
+                Box(Modifier.width(140.dp)){
+                    CurrencyDropDownMenu(
+                        currencyList = settingsViewModel.currencyList,
+                        selectedOption = secondAdditionalCurrencyState.value,
+                        onSelect = {
+                            settingsViewModel.setSecondAdditionalCurrency(it)
+                        })
+                }
             }
         }
 
@@ -162,6 +193,7 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
 private fun SettingsSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Switch(checked = checked, onCheckedChange = onCheckedChange)
 }
+
 @Composable
 private fun OptionalSettingsSwitch(
     enabledFlow: Flow<Boolean>,

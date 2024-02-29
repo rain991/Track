@@ -1,21 +1,39 @@
 package com.example.expensetracker.data.viewmodels.settingsScreen
 
+import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.models.currency.Currency
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(private val dataStoreManager: DataStoreManager, currencyListRepositoryImpl: CurrencyListRepositoryImpl) :
     ViewModel() {
-    var currencyList = listOf<Currency>()
+
+    private val _currencyList = mutableStateListOf<Currency>()
+    val currencyList: List<Currency> = _currencyList
     init {
         viewModelScope.launch {
-            currencyList = currencyListRepositoryImpl.getCurrencyList().first()
+             currencyListRepositoryImpl.getCurrencyList().collect{
+                _currencyList.clear()
+                 _currencyList.addAll(it)
+            }
         }
     }
+    private var _preferableCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
+    val preferableCurrencyStateFlow = _preferableCurrencyStateFlow.asStateFlow()
+    private var _firstAdditionalCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
+    val firstAdditionalCurrencyStateFlow = _firstAdditionalCurrencyStateFlow.asStateFlow()
+    private var _secondAdditionalCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
+    val secondAdditionalCurrencyStateFlow = _secondAdditionalCurrencyStateFlow.asStateFlow()
+    fun setPreferableCurrency(value : Currency){ _preferableCurrencyStateFlow.update { value } }
+    fun setFirstAdditionalCurrency(value : Currency){ _firstAdditionalCurrencyStateFlow.update { value } }
+    fun setSecondAdditionalCurrency(value : Currency){ _secondAdditionalCurrencyStateFlow.update { value } }
 
     val showPagesNameFlow = dataStoreManager.isShowPageName
     suspend fun setShowPagesNameFlow(value: Boolean) {
