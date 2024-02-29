@@ -46,7 +46,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.Text
 import com.example.expensetracker.R
-import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
+import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.viewmodels.login.LoginViewModel
 import com.example.expensetracker.presentation.navigation.Screen
 import com.example.expensetracker.ui.theme.focusedTextFieldText
@@ -86,20 +86,20 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             loginViewModel = loginViewModel
         )
         Spacer(modifier = Modifier.height(20.dp))
-
         LoginTextField(
             label = stringResource(R.string.your_income),
             modifier = Modifier.fillMaxWidth(),
             INPUT_ID = INCOME_INPUT_ID,
             loginViewModel = loginViewModel
         )
-
         Spacer(modifier = Modifier.height(16.dp))
-
-        CurrencyDropDownMenu()
-
+        CurrencyDropDownMenu(
+            currencyList = loginViewModel.currencyList,
+            selectedOption = loginViewModel.currencyStateFlow.value,
+            onSelect = {
+                loginViewModel.setCurrencyStateFlow(it)
+            })
         Spacer(modifier = Modifier.height(16.dp))
-
         Button(
             modifier = Modifier
                 .fillMaxWidth()
@@ -126,13 +126,9 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun CurrencyDropDownMenu() {
-    val loginViewModel = koinViewModel<LoginViewModel>()
+fun CurrencyDropDownMenu(currencyList: List<Currency>, selectedOption: Currency, onSelect: (Currency) -> Unit) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Black
     var isExpanded by remember { mutableStateOf(false) }
-    val currentCurrencyList = loginViewModel.currencyList
-    val isCurrentListEmpty by remember { mutableStateOf(loginViewModel.currencyList.isEmpty()) }
-    var selectedOptionText by remember { if (isCurrentListEmpty) mutableStateOf(CURRENCY_DEFAULT) else mutableStateOf(currentCurrencyList[0]) }
     ExposedDropdownMenuBox(
         expanded = isExpanded,
         onExpandedChange = {
@@ -141,7 +137,7 @@ fun CurrencyDropDownMenu() {
     ) {
 
         TextField(
-            value = selectedOptionText.ticker,
+            value = selectedOption.ticker,
             readOnly = true,
             onValueChange = {},
             label = { Text(stringResource(R.string.currency), style = TextStyle(color = uiColor)) },
@@ -153,20 +149,17 @@ fun CurrencyDropDownMenu() {
             colors = ExposedDropdownMenuDefaults.textFieldColors(),
             modifier = Modifier.menuAnchor()
         )
-
-
         ExposedDropdownMenu(
             expanded = isExpanded,
             onDismissRequest = {
                 isExpanded = false
             }
         ) {
-            currentCurrencyList.forEach { selectionOption ->
+            currencyList.forEach { selectionOption ->
                 DropdownMenuItem(
                     text = { Text(text = selectionOption.name, color = uiColor) },
                     onClick = {
-                        selectedOptionText = selectionOption
-                        loginViewModel.setCurrencyStateFlow(selectionOption)
+                        onSelect(selectionOption)
                         isExpanded = false
                     },
                     trailingIcon = {
@@ -258,6 +251,5 @@ private fun LoginTextField(
             KeyboardOptions(keyboardType = KeyboardType.Text)
         }
     )
-
 }
 

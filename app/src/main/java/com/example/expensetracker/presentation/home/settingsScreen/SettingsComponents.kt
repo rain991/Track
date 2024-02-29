@@ -50,17 +50,35 @@ fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
     Box(modifier = modifier) {
         Column(Modifier.wrapContentSize()) {
             Text(
-                text = stringResource(R.string.your_preferences_settings_screen),
+                text = stringResource(R.string.currencies_settings_screen),
                 style = MaterialTheme.typography.titleMedium,
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.padding(start = 4.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                stringResource(R.string.preferable_currency_settings_screen),
-                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                modifier = Modifier.padding(start = 4.dp)
-            )
+            Row (Modifier.fillMaxWidth()){
+                Text(
+                    stringResource(R.string.preferable_currency_settings_screen),
+                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row (Modifier.fillMaxWidth()){
+                Text(
+                    text = stringResource(R.string.extra_currency_settings_screen),
+                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row (Modifier.fillMaxWidth()){
+                Text(
+                    text = stringResource(R.string.extra_currency_settings_screen),
+                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                    modifier = Modifier.padding(start = 4.dp)
+                )
+            }
         }
 
     }
@@ -81,7 +99,7 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
                 modifier = Modifier.padding(start = 4.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Column() {
+            Column {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -109,7 +127,9 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
                         Text(
                             text = stringResource(R.string.preferable_theme_settings_screen),
                             style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                            modifier = Modifier.fillMaxHeight().padding(start = 4.dp), textAlign = TextAlign.Start
+                            modifier = Modifier
+                                .fillMaxHeight()
+                                .padding(start = 4.dp), textAlign = TextAlign.Start
                         )
 
                     }
@@ -142,7 +162,6 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
 private fun SettingsSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
     Switch(checked = checked, onCheckedChange = onCheckedChange)
 }
-
 @Composable
 private fun OptionalSettingsSwitch(
     enabledFlow: Flow<Boolean>,

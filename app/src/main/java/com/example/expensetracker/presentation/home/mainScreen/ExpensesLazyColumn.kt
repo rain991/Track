@@ -74,8 +74,8 @@ fun ExpensesLazyColumn() {
                         defaultElevation = 8.dp,
                         pressedElevation = 16.dp
                     ),
-                    containerColor = MaterialTheme.colorScheme.primaryContainer,
-                    contentColor = MaterialTheme.colorScheme.onPrimaryContainer
+                    containerColor = MaterialTheme.colorScheme.primary,
+                    contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
                     Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = null)
                 }

@@ -4,6 +4,9 @@ import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.models.currency.CurrencyTypes
 import com.example.expensetracker.presentation.themes.Themes
 
+//Retrofit
+const val API_KEY = "88441b2e585647a7842c35c23251558f"
+
 // Other constants (objects of class as Currency) in DataStoreManager
 const val DB_PATH = "database/expense_tracker.db"
 const val MIN_SUPPORTED_YEAR = 2000

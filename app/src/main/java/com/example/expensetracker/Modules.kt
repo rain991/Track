@@ -64,5 +64,5 @@ val viewModelModule = module {
     viewModel { BottomSheetViewModel(get(), get()) }
     viewModel { ExpensesLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
-    viewModel { SettingsViewModel(get()) }
+    viewModel { SettingsViewModel(get(), get()) }
 }
