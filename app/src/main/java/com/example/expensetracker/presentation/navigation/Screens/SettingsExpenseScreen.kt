@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -56,17 +55,15 @@ fun SettingsExpenseScreen() {
             UserPreferenceCard(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp)
-                    .wrapContentHeight(), dataStoreManager = settingsData
+                    .padding(horizontal = 12.dp), dataStoreManager = settingsData
             )
             Spacer(modifier = Modifier.height(10.dp))
-            HorizontalDivider()
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp))
             Spacer(modifier = Modifier.height(10.dp))
             ThemePreferences(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp)
-                    .wrapContentHeight(), dataStoreManager = settingsData
+                    .padding(horizontal = 12.dp), dataStoreManager = settingsData
             )
         }
         SimplifiedBottomSheet(dataStoreManager = settingsData)

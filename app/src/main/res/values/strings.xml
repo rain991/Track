@@ -31,7 +31,7 @@
     <string name="other">Other</string>
     <string name="add_new_expense">Add New Expense</string>
     <string name="add_expense">Add Expenses</string>
-    <string name="settings">Settings</string>
+    <string name="settings">Preferences</string>
     <string name="expenses">Expenses</string>
     <string name="statistic">Statistic</string>
     <string name="add_it_button">Add it</string>
@@ -50,6 +50,7 @@
     <string name="preferable_currency_settings_screen">Preferable currency</string>
     <string name="use_device_theme_settings_screen">Use device theme</string>
     <string name="show_page_name_setttings_screen">Show page name</string>
+    <string name="preferable_theme_settings_screen">Preferable theme</string>
 
 
 </resources>

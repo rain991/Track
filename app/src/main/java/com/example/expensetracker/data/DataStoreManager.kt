@@ -11,6 +11,7 @@ import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.LOGIN_COUNT_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
 import com.example.expensetracker.data.constants.SHOW_PAGE_NAME_DEFAULT
+import com.example.expensetracker.data.constants.USE_SYSTEM_THEME_DEFAULT
 import com.example.expensetracker.data.models.currency.Currency
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -79,5 +80,14 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-
+    val useSystemTheme : Flow<Boolean> = context.dataStore.data.map{
+        preferences -> preferences[USE_SYSTEM_THEME] ?: USE_SYSTEM_THEME_DEFAULT
+    }
+    suspend fun setUseSystemTheme(value: Boolean, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        withContext(dispatcher) {
+            context.dataStore.edit {
+                it[USE_SYSTEM_THEME] = value
+            }
+        }
+    }
 }

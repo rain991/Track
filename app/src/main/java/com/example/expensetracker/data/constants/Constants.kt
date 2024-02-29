@@ -2,6 +2,7 @@ package com.example.expensetracker.data.constants
 
 import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.models.currency.CurrencyTypes
+import com.example.expensetracker.presentation.themes.Themes
 
 // Other constants (objects of class as Currency) in DataStoreManager
 const val DB_PATH = "database/expense_tracker.db"
@@ -13,6 +14,8 @@ const val LOGIN_COUNT_DEFAULT = 0
 const val NEEDS_LOGIN: Boolean = true
 const val BUDGET_DEFAULT: Int = 0
 const val SHOW_PAGE_NAME_DEFAULT : Boolean = true
+const val USE_SYSTEM_THEME_DEFAULT : Boolean = true
+val PREFERABLE_THEME_DEFAULT : Themes = Themes.BlueTheme
 val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.DEFAULT)
 
 // ideas feed
