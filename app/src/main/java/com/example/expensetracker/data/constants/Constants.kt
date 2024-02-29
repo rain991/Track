@@ -12,6 +12,7 @@ const val NAME_DEFAULT: String = "User"
 const val LOGIN_COUNT_DEFAULT = 0
 const val NEEDS_LOGIN: Boolean = true
 const val BUDGET_DEFAULT: Int = 0
+const val SHOW_PAGE_NAME_DEFAULT : Boolean = true
 val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.DEFAULT)
 
 // ideas feed

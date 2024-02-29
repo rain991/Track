@@ -60,6 +60,12 @@ fun ThemePreferences(cardModifier: Modifier, dataStoreManager: DataStoreManager)
             style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
             modifier = Modifier.padding(start = 4.dp)
         )
+        Spacer(modifier = Modifier.height(8.dp))
+        Text(
+            text = stringResource(R.string.show_page_name_setttings_screen),
+            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+            modifier = Modifier.padding(start = 4.dp)
+        )
     }
 }
 @Composable

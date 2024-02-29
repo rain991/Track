@@ -10,7 +10,6 @@ import com.example.expensetracker.data.implementations.CategoriesListRepositoryI
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.implementations.IdeaListRepositoryImpl
-import com.example.expensetracker.data.viewmodels.settingsScreen.UserDataViewModel
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.login.LoginViewModel
 import com.example.expensetracker.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
@@ -57,12 +56,11 @@ val domainModule = module {
 }
 
 val settingsModule = module {
-    single<DataStoreManager> { DataStoreManager(get()) } // androidContext().applicationContext
+    single<DataStoreManager> { DataStoreManager(get()) }
 }
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get(), get()) }
-    viewModel { UserDataViewModel(get()) }
     viewModel { BottomSheetViewModel(get(), get()) }
     viewModel { ExpensesLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }

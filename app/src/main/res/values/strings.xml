@@ -49,6 +49,7 @@
     <string name="theme_settings_screen">Theme</string>
     <string name="preferable_currency_settings_screen">Preferable currency</string>
     <string name="use_device_theme_settings_screen">Use device theme</string>
+    <string name="show_page_name_setttings_screen">Show page name</string>
 
 
 </resources>
