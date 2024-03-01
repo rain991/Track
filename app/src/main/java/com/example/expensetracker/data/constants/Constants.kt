@@ -4,10 +4,9 @@ import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.models.currency.CurrencyTypes
 import com.example.expensetracker.presentation.themes.Themes
 
-//Retrofit
+// Retrofit
 const val API_KEY = "88441b2e585647a7842c35c23251558f"
 const val CURRENCY_CALL_URL_DEFAULT = "https://api.currencyfreaks.com"
-//https://api.currencyfreaks.com/v2.0/rates/latest?apikey=
 
 // Other constants (objects of class as Currency) in DataStoreManager
 const val DB_PATH = "database/expense_tracker.db"
