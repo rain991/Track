@@ -62,13 +62,17 @@ fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
                 modifier = Modifier.padding(start = 4.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
                     stringResource(R.string.preferable_currency_settings_screen),
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     modifier = Modifier.padding(start = 4.dp)
                 )
-                Box(Modifier.width(140.dp)){
+                Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
                         currencyList = settingsViewModel.currencyList,
                         selectedOption = preferableCurrencyState.value,
@@ -79,35 +83,49 @@ fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
 
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
                     text = stringResource(R.string.extra_currency_settings_screen),
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     modifier = Modifier.padding(start = 4.dp)
                 )
-                Box(Modifier.width(140.dp)){
-                    CurrencyDropDownMenu(
-                        currencyList = settingsViewModel.currencyList,
-                        selectedOption = firstAdditionalCurrencyState.value,
-                        onSelect = {
-                            settingsViewModel.setFirstAdditionalCurrency(it)
-                        })
+                if (firstAdditionalCurrencyState.value != null) {
+                Box(Modifier.width(140.dp)) {
+
+                        CurrencyDropDownMenu(
+                            currencyList = settingsViewModel.currencyList,
+                            selectedOption = firstAdditionalCurrencyState.value!!, // ALERT
+                            onSelect = {
+                                settingsViewModel.setFirstAdditionalCurrency(it)
+                            })
+                    }
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Text(
                     text = stringResource(R.string.extra_currency_settings_screen),
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                     modifier = Modifier.padding(start = 4.dp)
                 )
-                Box(Modifier.width(140.dp)){
-                    CurrencyDropDownMenu(
-                        currencyList = settingsViewModel.currencyList,
-                        selectedOption = secondAdditionalCurrencyState.value,
-                        onSelect = {
-                            settingsViewModel.setSecondAdditionalCurrency(it)
-                        })
+
+                if (secondAdditionalCurrencyState.value != null) {
+                Box(Modifier.width(140.dp)) {
+                        CurrencyDropDownMenu(
+                            currencyList = settingsViewModel.currencyList,
+                            selectedOption = secondAdditionalCurrencyState.value!!, // ALERT
+                            onSelect = {
+                                settingsViewModel.setSecondAdditionalCurrency(it)
+                            })
+                    }
                 }
             }
         }

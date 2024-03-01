@@ -98,15 +98,13 @@ fun ExpensesLazyColumn() {
                 Transactions()
             }
             Spacer(modifier = Modifier.height(4.dp))
-            if(expensesList.isEmpty()){
-                emptyLazyColumnPlacement()
-            }else {
+            if (expensesList.isEmpty()) {
+                EmptyLazyColumnPlacement()
+            } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
                     items(expensesList.size) { index ->
                         val currentExpense = expensesList[index]
-                        val currentCategory = categoriesList.find {
-                            it.categoryId == currentExpense.categoryId
-                        }
+                        val currentCategory = categoriesList.find { it.categoryId == currentExpense.categoryId }
                         var isPreviousDayDifferent = index == 0
                         var isNextDayDifferent = false
                         var isPreviousMonthDifferent = false
@@ -159,20 +157,20 @@ fun ExpensesLazyColumn() {
                                 if (isPreviousDayDifferent && index != 0 && !isPreviousMonthDifferent && !isPreviousYearDifferent) {
                                     ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
                                 }
-                                ExpensesCardTypeSimple(
-                                    expenseItem = currentExpense,
-                                    expenseCategory = currentCategory!!,
-                                    expensesLazyColumnViewModel = expensesLazyColumnViewModel
-                                ) // ALERT !! CALL, should be replaced soon
+                                if(currentCategory != null){
+                                    ExpensesCardTypeSimple(
+                                        expenseItem = currentExpense,
+                                        expenseCategory = currentCategory,
+                                        expensesLazyColumnViewModel = expensesLazyColumnViewModel
+                                    ) // ALERT !! CALL, should be replaced soon
+                                }
+
                                 if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                             }
                         }
                     }
                 }
             }
-
-
-
         }
     }
 }
@@ -186,7 +184,7 @@ private fun Transactions() {
 }
 
 @Composable
-private fun emptyLazyColumnPlacement() {
+private fun EmptyLazyColumnPlacement() {
     Box(modifier = Modifier.fillMaxSize()) {
         Column(
             verticalArrangement = Arrangement.Center,

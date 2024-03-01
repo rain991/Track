@@ -18,6 +18,13 @@ class SettingsViewModel(private val dataStoreManager: DataStoreManager, currency
     private val _currencyList = mutableStateListOf<Currency>()
     val currencyList: List<Currency> = _currencyList
 
+    private var _preferableCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
+    val preferableCurrencyStateFlow = _preferableCurrencyStateFlow.asStateFlow()
+    private var _firstAdditionalCurrencyStateFlow: MutableStateFlow<Currency?> = MutableStateFlow(CURRENCY_DEFAULT)
+    val firstAdditionalCurrencyStateFlow = _firstAdditionalCurrencyStateFlow.asStateFlow()
+    private var _secondAdditionalCurrencyStateFlow: MutableStateFlow<Currency?> = MutableStateFlow(CURRENCY_DEFAULT)
+    val secondAdditionalCurrencyStateFlow = _secondAdditionalCurrencyStateFlow.asStateFlow()
+
     init {
         viewModelScope.launch {
             currencyListRepositoryImpl.getCurrencyList().collect {
@@ -26,26 +33,40 @@ class SettingsViewModel(private val dataStoreManager: DataStoreManager, currency
             }
         }
         viewModelScope.launch {
-
+            dataStoreManager.preferableCurrencyFlow.collect { preferable ->
+                val res = _currencyList.find {
+                    it.ticker == preferable
+                }
+                setPreferableCurrency(res ?: CURRENCY_DEFAULT)
+            }
+        }
+        viewModelScope.launch {
+            dataStoreManager.firstAdditionalCurrencyFlow.collect { preferable ->
+                val res = _currencyList.find {
+                    it.ticker == preferable
+                }
+                setFirstAdditionalCurrency(res)
+            }
+        }
+        viewModelScope.launch {
+            dataStoreManager.secondAdditionalCurrencyFlow.collect { preferable ->
+                val res = _currencyList.find {
+                    it.ticker == preferable
+                }
+                setSecondAdditionalCurrency(res)
+            }
         }
     }
 
-
-    private var _preferableCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
-    val preferableCurrencyStateFlow = _preferableCurrencyStateFlow.asStateFlow()
-    private var _firstAdditionalCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
-    val firstAdditionalCurrencyStateFlow = _firstAdditionalCurrencyStateFlow.asStateFlow()
-    private var _secondAdditionalCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
-    val secondAdditionalCurrencyStateFlow = _secondAdditionalCurrencyStateFlow.asStateFlow()
     fun setPreferableCurrency(value: Currency) {
         _preferableCurrencyStateFlow.update { value }
     }
 
-    fun setFirstAdditionalCurrency(value: Currency) {
+    fun setFirstAdditionalCurrency(value: Currency?) {
         _firstAdditionalCurrencyStateFlow.update { value }
     }
 
-    fun setSecondAdditionalCurrency(value: Currency) {
+    fun setSecondAdditionalCurrency(value: Currency?) {
         _secondAdditionalCurrencyStateFlow.update { value }
     }
 
