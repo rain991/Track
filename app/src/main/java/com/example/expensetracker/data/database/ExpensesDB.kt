@@ -9,11 +9,12 @@ import com.example.expensetracker.data.constants.DB_PATH
 import com.example.expensetracker.data.converters.Converters
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.models.currency.CurrenciesRates
 import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.models.idea.Idea
 
 @Database(
-    entities = [ExpenseItem::class, ExpenseCategory::class, Idea::class, Currency::class],
+    entities = [ExpenseItem::class, ExpenseCategory::class, Idea::class, Currency::class, CurrenciesRates::class],
     version = 1
 )
 @TypeConverters(Converters::class)
@@ -22,6 +23,7 @@ abstract class ExpensesDB : RoomDatabase() {
     abstract val categoryDao: ExpenseCategoryDao
     abstract val currencyDao : CurrencyDao
     abstract val ideaDao : IdeaDao
+    abstract val currenciesRatesDao : CurrenciesRatesDao
 
     companion object {
         private var INSTANCE: ExpensesDB? = null
