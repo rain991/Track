@@ -154,18 +154,17 @@ fun ExpensesLazyColumn() {
                                     }
                                     Spacer(modifier = Modifier.height(4.dp))
                                 }
-                                if (isPreviousDayDifferent && index != 0 && !isPreviousMonthDifferent && !isPreviousYearDifferent) {
-                                    ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
-                                }
-                                if(currentCategory != null){
+                                if (currentCategory != null) {
+                                    if (isPreviousDayDifferent && index != 0 && !isPreviousMonthDifferent && !isPreviousYearDifferent) {
+                                        ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
+                                    }
                                     ExpensesCardTypeSimple(
                                         expenseItem = currentExpense,
                                         expenseCategory = currentCategory,
                                         expensesLazyColumnViewModel = expensesLazyColumnViewModel
-                                    ) // ALERT !! CALL, should be replaced soon
+                                    )
+                                    if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                                 }
-
-                                if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
                             }
                         }
                     }

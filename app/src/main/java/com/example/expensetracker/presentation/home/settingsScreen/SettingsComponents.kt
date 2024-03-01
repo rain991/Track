@@ -80,7 +80,6 @@ fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
                             settingsViewModel.setPreferableCurrency(it)
                         })
                 }
-
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(
