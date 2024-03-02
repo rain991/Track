@@ -4,7 +4,7 @@ package com.example.expensetracker
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.example.expensetracker.data.DataStoreManager
@@ -16,6 +16,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
+import java.util.concurrent.TimeUnit
 
 class ExpenseTrackerActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -25,8 +26,10 @@ class ExpenseTrackerActivity : ComponentActivity() {
             val actualLoginCount = dataStore.loginCountFlow.first()
             if (actualLoginCount > 0) dataStore.incrementLoginCount()
         }
-
-        val workRequest = OneTimeWorkRequestBuilder<CurrenciesRatesWorker>().setInputData(workDataOf()).build()
+        val workRequest = PeriodicWorkRequestBuilder<CurrenciesRatesWorker>(
+            1, TimeUnit.HOURS,
+            15, TimeUnit.MINUTES
+        ).setInputData(workDataOf()).build()
         WorkManager.getInstance(applicationContext).enqueue(workRequest)
         setContent {
             ExpenseTrackerTheme {

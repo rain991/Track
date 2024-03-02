@@ -32,6 +32,7 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
@@ -127,43 +128,40 @@ fun ExpensesLazyColumn() {
                                 isScrollingUp = false
                             }
                             Column {
-                                if (isPreviousMonthDifferent || index == 0) {
+                                if (currentCategory != null) {
                                     Row(
                                         Modifier
                                             .fillMaxWidth()
                                             .padding(horizontal = 4.dp), verticalAlignment = Alignment.Bottom
                                     ) {
-                                        if (isPreviousYearDifferent) {
-                                            ExpenseYearHeader(
-                                                localDate = convertDateToLocalDate(
-                                                    currentExpense.date
+                                        if (isPreviousDayDifferent) {
+                                            if(isPreviousYearDifferent){
+                                                ExpenseYearHeader(
+                                                    localDate = convertDateToLocalDate(
+                                                        currentExpense.date
+                                                    )
                                                 )
+                                                Spacer(modifier = Modifier.width(2.dp))
+                                            }
+                                                Spacer(modifier = Modifier.width(4.dp))
+                                                ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
+                                                Text(
+                                                    text = ", ",
+                                                    style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                                                )
+                                            ExpenseDayHeader(
+                                                localDate = convertDateToLocalDate(currentExpense.date),
+                                                isPastSmallMarkupNeeded = false
                                             )
-                                            Spacer(modifier = Modifier.width(2.dp))
                                         }
-                                        Spacer(modifier = Modifier.width(4.dp))
-                                        ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
-                                        Text(
-                                            text = ",",
-                                            style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
-                                        )
-                                        ExpenseDayHeader(
-                                            localDate = convertDateToLocalDate(currentExpense.date),
-                                            isPastSmallMarkupNeeded = false
-                                        )
-                                    }
-                                    Spacer(modifier = Modifier.height(4.dp))
-                                }
-                                if (currentCategory != null) {
-                                    if (isPreviousDayDifferent && index != 0 && !isPreviousMonthDifferent && !isPreviousYearDifferent) {
-                                        ExpenseDayHeader(convertDateToLocalDate(currentExpense.date))
+                                        Spacer(modifier = Modifier.height(4.dp))
                                     }
                                     ExpensesCardTypeSimple(
                                         expenseItem = currentExpense,
                                         expenseCategory = currentCategory,
                                         expensesLazyColumnViewModel = expensesLazyColumnViewModel
                                     )
-                                    if (isNextDayDifferent) Spacer(modifier = Modifier.height(16.dp))
+                                    if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
                                 }
                             }
                         }
@@ -173,6 +171,7 @@ fun ExpensesLazyColumn() {
         }
     }
 }
+
 
 @Composable
 private fun Transactions() {
@@ -184,18 +183,23 @@ private fun Transactions() {
 
 @Composable
 private fun EmptyLazyColumnPlacement() {
-    Box(modifier = Modifier.fillMaxSize()) {
+    Box(modifier = Modifier
+        .fillMaxSize()
+        .padding(start = 8.dp, end = 8.dp, bottom = 24.dp)) {
         Column(
+            modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
                 text = stringResource(R.string.empty_exp_lazyColumn_title),
-                style = MaterialTheme.typography.titleMedium
+                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                textAlign = TextAlign.Center
             )
             Text(
                 text = stringResource(R.string.empty_exp_lazyColumn_additional1),
-                style = MaterialTheme.typography.bodyLarge
+                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                textAlign = TextAlign.Center
             )
         }
 
