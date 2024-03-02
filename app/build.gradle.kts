@@ -75,6 +75,7 @@ dependencies {
     implementation("io.insert-koin:koin-core:$koinVersion")
     implementation("io.insert-koin:koin-android:$koinVersion")
     implementation ("io.insert-koin:koin-androidx-compose:$koinVersion")
+    implementation ("io.insert-koin:koin-androidx-workmanager:$koinVersion")
 
     //retrofit
     implementation ("com.squareup.retrofit2:retrofit:$retrofitVersion")
