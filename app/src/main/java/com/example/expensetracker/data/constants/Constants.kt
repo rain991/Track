@@ -20,7 +20,7 @@ const val BUDGET_DEFAULT: Int = 0
 const val SHOW_PAGE_NAME_DEFAULT : Boolean = true
 const val USE_SYSTEM_THEME_DEFAULT : Boolean = true
 val PREFERABLE_THEME_DEFAULT : Themes = Themes.BlueTheme
-val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.DEFAULT)
+val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.DEFAULT, rate = null)
 
 // ideas feed
 const val BASIC_CARD_COUNT_IN_FEED = 2
