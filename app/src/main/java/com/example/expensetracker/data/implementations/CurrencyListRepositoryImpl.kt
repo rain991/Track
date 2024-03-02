@@ -19,6 +19,10 @@ class CurrencyListRepositoryImpl(private val currencyDao: CurrencyDao) : Currenc
         currencyDao.update(currency)
     }
 
+    override suspend fun editCurrencyRate(rate: Double, currencyTicker: String) {
+        currencyDao.updateRate(rate = rate, currencyTicker = currencyTicker)
+    }
+
     override suspend fun deleteCurrency(currency: Currency, context: CoroutineContext) {
         currencyDao.delete(currency)
     }

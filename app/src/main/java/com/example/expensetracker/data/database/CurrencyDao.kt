@@ -17,6 +17,9 @@ interface CurrencyDao {
     @Update
     suspend fun update(currency: Currency)
 
+    @Query("UPDATE currency SET rate= :rate WHERE ticker=:currencyTicker")
+    suspend fun updateRate(rate: Double, currencyTicker : String)
+
     @Delete
     suspend fun delete(currency: Currency)
 
