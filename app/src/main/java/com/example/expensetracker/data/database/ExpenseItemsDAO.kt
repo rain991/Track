@@ -11,7 +11,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface ExpenseItemsDAO {
-    @Insert(onConflict = OnConflictStrategy.REPLACE) // previously REPLACE
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertItem(expenseItem: ExpenseItem)
 
     @Update
@@ -37,4 +37,7 @@ interface ExpenseItemsDAO {
 
     @Query("SELECT * FROM Expenses WHERE categoryId=:categoryId AND date BETWEEN :start AND :end ")
     fun findExpensesInTimeSpan(start : Long, end : Long, categoryId: Int) : List<ExpenseItem>
+
+//    @Query("UPDATE expenses SET ")
+//    fun setNewCurrencyById()
 }
