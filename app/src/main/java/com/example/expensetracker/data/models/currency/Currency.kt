@@ -15,5 +15,7 @@ data class Currency (
     @ColumnInfo(name = "name")
     val name : String,
     @ColumnInfo(name = "type")
-    val type : CurrencyTypes
+    val type : CurrencyTypes,
+    @ColumnInfo(name = "rate")
+    val rate : Double?
 )

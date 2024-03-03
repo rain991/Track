@@ -25,13 +25,11 @@ abstract class ExpensesDB : RoomDatabase() {
 
     companion object {
         private var INSTANCE: ExpensesDB? = null
-
         fun getInstance(context: Context): ExpensesDB {
             return INSTANCE ?: synchronized(this) {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
         }
-
         private fun buildDatabase(context: Context): ExpensesDB {
             return Room.databaseBuilder(
                 context.applicationContext,

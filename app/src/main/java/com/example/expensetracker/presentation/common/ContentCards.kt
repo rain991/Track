@@ -68,7 +68,7 @@ fun ExpensesCardTypeSimple(
     val dataStoreManager = koinInject<DataStoreManager>()
     var expanded by remember { mutableStateOf(false) }
     val density = LocalDensity.current
-    val currentCurrency = dataStoreManager.currencyFlow.collectAsState(initial = "USD")
+    val currentCurrency = dataStoreManager.preferableCurrencyFlow.collectAsState(initial = "USD")
     Card(
         modifier = Modifier
             .fillMaxWidth()

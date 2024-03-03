@@ -10,11 +10,12 @@ import com.example.expensetracker.data.implementations.CategoriesListRepositoryI
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.implementations.IdeaListRepositoryImpl
-import com.example.expensetracker.data.viewmodels.UserDataViewModel
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.login.LoginViewModel
 import com.example.expensetracker.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
 import com.example.expensetracker.data.viewmodels.mainScreen.MainScreenFeedViewModel
+import com.example.expensetracker.data.viewmodels.settingsScreen.SettingsViewModel
+import com.example.expensetracker.data.workers.CurrenciesRatesWorker
 import com.example.expensetracker.domain.usecases.categoriesusecases.AddCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.DeleteCategoryUseCase
 import com.example.expensetracker.domain.usecases.categoriesusecases.EditCategoryUseCase
@@ -26,6 +27,7 @@ import com.example.expensetracker.domain.usecases.expenseusecases.GetExpensesIte
 import com.example.expensetracker.domain.usecases.expenseusecases.GetExpensesListUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
+import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
 val appModule = module {
@@ -35,11 +37,15 @@ val appModule = module {
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
     single<CategoriesListRepositoryImpl> { CategoriesListRepositoryImpl(get()) }
 
-    single<CurrencyDao>{ ExpensesDB.getInstance(androidContext()).currencyDao }
+    single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
     single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
 
-    single<IdeaDao>{ ExpensesDB.getInstance(androidContext()).ideaDao }
-    single<IdeaListRepositoryImpl>{ IdeaListRepositoryImpl(get()) }
+    single<IdeaDao> { ExpensesDB.getInstance(androidContext()).ideaDao }
+    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get()) }
+}
+
+val workerFactoryModule = module {
+    worker { CurrenciesRatesWorker(get(), get(), get()) }
 }
 
 val domainModule = module {
@@ -56,13 +62,13 @@ val domainModule = module {
 }
 
 val settingsModule = module {
-    single<DataStoreManager> { DataStoreManager(get()) } // androidContext().applicationContext
+    single<DataStoreManager> { DataStoreManager(get()) }
 }
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get(), get()) }
-    viewModel { UserDataViewModel(get()) }
-    viewModel { BottomSheetViewModel(get(), get()) }
+    viewModel { BottomSheetViewModel(get(), get(), get(), get()) }
     viewModel { ExpensesLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
+    viewModel { SettingsViewModel(get(), get()) }
 }

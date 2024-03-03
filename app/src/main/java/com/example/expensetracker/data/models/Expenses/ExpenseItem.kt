@@ -4,6 +4,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.expensetracker.data.models.currency.Currency
 import java.util.Date
 
 
@@ -15,11 +16,19 @@ import java.util.Date
         childColumns = ["categoryId"],
         onDelete = ForeignKey.CASCADE,
         onUpdate = ForeignKey.CASCADE
+    ), ForeignKey(
+        entity = Currency::class,
+        parentColumns = ["ticker"],
+        childColumns = ["currencyTicker"],
+        onDelete = ForeignKey.NO_ACTION,
+        onUpdate = ForeignKey.NO_ACTION
     )]
 )
 data class ExpenseItem(
     @PrimaryKey(autoGenerate = true)
     val id: Int = 0,
+    @ColumnInfo(name = "currencyTicker")
+    val currencyTicker: String,
     @ColumnInfo(name = "value")
     val value: Float,
     @ColumnInfo(name = "note")

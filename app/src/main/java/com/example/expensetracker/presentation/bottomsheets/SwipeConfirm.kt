@@ -36,6 +36,7 @@ import androidx.wear.compose.material.ExperimentalWearMaterialApi
 import androidx.wear.compose.material.FractionalThreshold
 import androidx.wear.compose.material.rememberSwipeableState
 import androidx.wear.compose.material.swipeable
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.converters.convertLocalDateToDate
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
@@ -135,7 +136,8 @@ private fun DraggableControl(
                         note = note.value,
                         date = convertLocalDateToDate(date.value),
                         value = expense.value!!,
-                        categoryId = category.value!!.categoryId
+                        categoryId = category.value!!.categoryId,
+                        currencyTicker = CURRENCY_DEFAULT.ticker
                     )
                 )
                 bottomSheetViewModel.setBottomSheetExpanded(false)

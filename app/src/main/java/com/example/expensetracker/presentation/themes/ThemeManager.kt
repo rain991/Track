@@ -1,10 +1,9 @@
 package com.example.expensetracker.presentation.themes
 
-object ThemeManager {
-//    var currentTheme: ColorPalette = Theme1Colors
-//        private set
-//
-//    fun setTheme(theme: ColorPalette) {
-//        currentTheme = theme
-//    }
+sealed class Themes(val name : String){
+    object BlueTheme : Themes("Blue")
+    object PinkTheme : Themes("Pink")
+    object PurpleTheme : Themes("Purple")
+    object RedTheme : Themes("Red")
+    object YellowTheme : Themes("Yellow")
 }

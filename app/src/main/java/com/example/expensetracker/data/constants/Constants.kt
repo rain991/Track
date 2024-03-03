@@ -2,6 +2,11 @@ package com.example.expensetracker.data.constants
 
 import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.models.currency.CurrencyTypes
+import com.example.expensetracker.presentation.themes.Themes
+
+// Retrofit
+const val API_KEY = "88441b2e585647a7842c35c23251558f"
+const val CURRENCY_CALL_URL_DEFAULT = "https://api.currencyfreaks.com"
 
 // Other constants (objects of class as Currency) in DataStoreManager
 const val DB_PATH = "database/expense_tracker.db"
@@ -12,10 +17,13 @@ const val NAME_DEFAULT: String = "User"
 const val LOGIN_COUNT_DEFAULT = 0
 const val NEEDS_LOGIN: Boolean = true
 const val BUDGET_DEFAULT: Int = 0
-val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.DEFAULT)
+const val SHOW_PAGE_NAME_DEFAULT : Boolean = true
+const val USE_SYSTEM_THEME_DEFAULT : Boolean = true
+val PREFERABLE_THEME_DEFAULT : Themes = Themes.BlueTheme
+val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.DEFAULT, rate = null)
 
 // ideas feed
 const val BASIC_CARD_COUNT_IN_FEED = 2
-const val FEED_CARD_DELAY_SLOW = 3000L
-const val FEED_CARD_DELAY_FAST = 2500L
+const val FEED_CARD_DELAY_SLOW = 5000L
+const val FEED_CARD_DELAY_FAST = 3600L
 
