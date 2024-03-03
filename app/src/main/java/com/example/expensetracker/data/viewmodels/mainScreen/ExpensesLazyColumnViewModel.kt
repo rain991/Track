@@ -41,7 +41,7 @@ class ExpensesLazyColumnViewModel(
     }
 
     fun setScrolledBelow(firstVisibleIndex: Int) {
-        _isScrolledBelow.update { firstVisibleIndex != 0 }
+        _isScrolledBelow.update { firstVisibleIndex != 0 && _expensesList.size>8 }
     }
 
     fun requestCountInMonthNotion(expenseItem: ExpenseItem, expenseCategory: ExpenseCategory): String {
