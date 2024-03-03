@@ -20,9 +20,9 @@ class SettingsViewModel(private val dataStoreManager: DataStoreManager, currency
 
     private var _preferableCurrencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
     val preferableCurrencyStateFlow = _preferableCurrencyStateFlow.asStateFlow()
-    private var _firstAdditionalCurrencyStateFlow: MutableStateFlow<Currency?> = MutableStateFlow(CURRENCY_DEFAULT)
+    private var _firstAdditionalCurrencyStateFlow: MutableStateFlow<Currency?> = MutableStateFlow(null)
     val firstAdditionalCurrencyStateFlow = _firstAdditionalCurrencyStateFlow.asStateFlow()
-    private var _secondAdditionalCurrencyStateFlow: MutableStateFlow<Currency?> = MutableStateFlow(CURRENCY_DEFAULT)
+    private var _secondAdditionalCurrencyStateFlow: MutableStateFlow<Currency?> = MutableStateFlow(null)
     val secondAdditionalCurrencyStateFlow = _secondAdditionalCurrencyStateFlow.asStateFlow()
 
     init {
@@ -80,10 +80,10 @@ class SettingsViewModel(private val dataStoreManager: DataStoreManager, currency
         dataStoreManager.setUseSystemTheme(value)
     }
 
-    suspend fun setLatestCurrencyAsNull(){
-        if(_secondAdditionalCurrencyStateFlow.value!=null){
+    fun setLatestCurrencyAsNull() {
+        if (_secondAdditionalCurrencyStateFlow.value != null) {
             setSecondAdditionalCurrency(null)
-        }else{
+        } else {
             setFirstAdditionalCurrency(null)
         }
     }

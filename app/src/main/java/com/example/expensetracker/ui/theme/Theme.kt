@@ -41,7 +41,7 @@ private val LightColorScheme = lightColorScheme(
 )
 
 
-
+// val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
 @Composable
 fun ExpenseTrackerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

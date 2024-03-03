@@ -53,7 +53,7 @@ fun SettingsExpenseScreen() {
             CurrenciesSettings(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp), dataStoreManager = settingsData
+                    .padding(horizontal = 12.dp)
             )
             Spacer(modifier = Modifier.height(10.dp))
             HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp))

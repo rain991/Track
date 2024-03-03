@@ -56,7 +56,7 @@ fun SettingsHeader(modifier: Modifier, dataStoreManager: DataStoreManager) {
 }
 
 @Composable
-fun CurrenciesSettings(modifier: Modifier, dataStoreManager: DataStoreManager) {
+fun CurrenciesSettings(modifier: Modifier) {
     val coroutineScope = rememberCoroutineScope()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
     val preferableCurrencyState = settingsViewModel.preferableCurrencyStateFlow.collectAsState()
