@@ -3,15 +3,20 @@ package com.example.expensetracker.data.viewmodels.common
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.converters.convertLocalDateToDate
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
+import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -20,37 +25,56 @@ import java.time.LocalDate
 // Could be simplified by using dataClass for state
 class BottomSheetViewModel(
     private val addExpensesItemUseCase: AddExpensesItemUseCase,
-    private val categoryListRepositoryImpl: CategoriesListRepositoryImpl
+    private val categoryListRepositoryImpl: CategoriesListRepositoryImpl,
+    private val currencyListRepositoryImpl: CurrencyListRepositoryImpl,
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
     private val _categoryList = mutableStateListOf<ExpenseCategory>()
     val categoryList: List<ExpenseCategory> = _categoryList
+    private val _currencyList = mutableStateListOf<Currency>()
+    val currencyList: List<Currency> = _currencyList
+    var prefferableCurrency = CURRENCY_DEFAULT
 
     init {
+//        viewModelScope.launch {
+//            dataStoreManager.preferableCurrencyFlow.collect { preferableCurrencyTicker ->
+//                prefferableCurrency = _currencyList.find { foundedCurrency ->
+//                    foundedCurrency.ticker == preferableCurrencyTicker
+//                } ?: CURRENCY_DEFAULT
+//            }
+//        }
+
         viewModelScope.launch {
             categoryListRepositoryImpl.getCategoriesList().collect {
                 _categoryList.clear()
                 _categoryList.addAll(it)
             }
         }
+        viewModelScope.launch {
+            _currencyList.clear()
+            _currencyList.addAll(currencyListRepositoryImpl.getCurrencyList().first())
+        }
     }
 
     suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-            withContext(dispatcher) {
-                val currentExpenseItem = ExpenseItem(
-                    categoryId = _categoryPicked.value!!.categoryId,
-                    note = _note.value,
-                    date = convertLocalDateToDate(_datePicked.value),
-                    value = _inputExpense.value!!
-                )
-                addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
-                setCategoryPicked(DEFAULT_CATEGORY)
-                setInputExpense(DEFAULT_EXPENSE)
-                setDatePicked(DEFAULT_DATE)
-                setNote(DEFAULT_NOTE)
-                setBottomSheetExpanded(false)
-            }
+        withContext(dispatcher) {
+            val currentExpenseItem = ExpenseItem(
+                categoryId = _categoryPicked.value!!.categoryId,
+                note = _note.value,
+                date = convertLocalDateToDate(_datePicked.value),
+                value = _inputExpense.value!!,
+                currencyTicker = prefferableCurrency.ticker
+            )
+            addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
+            setCategoryPicked(DEFAULT_CATEGORY)
+            setInputExpense(DEFAULT_EXPENSE)
+            setDatePicked(DEFAULT_DATE)
+            setNote(DEFAULT_NOTE)
+            setBottomSheetExpanded(false)
+        }
     }
-        private var _isBottomSheetExpanded = MutableStateFlow(value = false)
+
+    private var _isBottomSheetExpanded = MutableStateFlow(value = false)
     val isBottomSheetExpanded = _isBottomSheetExpanded.asStateFlow()
 
 
