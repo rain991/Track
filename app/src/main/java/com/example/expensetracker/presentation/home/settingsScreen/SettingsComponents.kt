@@ -13,9 +13,14 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material.icons.outlined.Clear
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
@@ -27,13 +32,16 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
 import com.example.expensetracker.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.expensetracker.data.constants.USE_SYSTEM_THEME_DEFAULT
 import com.example.expensetracker.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.expensetracker.presentation.login.CurrencyDropDownMenu
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
@@ -48,19 +56,36 @@ fun SettingsHeader(modifier: Modifier, dataStoreManager: DataStoreManager) {
 }
 
 @Composable
-fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
+fun CurrenciesSettings(modifier: Modifier, dataStoreManager: DataStoreManager) {
+    val coroutineScope = rememberCoroutineScope()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
     val preferableCurrencyState = settingsViewModel.preferableCurrencyStateFlow.collectAsState()
     val firstAdditionalCurrencyState = settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState()
     val secondAdditionalCurrencyState = settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState()
     Box(modifier = modifier) {
         Column(Modifier.wrapContentSize()) {
-            Text(
-                text = stringResource(R.string.currencies_settings_screen),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
-                modifier = Modifier.padding(start = 4.dp)
-            )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.currencies_settings_screen),
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 26.sp),
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    //modifier = Modifier.padding(start = 4.dp),
+                    textAlign = TextAlign.Center
+                )
+                AnimatedVisibility(visible = firstAdditionalCurrencyState.value != null || secondAdditionalCurrencyState.value != null) {
+                    CurrenciesMinusTextButton {
+                        coroutineScope.launch {
+                            withContext(Dispatchers.IO) {
+                                settingsViewModel.setLatestCurrencyAsNull()
+                            }
+                        }
+                    }
+                }
+            }
             Spacer(modifier = Modifier.height(12.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -82,19 +107,18 @@ fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(R.string.extra_currency_settings_screen),
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-                if (firstAdditionalCurrencyState.value != null) {
-                Box(Modifier.width(140.dp)) {
-
+            AnimatedVisibility(visible = firstAdditionalCurrencyState.value != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(R.string.extra_currency_settings_screen),
+                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                    Box(Modifier.width(140.dp)) {
                         CurrencyDropDownMenu(
                             currencyList = settingsViewModel.currencyList,
                             selectedOption = firstAdditionalCurrencyState.value!!, // ALERT
@@ -102,22 +126,22 @@ fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
                                 settingsViewModel.setFirstAdditionalCurrency(it)
                             })
                     }
-                }
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(R.string.extra_currency_settings_screen),
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                    modifier = Modifier.padding(start = 4.dp)
-                )
 
-                if (secondAdditionalCurrencyState.value != null) {
-                Box(Modifier.width(140.dp)) {
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+            }
+            AnimatedVisibility(visible = secondAdditionalCurrencyState.value != null) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    Text(
+                        text = stringResource(R.string.extra_currency_settings_screen),
+                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                        modifier = Modifier.padding(start = 4.dp)
+                    )
+                    Box(Modifier.width(140.dp)) {
                         CurrencyDropDownMenu(
                             currencyList = settingsViewModel.currencyList,
                             selectedOption = secondAdditionalCurrencyState.value!!, // ALERT
@@ -127,8 +151,23 @@ fun UserPreferenceCard(modifier: Modifier, dataStoreManager: DataStoreManager) {
                     }
                 }
             }
-        }
+            AnimatedVisibility(visible = (firstAdditionalCurrencyState.value == null || secondAdditionalCurrencyState.value == null)) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    CurrenciesPlusTextButton {
+                        if (firstAdditionalCurrencyState.value != null) {
+                            settingsViewModel.setSecondAdditionalCurrency(CURRENCY_DEFAULT)
+                        } else if (secondAdditionalCurrencyState.value != null) {
+                            settingsViewModel.setFirstAdditionalCurrency(CURRENCY_DEFAULT)
+                        }
+                    }
+                }
+            }
 
+        }
     }
 }
 
@@ -221,4 +260,26 @@ private fun OptionalSettingsSwitch(
     val enabled = enabledFlow.collectAsState(initial = false)
     val checked = checkedFlow.collectAsState(initial = initial)
     Switch(checked = checked.value, onCheckedChange = onCheckedChange, enabled = enabled.value)
+}
+
+@Composable
+private fun CurrenciesMinusTextButton(onClick: () -> Unit) {
+    TextButton(onClick = { onClick() }) {
+        Icon(
+            imageVector = Icons.Outlined.Clear,
+            contentDescription = stringResource(R.string.delete_latest_currency_settings_screen),
+            tint = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    }
+}
+
+@Composable
+private fun CurrenciesPlusTextButton(onClick: () -> Unit) {
+    TextButton(onClick = { onClick() }) {
+        Icon(
+            imageVector = Icons.Outlined.Add,
+            contentDescription = stringResource(R.string.delete_latest_currency_settings_screen),
+            tint = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    }
 }

@@ -79,4 +79,13 @@ class SettingsViewModel(private val dataStoreManager: DataStoreManager, currency
     suspend fun setUseSystemTheme(value: Boolean) {
         dataStoreManager.setUseSystemTheme(value)
     }
+
+    suspend fun setLatestCurrencyAsNull(){
+        if(_secondAdditionalCurrencyStateFlow.value!=null){
+            setSecondAdditionalCurrency(null)
+        }else{
+            setFirstAdditionalCurrency(null)
+        }
+    }
+
 }

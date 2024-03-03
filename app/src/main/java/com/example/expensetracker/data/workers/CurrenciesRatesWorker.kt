@@ -18,8 +18,9 @@ class CurrenciesRatesWorker(
         return try {
             val response = RetrofitClient.api.getLatestRates(API_KEY, "EUR, ETH, PLN")
             response.rates.forEach{(currency, rate) ->
-                currencyListRepositoryImpl.editCurrencyRate(rate = rate.toDouble(), currencyTicker = currency)
+                currencyListRepositoryImpl.editCurrencyRate(rate =  (1.0 /  rate.toDouble()), currencyTicker = currency)
             }
+            Log.d("MyLog", "doWork: currencyResponse recieved")
             Result.success()
         } catch (e: Exception) {
             Log.d("MyLog", "doWork: ${e.message.toString()}")

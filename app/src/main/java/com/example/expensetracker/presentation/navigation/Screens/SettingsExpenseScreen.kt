@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.HorizontalDivider
@@ -20,9 +19,8 @@ import com.example.expensetracker.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.example.expensetracker.presentation.bottomsheets.ExtendedButtonExample
 import com.example.expensetracker.presentation.bottomsheets.SimplifiedBottomSheet
-import com.example.expensetracker.presentation.home.settingsScreen.SettingsHeader
+import com.example.expensetracker.presentation.home.settingsScreen.CurrenciesSettings
 import com.example.expensetracker.presentation.home.settingsScreen.ThemePreferences
-import com.example.expensetracker.presentation.home.settingsScreen.UserPreferenceCard
 import com.example.expensetracker.presentation.other.Header
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -46,13 +44,13 @@ fun SettingsExpenseScreen() {
                 .verticalScroll(rememberScrollState())
         ) {
             if(!isPageNameVisible.value) Spacer(modifier = Modifier.height(12.dp))
-            SettingsHeader(
-                modifier = Modifier
-                    .padding(start = 12.dp)
-                    .wrapContentSize(), dataStoreManager = settingsData
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            UserPreferenceCard(
+//            SettingsHeader(
+//                modifier = Modifier
+//                    .padding(start = 12.dp)
+//                    .wrapContentSize(), dataStoreManager = settingsData
+//            )
+//            Spacer(modifier = Modifier.height(16.dp))
+            CurrenciesSettings(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp), dataStoreManager = settingsData
