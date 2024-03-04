@@ -44,6 +44,7 @@ import androidx.room.PrimaryKey
 )
 data class CurrenciesPreference(
     @PrimaryKey(autoGenerate = false)
+    val id: Int = 1,
     val preferableCurrency: String,
     val firstAdditionalCurrency: String,
     val secondAdditionalCurrency: String,
