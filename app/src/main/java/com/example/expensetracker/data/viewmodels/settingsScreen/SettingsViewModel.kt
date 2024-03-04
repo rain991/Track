@@ -4,11 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.models.currency.Currency
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
@@ -20,15 +17,11 @@ class SettingsViewModel(
     private val _currencyList = mutableStateListOf<Currency>()
     val currencyList: List<Currency> = _currencyList
 
-    private var _preferableCurrencyStateFlow = MutableStateFlow<Currency>(CURRENCY_DEFAULT)
-    val preferableCurrencyStateFlow = _preferableCurrencyStateFlow.asStateFlow()
+    val preferableCurrencyStateFlow = dataStoreManager.preferableCurrencyFlow
 
-    private var _firstAdditionalCurrencyStateFlow = MutableStateFlow<Currency?>(null)
-    val firstAdditionalCurrencyStateFlow = _firstAdditionalCurrencyStateFlow.asStateFlow()
+    val firstAdditionalCurrencyStateFlow = dataStoreManager.firstAdditionalCurrencyFlow
 
-    private var _secondAdditionalCurrencyStateFlow = MutableStateFlow<Currency?>(null)
-    val secondAdditionalCurrencyStateFlow = _secondAdditionalCurrencyStateFlow.asStateFlow()
-
+    val secondAdditionalCurrencyStateFlow = dataStoreManager.secondAdditionalCurrencyFlow
     init {
         viewModelScope.launch {
             currencyListRepositoryImpl.getCurrencyList().collect {
@@ -72,25 +65,30 @@ class SettingsViewModel(
         }
     }
 
-    suspend fun setPreferableCurrency(value: Currency) {
-       // _preferableCurrencyStateFlow.value = value
-        dataStoreManager.setPreferableCurrency(value)
+    suspend fun setPreferableCurrency(value: Currency) { dataStoreManager.setPreferableCurrency(value) }
+
+    suspend fun setFirstAdditionalCurrency(value: Currency?) {
+        if (value != null) {
+            dataStoreManager.setFirstAdditionalCurrency(value.ticker)
+        }
     }
+    suspend fun setFirstAdditionalCurrency(value : String) { dataStoreManager.setFirstAdditionalCurrency(value) }
 
-    suspend fun setFirstAdditionalCurrency(value: Currency?) { dataStoreManager.setFirstAdditionalCurrency(value) }
-
-    suspend fun setSecondAdditionalCurrency(value: Currency?) { dataStoreManager.setSecondAdditionalCurrency(value) }
+    suspend fun setSecondAdditionalCurrency(value: Currency?) {
+        if (value != null) {
+            dataStoreManager.setSecondAdditionalCurrency(value.ticker)
+        }
+    }
     val showPagesNameFlow = dataStoreManager.isShowPageName
     suspend fun setShowPagesNameFlow(value: Boolean) { dataStoreManager.setShowPageName(value) }
 
     val useSystemTheme = dataStoreManager.useSystemTheme
     suspend fun setUseSystemTheme(value: Boolean) { dataStoreManager.setUseSystemTheme(value) }
     suspend fun setLatestCurrencyAsNull() {
-        if (_secondAdditionalCurrencyStateFlow.value != null) {
-            setSecondAdditionalCurrency("")
-        } else {
-            setFirstAdditionalCurrency("")
-        }
+//        if (_secondAdditionalCurrencyStateFlow.value != null) {
+//            setSecondAdditionalCurrency("")
+//        } else {
+//            setFirstAdditionalCurrency("")
+//        }
     }
-
 }

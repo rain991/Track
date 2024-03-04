@@ -32,7 +32,6 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
 import com.example.expensetracker.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.expensetracker.data.constants.USE_SYSTEM_THEME_DEFAULT
@@ -106,7 +105,7 @@ fun CurrenciesSettings(
                         currencyList = settingsViewModel.currencyList,
                         selectedOption = preferableCurrency,
                         onSelect = {
-                            settingsViewModel.setPreferableCurrency(it)
+                         //   settingsViewModel.setPreferableCurrency(it)
                         })
                 }
             }
@@ -127,7 +126,7 @@ fun CurrenciesSettings(
                             currencyList = settingsViewModel.currencyList,
                             selectedOption = firstAdditionalCurrency!!, // ALERT
                             onSelect = {
-                                settingsViewModel.setFirstAdditionalCurrency(it)
+                             //   settingsViewModel.setFirstAdditionalCurrency(it)
                             })
                     }
 
@@ -150,7 +149,7 @@ fun CurrenciesSettings(
                             currencyList = settingsViewModel.currencyList,
                             selectedOption = secondAdditionalCurrency!!, // ALERT
                             onSelect = {
-                                settingsViewModel.setSecondAdditionalCurrency(it)
+                            //    settingsViewModel.setSecondAdditionalCurrency(it)
                             })
                     }
                 }
@@ -163,9 +162,9 @@ fun CurrenciesSettings(
                 ) {
                     CurrenciesPlusTextButton {
                         if (firstAdditionalCurrency != null) {
-                            settingsViewModel.setSecondAdditionalCurrency(CURRENCY_DEFAULT)
+                       //     settingsViewModel.setSecondAdditionalCurrency(CURRENCY_DEFAULT)
                         } else if (secondAdditionalCurrency != null) {
-                            settingsViewModel.setFirstAdditionalCurrency(CURRENCY_DEFAULT)
+                          //  settingsViewModel.setFirstAdditionalCurrency(CURRENCY_DEFAULT)
                         }
                     }
                 }

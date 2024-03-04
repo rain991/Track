@@ -15,6 +15,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.example.expensetracker.data.viewmodels.settingsScreen.SettingsViewModel
@@ -32,9 +33,9 @@ fun SettingsExpenseScreen() {
     val settingsViewModel = koinViewModel<SettingsViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
-    val preferableCurrencyState = settingsViewModel.preferableCurrencyStateFlow.collectAsState()
-    val firstAdditionalCurrencyState = settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState()
-    val secondAdditionalCurrencyState = settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState()
+    val preferableCurrencyState = settingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT.ticker)
+    val firstAdditionalCurrencyState = settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = "")
+    val secondAdditionalCurrencyState = settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = "")
     androidx.compose.material3.Scaffold(
         topBar = {
             if (isPageNameVisible.value) Header(categoryName = stringResource(R.string.settings))
@@ -49,19 +50,13 @@ fun SettingsExpenseScreen() {
                 .verticalScroll(rememberScrollState())
         ) {
             if (!isPageNameVisible.value) Spacer(modifier = Modifier.height(12.dp))
-//            SettingsHeader(
-//                modifier = Modifier
-//                    .padding(start = 12.dp)
-//                    .wrapContentSize(), dataStoreManager = settingsData
-//            )
-//            Spacer(modifier = Modifier.height(16.dp))
             CurrenciesSettings(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp),
-                preferableCurrency = preferableCurrencyState.value,
-                firstAdditionalCurrency = firstAdditionalCurrencyState.value,
-                secondAdditionalCurrency = secondAdditionalCurrencyState.value
+                preferableCurrency = CURRENCY_DEFAULT,
+                firstAdditionalCurrency = CURRENCY_DEFAULT,
+                secondAdditionalCurrency = CURRENCY_DEFAULT
             )
             Spacer(modifier = Modifier.height(10.dp))
             HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp))

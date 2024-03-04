@@ -1,7 +1,6 @@
 package com.example.expensetracker.data
 
 import android.content.Context
-import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.intPreferencesKey
@@ -38,7 +37,7 @@ class DataStoreManager(private val context: Context) {
 
         //CURRENCIES
         private val PREFERABLE_CURRENCY = stringPreferencesKey("user_currency_preferable")
-        private val FIRST_ADDITIONAL_CURRENCY: Preferences.Key<String> = stringPreferencesKey("user_currency_first_additional")
+        private val FIRST_ADDITIONAL_CURRENCY = stringPreferencesKey("user_currency_first_additional")
         private val SECOND_ADDITIONAL_CURRENCY = stringPreferencesKey("user_currency_second_additional")
     }
 
@@ -82,7 +81,6 @@ class DataStoreManager(private val context: Context) {
     val useSystemTheme: Flow<Boolean> = context.dataStore.data.map { preferences ->
         preferences[USE_SYSTEM_THEME] ?: USE_SYSTEM_THEME_DEFAULT
     }
-
     suspend fun setUseSystemTheme(value: Boolean, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             context.dataStore.edit {
@@ -93,7 +91,6 @@ class DataStoreManager(private val context: Context) {
 
     val preferableCurrencyFlow: Flow<String> =
         context.dataStore.data.map { preferences -> preferences[PREFERABLE_CURRENCY] ?: CURRENCY_DEFAULT.ticker }
-
     suspend fun setPreferableCurrency(currency: Currency, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             context.dataStore.edit {
@@ -102,33 +99,16 @@ class DataStoreManager(private val context: Context) {
         }
     }
 
-    val firstAdditionalCurrencyFlow: Flow<String?> = context.dataStore.data.map { preferences ->
-        preferences[FIRST_ADDITIONAL_CURRENCY]
-    }
-
-    suspend fun setFirstAdditionalCurrency(currency: Currency, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+    val firstAdditionalCurrencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[FIRST_ADDITIONAL_CURRENCY]!! }
+    suspend fun setFirstAdditionalCurrency(currency: String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             context.dataStore.edit {
-                it[FIRST_ADDITIONAL_CURRENCY] = currency.ticker
-            }
-        }
-    }
-    suspend fun setFirstAdditionalCurrency(ticker : String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
-            context.dataStore.edit {
-                it[FIRST_ADDITIONAL_CURRENCY] = ticker
+                it[FIRST_ADDITIONAL_CURRENCY] = currency
             }
         }
     }
 
-    val secondAdditionalCurrencyFlow: Flow<String?> = context.dataStore.data.map { preferences -> preferences[SECOND_ADDITIONAL_CURRENCY] }
-    suspend fun setSecondAdditionalCurrency(currency: Currency, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
-            context.dataStore.edit {
-                it[SECOND_ADDITIONAL_CURRENCY] = currency.ticker
-            }
-        }
-    }
+    val secondAdditionalCurrencyFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[SECOND_ADDITIONAL_CURRENCY]!! }
     suspend fun setSecondAdditionalCurrency(ticker : String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             context.dataStore.edit {
@@ -136,5 +116,4 @@ class DataStoreManager(private val context: Context) {
             }
         }
     }
-
 }

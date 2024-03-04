@@ -9,11 +9,12 @@ import com.example.expensetracker.data.constants.DB_PATH
 import com.example.expensetracker.data.converters.Converters
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
+import com.example.expensetracker.data.models.currency.CurrenciesPreference
 import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.models.idea.Idea
 
 @Database(
-    entities = [ExpenseItem::class, ExpenseCategory::class, Idea::class, Currency::class],
+    entities = [ExpenseItem::class, ExpenseCategory::class, Idea::class, Currency::class, CurrenciesPreference::class],
     version = 1
 )
 @TypeConverters(Converters::class)
