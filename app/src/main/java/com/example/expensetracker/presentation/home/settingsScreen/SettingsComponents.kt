@@ -36,6 +36,7 @@ import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
 import com.example.expensetracker.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.expensetracker.data.constants.USE_SYSTEM_THEME_DEFAULT
+import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.expensetracker.presentation.login.CurrencyDropDownMenu
 import kotlinx.coroutines.Dispatchers
@@ -56,12 +57,15 @@ fun SettingsHeader(modifier: Modifier, dataStoreManager: DataStoreManager) {
 }
 
 @Composable
-fun CurrenciesSettings(modifier: Modifier) {
+fun CurrenciesSettings(
+    modifier: Modifier,
+    preferableCurrency: Currency,
+    firstAdditionalCurrency: Currency?,
+    secondAdditionalCurrency: Currency?
+) {
     val coroutineScope = rememberCoroutineScope()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
-    val preferableCurrencyState = settingsViewModel.preferableCurrencyStateFlow.collectAsState()
-    val firstAdditionalCurrencyState = settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState()
-    val secondAdditionalCurrencyState = settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState()
+
     Box(modifier = modifier) {
         Column(Modifier.wrapContentSize()) {
             Row(
@@ -76,7 +80,7 @@ fun CurrenciesSettings(modifier: Modifier) {
                     //modifier = Modifier.padding(start = 4.dp),
                     textAlign = TextAlign.Center
                 )
-                AnimatedVisibility(visible = firstAdditionalCurrencyState.value != null || secondAdditionalCurrencyState.value != null) {
+                AnimatedVisibility(visible = firstAdditionalCurrency != null || secondAdditionalCurrency != null) {
                     CurrenciesMinusTextButton {
                         coroutineScope.launch {
                             withContext(Dispatchers.IO) {
@@ -100,14 +104,14 @@ fun CurrenciesSettings(modifier: Modifier) {
                 Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
                         currencyList = settingsViewModel.currencyList,
-                        selectedOption = preferableCurrencyState.value,
+                        selectedOption = preferableCurrency,
                         onSelect = {
                             settingsViewModel.setPreferableCurrency(it)
                         })
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
-            AnimatedVisibility(visible = firstAdditionalCurrencyState.value != null) {
+            AnimatedVisibility(visible = firstAdditionalCurrency != null) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -121,7 +125,7 @@ fun CurrenciesSettings(modifier: Modifier) {
                     Box(Modifier.width(140.dp)) {
                         CurrencyDropDownMenu(
                             currencyList = settingsViewModel.currencyList,
-                            selectedOption = firstAdditionalCurrencyState.value!!, // ALERT
+                            selectedOption = firstAdditionalCurrency!!, // ALERT
                             onSelect = {
                                 settingsViewModel.setFirstAdditionalCurrency(it)
                             })
@@ -130,7 +134,7 @@ fun CurrenciesSettings(modifier: Modifier) {
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
-            AnimatedVisibility(visible = secondAdditionalCurrencyState.value != null) {
+            AnimatedVisibility(visible = secondAdditionalCurrency != null) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
@@ -144,23 +148,23 @@ fun CurrenciesSettings(modifier: Modifier) {
                     Box(Modifier.width(140.dp)) {
                         CurrencyDropDownMenu(
                             currencyList = settingsViewModel.currencyList,
-                            selectedOption = secondAdditionalCurrencyState.value!!, // ALERT
+                            selectedOption = secondAdditionalCurrency!!, // ALERT
                             onSelect = {
                                 settingsViewModel.setSecondAdditionalCurrency(it)
                             })
                     }
                 }
             }
-            AnimatedVisibility(visible = (firstAdditionalCurrencyState.value == null || secondAdditionalCurrencyState.value == null)) {
+            AnimatedVisibility(visible = (firstAdditionalCurrency == null || secondAdditionalCurrency == null)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.Center
                 ) {
                     CurrenciesPlusTextButton {
-                        if (firstAdditionalCurrencyState.value != null) {
+                        if (firstAdditionalCurrency != null) {
                             settingsViewModel.setSecondAdditionalCurrency(CURRENCY_DEFAULT)
-                        } else if (secondAdditionalCurrencyState.value != null) {
+                        } else if (secondAdditionalCurrency != null) {
                             settingsViewModel.setFirstAdditionalCurrency(CURRENCY_DEFAULT)
                         }
                     }
