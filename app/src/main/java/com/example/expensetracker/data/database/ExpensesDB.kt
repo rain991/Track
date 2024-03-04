@@ -23,6 +23,7 @@ abstract class ExpensesDB : RoomDatabase() {
     abstract val categoryDao: ExpenseCategoryDao
     abstract val currencyDao : CurrencyDao
     abstract val ideaDao : IdeaDao
+    abstract val currenciesPreferenceDao : CurrenciesPreferenceDao
 
     companion object {
         private var INSTANCE: ExpensesDB? = null
