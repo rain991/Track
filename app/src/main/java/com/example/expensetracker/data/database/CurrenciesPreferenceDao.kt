@@ -23,10 +23,13 @@ interface CurrenciesPreferenceDao {
     suspend fun delete(currenciesPreference: CurrenciesPreference)
 
     @Query("SELECT * FROM currenciesPreference WHERE id = :currenciesPreferenceId")
-    fun getCurrenciesPreferences(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<List<CurrenciesPreference>>
+    fun getCurrenciesPreferences(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<CurrenciesPreference>
 
     @Query("UPDATE currenciesPreference SET preferableCurrency=:currencyTicker WHERE id = :currenciesPreferenceId")
     suspend fun updatePreferableCurrency(currencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
+
+    @Query("UPDATE currenciesPreference SET firstAdditionalCurrency=:currencyTicker WHERE id = :currenciesPreferenceId")
+    suspend fun updateFirstAdditionalCurrency(currencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
 
     @Query("UPDATE currenciesPreference SET secondAdditionalCurrency=:currencyTicker WHERE id = :currenciesPreferenceId")
     suspend fun updateSecondAdditionalCurrency(currencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)

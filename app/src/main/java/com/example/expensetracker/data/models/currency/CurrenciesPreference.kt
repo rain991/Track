@@ -47,8 +47,8 @@ data class CurrenciesPreference(
     @PrimaryKey(autoGenerate = false)
     val id: Int = CURRENCIES_PREFERENCE_ID,
     val preferableCurrency: String,
-    val firstAdditionalCurrency: String,
-    val secondAdditionalCurrency: String,
-    val thirdAdditionalCurrency: String,
-    val fourthAdditionalCurrency: String
+    val firstAdditionalCurrency: String?,
+    val secondAdditionalCurrency: String?,
+    val thirdAdditionalCurrency: String?,
+    val fourthAdditionalCurrency: String?
 )

@@ -6,6 +6,7 @@ import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.constants.BUDGET_DEFAULT
 import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
+import com.example.expensetracker.data.implementations.CurrenciesPreferenceRepositoryImpl
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.models.currency.Currency
 import kotlinx.coroutines.CoroutineDispatcher
@@ -20,6 +21,7 @@ import kotlinx.coroutines.withContext
 
 class LoginViewModel(
     private val dataStoreManager: DataStoreManager,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
     private val currencyListRepositoryImpl: CurrencyListRepositoryImpl
 ) : ViewModel() {
     var currencyList = listOf<Currency>()
@@ -42,8 +44,10 @@ class LoginViewModel(
             withContext(dispatcher) {
                 dataStoreManager.setBudget(_incomeStateFlow.value)
                 dataStoreManager.setName(_firstNameStateFlow.value)
-                dataStoreManager.setPreferableCurrency(_currencyStateFlow.value)
                 dataStoreManager.incrementLoginCount()
+            }
+            withContext(dispatcher){
+                currenciesPreferenceRepositoryImpl.setPreferableCurrency(_currencyStateFlow.value)
             }
         }
     }

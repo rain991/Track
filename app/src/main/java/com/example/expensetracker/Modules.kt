@@ -45,8 +45,8 @@ val appModule = module {
     single<IdeaDao> { ExpensesDB.getInstance(androidContext()).ideaDao }
     single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get()) }
 
-    single<CurrenciesPreferenceDao> {ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao}
-    single<CurrenciesPreferenceRepositoryImpl>{CurrenciesPreferenceRepositoryImpl(get())}
+    single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
+    single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
 }
 
 val workerFactoryModule = module {
@@ -71,9 +71,9 @@ val settingsModule = module {
 }
 
 val viewModelModule = module {
-    viewModel { LoginViewModel(get(), get()) }
+    viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { BottomSheetViewModel(get(), get(), get(), get()) }
     viewModel { ExpensesLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
-    viewModel { SettingsViewModel(get(), get()) }
+    viewModel { SettingsViewModel(get(), get(), get()) }
 }
