@@ -60,7 +60,9 @@ fun CurrenciesSettings(
     modifier: Modifier,
     preferableCurrency: Currency,
     firstAdditionalCurrency: Currency?,
-    secondAdditionalCurrency: Currency?
+    secondAdditionalCurrency: Currency?,
+    thirdAdditionalCurrency : Currency?,
+    fourthAdditionalCurrency : Currency?
 ) {
     val coroutineScope = rememberCoroutineScope()
     val settingsViewModel = koinViewModel<SettingsViewModel>()

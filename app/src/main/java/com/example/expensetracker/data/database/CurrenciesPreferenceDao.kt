@@ -29,16 +29,16 @@ interface CurrenciesPreferenceDao {
     suspend fun updatePreferableCurrency(currencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
 
     @Query("UPDATE currenciesPreference SET firstAdditionalCurrency=:currencyTicker WHERE id = :currenciesPreferenceId")
-    suspend fun updateFirstAdditionalCurrency(currencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
+    suspend fun updateFirstAdditionalCurrency(currencyTicker: String?, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
 
     @Query("UPDATE currenciesPreference SET secondAdditionalCurrency=:currencyTicker WHERE id = :currenciesPreferenceId")
-    suspend fun updateSecondAdditionalCurrency(currencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
+    suspend fun updateSecondAdditionalCurrency(currencyTicker: String?, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
 
     @Query("UPDATE currenciesPreference SET thirdAdditionalCurrency=:currencyTicker WHERE id = :currenciesPreferenceId")
-    suspend fun updateThirdAdditionalCurrency(currencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
+    suspend fun updateThirdAdditionalCurrency(currencyTicker: String?, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
 
     @Query("UPDATE currenciesPreference SET fourthAdditionalCurrency=:currencyTicker WHERE id = :currenciesPreferenceId")
-    suspend fun updateForthAdditionalCurrency(currencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
+    suspend fun updateForthAdditionalCurrency(currencyTicker: String?, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
 
     @Query("SELECT * FROM currency WHERE ticker = (SELECT preferableCurrency FROM currenciesPreference WHERE id=:currenciesPreferenceId)")
     fun getPreferableCurrency(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<Currency?>

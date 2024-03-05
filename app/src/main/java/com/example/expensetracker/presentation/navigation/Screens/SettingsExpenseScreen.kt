@@ -32,16 +32,30 @@ fun SettingsExpenseScreen() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
     val settingsData = koinInject<DataStoreManager>()
-    val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
-    val preferableCurrencyState = settingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT.ticker)
-    val firstAdditionalCurrencyState = settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = "")
-    val secondAdditionalCurrencyState = settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = "")
+    val isPageNameVisible =
+        settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
+    val preferableCurrencyState =
+        settingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT)
+    val firstAdditionalCurrencyState =
+        settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val secondAdditionalCurrencyState =
+        settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val thirdAdditionalCurrencyState =
+        settingsViewModel.thirdAdditionalCurrencyStateFlow.collectAsState(
+            initial = null
+        )
+    val fourthAdditionalCurrencyState =
+        settingsViewModel.fourthAdditionalCurrencyStateFlow.collectAsState(
+            initial = null
+        )
     androidx.compose.material3.Scaffold(
         topBar = {
             if (isPageNameVisible.value) Header(categoryName = stringResource(R.string.settings))
         },
         floatingActionButton = {
-            ExtendedButtonExample(isButtonExpanded = false, onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
+            ExtendedButtonExample(
+                isButtonExpanded = false,
+                onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
         }
     ) {
         Column(
@@ -54,9 +68,11 @@ fun SettingsExpenseScreen() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 12.dp),
-                preferableCurrency = CURRENCY_DEFAULT,
-                firstAdditionalCurrency = CURRENCY_DEFAULT,
-                secondAdditionalCurrency = CURRENCY_DEFAULT
+                preferableCurrency = preferableCurrencyState.value!!,
+                firstAdditionalCurrency = firstAdditionalCurrencyState.value,
+                secondAdditionalCurrency = secondAdditionalCurrencyState.value,
+                thirdAdditionalCurrency = thirdAdditionalCurrencyState.value,
+                fourthAdditionalCurrency = fourthAdditionalCurrencyState.value
             )
             Spacer(modifier = Modifier.height(10.dp))
             HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp))
