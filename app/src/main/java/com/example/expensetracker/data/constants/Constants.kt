@@ -10,6 +10,7 @@ const val CURRENCY_CALL_URL_DEFAULT = "https://api.currencyfreaks.com"
 
 // Other constants (objects of class as Currency) in DataStoreManager
 const val DB_PATH = "database/expense_tracker.db"
+const val CURRENCIES_PREFERENCE_ID = 1
 const val MIN_SUPPORTED_YEAR = 2000
 
 // user

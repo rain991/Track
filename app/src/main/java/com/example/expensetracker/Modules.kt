@@ -1,12 +1,14 @@
 package com.example.expensetracker
 
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.database.CurrenciesPreferenceDao
 import com.example.expensetracker.data.database.CurrencyDao
 import com.example.expensetracker.data.database.ExpenseCategoryDao
 import com.example.expensetracker.data.database.ExpenseItemsDAO
 import com.example.expensetracker.data.database.ExpensesDB
 import com.example.expensetracker.data.database.IdeaDao
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
+import com.example.expensetracker.data.implementations.CurrenciesPreferenceRepositoryImpl
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.implementations.ExpensesListRepositoryImpl
 import com.example.expensetracker.data.implementations.IdeaListRepositoryImpl
@@ -42,6 +44,9 @@ val appModule = module {
 
     single<IdeaDao> { ExpensesDB.getInstance(androidContext()).ideaDao }
     single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get()) }
+
+    single<CurrenciesPreferenceDao> {ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao}
+    single<CurrenciesPreferenceRepositoryImpl>{CurrenciesPreferenceRepositoryImpl(get())}
 }
 
 val workerFactoryModule = module {

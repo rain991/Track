@@ -3,6 +3,7 @@ package com.example.expensetracker.data.models.currency
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.expensetracker.data.constants.CURRENCIES_PREFERENCE_ID
 
 @Entity(
     tableName = "currenciesPreference",
@@ -44,7 +45,7 @@ import androidx.room.PrimaryKey
 )
 data class CurrenciesPreference(
     @PrimaryKey(autoGenerate = false)
-    val id: Int = 1,
+    val id: Int = CURRENCIES_PREFERENCE_ID,
     val preferableCurrency: String,
     val firstAdditionalCurrency: String,
     val secondAdditionalCurrency: String,
