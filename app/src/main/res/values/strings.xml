@@ -22,7 +22,7 @@
     <string name="november">November</string>
     <string name="december">December</string>
     <string name="unknown_month">Unknown month</string>
-    <string name="add_expenses">Add expenses</string>
+    <string name="add_expenses">Add expense</string>
     <string name="add_new_category">Add New Category</string>
     <string name="other_adding">Other</string>
 
@@ -54,6 +54,4 @@
     <string name="extra_currency_settings_screen">Extra currency</string>
     <string name="currencies_settings_screen">Currencies</string>
     <string name="delete_latest_currency_settings_screen">delete latest currency</string>
-
-
 </resources>

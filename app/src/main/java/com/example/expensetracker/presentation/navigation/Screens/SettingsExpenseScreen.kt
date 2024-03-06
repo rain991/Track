@@ -60,23 +60,24 @@ fun SettingsExpenseScreen() {
                 .verticalScroll(rememberScrollState())
         ) {
             if (!isPageNameVisible.value) Spacer(modifier = Modifier.height(12.dp))
+
+            ThemePreferences(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 12.dp), dataStoreManager = settingsData
+            )
+            Spacer(modifier = Modifier.height(10.dp))
+            HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp))
+            Spacer(modifier = Modifier.height(10.dp))
             CurrenciesSettings(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 12.dp),
+                    .padding(horizontal = 8.dp),
                 preferableCurrency = preferableCurrencyState.value!!,
                 firstAdditionalCurrency = firstAdditionalCurrencyState.value,
                 secondAdditionalCurrency = secondAdditionalCurrencyState.value,
                 thirdAdditionalCurrency = thirdAdditionalCurrencyState.value,
                 fourthAdditionalCurrency = fourthAdditionalCurrencyState.value
-            )
-            Spacer(modifier = Modifier.height(10.dp))
-            HorizontalDivider(modifier = Modifier.padding(horizontal = 12.dp))
-            Spacer(modifier = Modifier.height(10.dp))
-            ThemePreferences(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 12.dp), dataStoreManager = settingsData
             )
         }
         SimplifiedBottomSheet(dataStoreManager = settingsData)

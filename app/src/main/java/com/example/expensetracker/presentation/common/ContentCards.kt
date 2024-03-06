@@ -179,7 +179,7 @@ fun ExpensesCardTypeSimple(
                             Text(
                                 text = buildAnnotatedString {
                                     withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
-                                        append("${expenseCategory.note} expenses: ")
+                                        append("${expenseCategory.note} Expenses: ")
                                     }
                                     withStyle(
                                         style = SpanStyle(

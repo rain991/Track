@@ -65,7 +65,7 @@ fun CurrenciesSettings(
 ) {
     val coroutineScope = rememberCoroutineScope()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
-    Box(modifier = modifier) {
+    Box(modifier) {
         Column(Modifier.wrapContentSize()) {
             Row(
                 modifier = Modifier
@@ -86,7 +86,15 @@ fun CurrenciesSettings(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+            Row() {
+                Text(
+                    text = "You can switch currencies by touching their ticker in cards",
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    style = MaterialTheme.typography.labelMedium
+                )
+            }
+            Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
