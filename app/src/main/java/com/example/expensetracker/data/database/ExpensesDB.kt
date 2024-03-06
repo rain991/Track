@@ -12,23 +12,29 @@ import com.example.expensetracker.data.database.currenciesRelated.CurrencyDao
 import com.example.expensetracker.data.database.expensesRelated.ExpenseCategoryDao
 import com.example.expensetracker.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.expensetracker.data.database.ideaRelated.IdeaDao
+import com.example.expensetracker.data.database.incomeRelated.IncomeCategoryDao
+import com.example.expensetracker.data.database.incomeRelated.IncomeDao
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.data.models.currency.CurrenciesPreference
 import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.data.models.idea.Idea
+import com.example.expensetracker.data.models.incomes.IncomeCategory
+import com.example.expensetracker.data.models.incomes.IncomeItem
 
 @Database(
-    entities = [ExpenseItem::class, ExpenseCategory::class, Idea::class, Currency::class, CurrenciesPreference::class],
+    entities = [ExpenseItem::class, ExpenseCategory::class, Idea::class, Currency::class, CurrenciesPreference::class, IncomeItem::class, IncomeCategory::class],
     version = 1
 )
 @TypeConverters(Converters::class)
 abstract class ExpensesDB : RoomDatabase() {
     abstract val expenseItemsDao: ExpenseItemsDAO
     abstract val categoryDao: ExpenseCategoryDao
-    abstract val currencyDao : CurrencyDao
-    abstract val ideaDao : IdeaDao
-    abstract val currenciesPreferenceDao : CurrenciesPreferenceDao
+    abstract val currencyDao: CurrencyDao
+    abstract val ideaDao: IdeaDao
+    abstract val currenciesPreferenceDao: CurrenciesPreferenceDao
+    abstract val incomeDao : IncomeDao
+    abstract val incomeCategoryDao: IncomeCategoryDao
 
     companion object {
         private var INSTANCE: ExpensesDB? = null
@@ -37,6 +43,7 @@ abstract class ExpensesDB : RoomDatabase() {
                 INSTANCE ?: buildDatabase(context).also { INSTANCE = it }
             }
         }
+
         private fun buildDatabase(context: Context): ExpensesDB {
             return Room.databaseBuilder(
                 context.applicationContext,
