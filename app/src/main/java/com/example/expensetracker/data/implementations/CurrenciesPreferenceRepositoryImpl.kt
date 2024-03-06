@@ -17,19 +17,19 @@ class CurrenciesPreferenceRepositoryImpl(private val currenciesPreferenceDao: Cu
     }
 
     override suspend fun setFirstAdditionalCurrency(currency: Currency?) {
-        currenciesPreferenceDao.updateFirstAdditionalCurrency(currencyTicker = if (currency != null) currency.ticker else currency)
+        currenciesPreferenceDao.updateFirstAdditionalCurrency(currencyTicker = if (currency != null) currency.ticker else null)
     }
 
     override suspend fun setSecondAdditionalCurrency(currency: Currency?) {
-        currenciesPreferenceDao.updateSecondAdditionalCurrency(currencyTicker = if (currency != null) currency.ticker else currency)
+        currenciesPreferenceDao.updateSecondAdditionalCurrency(currencyTicker = if (currency != null) currency.ticker else null)
     }
 
     override suspend fun setThirdAdditionalCurrency(currency: Currency?) {
-        currenciesPreferenceDao.updateThirdAdditionalCurrency(currencyTicker = if (currency != null) currency.ticker else currency)
+        currenciesPreferenceDao.updateThirdAdditionalCurrency(currencyTicker = if (currency != null) currency.ticker else null)
     }
 
     override suspend fun setFourthAdditionalCurrency(currency: Currency?) {
-        currenciesPreferenceDao.updateForthAdditionalCurrency(currencyTicker = if (currency != null) currency.ticker else currency)
+        currenciesPreferenceDao.updateForthAdditionalCurrency(currencyTicker = if (currency != null) currency.ticker else null)
     }
 
     override fun getPreferableCurrency(): Flow<Currency?> {

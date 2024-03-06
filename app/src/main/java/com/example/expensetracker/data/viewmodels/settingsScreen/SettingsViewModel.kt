@@ -17,7 +17,6 @@ class SettingsViewModel(
 ) : ViewModel() {
     private val _currencyList = mutableStateListOf<Currency>()
     val currencyList: List<Currency> = _currencyList
-
     val preferableCurrencyStateFlow = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
     val firstAdditionalCurrencyStateFlow =
         currenciesPreferenceRepositoryImpl.getFirstAdditionalCurrency()
@@ -27,7 +26,6 @@ class SettingsViewModel(
         currenciesPreferenceRepositoryImpl.getThirdAdditionalCurrency()
     val fourthAdditionalCurrencyStateFlow =
         currenciesPreferenceRepositoryImpl.getFourthAdditionalCurrency()
-
     init {
         viewModelScope.launch {
             currencyListRepositoryImpl.getCurrencyList().collect {
@@ -36,27 +34,21 @@ class SettingsViewModel(
             }
         }
     }
-
     suspend fun setPreferableCurrency(value: Currency) {
         currenciesPreferenceRepositoryImpl.setPreferableCurrency(value)
     }
-
     suspend fun setFirstAdditionalCurrency(value: Currency?) {
         currenciesPreferenceRepositoryImpl.setFirstAdditionalCurrency(value)
     }
-
     suspend fun setSecondAdditionalCurrency(value: Currency?) {
         currenciesPreferenceRepositoryImpl.setSecondAdditionalCurrency(value)
     }
-
     suspend fun setThirdAdditionalCurrency(value: Currency?) {
-        currenciesPreferenceRepositoryImpl.setSecondAdditionalCurrency(value)
+        currenciesPreferenceRepositoryImpl.setThirdAdditionalCurrency(value)
     }
-
     suspend fun setFourthAdditionalCurrency(value: Currency?) {
-        currenciesPreferenceRepositoryImpl.setSecondAdditionalCurrency(value)
+        currenciesPreferenceRepositoryImpl.setFourthAdditionalCurrency(value)
     }
-
     val showPagesNameFlow = dataStoreManager.isShowPageName
     suspend fun setShowPagesNameFlow(value: Boolean) {
         dataStoreManager.setShowPageName(value)
@@ -68,12 +60,28 @@ class SettingsViewModel(
     suspend fun setLatestCurrencyAsNull() {
         if (fourthAdditionalCurrencyStateFlow.first() != null) {
         setFourthAdditionalCurrency(null)
-        }else if(thirdAdditionalCurrencyStateFlow.first() != null){
+            return
+        }
+        if(thirdAdditionalCurrencyStateFlow.first() != null){
             setThirdAdditionalCurrency(null)
-        }else if (secondAdditionalCurrencyStateFlow.first() != null){
+            return
+        }
+        if (secondAdditionalCurrencyStateFlow.first() != null){
             setSecondAdditionalCurrency(null)
-        }else if (firstAdditionalCurrencyStateFlow.first() !=null){
+            return
+        }
+        if (firstAdditionalCurrencyStateFlow.first() !=null){
             setFirstAdditionalCurrency(null)
+            return
         }
     }
 }
+//if (fourthAdditionalCurrencyStateFlow.first() != null) {
+//    setFourthAdditionalCurrency(null)
+//}else if(thirdAdditionalCurrencyStateFlow.first() != null){
+//    setThirdAdditionalCurrency(null)
+//}else if (secondAdditionalCurrencyStateFlow.first() != null){
+//    setSecondAdditionalCurrency(null)
+//}else if (firstAdditionalCurrencyStateFlow.first() !=null){
+//    setFirstAdditionalCurrency(null)
+//}
