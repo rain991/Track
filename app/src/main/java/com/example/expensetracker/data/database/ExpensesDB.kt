@@ -7,6 +7,11 @@ import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.example.expensetracker.data.constants.DB_PATH
 import com.example.expensetracker.data.converters.Converters
+import com.example.expensetracker.data.database.currenciesRelated.CurrenciesPreferenceDao
+import com.example.expensetracker.data.database.currenciesRelated.CurrencyDao
+import com.example.expensetracker.data.database.expensesRelated.ExpenseCategoryDao
+import com.example.expensetracker.data.database.expensesRelated.ExpenseItemsDAO
+import com.example.expensetracker.data.database.ideaRelated.IdeaDao
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.data.models.currency.CurrenciesPreference

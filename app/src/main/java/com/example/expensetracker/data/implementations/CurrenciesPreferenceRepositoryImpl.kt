@@ -1,6 +1,6 @@
 package com.example.expensetracker.data.implementations
 
-import com.example.expensetracker.data.database.CurrenciesPreferenceDao
+import com.example.expensetracker.data.database.currenciesRelated.CurrenciesPreferenceDao
 import com.example.expensetracker.data.models.currency.CurrenciesPreference
 import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.domain.repository.CurrenciesPreferenceRepository

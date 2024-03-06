@@ -37,6 +37,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -70,6 +71,7 @@ fun ExpensesCardTypeSimple(
     var expanded by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     val currentCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val categoryColor = parseColor(expenseCategory.colorId)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -97,7 +99,7 @@ fun ExpensesCardTypeSimple(
                         if (expenseItem.note.isNotEmpty()) {
                             noteCard(expenseItem = expenseItem)
                         } else {
-                            categoryCard(category = expenseCategory)
+                            categoryCard(category = expenseCategory,  containerColor = categoryColor)
                         }
                     }
                     Spacer(modifier = Modifier.weight(1f))
@@ -228,14 +230,14 @@ private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: Stri
 }
 
 @Composable
-private fun categoryCard(category: ExpenseCategory) {
+private fun categoryCard(category: ExpenseCategory, containerColor: Color) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
         modifier = Modifier.wrapContentSize(),
         colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor = containerColor,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.primary,
+            disabledContainerColor = containerColor,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         ), shape = MaterialTheme.shapes.small
     ) {

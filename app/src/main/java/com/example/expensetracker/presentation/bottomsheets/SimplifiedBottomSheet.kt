@@ -30,6 +30,7 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -64,6 +65,7 @@ import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.implementations.CurrenciesPreferenceRepositoryImpl
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
+import com.example.expensetracker.presentation.common.parseColor
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
@@ -120,7 +122,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         AcceptButton {
                             if (bottomSheetViewModel.categoryPicked.value != null && bottomSheetViewModel.datePicked.value.isBefore(
                                     LocalDate.now().plusDays(1)
-                                ) && bottomSheetViewModel.inputExpense.value != null && bottomSheetViewModel.inputExpense.value!! >0
+                                ) && bottomSheetViewModel.inputExpense.value != null && bottomSheetViewModel.inputExpense.value!! > 0
                             ) {
                                 coroutineScope.launch {
                                     withContext(Dispatchers.IO) {
@@ -144,7 +146,16 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
 
 @Composable
 fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (ExpenseCategory) -> Unit) {
-    Button(modifier = Modifier.height(32.dp), onClick = { onSelect(category) }) {
+    Button(
+        modifier = Modifier.height(32.dp),
+        onClick = { onSelect(category) },
+        colors = ButtonColors(
+            containerColor = parseColor(hexColor = category.colorId),
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            disabledContainerColor = parseColor(hexColor = category.colorId),
+            disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    ) {
         Row(horizontalArrangement = Arrangement.SpaceBetween) {
             AnimatedVisibility(visible = isSelected) {
                 Icon(
@@ -156,9 +167,7 @@ fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (Expe
             }
             Text(text = category.note, style = MaterialTheme.typography.bodyMedium)
         }
-
     }
-
 }
 
 @Composable

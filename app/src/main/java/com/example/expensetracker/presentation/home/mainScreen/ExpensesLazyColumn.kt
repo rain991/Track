@@ -255,23 +255,6 @@ private fun ExpenseYearHeader(localDate: LocalDate) {
     }
 }
 
-@Composable
-private fun UpButton(onClick: () -> Unit) {
-    Box {
-        FloatingActionButton(
-            onClick = onClick,
-            modifier = Modifier
-                .padding(16.dp),
-            elevation = FloatingActionButtonDefaults.elevation(
-                defaultElevation = 8.dp,
-                pressedElevation = 16.dp
-            )
-        ) {
-            Icons.Default.KeyboardArrowUp
-        }
-    }
-}
-
 fun getMonthResID(localDate: LocalDate): Int {
     val monthResId = when (localDate.monthValue) {
         1 -> R.string.january

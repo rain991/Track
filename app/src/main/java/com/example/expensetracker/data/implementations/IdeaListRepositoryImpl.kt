@@ -1,6 +1,6 @@
 package com.example.expensetracker.data.implementations
 
-import com.example.expensetracker.data.database.IdeaDao
+import com.example.expensetracker.data.database.ideaRelated.IdeaDao
 import com.example.expensetracker.data.models.idea.Idea
 import com.example.expensetracker.domain.repository.IdeaListRepository
 import kotlinx.coroutines.flow.Flow

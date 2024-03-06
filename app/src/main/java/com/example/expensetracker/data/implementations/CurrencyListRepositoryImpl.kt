@@ -1,6 +1,6 @@
 package com.example.expensetracker.data.implementations
 
-import com.example.expensetracker.data.database.CurrencyDao
+import com.example.expensetracker.data.database.currenciesRelated.CurrencyDao
 import com.example.expensetracker.data.models.currency.Currency
 import com.example.expensetracker.domain.repository.CurrencyListRepository
 import kotlinx.coroutines.flow.Flow

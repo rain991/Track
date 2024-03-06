@@ -1,6 +1,6 @@
 package com.example.expensetracker.data.implementations
 
-import com.example.expensetracker.data.database.ExpenseCategoryDao
+import com.example.expensetracker.data.database.expensesRelated.ExpenseCategoryDao
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.domain.repository.CategoriesListRepository
 import kotlinx.coroutines.flow.Flow

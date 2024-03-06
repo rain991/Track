@@ -1,4 +1,4 @@
-package com.example.expensetracker.data.database
+package com.example.expensetracker.data.database.ideaRelated
 
 import androidx.room.Dao
 import androidx.room.Delete

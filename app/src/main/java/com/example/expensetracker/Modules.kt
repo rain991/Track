@@ -1,12 +1,12 @@
 package com.example.expensetracker
 
 import com.example.expensetracker.data.DataStoreManager
-import com.example.expensetracker.data.database.CurrenciesPreferenceDao
-import com.example.expensetracker.data.database.CurrencyDao
-import com.example.expensetracker.data.database.ExpenseCategoryDao
-import com.example.expensetracker.data.database.ExpenseItemsDAO
+import com.example.expensetracker.data.database.currenciesRelated.CurrenciesPreferenceDao
+import com.example.expensetracker.data.database.currenciesRelated.CurrencyDao
+import com.example.expensetracker.data.database.expensesRelated.ExpenseCategoryDao
+import com.example.expensetracker.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.expensetracker.data.database.ExpensesDB
-import com.example.expensetracker.data.database.IdeaDao
+import com.example.expensetracker.data.database.ideaRelated.IdeaDao
 import com.example.expensetracker.data.implementations.CategoriesListRepositoryImpl
 import com.example.expensetracker.data.implementations.CurrenciesPreferenceRepositoryImpl
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl

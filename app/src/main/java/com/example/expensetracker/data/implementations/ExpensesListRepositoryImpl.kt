@@ -1,6 +1,6 @@
 package com.example.expensetracker.data.implementations
 
-import com.example.expensetracker.data.database.ExpenseItemsDAO
+import com.example.expensetracker.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.domain.repository.ExpensesListRepository
