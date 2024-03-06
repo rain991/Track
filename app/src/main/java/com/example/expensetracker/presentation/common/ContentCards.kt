@@ -47,9 +47,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.R
-import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.converters.extractAdditionalDateInformation
 import com.example.expensetracker.data.converters.extractDayOfWeekFromDate
+import com.example.expensetracker.data.implementations.CurrenciesPreferenceRepositoryImpl
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.models.Expenses.ExpenseItem
 import com.example.expensetracker.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
@@ -65,10 +66,10 @@ fun ExpensesCardTypeSimple(
     expenseCategory: ExpenseCategory,
     expensesLazyColumnViewModel: ExpensesLazyColumnViewModel
 ) {
-    val dataStoreManager = koinInject<DataStoreManager>()
+    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     var expanded by remember { mutableStateOf(false) }
     val density = LocalDensity.current
-    val currentCurrency = dataStoreManager.preferableCurrencyFlow.collectAsState(initial = "USD")
+    val currentCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -143,7 +144,7 @@ fun ExpensesCardTypeSimple(
                                             )
                                         ) {
                                             append(" ")
-                                            append(currentCurrency.value)
+                                            append(currentCurrency.value!!.ticker)
                                         }
 
                                     }
@@ -156,7 +157,8 @@ fun ExpensesCardTypeSimple(
                     }
                     Row(
                         modifier = Modifier
-                            .wrapContentWidth().padding(start = 6.dp)
+                            .wrapContentWidth()
+                            .padding(start = 6.dp)
                     ) {
                         AnimatedVisibility(visible = expanded, enter = slideInHorizontally {
                             with(density) { -60.dp.roundToPx() }
@@ -198,7 +200,7 @@ fun ExpensesCardTypeSimple(
                         Spacer(modifier = Modifier.weight(1f))
                     }
                 }
-                ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value, isExpanded = expanded)
+                ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value!!.ticker, isExpanded = expanded)
             }
         }
     }

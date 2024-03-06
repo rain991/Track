@@ -32,18 +32,11 @@ fun SettingsExpenseScreen() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
     val settingsData = koinInject<DataStoreManager>()
-    val isPageNameVisible =
-        settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
-    val preferableCurrencyState =
-        settingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT)
-    val firstAdditionalCurrencyState =
-        settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = null)
-    val secondAdditionalCurrencyState =
-        settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = null)
-    val thirdAdditionalCurrencyState =
-        settingsViewModel.thirdAdditionalCurrencyStateFlow.collectAsState(
-            initial = null
-        )
+    val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
+    val preferableCurrencyState = settingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT)
+    val firstAdditionalCurrencyState = settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val secondAdditionalCurrencyState = settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val thirdAdditionalCurrencyState = settingsViewModel.thirdAdditionalCurrencyStateFlow.collectAsState(initial = null)
     val fourthAdditionalCurrencyState =
         settingsViewModel.fourthAdditionalCurrencyStateFlow.collectAsState(
             initial = null

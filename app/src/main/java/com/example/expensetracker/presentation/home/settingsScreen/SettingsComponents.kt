@@ -32,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
 import com.example.expensetracker.data.constants.NAME_DEFAULT
 import com.example.expensetracker.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.expensetracker.data.constants.USE_SYSTEM_THEME_DEFAULT
@@ -61,12 +62,11 @@ fun CurrenciesSettings(
     preferableCurrency: Currency,
     firstAdditionalCurrency: Currency?,
     secondAdditionalCurrency: Currency?,
-    thirdAdditionalCurrency : Currency?,
-    fourthAdditionalCurrency : Currency?
+    thirdAdditionalCurrency: Currency?,
+    fourthAdditionalCurrency: Currency?
 ) {
     val coroutineScope = rememberCoroutineScope()
     val settingsViewModel = koinViewModel<SettingsViewModel>()
-
     Box(modifier = modifier) {
         Column(Modifier.wrapContentSize()) {
             Row(
@@ -78,7 +78,6 @@ fun CurrenciesSettings(
                     text = stringResource(R.string.currencies_settings_screen),
                     style = MaterialTheme.typography.titleMedium.copy(fontSize = 26.sp),
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
-                    //modifier = Modifier.padding(start = 4.dp),
                     textAlign = TextAlign.Center
                 )
                 AnimatedVisibility(visible = firstAdditionalCurrency != null || secondAdditionalCurrency != null) {
@@ -107,7 +106,9 @@ fun CurrenciesSettings(
                         currencyList = settingsViewModel.currencyList,
                         selectedOption = preferableCurrency,
                         onSelect = {
-                         //   settingsViewModel.setPreferableCurrency(it)
+                            coroutineScope.launch {
+                                settingsViewModel.setPreferableCurrency(it)
+                            }
                         })
                 }
             }
@@ -128,10 +129,11 @@ fun CurrenciesSettings(
                             currencyList = settingsViewModel.currencyList,
                             selectedOption = firstAdditionalCurrency!!, // ALERT
                             onSelect = {
-                             //   settingsViewModel.setFirstAdditionalCurrency(it)
+                                coroutineScope.launch {
+                                    settingsViewModel.setFirstAdditionalCurrency(it)
+                                }
                             })
                     }
-
                 }
                 Spacer(modifier = Modifier.height(8.dp))
             }
@@ -151,7 +153,9 @@ fun CurrenciesSettings(
                             currencyList = settingsViewModel.currencyList,
                             selectedOption = secondAdditionalCurrency!!, // ALERT
                             onSelect = {
-                            //    settingsViewModel.setSecondAdditionalCurrency(it)
+                                coroutineScope.launch {
+                                    settingsViewModel.setSecondAdditionalCurrency(it)
+                                }
                             })
                     }
                 }
@@ -164,9 +168,21 @@ fun CurrenciesSettings(
                 ) {
                     CurrenciesPlusTextButton {
                         if (firstAdditionalCurrency != null) {
-                       //     settingsViewModel.setSecondAdditionalCurrency(CURRENCY_DEFAULT)
+                            coroutineScope.launch {
+                                settingsViewModel.setSecondAdditionalCurrency(CURRENCY_DEFAULT)
+                            }
                         } else if (secondAdditionalCurrency != null) {
-                          //  settingsViewModel.setFirstAdditionalCurrency(CURRENCY_DEFAULT)
+                            coroutineScope.launch {
+                                settingsViewModel.setFirstAdditionalCurrency(CURRENCY_DEFAULT)
+                            }
+                        } else if (thirdAdditionalCurrency != null) {
+                            coroutineScope.launch {
+                                settingsViewModel.setThirdAdditionalCurrency(CURRENCY_DEFAULT)
+                            }
+                        } else if (fourthAdditionalCurrency != null) {
+                            coroutineScope.launch {
+                                settingsViewModel.setFourthAdditionalCurrency(CURRENCY_DEFAULT)
+                            }
                         }
                     }
                 }

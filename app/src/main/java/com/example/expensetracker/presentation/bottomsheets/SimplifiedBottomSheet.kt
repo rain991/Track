@@ -60,6 +60,8 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.expensetracker.R
 import com.example.expensetracker.data.DataStoreManager
+import com.example.expensetracker.data.constants.CURRENCY_DEFAULT
+import com.example.expensetracker.data.implementations.CurrenciesPreferenceRepositoryImpl
 import com.example.expensetracker.data.models.Expenses.ExpenseCategory
 import com.example.expensetracker.data.viewmodels.common.BottomSheetViewModel
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
@@ -70,12 +72,14 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val context = LocalContext.current
     val warning = stringResource(id = R.string.warning_bottom_sheet_exp)
     bottomSheetViewModel.setDatePicked(LocalDate.now())
@@ -107,7 +111,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
-                        AmountInput(focusRequester, controller, dataStoreManager)
+                        AmountInput(focusRequester, controller, currenciesPreferenceRepositoryImpl)
                         Spacer(Modifier.height(12.dp))
                         OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
                         DatePicker()
@@ -262,12 +266,12 @@ private fun OutlinedTextField(label: String) {
 private fun AmountInput(
     focusRequester: FocusRequester,
     controller: SoftwareKeyboardController?,
-    dataStoreManager: DataStoreManager
+    currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
 ) {
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val currentExpense = bottomSheetViewModel.inputExpense.collectAsState()
-    val currentCurrency = dataStoreManager.preferableCurrencyFlow.collectAsState(initial = "USD")
+    val currentCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -296,7 +300,7 @@ private fun AmountInput(
             ),
             maxLines = 1,
         )
-        Text(text = currentCurrency.value, style = MaterialTheme.typography.titleSmall)
+        Text(text = currentCurrency.value!!.ticker, style = MaterialTheme.typography.titleSmall)
     }
 }
 
