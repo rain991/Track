@@ -1,5 +1,6 @@
 package com.example.expensetracker.presentation.navigation.Screens
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,6 +12,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.expensetracker.R
@@ -41,6 +43,7 @@ fun SettingsExpenseScreen() {
         settingsViewModel.fourthAdditionalCurrencyStateFlow.collectAsState(
             initial = null
         )
+    val toastState = settingsViewModel.toastStateFlow.collectAsState()
     androidx.compose.material3.Scaffold(
         topBar = {
             if (isPageNameVisible.value) Header(categoryName = stringResource(R.string.settings))
@@ -77,5 +80,9 @@ fun SettingsExpenseScreen() {
             )
         }
         SimplifiedBottomSheet(dataStoreManager = settingsData)
+        if (toastState.value.length > 1) {
+            Toast.makeText(LocalContext.current, toastState.value, Toast.LENGTH_SHORT).show()
+            settingsViewModel.clearToastMessage()
+        }
     }
 }

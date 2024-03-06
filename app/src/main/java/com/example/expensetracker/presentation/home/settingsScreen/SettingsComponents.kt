@@ -74,7 +74,7 @@ fun CurrenciesSettings(
             ) {
                 Text(
                     text = stringResource(R.string.currencies_settings_screen),
-                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 26.sp),
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 22.sp),
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     textAlign = TextAlign.Center
                 )
@@ -132,7 +132,9 @@ fun CurrenciesSettings(
                     }
                 }
             }
-            if(firstAdditionalCurrency != null){Spacer(modifier = Modifier.height(8.dp))}
+            if (firstAdditionalCurrency != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             AnimatedVisibility(visible = secondAdditionalCurrency != null) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -147,7 +149,7 @@ fun CurrenciesSettings(
                     Box(Modifier.width(140.dp)) {
                         CurrencyDropDownMenu(
                             currencyList = settingsViewModel.currencyList,
-                            selectedOption = secondAdditionalCurrency?: CURRENCY_DEFAULT,
+                            selectedOption = secondAdditionalCurrency ?: CURRENCY_DEFAULT,
                             onSelect = {
                                 coroutineScope.launch {
                                     settingsViewModel.setSecondAdditionalCurrency(it)
@@ -156,7 +158,9 @@ fun CurrenciesSettings(
                     }
                 }
             }
-            if(secondAdditionalCurrency != null){Spacer(modifier = Modifier.height(8.dp))}
+            if (secondAdditionalCurrency != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             AnimatedVisibility(visible = thirdAdditionalCurrency != null) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -171,7 +175,7 @@ fun CurrenciesSettings(
                     Box(Modifier.width(140.dp)) {
                         CurrencyDropDownMenu(
                             currencyList = settingsViewModel.currencyList,
-                            selectedOption = thirdAdditionalCurrency?: CURRENCY_DEFAULT,
+                            selectedOption = thirdAdditionalCurrency ?: CURRENCY_DEFAULT,
                             onSelect = {
                                 coroutineScope.launch {
                                     settingsViewModel.setThirdAdditionalCurrency(it)
@@ -180,7 +184,9 @@ fun CurrenciesSettings(
                     }
                 }
             }
-            if(thirdAdditionalCurrency != null){Spacer(modifier = Modifier.height(8.dp))}
+            if (thirdAdditionalCurrency != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             AnimatedVisibility(visible = fourthAdditionalCurrency != null) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -195,7 +201,7 @@ fun CurrenciesSettings(
                     Box(Modifier.width(140.dp)) {
                         CurrencyDropDownMenu(
                             currencyList = settingsViewModel.currencyList,
-                            selectedOption = fourthAdditionalCurrency?: CURRENCY_DEFAULT,
+                            selectedOption = fourthAdditionalCurrency ?: CURRENCY_DEFAULT,
                             onSelect = {
                                 coroutineScope.launch {
                                     settingsViewModel.setFourthAdditionalCurrency(it)
@@ -204,7 +210,9 @@ fun CurrenciesSettings(
                     }
                 }
             }
-            if(fourthAdditionalCurrency != null){Spacer(modifier = Modifier.height(8.dp))}
+            if (fourthAdditionalCurrency != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
             AnimatedVisibility(visible = (firstAdditionalCurrency == null || secondAdditionalCurrency == null || thirdAdditionalCurrency == null || fourthAdditionalCurrency == null)) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -214,19 +222,19 @@ fun CurrenciesSettings(
                     CurrenciesPlusTextButton {
                         if (firstAdditionalCurrency == null) {
                             coroutineScope.launch {
-                                settingsViewModel.setFirstAdditionalCurrency(CURRENCY_DEFAULT)
+                                settingsViewModel.setFirstAdditionalCurrency(settingsViewModel.getRandomNotUsedCurrency())
                             }
                         } else if (secondAdditionalCurrency == null) {
                             coroutineScope.launch {
-                                settingsViewModel.setSecondAdditionalCurrency(CURRENCY_DEFAULT)
+                                settingsViewModel.setSecondAdditionalCurrency(settingsViewModel.getRandomNotUsedCurrency())
                             }
                         } else if (thirdAdditionalCurrency == null) {
                             coroutineScope.launch {
-                                settingsViewModel.setThirdAdditionalCurrency(CURRENCY_DEFAULT)
+                                settingsViewModel.setThirdAdditionalCurrency(settingsViewModel.getRandomNotUsedCurrency())
                             }
                         } else if (fourthAdditionalCurrency == null) {
                             coroutineScope.launch {
-                                settingsViewModel.setFourthAdditionalCurrency(CURRENCY_DEFAULT)
+                                settingsViewModel.setFourthAdditionalCurrency(settingsViewModel.getRandomNotUsedCurrency())
                             }
                         }
                     }
@@ -246,7 +254,7 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
         Column(Modifier.wrapContentSize()) {
             Text(
                 text = stringResource(R.string.theme_settings_screen),
-                style = MaterialTheme.typography.titleMedium,
+                style = MaterialTheme.typography.titleMedium.copy(fontSize = 22.sp),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 modifier = Modifier.padding(start = 4.dp)
             )

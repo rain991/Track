@@ -7,7 +7,10 @@ import com.example.expensetracker.data.DataStoreManager
 import com.example.expensetracker.data.implementations.CurrenciesPreferenceRepositoryImpl
 import com.example.expensetracker.data.implementations.CurrencyListRepositoryImpl
 import com.example.expensetracker.data.models.currency.Currency
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class SettingsViewModel(
@@ -26,6 +29,9 @@ class SettingsViewModel(
         currenciesPreferenceRepositoryImpl.getThirdAdditionalCurrency()
     val fourthAdditionalCurrencyStateFlow =
         currenciesPreferenceRepositoryImpl.getFourthAdditionalCurrency()
+    private val _toastStateFlow = MutableStateFlow("")
+    val toastStateFlow = _toastStateFlow.asStateFlow()
+
     init {
         viewModelScope.launch {
             currencyListRepositoryImpl.getCurrencyList().collect {
@@ -34,54 +40,116 @@ class SettingsViewModel(
             }
         }
     }
+
     suspend fun setPreferableCurrency(value: Currency) {
-        currenciesPreferenceRepositoryImpl.setPreferableCurrency(value)
+        if (firstAdditionalCurrencyStateFlow.first() != value && secondAdditionalCurrencyStateFlow.first() != value &&
+            thirdAdditionalCurrencyStateFlow.first() != value && fourthAdditionalCurrencyStateFlow.first() != value
+        ) {
+            currenciesPreferenceRepositoryImpl.setPreferableCurrency(value)
+        } else {
+            setToastMessage("${value.ticker} is already in use")
+        }
     }
+
     suspend fun setFirstAdditionalCurrency(value: Currency?) {
-        currenciesPreferenceRepositoryImpl.setFirstAdditionalCurrency(value)
+        if (value != null) {
+            if (preferableCurrencyStateFlow.first() != value && secondAdditionalCurrencyStateFlow.first() != value &&
+                thirdAdditionalCurrencyStateFlow.first() != value && fourthAdditionalCurrencyStateFlow.first() != value
+            ) {
+                currenciesPreferenceRepositoryImpl.setFirstAdditionalCurrency(value)
+            } else {
+                setToastMessage("${value.ticker} is already in use")
+            }
+        } else {
+            currenciesPreferenceRepositoryImpl.setFirstAdditionalCurrency(null)
+        }
     }
+
     suspend fun setSecondAdditionalCurrency(value: Currency?) {
-        currenciesPreferenceRepositoryImpl.setSecondAdditionalCurrency(value)
+        if (value != null) {
+            if (preferableCurrencyStateFlow.first() != value && firstAdditionalCurrencyStateFlow.first() != value &&
+                thirdAdditionalCurrencyStateFlow.first() != value && fourthAdditionalCurrencyStateFlow.first() != value
+            ) {
+                currenciesPreferenceRepositoryImpl.setSecondAdditionalCurrency(value)
+            } else {
+                setToastMessage("${value.ticker} is already in use")
+            }
+        } else {
+            currenciesPreferenceRepositoryImpl.setSecondAdditionalCurrency(null)
+        }
     }
+
     suspend fun setThirdAdditionalCurrency(value: Currency?) {
-        currenciesPreferenceRepositoryImpl.setThirdAdditionalCurrency(value)
+        if (value != null) {
+            if (preferableCurrencyStateFlow.first() != value && firstAdditionalCurrencyStateFlow.first() != value &&
+                secondAdditionalCurrencyStateFlow.first() != value && fourthAdditionalCurrencyStateFlow.first() != value
+            ) {
+                currenciesPreferenceRepositoryImpl.setThirdAdditionalCurrency(value)
+            } else {
+                setToastMessage("${value.ticker} is already in use")
+            }
+        } else {
+            currenciesPreferenceRepositoryImpl.setThirdAdditionalCurrency(null)
+        }
     }
+
     suspend fun setFourthAdditionalCurrency(value: Currency?) {
-        currenciesPreferenceRepositoryImpl.setFourthAdditionalCurrency(value)
+        if (value != null) {
+            if (preferableCurrencyStateFlow.first() != value && firstAdditionalCurrencyStateFlow.first() != value &&
+                secondAdditionalCurrencyStateFlow.first() != value && thirdAdditionalCurrencyStateFlow.first() != value
+            ) {
+                currenciesPreferenceRepositoryImpl.setFourthAdditionalCurrency(value)
+            } else {
+                setToastMessage("${value.ticker} is already in use")
+            }
+        } else {
+            currenciesPreferenceRepositoryImpl.setFourthAdditionalCurrency(null)
+        }
     }
+
     val showPagesNameFlow = dataStoreManager.isShowPageName
     suspend fun setShowPagesNameFlow(value: Boolean) {
         dataStoreManager.setShowPageName(value)
     }
+
     val useSystemTheme = dataStoreManager.useSystemTheme
     suspend fun setUseSystemTheme(value: Boolean) {
         dataStoreManager.setUseSystemTheme(value)
     }
+
     suspend fun setLatestCurrencyAsNull() {
         if (fourthAdditionalCurrencyStateFlow.first() != null) {
-        setFourthAdditionalCurrency(null)
+            setFourthAdditionalCurrency(null)
             return
         }
-        if(thirdAdditionalCurrencyStateFlow.first() != null){
+        if (thirdAdditionalCurrencyStateFlow.first() != null) {
             setThirdAdditionalCurrency(null)
             return
         }
-        if (secondAdditionalCurrencyStateFlow.first() != null){
+        if (secondAdditionalCurrencyStateFlow.first() != null) {
             setSecondAdditionalCurrency(null)
             return
         }
-        if (firstAdditionalCurrencyStateFlow.first() !=null){
+        if (firstAdditionalCurrencyStateFlow.first() != null) {
             setFirstAdditionalCurrency(null)
             return
         }
     }
+    private fun setToastMessage(message: String) {
+        _toastStateFlow.update { message }
+    }
+    fun clearToastMessage() {
+        _toastStateFlow.update { "" }
+    }
+    suspend fun getRandomNotUsedCurrency(): Currency {
+        val usedCurrencies = listOfNotNull(
+            preferableCurrencyStateFlow.first(),
+            firstAdditionalCurrencyStateFlow.first(),
+            secondAdditionalCurrencyStateFlow.first(),
+            thirdAdditionalCurrencyStateFlow.first(),
+            fourthAdditionalCurrencyStateFlow.first()
+        )
+        val availableCurrencyList = _currencyList.filter { currency -> !usedCurrencies.contains(currency) }
+        return availableCurrencyList.random()
+    }
 }
-//if (fourthAdditionalCurrencyStateFlow.first() != null) {
-//    setFourthAdditionalCurrency(null)
-//}else if(thirdAdditionalCurrencyStateFlow.first() != null){
-//    setThirdAdditionalCurrency(null)
-//}else if (secondAdditionalCurrencyStateFlow.first() != null){
-//    setSecondAdditionalCurrency(null)
-//}else if (firstAdditionalCurrencyStateFlow.first() !=null){
-//    setFirstAdditionalCurrency(null)
-//}
