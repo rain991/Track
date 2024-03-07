@@ -7,6 +7,7 @@ import androidx.work.WorkerParameters
 import com.example.track.data.constants.API_KEY
 import com.example.track.data.implementations.CurrencyListRepositoryImpl
 import com.example.track.data.retrofit.RetrofitClient
+import kotlinx.coroutines.flow.first
 import org.koin.core.component.KoinComponent
 
 class CurrenciesRatesWorker(
@@ -15,10 +16,13 @@ class CurrenciesRatesWorker(
     workerParameters: WorkerParameters
 ) : CoroutineWorker(workerContext, workerParameters), KoinComponent {
     override suspend fun doWork(): Result {
+        val allCurrenciesList = currencyListRepositoryImpl.getCurrencyList().first()
+        val allTickersList = allCurrenciesList.map { it.ticker }
+        val symbols = allTickersList.joinToString (separator = ", ")
         return try {
-            val response = RetrofitClient.api.getLatestRates(API_KEY, "EUR, ETH, PLN")
-            response.rates.forEach{(currency, rate) ->
-                currencyListRepositoryImpl.editCurrencyRate(rate =  (1.0 /  rate.toDouble()), currencyTicker = currency)
+            val response = RetrofitClient.api.getLatestRates(API_KEY, symbols)
+            response.rates.forEach { (currency, rate) ->
+                currencyListRepositoryImpl.editCurrencyRate(rate = (1.0 / rate.toDouble()), currencyTicker = currency)
             }
             Log.d("MyLog", "doWork: currencyResponse recieved")
             Result.success()

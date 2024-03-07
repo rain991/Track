@@ -1,11 +1,11 @@
 package com.example.track
 
 import com.example.track.data.DataStoreManager
+import com.example.track.data.database.ExpensesDB
 import com.example.track.data.database.currenciesRelated.CurrenciesPreferenceDao
 import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
-import com.example.track.data.database.ExpensesDB
 import com.example.track.data.database.ideaRelated.IdeaDao
 import com.example.track.data.implementations.CategoriesListRepositoryImpl
 import com.example.track.data.implementations.CurrenciesPreferenceRepositoryImpl
