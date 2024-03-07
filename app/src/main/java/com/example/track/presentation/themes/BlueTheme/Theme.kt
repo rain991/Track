@@ -1,9 +1,27 @@
 package com.example.track.presentation.themes.BlueTheme
 
+import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
+import androidx.compose.runtime.Composable
 
+@Composable
+fun BlueTheme(
+    useDarkTheme: Boolean = isSystemInDarkTheme(),
+    content: @Composable() () -> Unit
+) {
+    val colors = if (!useDarkTheme) {
+        blueTheme_LightColors
+    } else {
+        blueTheme_darkColors
+    }
 
+    MaterialTheme(
+        colorScheme = colors,
+        content = content
+    )
+}
 private val blueTheme_LightColors = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
@@ -35,8 +53,6 @@ private val blueTheme_LightColors = lightColorScheme(
     outlineVariant = md_theme_light_outlineVariant,
     scrim = md_theme_light_scrim,
 )
-
-
 private val blueTheme_darkColors = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
@@ -68,3 +84,4 @@ private val blueTheme_darkColors = darkColorScheme(
     outlineVariant = md_theme_dark_outlineVariant,
     scrim = md_theme_dark_scrim,
 )
+
