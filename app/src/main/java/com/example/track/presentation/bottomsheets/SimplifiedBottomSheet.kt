@@ -251,6 +251,7 @@ private fun OutlinedDateButton(text: String, isSelected: Boolean, onSelect: () -
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
+            if(isSelected) Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium

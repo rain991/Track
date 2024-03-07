@@ -24,7 +24,6 @@ class ExpensesLazyColumnViewModel(
 
     private val _isScrolledBelow = MutableStateFlow(value = false)
     val isScrolledBelow = _isScrolledBelow.asStateFlow()
-
     init {
         viewModelScope.launch {
             categoriesListRepositoryImpl.getCategoriesList().collect {

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.work.Constraints
+import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -34,7 +35,8 @@ class TrackActivity : ComponentActivity() {
         val workRequest = PeriodicWorkRequestBuilder<CurrenciesRatesWorker>(
             1, TimeUnit.DAYS
         ).setConstraints(constraints).setInputData(workDataOf()).build()
-        WorkManager.getInstance(applicationContext).enqueue(workRequest)
+        WorkManager.getInstance(applicationContext)
+            .enqueueUniquePeriodicWork("currenciesRateRequest", ExistingPeriodicWorkPolicy.KEEP, workRequest)
         setContent {
             TrackerTheme {
                 Navigation(dataStore)

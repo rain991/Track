@@ -81,7 +81,7 @@ fun CurrenciesSettings(
                     textAlign = TextAlign.Center
                 )
                 if(firstAdditionalCurrency != null || secondAdditionalCurrency != null || thirdAdditionalCurrency != null || fourthAdditionalCurrency != null){
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.width(12.dp))
                 }
                 AnimatedVisibility(visible = firstAdditionalCurrency != null || secondAdditionalCurrency != null || thirdAdditionalCurrency != null || fourthAdditionalCurrency != null) {
                     CurrenciesMinusTextButton {
