@@ -2,12 +2,12 @@ package com.example.track.data.implementations
 
 import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
 import com.example.track.data.models.Expenses.ExpenseCategory
-import com.example.track.domain.repository.CategoriesListRepository
+import com.example.track.domain.repository.expenses.ExpensesCategoriesListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
-class CategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) : CategoriesListRepository {
+class ExpensesCategoriesListRepositoryImpl(private val categoryDao: ExpenseCategoryDao) : ExpensesCategoriesListRepository {
     override fun getCategoriesList(): Flow<List<ExpenseCategory>> {
         return categoryDao.getAllCategories()
     }

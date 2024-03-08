@@ -1,11 +1,11 @@
-package com.example.track.domain.repository
+package com.example.track.domain.repository.expenses
 
 import com.example.track.data.models.Expenses.ExpenseCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
 
-interface CategoriesListRepository {
+interface ExpensesCategoriesListRepository {
     fun getCategoriesList() : Flow<List<ExpenseCategory>>
     suspend fun addCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)
     suspend fun editCategory(category: ExpenseCategory, context: CoroutineContext = Dispatchers.IO)

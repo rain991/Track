@@ -3,7 +3,7 @@ package com.example.track.data.viewmodels.mainScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.implementations.CategoriesListRepositoryImpl
+import com.example.track.data.implementations.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.ExpensesListRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
@@ -15,7 +15,7 @@ import java.util.Calendar
 
 class ExpensesLazyColumnViewModel(
     private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
-    private val categoriesListRepositoryImpl: CategoriesListRepositoryImpl
+    private val categoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl
 ) : ViewModel() {
     private val _expensesList = mutableStateListOf<ExpenseItem>()
     val expensesList: List<ExpenseItem> = _expensesList

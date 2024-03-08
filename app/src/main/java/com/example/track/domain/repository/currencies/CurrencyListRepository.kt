@@ -1,4 +1,4 @@
-package com.example.track.domain.repository
+package com.example.track.domain.repository.currencies
 
 import com.example.track.data.models.currency.Currency
 import kotlinx.coroutines.Dispatchers

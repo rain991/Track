@@ -1,4 +1,4 @@
-package com.example.track.domain.repository
+package com.example.track.domain.repository.expenses
 
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem

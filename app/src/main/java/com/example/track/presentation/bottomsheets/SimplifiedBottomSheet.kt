@@ -165,7 +165,7 @@ fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (Expe
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
-            if(isSelected) Spacer(modifier = Modifier.width(8.dp))
+            if (isSelected) Spacer(modifier = Modifier.width(8.dp))
             Text(text = category.note, style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary))
         }
     }
@@ -175,7 +175,7 @@ fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (Expe
 private fun CategoriesGrid() {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val categoryList = bottomSheetViewModel.categoryList
+    val categoryList = bottomSheetViewModel.expenseCategoryList
     val selected = bottomSheetViewModel.categoryPicked.collectAsState()
     LazyHorizontalStaggeredGrid(
         modifier = Modifier.height(84.dp),
@@ -193,7 +193,6 @@ private fun CategoriesGrid() {
         }
     }
 }
-
 @Composable
 private fun DatePicker() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
@@ -251,7 +250,7 @@ private fun OutlinedDateButton(text: String, isSelected: Boolean, onSelect: () -
                     tint = MaterialTheme.colorScheme.onPrimary
                 )
             }
-            if(isSelected) Spacer(modifier = Modifier.width(8.dp))
+            if (isSelected) Spacer(modifier = Modifier.width(8.dp))
             Text(
                 text = text,
                 style = MaterialTheme.typography.bodyMedium
@@ -269,7 +268,7 @@ private fun OutlinedTextField(label: String) {
         value = text,
         onValueChange = { bottomSheetViewModel.setNote(it) },
         label = { Text(label) }, modifier = Modifier.padding(horizontal = 8.dp),
-        maxLines = 2
+        maxLines = 1
     )
 }
 

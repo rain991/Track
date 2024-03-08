@@ -1,4 +1,4 @@
-package com.example.track.domain.repository
+package com.example.track.domain.repository.ideas
 
 import com.example.track.data.models.idea.Idea
 import kotlinx.coroutines.Dispatchers

@@ -7,7 +7,7 @@ import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.database.ideaRelated.IdeaDao
-import com.example.track.data.implementations.CategoriesListRepositoryImpl
+import com.example.track.data.implementations.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.CurrencyListRepositoryImpl
 import com.example.track.data.implementations.ExpensesListRepositoryImpl
@@ -37,7 +37,7 @@ val appModule = module {
     single<ExpensesListRepositoryImpl> { ExpensesListRepositoryImpl(get()) }
 
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
-    single<CategoriesListRepositoryImpl> { CategoriesListRepositoryImpl(get()) }
+    single<ExpensesCategoriesListRepositoryImpl> { ExpensesCategoriesListRepositoryImpl(get()) }
 
     single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
     single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
@@ -47,10 +47,6 @@ val appModule = module {
 
     single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
     single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
-}
-
-val workerFactoryModule = module {
-    worker { CurrenciesRatesWorker(get(), get(), get()) }
 }
 
 val domainModule = module {
@@ -66,13 +62,17 @@ val domainModule = module {
     factory<GetCategoryListUseCase> { GetCategoryListUseCase() }
 }
 
+val workerFactoryModule = module {
+    worker { CurrenciesRatesWorker(get(), get(), get()) }
+}
+
 val settingsModule = module {
     single<DataStoreManager> { DataStoreManager(get()) }
 }
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get()) }
-    viewModel { BottomSheetViewModel(get(), get(), get(), get()) }
+    viewModel { BottomSheetViewModel(get(), get(), get()) }
     viewModel { ExpensesLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }

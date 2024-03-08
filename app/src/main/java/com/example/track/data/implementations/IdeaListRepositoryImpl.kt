@@ -2,7 +2,7 @@ package com.example.track.data.implementations
 
 import com.example.track.data.database.ideaRelated.IdeaDao
 import com.example.track.data.models.idea.Idea
-import com.example.track.domain.repository.IdeaListRepository
+import com.example.track.domain.repository.ideas.IdeaListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
 

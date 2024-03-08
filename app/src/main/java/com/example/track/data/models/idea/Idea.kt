@@ -39,6 +39,5 @@ data class Idea(
     @ColumnInfo(name = "secondRelatedCategoryId")
     val secondRelatedCategoryId : Int?,
     @ColumnInfo(name = "thirdRelatedCategoryId")
-    val thirdRelatedCategoryId : Int?,
-
+    val thirdRelatedCategoryId : Int?
 )

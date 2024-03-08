@@ -1,4 +1,4 @@
-package com.example.track.domain.repository
+package com.example.track.domain.repository.currencies
 
 import com.example.track.data.models.currency.CurrenciesPreference
 import com.example.track.data.models.currency.Currency

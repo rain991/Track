@@ -3,7 +3,7 @@ package com.example.track.data.implementations
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
-import com.example.track.domain.repository.ExpensesListRepository
+import com.example.track.domain.repository.expenses.ExpensesListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import java.util.Date
