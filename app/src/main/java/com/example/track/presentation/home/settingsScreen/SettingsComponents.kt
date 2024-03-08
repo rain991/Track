@@ -72,7 +72,9 @@ fun CurrenciesSettings(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
+                    .padding(horizontal = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
                     text = stringResource(R.string.currencies_settings_screen),
@@ -80,9 +82,9 @@ fun CurrenciesSettings(
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
                     textAlign = TextAlign.Center
                 )
-                if(firstAdditionalCurrency != null || secondAdditionalCurrency != null || thirdAdditionalCurrency != null || fourthAdditionalCurrency != null){
-                    Spacer(modifier = Modifier.width(12.dp))
-                }
+//                if (firstAdditionalCurrency != null || secondAdditionalCurrency != null || thirdAdditionalCurrency != null || fourthAdditionalCurrency != null) {
+//                    Spacer(modifier = Modifier.width(12.dp))
+//                }
                 AnimatedVisibility(visible = firstAdditionalCurrency != null || secondAdditionalCurrency != null || thirdAdditionalCurrency != null || fourthAdditionalCurrency != null) {
                     CurrenciesMinusTextButton {
                         coroutineScope.launch {
@@ -92,7 +94,7 @@ fun CurrenciesSettings(
                 }
             }
             Spacer(modifier = Modifier.height(12.dp))
-            Row() {
+            Row {
                 Text(
                     text = "You can switch currencies by touching their ticker in cards",
                     color = MaterialTheme.colorScheme.onPrimaryContainer,
@@ -358,7 +360,7 @@ private fun CurrenciesMinusTextButton(onClick: () -> Unit) {
                 shape = RoundedCornerShape(8.dp)
             )
             .padding(4.dp)
-    ){
+    ) {
         Icon(
             painter = painterResource(id = R.drawable.outline_remove_24),
             contentDescription = stringResource(R.string.delete_latest_currency_settings_screen),
@@ -369,19 +371,19 @@ private fun CurrenciesMinusTextButton(onClick: () -> Unit) {
 
 @Composable
 private fun CurrenciesPlusTextButton(onClick: () -> Unit) {
-        Box(
-            modifier = Modifier
-                .clickable(onClick = onClick)
-                .background(
-                    color = MaterialTheme.colorScheme.primaryContainer,
-                    shape = RoundedCornerShape(8.dp)
-                )
-                .padding(4.dp)
-        ) {
-            Icon(
-                imageVector = Icons.Outlined.Add,
-                contentDescription = stringResource(R.string.delete_latest_currency_settings_screen),
-                tint = MaterialTheme.colorScheme.onPrimaryContainer
+    Box(
+        modifier = Modifier
+            .clickable(onClick = onClick)
+            .background(
+                color = MaterialTheme.colorScheme.primaryContainer,
+                shape = RoundedCornerShape(8.dp)
             )
-        }
+            .padding(4.dp)
+    ) {
+        Icon(
+            imageVector = Icons.Outlined.Add,
+            contentDescription = stringResource(R.string.delete_latest_currency_settings_screen),
+            tint = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+    }
 }

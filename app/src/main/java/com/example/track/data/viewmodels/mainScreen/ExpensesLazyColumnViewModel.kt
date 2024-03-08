@@ -21,9 +21,11 @@ class ExpensesLazyColumnViewModel(
     val expensesList: List<ExpenseItem> = _expensesList
     private val _categoriesList = mutableStateListOf<ExpenseCategory>()
     val categoriesList: List<ExpenseCategory> = _categoriesList
-
     private val _isScrolledBelow = MutableStateFlow(value = false)
     val isScrolledBelow = _isScrolledBelow.asStateFlow()
+    private val _expandedExpense: MutableStateFlow<ExpenseItem?> = MutableStateFlow(value = null)
+    val expandedExpense = _expandedExpense.asStateFlow()
+
     init {
         viewModelScope.launch {
             categoriesListRepositoryImpl.getCategoriesList().collect {
@@ -39,8 +41,12 @@ class ExpensesLazyColumnViewModel(
         }
     }
 
+    fun setExpandedExpenseCard(value: ExpenseItem?) {
+        _expandedExpense.update { value }
+    }
+
     fun setScrolledBelow(firstVisibleIndex: Int) {
-        _isScrolledBelow.update { firstVisibleIndex != 0 && _expensesList.size>8 }
+        _isScrolledBelow.update { firstVisibleIndex != 0 && _expensesList.size > 8 }
     }
 
     fun requestCountInMonthNotion(expenseItem: ExpenseItem, expenseCategory: ExpenseCategory): String {
@@ -77,5 +83,4 @@ class ExpensesLazyColumnViewModel(
         val sum = result.sumOf { it.value.toInt() } // warning Crypto
         return "$sum"
     }
-
 }

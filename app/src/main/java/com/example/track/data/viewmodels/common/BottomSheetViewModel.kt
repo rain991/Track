@@ -3,10 +3,10 @@ package com.example.track.data.viewmodels.common
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.DataStoreManager
 import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.converters.convertLocalDateToDate
 import com.example.track.data.implementations.CategoriesListRepositoryImpl
+import com.example.track.data.implementations.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.CurrencyListRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
@@ -27,7 +27,7 @@ class BottomSheetViewModel(
     private val addExpensesItemUseCase: AddExpensesItemUseCase,
     private val categoryListRepositoryImpl: CategoriesListRepositoryImpl,
     private val currencyListRepositoryImpl: CurrencyListRepositoryImpl,
-    private val dataStoreManager: DataStoreManager
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
 ) : ViewModel() {
     private val _categoryList = mutableStateListOf<ExpenseCategory>()
     val categoryList: List<ExpenseCategory> = _categoryList
@@ -36,14 +36,6 @@ class BottomSheetViewModel(
     var prefferableCurrency = CURRENCY_DEFAULT
 
     init {
-//        viewModelScope.launch {
-//            dataStoreManager.preferableCurrencyFlow.collect { preferableCurrencyTicker ->
-//                prefferableCurrency = _currencyList.find { foundedCurrency ->
-//                    foundedCurrency.ticker == preferableCurrencyTicker
-//                } ?: CURRENCY_DEFAULT
-//            }
-//        }
-
         viewModelScope.launch {
             categoryListRepositoryImpl.getCategoriesList().collect {
                 _categoryList.clear()
@@ -74,21 +66,14 @@ class BottomSheetViewModel(
         }
     }
 
-    private var _isBottomSheetExpanded = MutableStateFlow(value = false)
-    val isBottomSheetExpanded = _isBottomSheetExpanded.asStateFlow()
-
-
     companion object {
         val DEFAULT_NOTE = ""
         val DEFAULT_EXPENSE = 0.0f
         val DEFAULT_CATEGORY = null
         val DEFAULT_DATE = LocalDate.now()
     }
-
-
-    fun setBottomSheetExpanded(value: Boolean) {
-        _isBottomSheetExpanded.update { value }
-    }
+    private var _isBottomSheetExpanded = MutableStateFlow(value = false)
+    val isBottomSheetExpanded = _isBottomSheetExpanded.asStateFlow()
 
     private var _note = MutableStateFlow(DEFAULT_NOTE)
     val note = _note.asStateFlow()
@@ -99,7 +84,7 @@ class BottomSheetViewModel(
     private var _categoryPicked = MutableStateFlow<ExpenseCategory?>(DEFAULT_CATEGORY)
     val categoryPicked = _categoryPicked.asStateFlow()
 
-    private var _timePickerState = MutableStateFlow(false) // timePicker Dialog state
+    private var _timePickerState = MutableStateFlow(false)
     val timePickerState = _timePickerState.asStateFlow()
 
     private var _datePicked = MutableStateFlow<LocalDate>(value = LocalDate.now())
@@ -111,25 +96,23 @@ class BottomSheetViewModel(
     private var _yesterdayButtonActiveState = MutableStateFlow(false)
     val yesterdayButtonActiveState = _yesterdayButtonActiveState.asStateFlow()
 
-
+    fun setBottomSheetExpanded(value: Boolean) {
+        _isBottomSheetExpanded.update { value }
+    }
     fun setNote(note: String) {
         _note.update { note }
     }
-
     fun setInputExpense(inputExpense: Float) {
         _inputExpense.update { inputExpense }
     }
-
     fun setCategoryPicked(category: ExpenseCategory?) {
         if (category != null) {
             _categoryPicked.update { category }
         } else _categoryPicked.update { null }
     }
-
     fun togglePickerState() {
         _timePickerState.update { !_timePickerState.value }
     }
-
     fun setDatePicked(localDate: LocalDate) {
         _datePicked.value = localDate
         if (localDate == LocalDate.now()) {
@@ -143,15 +126,12 @@ class BottomSheetViewModel(
             setYesterdayButtonState(false)
         }
     }
-
     private fun setTodayButtonState(boolean: Boolean) {
         _todayButtonActiveState.update { boolean }
     }
-
     private fun setYesterdayButtonState(boolean: Boolean) {
         _yesterdayButtonActiveState.update { boolean }
     }
-
     fun isDateInOtherSpan(localDate: LocalDate): Boolean {
         return (localDate != LocalDate.now() && localDate != LocalDate.now().minusDays(1))
     }

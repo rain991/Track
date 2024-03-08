@@ -31,10 +31,8 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -64,11 +62,11 @@ import kotlin.math.absoluteValue
 @Composable
 fun ExpensesCardTypeSimple(
     expenseItem: ExpenseItem,
+    expanded:Boolean,
     expenseCategory: ExpenseCategory,
     expensesLazyColumnViewModel: ExpensesLazyColumnViewModel
 ) {
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
-    var expanded by remember { mutableStateOf(false) }
     val density = LocalDensity.current
     val currentCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val categoryColor = parseColor(expenseCategory.colorId)
@@ -78,7 +76,7 @@ fun ExpensesCardTypeSimple(
             .animateContentSize()
             .height(if (expanded) 150.dp else 100.dp)
             .padding(vertical = 8.dp)
-            .clickable { expanded = !expanded }, shape = MaterialTheme.shapes.medium
+            .clickable { expensesLazyColumnViewModel.setExpandedExpenseCard(if(expanded) null else expenseItem) }, shape = MaterialTheme.shapes.medium
     ) {
         Column(
             modifier = Modifier

@@ -55,6 +55,7 @@ fun ExpensesLazyColumn() {
     val expensesList = expensesLazyColumnViewModel.expensesList
     val categoriesList = expensesLazyColumnViewModel.categoriesList
     val listState = rememberLazyListState()
+    val expandedItem = expensesLazyColumnViewModel.expandedExpense.collectAsState()
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > 6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
     val isScrolledBelowState = expensesLazyColumnViewModel.isScrolledBelow.collectAsState()
@@ -158,7 +159,7 @@ fun ExpensesLazyColumn() {
                                     }
                                     ExpensesCardTypeSimple(
                                         expenseItem = currentExpense,
-                                        expenseCategory = currentCategory,
+                                        expenseCategory = currentCategory,expanded = (expandedItem.value==currentExpense),
                                         expensesLazyColumnViewModel = expensesLazyColumnViewModel
                                     )
                                     if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))

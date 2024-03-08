@@ -201,10 +201,10 @@ private fun DatePicker() {
     val datePickerState = UseCaseState(visible = datePickerStateFlow)
     val selectedDate by bottomSheetViewModel.datePicked.collectAsState()
     var text by remember { mutableStateOf(selectedDate.toString()) }
-    if (!bottomSheetViewModel.isDateInOtherSpan(selectedDate)) {
-        text = stringResource(R.string.other)
+    text = if (!bottomSheetViewModel.isDateInOtherSpan(selectedDate)) {
+        stringResource(R.string.other)
     } else {
-        text = selectedDate.toString()
+        selectedDate.toString()
     }
     Row(
         modifier = Modifier
