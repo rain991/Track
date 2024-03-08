@@ -3,8 +3,8 @@ package com.example.track.data.viewmodels.mainScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.implementations.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.implementations.ExpensesListRepositoryImpl
+import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
+import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
 import kotlinx.coroutines.flow.MutableStateFlow

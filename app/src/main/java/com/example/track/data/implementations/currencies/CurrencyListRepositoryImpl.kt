@@ -1,4 +1,4 @@
-package com.example.track.data.implementations
+package com.example.track.data.implementations.currencies
 
 import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.models.currency.Currency

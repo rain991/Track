@@ -5,8 +5,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.constants.CURRENCIES_PREFERENCE_DEFAULT
 import com.example.track.data.converters.convertLocalDateToDate
-import com.example.track.data.implementations.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.implementations.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
 import com.example.track.domain.usecases.expenseusecases.AddExpensesItemUseCase

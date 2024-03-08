@@ -4,8 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.DataStoreManager
-import com.example.track.data.implementations.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.implementations.CurrencyListRepositoryImpl
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.example.track.data.models.currency.Currency
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

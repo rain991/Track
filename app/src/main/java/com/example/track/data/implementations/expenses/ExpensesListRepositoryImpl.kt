@@ -1,4 +1,4 @@
-package com.example.track.data.implementations
+package com.example.track.data.implementations.expenses
 
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.models.Expenses.ExpenseCategory

@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.constants.BASIC_CARD_COUNT_IN_FEED
 import com.example.track.data.converters.convertLocalDateToDate
-import com.example.track.data.implementations.IdeaListRepositoryImpl
+import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.models.idea.Idea
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

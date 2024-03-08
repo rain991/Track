@@ -7,11 +7,11 @@ import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.database.ideaRelated.IdeaDao
-import com.example.track.data.implementations.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.implementations.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.implementations.CurrencyListRepositoryImpl
-import com.example.track.data.implementations.ExpensesListRepositoryImpl
-import com.example.track.data.implementations.IdeaListRepositoryImpl
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
+import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
+import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
+import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel

@@ -1,4 +1,4 @@
-package com.example.track.data.implementations
+package com.example.track.data.implementations.ideas
 
 import com.example.track.data.database.ideaRelated.IdeaDao
 import com.example.track.data.models.idea.Idea

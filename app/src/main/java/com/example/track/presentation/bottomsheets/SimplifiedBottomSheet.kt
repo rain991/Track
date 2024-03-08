@@ -62,7 +62,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
 import com.example.track.data.DataStoreManager
 import com.example.track.data.constants.CURRENCY_DEFAULT
-import com.example.track.data.implementations.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.presentation.common.parseColor
