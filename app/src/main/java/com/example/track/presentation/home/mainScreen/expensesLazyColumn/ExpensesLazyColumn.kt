@@ -1,4 +1,4 @@
-package com.example.track.presentation.home.mainScreen
+package com.example.track.presentation.home.mainScreen.expensesLazyColumn
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -45,6 +45,7 @@ import com.example.track.data.converters.areYearsSame
 import com.example.track.data.converters.convertDateToLocalDate
 import com.example.track.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
 import com.example.track.presentation.common.ExpensesCardTypeSimple
+import com.example.track.presentation.home.mainScreen.additionalInfoCards.MainScreenInfoComposable
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
@@ -91,7 +92,7 @@ fun ExpensesLazyColumn() {
             }
         }
         Column {
-            MainInfoComposable()
+            MainScreenInfoComposable()
             Box(
                 modifier = Modifier
                     .wrapContentWidth()

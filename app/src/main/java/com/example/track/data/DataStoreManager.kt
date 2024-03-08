@@ -33,7 +33,6 @@ class DataStoreManager(private val context: Context) {
         private val PREFERABLE_THEME = stringPreferencesKey("Yellow")
         private val SHOW_PAGE_NAME = booleanPreferencesKey("show_page_name")
     }
-
     val loginCountFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: LOGIN_COUNT_DEFAULT }
     suspend fun incrementLoginCount(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
@@ -43,7 +42,6 @@ class DataStoreManager(private val context: Context) {
             }
         }
     }
-
     val nameFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[NAME] ?: NAME_DEFAULT }
     suspend fun setName(newName: String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
@@ -52,7 +50,6 @@ class DataStoreManager(private val context: Context) {
             }
         }
     }
-
     val budgetFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: BUDGET_DEFAULT }
     suspend fun setBudget(newBudget: Int, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
@@ -61,7 +58,6 @@ class DataStoreManager(private val context: Context) {
             }
         }
     }
-
     val isShowPageName: Flow<Boolean> = context.dataStore.data.map { preferences -> preferences[SHOW_PAGE_NAME] ?: SHOW_PAGE_NAME_DEFAULT }
     suspend fun setShowPageName(value: Boolean, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
@@ -70,7 +66,6 @@ class DataStoreManager(private val context: Context) {
             }
         }
     }
-
     val useSystemTheme: Flow<Boolean> = context.dataStore.data.map { preferences ->
         preferences[USE_SYSTEM_THEME] ?: USE_SYSTEM_THEME_DEFAULT
     }

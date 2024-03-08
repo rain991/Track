@@ -32,6 +32,13 @@ data class Idea(
     val endDate: Date?,
     @ColumnInfo(name = "completed")
     val completed: Boolean = false,
-    @ColumnInfo(name = "liked")
-    val liked: Boolean = false
+    @ColumnInfo(name = "relatedToAllCategories")
+    val relatedToAllCategories : Boolean?,
+    @ColumnInfo(name = "firstRelatedCategoryId")
+    val firstRelatedCategoryId : Int?,
+    @ColumnInfo(name = "secondRelatedCategoryId")
+    val secondRelatedCategoryId : Int?,
+    @ColumnInfo(name = "thirdRelatedCategoryId")
+    val thirdRelatedCategoryId : Int?,
+
 )

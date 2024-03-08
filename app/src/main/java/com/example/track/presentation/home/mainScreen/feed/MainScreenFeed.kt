@@ -1,4 +1,4 @@
-package com.example.track.presentation.home.mainScreen
+package com.example.track.presentation.home.mainScreen.feed
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
@@ -25,13 +25,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun MainScreenFeed() {  // should have VM as parameter, because public
+fun MainScreenFeed() {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     val ideaList = mainScreenFeedViewModel.ideaList
     val currentIndex = mainScreenFeedViewModel.cardIndex.collectAsState()
     val maxIndex  =mainScreenFeedViewModel.maxPagerIndex.collectAsState()
     val pagerState = rememberPagerState(pageCount = { mainScreenFeedViewModel.maxPagerIndex.value })
-
     LaunchedEffect(true) {
         while (true) {
             delay(if (currentIndex.value == 0 || currentIndex.value == maxIndex.value) FEED_CARD_DELAY_SLOW else FEED_CARD_DELAY_FAST)
@@ -57,23 +56,6 @@ fun MainScreenFeed() {  // should have VM as parameter, because public
     }
 }
 @Composable
-private fun Idea_FeedCard() {
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
-    Card(
-        modifier = Modifier
-            .height(140.dp)
-            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.primary,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary
-        )
-    ) {
-        Text(text = mainScreenFeedViewModel.cardIndex.toString(), style = MaterialTheme.typography.bodyMedium)
-    }
-}
-
-@Composable
 private fun Main_FeedCard() {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     Card(
@@ -89,10 +71,24 @@ private fun Main_FeedCard() {
         Text(text = mainScreenFeedViewModel.cardIndex.toString(), style = MaterialTheme.typography.bodyMedium)
     }
 }
-
+@Composable
+private fun Idea_FeedCard() {
+    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    Card(
+        modifier = Modifier
+            .height(140.dp)
+            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary,
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+    ) {
+        Text(text = mainScreenFeedViewModel.cardIndex.toString(), style = MaterialTheme.typography.bodyMedium)
+    }
+}
 @Composable
 private fun NewIdea_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
-
     val value = mainScreenFeedViewModel.cardIndex.collectAsState()
     Card(
         modifier = Modifier

@@ -1,4 +1,4 @@
-package com.example.track.presentation.home.mainScreen
+package com.example.track.presentation.home.mainScreen.additionalInfoCards
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Row
@@ -17,7 +17,7 @@ import com.example.track.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MainInfoComposable() {
+fun MainScreenInfoComposable() {
     val expensesLazyColumnViewModel = koinViewModel<ExpensesLazyColumnViewModel>()
     val isScrolledBelow = expensesLazyColumnViewModel.isScrolledBelow.collectAsState()
     AnimatedVisibility(visible = !isScrolledBelow.value) {
@@ -52,7 +52,5 @@ fun MainInfoComposable() {
 
             }
         }
-
     }
-
 }

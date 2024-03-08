@@ -21,7 +21,12 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
             goal = 500,
             currencyTicker = "USD",
             startDate = convertLocalDateToDate(LocalDate.now()),
-            endDate = null
+            endDate = null,
+            relatedToAllCategories = null,
+            completed = false,
+            firstRelatedCategoryId = null,
+            secondRelatedCategoryId = null,
+            thirdRelatedCategoryId = null
         ),
         Idea(
             id = 2,
@@ -29,7 +34,12 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
             goal = 200,
             currencyTicker = "UAH",
             startDate = convertLocalDateToDate(LocalDate.now()),
-            endDate = null
+            endDate = null,
+            relatedToAllCategories = null,
+            completed = false,
+            firstRelatedCategoryId = null,
+            secondRelatedCategoryId = null,
+            thirdRelatedCategoryId = null
         )
     )
     private val _cardIndex = MutableStateFlow(0)
