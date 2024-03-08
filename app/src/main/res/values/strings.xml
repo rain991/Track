@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Expense Tracker</string>
+    <string name="app_name">Track</string>
     <string name="Lorem">Contrary to popular 000 yearprofessor atitnorum et Malorum\" (The Extremes of Good and Evil)  by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</string>
     <string name="app_logo">Application Logo</string>
     <string name="app_name_optimal">SpendSmart</string>
@@ -22,7 +22,7 @@
     <string name="november">November</string>
     <string name="december">December</string>
     <string name="unknown_month">Unknown month</string>
-    <string name="add_expenses">Add expenses</string>
+    <string name="add_expenses">Add expense</string>
     <string name="add_new_category">Add New Category</string>
     <string name="other_adding">Other</string>
 
@@ -48,12 +48,10 @@
     <string name="your_preferences_settings_screen">Preferences</string>
     <string name="theme_settings_screen">Theme</string>
     <string name="preferable_currency_settings_screen">Preferable currency</string>
-    <string name="use_device_theme_settings_screen">Use device theme</string>
+    <string name="use_device_theme_settings_screen">Use device color scheme</string>
     <string name="show_page_name_setttings_screen">Show page name</string>
     <string name="preferable_theme_settings_screen">Preferable theme</string>
     <string name="extra_currency_settings_screen">Extra currency</string>
     <string name="currencies_settings_screen">Currencies</string>
     <string name="delete_latest_currency_settings_screen">delete latest currency</string>
-
-
 </resources>
