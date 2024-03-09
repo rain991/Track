@@ -61,7 +61,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
 import com.example.track.data.DataStoreManager
-import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
@@ -281,7 +280,8 @@ private fun AmountInput(
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val currentExpense = bottomSheetViewModel.inputExpense.collectAsState()
-    val currentCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    //val currentCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val currentCurrency = bottomSheetViewModel.preferableCurrency.collectAsState()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,

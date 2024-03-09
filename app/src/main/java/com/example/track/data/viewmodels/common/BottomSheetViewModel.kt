@@ -1,19 +1,23 @@
 package com.example.track.data.viewmodels.common
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.constants.CURRENCIES_PREFERENCE_DEFAULT
+import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.converters.convertLocalDateToDate
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
+import com.example.track.data.models.incomes.IncomeCategory
 import com.example.track.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -27,10 +31,19 @@ class BottomSheetViewModel(
 ) : ViewModel() {
     private val _expenseCategoryList = mutableStateListOf<ExpenseCategory>()
     val expenseCategoryList: List<ExpenseCategory> = _expenseCategoryList
-    private val _currenciesPreferences = MutableStateFlow(value = CURRENCIES_PREFERENCE_DEFAULT)
-    val currenciesPreference = _currenciesPreferences.asStateFlow()
-    private val _selectedCurrency = MutableStateFlow(value = currenciesPreference.value.preferableCurrency)
-    val selectedCurrency = _selectedCurrency.asStateFlow()
+    private val _incomeCategoryList = mutableStateListOf<IncomeCategory>()
+    val incomeCategoryList = _incomeCategoryList
+
+    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = CURRENCY_DEFAULT)
+    val firstAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFirstAdditionalCurrency()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = null)
+    val secondAdditionalCurrency = currenciesPreferenceRepositoryImpl.getSecondAdditionalCurrency()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = null)
+    val thirdAdditionalCurrency = currenciesPreferenceRepositoryImpl.getThirdAdditionalCurrency()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = null)
+    val fourthAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFourthAdditionalCurrency()
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = null)
     init {
         viewModelScope.launch {
             categoryListRepositoryImpl.getCategoriesList().collect {
@@ -39,12 +52,15 @@ class BottomSheetViewModel(
             }
         }
         viewModelScope.launch {
-            currenciesPreferenceRepositoryImpl.getCurrenciesPreferences().collect {
-                _currenciesPreferences.update { it }
-            }
+
         }
     }
-
+    companion object {
+        val DEFAULT_NOTE = ""
+        val DEFAULT_EXPENSE = 0.0f
+        val DEFAULT_CATEGORY = null
+        val DEFAULT_DATE = LocalDate.now()
+    }
     suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             val currentExpenseItem = ExpenseItem(
@@ -52,8 +68,9 @@ class BottomSheetViewModel(
                 note = _note.value,
                 date = convertLocalDateToDate(_datePicked.value),
                 value = _inputExpense.value!!,
-                currencyTicker = selectedCurrency.value
+                currencyTicker = preferableCurrency.value!!.ticker
             )
+            Log.d("MyLog", "addExpense: ${preferableCurrency.value!!.ticker}")
             addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
             setCategoryPicked(DEFAULT_CATEGORY)
             setInputExpense(DEFAULT_EXPENSE)
@@ -61,13 +78,6 @@ class BottomSheetViewModel(
             setNote(DEFAULT_NOTE)
             setBottomSheetExpanded(false)
         }
-    }
-
-    companion object {
-        val DEFAULT_NOTE = ""
-        val DEFAULT_EXPENSE = 0.0f
-        val DEFAULT_CATEGORY = null
-        val DEFAULT_DATE = LocalDate.now()
     }
 
     private var _isBottomSheetExpanded = MutableStateFlow(value = false)
@@ -129,9 +139,11 @@ class BottomSheetViewModel(
             setYesterdayButtonState(false)
         }
     }
+
     fun isDateInOtherSpan(localDate: LocalDate): Boolean {
         return (localDate != LocalDate.now() && localDate != LocalDate.now().minusDays(1))
     }
+
     private fun setTodayButtonState(boolean: Boolean) {
         _todayButtonActiveState.update { boolean }
     }
@@ -139,5 +151,4 @@ class BottomSheetViewModel(
     private fun setYesterdayButtonState(boolean: Boolean) {
         _yesterdayButtonActiveState.update { boolean }
     }
-
 }

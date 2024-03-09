@@ -7,11 +7,15 @@ import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.database.ideaRelated.IdeaDao
+import com.example.track.data.database.incomeRelated.IncomeCategoryDao
+import com.example.track.data.database.incomeRelated.IncomeDao
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
+import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
+import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
@@ -47,6 +51,12 @@ val appModule = module {
 
     single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
     single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
+
+    single<IncomeDao> { ExpensesDB.getInstance(androidContext()).incomeDao }
+    single<IncomeListRepositoryImpl> { IncomeListRepositoryImpl(get()) }
+
+    single<IncomeCategoryDao> { ExpensesDB.getInstance(androidContext()).incomeCategoryDao }
+    single<IncomesCategoriesListRepositoryImpl> { IncomesCategoriesListRepositoryImpl(get()) }
 }
 
 val domainModule = module {

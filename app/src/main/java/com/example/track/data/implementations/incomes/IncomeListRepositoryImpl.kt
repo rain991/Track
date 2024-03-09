@@ -1,5 +1,6 @@
 package com.example.track.data.implementations.incomes
 
+import com.example.track.data.database.incomeRelated.IncomeDao
 import com.example.track.data.models.incomes.IncomeCategory
 import com.example.track.data.models.incomes.IncomeItem
 import com.example.track.domain.repository.incomes.IncomesListRepository
@@ -7,7 +8,7 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 import kotlin.coroutines.CoroutineContext
 
-class IncomeListRepositoryImpl : IncomesListRepository {
+class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomesListRepository {
     override fun getIncomesList(): Flow<List<IncomeItem>> {
         TODO("Not yet implemented")
     }
