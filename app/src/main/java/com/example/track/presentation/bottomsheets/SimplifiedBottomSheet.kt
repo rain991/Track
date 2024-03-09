@@ -62,6 +62,7 @@ import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
@@ -99,7 +100,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
         bottomSheetViewModel.incomeCategoryList
     }
     val bottomSheetTitle = if (isAddingExpense) {
-        stringResource(R.string.add_expense)
+        stringResource(R.string.expense)
     } else {
         stringResource(R.string.add_income_bottom_sheet)
     }
@@ -123,20 +124,31 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         .fillMaxSize()
                         .windowInsetsPadding(WindowInsets.navigationBars)
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                        AnimatedContent(
+                    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(18.dp)) {
+                        Row(
                             modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.CenterStart,
-                            targetState = bottomSheetTitle,
-                            label = "verticalTextChange",
-                            transitionSpec = {
-                                slideInVertically { it } togetherWith slideOutVertically { -it }
-                            }) {
-                            Text(text = "Add", style = MaterialTheme.typography.titleMedium )
-                            TextButton(
-                                onClick = { bottomSheetViewModel.toggleIsAddingExpense() }
-                            ) {
-                                Text(text = it, style = MaterialTheme.typography.titleMedium)
+                            horizontalArrangement = Arrangement.Center,
+                            verticalAlignment = Alignment.CenterVertically
+                        ) {
+                            Text(
+                                text = stringResource(R.string.add),
+                                style = MaterialTheme.typography.titleMedium,
+                                textAlign = TextAlign.Center
+                            )
+                            AnimatedContent(
+                                targetState = bottomSheetTitle,
+                                label = "verticalTextChange",
+                                transitionSpec = {
+                                    slideInVertically { it } togetherWith slideOutVertically { -it }
+                                }) {
+                                TextButton(
+                                    onClick = { bottomSheetViewModel.toggleIsAddingExpense() }
+                                ) {
+                                    Text(
+                                        text = it,
+                                        style = MaterialTheme.typography.titleMedium
+                                    )
+                                }
                             }
                         }
                         AmountInput(focusRequester, controller, currentCurrency.value!!)
@@ -144,6 +156,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
                         DatePicker()
                         CategoriesGrid(categoryList)
+                        Spacer(Modifier.weight(1f))
                         val coroutineScope = rememberCoroutineScope()
                         AcceptButton {
                             if (bottomSheetViewState.value.categoryPicked != null && bottomSheetViewState.value.datePicked.isBefore(
