@@ -41,7 +41,7 @@ interface CurrenciesPreferenceDao {
     suspend fun updateForthAdditionalCurrency(currencyTicker: String?, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
 
     @Query("SELECT * FROM currency WHERE ticker = (SELECT preferableCurrency FROM currenciesPreference WHERE id=:currenciesPreferenceId)")
-    fun getPreferableCurrency(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<Currency?>
+    fun getPreferableCurrency(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<Currency>
 
     @Query("SELECT * FROM currency WHERE ticker = (SELECT firstAdditionalCurrency FROM currenciesPreference WHERE id=:currenciesPreferenceId)")
     fun getFirstAdditionalCurrency(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<Currency?>

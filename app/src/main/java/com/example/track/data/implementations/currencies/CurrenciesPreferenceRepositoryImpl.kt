@@ -32,7 +32,7 @@ class CurrenciesPreferenceRepositoryImpl(private val currenciesPreferenceDao: Cu
         currenciesPreferenceDao.updateForthAdditionalCurrency(currencyTicker = if (currency != null) currency.ticker else null)
     }
 
-    override fun getPreferableCurrency(): Flow<Currency?> {
+    override fun getPreferableCurrency(): Flow<Currency> {
         return currenciesPreferenceDao.getPreferableCurrency()
     }
 

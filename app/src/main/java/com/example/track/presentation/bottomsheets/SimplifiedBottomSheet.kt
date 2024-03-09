@@ -20,6 +20,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
@@ -37,6 +38,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -61,9 +63,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
 import com.example.track.data.DataStoreManager
+import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.constants.MIN_SUPPORTED_YEAR
-import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
+import com.example.track.data.models.currency.Currency
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.presentation.common.parseColor
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
@@ -74,18 +77,17 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val context = LocalContext.current
     val warning = stringResource(id = R.string.warning_bottom_sheet_exp)
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
+    val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
     if (bottomSheetViewState.value.isBottomSheetExpanded) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -112,7 +114,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                             style = MaterialTheme.typography.titleMedium,
                             modifier = Modifier.align(Alignment.CenterHorizontally)
                         )
-                        AmountInput(focusRequester, controller, currenciesPreferenceRepositoryImpl)
+                        AmountInput(focusRequester, controller, currentCurrency.value!!)
                         Spacer(Modifier.height(12.dp))
                         OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
                         DatePicker()
@@ -224,7 +226,8 @@ private fun DatePicker() {
         }
         DateTimeDialog(
             state = datePickerState,
-            selection = DateTimeSelection.Date(selectedDate = bottomSheetViewState.value.datePicked, onNegativeClick = { bottomSheetViewModel.togglePickerState() },
+            selection = DateTimeSelection.Date(selectedDate = bottomSheetViewState.value.datePicked,
+                onNegativeClick = { bottomSheetViewModel.togglePickerState() },
                 onPositiveClick = { date ->
                     bottomSheetViewModel.setDatePicked(date)
                     bottomSheetViewModel.togglePickerState()
@@ -276,14 +279,13 @@ private fun OutlinedTextField(label: String) {
 private fun AmountInput(
     focusRequester: FocusRequester,
     controller: SoftwareKeyboardController?,
-    currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    currentCurrency: Currency
 ) {
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val currentExpense = bottomSheetViewState.value.inputExpense
-    //val currentCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
-    val currentCurrency = bottomSheetViewModel.preferableCurrency.collectAsState()
+    //val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -292,8 +294,7 @@ private fun AmountInput(
         BasicTextField(
             modifier = Modifier
                 .focusRequester(focusRequester)
-                .width(IntrinsicSize.Min)
-                .padding(horizontal = 12.dp),
+                .width(IntrinsicSize.Min),
             textStyle = MaterialTheme.typography.titleMedium.copy(
                 fontSize = 54.sp,
                 letterSpacing = 1.3.sp,
@@ -312,7 +313,9 @@ private fun AmountInput(
             ),
             maxLines = 1,
         )
-        Text(text = currentCurrency.value!!.ticker, style = MaterialTheme.typography.titleSmall)
+        TextButton(onClick = { bottomSheetViewModel.changeSelectedCurrency() }, modifier = Modifier.wrapContentWidth()) {
+            Text(text = currentCurrency.ticker, style = MaterialTheme.typography.titleSmall)
+        }
     }
 }
 

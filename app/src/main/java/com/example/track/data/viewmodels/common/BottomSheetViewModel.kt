@@ -11,20 +11,26 @@ import com.example.track.data.implementations.expenses.ExpensesCategoriesListRep
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
+import com.example.track.data.models.currency.Currency
 import com.example.track.data.models.incomes.IncomeCategory
 import com.example.track.domain.usecases.expenseusecases.AddExpensesItemUseCase
+import com.example.track.presentation.states.BottomSheetViewState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.combine
+import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
-// Could be simplified by using dataClass for state
 class BottomSheetViewModel(
     private val addExpensesItemUseCase: AddExpensesItemUseCase,
     private val categoryListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
@@ -36,18 +42,33 @@ class BottomSheetViewModel(
     private val _incomeCategoryList = mutableStateListOf<IncomeCategory>()
     val incomeCategoryList = _incomeCategoryList
 
-    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = CURRENCY_DEFAULT)
-    val firstAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFirstAdditionalCurrency()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = null)
-    val secondAdditionalCurrency = currenciesPreferenceRepositoryImpl.getSecondAdditionalCurrency()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = null)
-    val thirdAdditionalCurrency = currenciesPreferenceRepositoryImpl.getThirdAdditionalCurrency()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = null)
-    val fourthAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFourthAdditionalCurrency()
-        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(), initialValue = null)
-    private val _selectedCurrency = MutableStateFlow(value = preferableCurrency.value)
-    val selectedCurrency = _selectedCurrency.asStateFlow()
+    private val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = CURRENCY_DEFAULT)
+    private val firstAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFirstAdditionalCurrency()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
+    private val secondAdditionalCurrency = currenciesPreferenceRepositoryImpl.getSecondAdditionalCurrency()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
+    private val thirdAdditionalCurrency = currenciesPreferenceRepositoryImpl.getThirdAdditionalCurrency()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
+    private val fourthAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFourthAdditionalCurrency()
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
+    private val listOfCurrencies = listOf(
+        preferableCurrency,
+        firstAdditionalCurrency,
+        secondAdditionalCurrency,
+        thirdAdditionalCurrency,
+        fourthAdditionalCurrency
+    )
+    private val _selectedCurrencyIndex = MutableStateFlow(value = 0)
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val selectedCurrency: Flow<Currency?> = _selectedCurrencyIndex.flatMapLatest { index ->
+        combine(listOfCurrencies.map { it }) { currencies ->
+            currencies.getOrNull(index)
+        }
+    }.distinctUntilChanged()
+
+
+
     private val _expenseViewState = MutableStateFlow(
         BottomSheetViewState(
             isBottomSheetExpanded = false,
@@ -61,6 +82,8 @@ class BottomSheetViewModel(
         )
     )
     val expenseViewState = _expenseViewState.asStateFlow()
+
+
     init {
         viewModelScope.launch {
             categoryListRepositoryImpl.getCategoriesList().collect {
@@ -90,9 +113,9 @@ class BottomSheetViewModel(
                 note = expenseViewState.value.note,
                 date = convertLocalDateToDate(expenseViewState.value.datePicked),
                 value = expenseViewState.value.inputExpense!!,
-                currencyTicker = preferableCurrency.value!!.ticker
+                currencyTicker = preferableCurrency.value.ticker
             )
-            Log.d("MyLog", "addExpense: ${preferableCurrency.value!!.ticker}")
+            Log.d("MyLog", "addExpense: ${preferableCurrency.value.ticker}")
             addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
             setCategoryPicked(DEFAULT_CATEGORY)
             setInputExpense(DEFAULT_EXPENSE)
@@ -102,102 +125,60 @@ class BottomSheetViewModel(
         }
     }
 
-
-//    private var _isBottomSheetExpanded = MutableStateFlow(value = false)
-//    val isBottomSheetExpanded = _isBottomSheetExpanded.asStateFlow()
-//
-//    private var _note = MutableStateFlow(DEFAULT_NOTE)
-//    val note = _note.asStateFlow()
-//
-//    private var _inputExpense = MutableStateFlow<Float?>(DEFAULT_EXPENSE)
-//    val inputExpense = _inputExpense.asStateFlow()
-//
-//    private var _categoryPicked = MutableStateFlow<ExpenseCategory?>(DEFAULT_CATEGORY)
-//    val categoryPicked = _categoryPicked.asStateFlow()
-//
-//    private var _timePickerState = MutableStateFlow(false)
-//    val timePickerState = _timePickerState.asStateFlow()
-//
-//    private var _datePicked = MutableStateFlow<LocalDate>(value = LocalDate.now())
-//    val datePicked = _datePicked.asStateFlow()
-//
-//    private var _todayButtonActiveState = MutableStateFlow(false)
-//    val todayButtonActiveState = _todayButtonActiveState.asStateFlow()
-//
-//    private var _yesterdayButtonActiveState = MutableStateFlow(false)
-//    val yesterdayButtonActiveState = _yesterdayButtonActiveState.asStateFlow()
     fun setBottomSheetExpanded(value: Boolean) {
-        // _isBottomSheetExpanded.update { value }
         _expenseViewState.value = _expenseViewState.value.copy(isBottomSheetExpanded = value)
     }
 
     fun setNote(note: String) {
-        //  _note.update { note }
         _expenseViewState.value = _expenseViewState.value.copy(note = note)
     }
 
     fun setInputExpense(inputExpense: Float) {
-        //  _inputExpense.update { inputExpense }
         _expenseViewState.value = _expenseViewState.value.copy(inputExpense = inputExpense)
     }
 
     fun setCategoryPicked(category: ExpenseCategory?) {
-//        if (category != null) {
-//            _categoryPicked.update { category }
-//        } else _categoryPicked.update { null }
         _expenseViewState.value = expenseViewState.value.copy(categoryPicked = category)
     }
 
     fun togglePickerState() {
-        // _timePickerState.update { !_timePickerState.value }
         _expenseViewState.value = expenseViewState.value.copy(timePickerState = !_expenseViewState.value.timePickerState)
     }
 
     fun setDatePicked(neededDate: LocalDate) {
-        // _datePicked.value = localDate
-        _expenseViewState.update{expenseViewState.value.copy(
-            datePicked = neededDate,
-            todayButtonActiveState = (neededDate == LocalDate.now()),
-            yesterdayButtonActiveState = (neededDate == (LocalDate.now().minusDays(1)))
-        )}
-//        when (localDate) {
-//            LocalDate.now() -> {
-//                setTodayButtonState(true)
-//                setYesterdayButtonState(false)
-//            }
-//            LocalDate.now().minusDays(1) -> {
-//                setYesterdayButtonState(true)
-//                setTodayButtonState(false)
-//            }
-//            else -> {
-//                setTodayButtonState(false)
-//                setYesterdayButtonState(false)
-//            }
-//        }
-        Log.d("MyLog", "setDatePicked:${_expenseViewState.value} ")
+        _expenseViewState.update {
+            expenseViewState.value.copy(
+                datePicked = neededDate,
+                todayButtonActiveState = (neededDate == LocalDate.now()),
+                yesterdayButtonActiveState = (neededDate == (LocalDate.now().minusDays(1)))
+            )
+        }
     }
 
     fun isDateInOtherSpan(localDate: LocalDate): Boolean {
         return (localDate != LocalDate.now() && localDate != LocalDate.now().minusDays(1))
     }
 
-    private fun setTodayButtonState(boolean: Boolean) {
-        // _todayButtonActiveState.update { boolean }
-        _expenseViewState.value = expenseViewState.value.copy(todayButtonActiveState = boolean)
+    fun changeSelectedCurrency() {
+        val listOfCurrenciesValues = listOfCurrencies.map{it.value}
+        val selectedCurrencyIndex = _selectedCurrencyIndex.value
+        listOfCurrenciesValues.forEach { Log.d("MyLog", "changeSelectedCurrency: ${it?.ticker}")}
+        for (i in (selectedCurrencyIndex + 1) until listOfCurrencies.size) {
+            if (listOfCurrenciesValues[i] != null) {
+                setSelectedCurrency(i)
+                Log.d("MyLog", "changeSelectedCurrency: ${listOfCurrencies[i].value}")
+                return
+            }
+        }
+        for (i in 0 until selectedCurrencyIndex) {
+            if (listOfCurrenciesValues[i] != null) {
+                setSelectedCurrency(i)
+                return
+            }
+        }
     }
-
-    private fun setYesterdayButtonState(boolean: Boolean) {
-        _expenseViewState.value = expenseViewState.value.copy(yesterdayButtonActiveState = boolean)
+    private fun setSelectedCurrency(index : Int) {
+        _selectedCurrencyIndex.value = index
     }
 }
 
-data class BottomSheetViewState(
-    val isBottomSheetExpanded: Boolean,
-    val note: String,
-    val inputExpense: Float?,
-    val categoryPicked: ExpenseCategory?,
-    val timePickerState: Boolean,
-    val datePicked: LocalDate = LocalDate.now(),
-    val todayButtonActiveState: Boolean = true,
-    val yesterdayButtonActiveState: Boolean = false
-)
