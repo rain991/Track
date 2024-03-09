@@ -32,6 +32,8 @@ data class IncomeItem (
     val categoryId: Int,
     @ColumnInfo(name = "value")
     val value: Float,
+    @ColumnInfo(name = "note")
+    val note: String,
     @ColumnInfo(name = "date")
     val date: Date,
     @ColumnInfo(name = "enabled")

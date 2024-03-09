@@ -5,39 +5,46 @@ import com.example.track.data.models.incomes.IncomeCategory
 import com.example.track.data.models.incomes.IncomeItem
 import com.example.track.domain.repository.incomes.IncomesListRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import java.util.Date
 import kotlin.coroutines.CoroutineContext
 
 class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomesListRepository {
     override fun getIncomesList(): Flow<List<IncomeItem>> {
-        TODO("Not yet implemented")
+        return incomeDao.getAllIncomes()
     }
 
-    override fun getIncomesItem(expensesItemId: Int): IncomeItem? {
-        TODO("Not yet implemented")
+    override fun getIncomesItem(incomeItemId: Int): IncomeItem? {
+        return incomeDao.findIncomeById(incomeItemId)
     }
 
-    override suspend fun addIncomeItem(currentExpensesItem: IncomeItem, context: CoroutineContext) {
-        TODO("Not yet implemented")
+    override suspend fun addIncomeItem(currentIncomeItem: IncomeItem, context: CoroutineContext) {
+        withContext(context) {
+            incomeDao.insert(currentIncomeItem)
+        }
     }
 
-    override suspend fun deleteIncomeItem(currentExpenseItem: IncomeItem, context: CoroutineContext) {
-        TODO("Not yet implemented")
+    override suspend fun deleteIncomeItem(currentIncomeItem: IncomeItem, context: CoroutineContext) {
+        withContext(context) {
+            incomeDao.delete(currentIncomeItem)
+        }
     }
 
-    override suspend fun editIncomeItem(newExpenseItem: IncomeItem, context: CoroutineContext) {
-        TODO("Not yet implemented")
+    override suspend fun editIncomeItem(newIncomeItem: IncomeItem, context: CoroutineContext) {
+        withContext(context) {
+            incomeDao.update(newIncomeItem)
+        }
     }
 
     override fun getSortedIncomesListDateAsc(): Flow<List<IncomeItem>> {
-        TODO("Not yet implemented")
+        return incomeDao.getAllWithDateAsc()
     }
 
     override fun getSortedIncomesListDateDesc(): Flow<List<IncomeItem>> {
-        TODO("Not yet implemented")
+        return incomeDao.getAllWithDateDesc()
     }
 
     override fun getIncomesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: IncomeCategory): List<IncomeItem> {
-        TODO("Not yet implemented")
+        return incomeDao.findIncomesInTimeSpan(start = startOfSpan.time, end = endOfSpan.time, categoryId = category.categoryId)
     }
 }

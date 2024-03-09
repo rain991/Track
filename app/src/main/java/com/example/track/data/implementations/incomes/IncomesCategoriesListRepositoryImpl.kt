@@ -2,22 +2,31 @@ package com.example.track.data.implementations.incomes
 
 import com.example.track.data.database.incomeRelated.IncomeCategoryDao
 import com.example.track.data.models.incomes.IncomeCategory
-import com.example.track.data.models.incomes.IncomeItem
 import com.example.track.domain.repository.incomes.IncomesCategoriesListRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
 class IncomesCategoriesListRepositoryImpl(private val incomeCategoryDao : IncomeCategoryDao) : IncomesCategoriesListRepository{
-    override fun getCategoriesList(): Flow<List<IncomeItem>> {
-        TODO("Not yet implemented")
+    override fun getCategoriesList(): Flow<List<IncomeCategory>> {
+        return incomeCategoryDao.getAllIncomeCategories()
     }
+
     override suspend fun addCategory(category: IncomeCategory, context: CoroutineContext) {
-        TODO("Not yet implemented")
+        withContext(context = context) {
+            incomeCategoryDao.insert(category)
+        }
     }
+
     override suspend fun editCategory(category: IncomeCategory, context: CoroutineContext) {
-        TODO("Not yet implemented")
+        withContext(context = context) {
+            incomeCategoryDao.update(incomeCategory = category)
+        }
     }
+
     override suspend fun deleteCategory(category: IncomeCategory, context: CoroutineContext) {
-        TODO("Not yet implemented")
+        withContext(context = context) {
+            incomeCategoryDao.delete(category)
+        }
     }
 }

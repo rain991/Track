@@ -33,11 +33,8 @@ interface ExpenseItemsDAO {
     fun findExpenseById(id: Int): ExpenseItem?
 
     @Query("SELECT * FROM Expenses WHERE note LIKE '%' || :note || '%'")
-    fun findExpenseByNotes(note: String): Flow<ExpenseItem>
+    fun findExpenseByNotes(note: String): Flow<List<ExpenseItem>>
 
     @Query("SELECT * FROM Expenses WHERE categoryId=:categoryId AND date BETWEEN :start AND :end ")
     fun findExpensesInTimeSpan(start : Long, end : Long, categoryId: Int) : List<ExpenseItem>
-
-//    @Query("UPDATE Expenses SET ")
-//    fun setNewCurrencyById()
 }

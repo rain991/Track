@@ -24,7 +24,6 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
         return expenseItemsDao.findExpenseById(expensesItemId)
     }
 
-
     override suspend fun deleteExpenseItem(currentExpenseItem: ExpenseItem, context: CoroutineContext) {
         withContext(context = context) {
             expenseItemsDao.deleteItem(currentExpenseItem)

@@ -22,4 +22,19 @@ interface IncomeDao {
 
     @Query("SELECT * FROM incomes")
     fun getAllIncomes(): Flow<List<IncomeItem>>
+
+    @Query("SELECT * FROM incomes ORDER BY date DESC")
+    fun getAllWithDateDesc(): Flow<List<IncomeItem>>
+
+    @Query("SELECT * FROM Expenses ORDER BY date ASC")
+    fun getAllWithDateAsc(): Flow<List<IncomeItem>>
+
+    @Query("SELECT * FROM incomes WHERE id=:id")
+    fun findIncomeById(id: Int): IncomeItem?
+
+    @Query("SELECT * FROM incomes WHERE categoryId=:categoryId AND date BETWEEN :start AND :end ")
+    fun findIncomesInTimeSpan(start : Long, end : Long, categoryId: Int) : List<IncomeItem>
+
+    @Query("SELECT * FROM Expenses WHERE note LIKE '%' || :note || '%'")
+    fun findExpenseByNotes(note: String): Flow<List<IncomeItem>>
 }
