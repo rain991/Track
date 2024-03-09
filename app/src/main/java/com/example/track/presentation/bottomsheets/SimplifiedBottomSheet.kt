@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
 import com.example.track.data.DataStoreManager
+import com.example.track.data.constants.MIN_SUPPORTED_YEAR
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
@@ -84,9 +85,10 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val context = LocalContext.current
     val warning = stringResource(id = R.string.warning_bottom_sheet_exp)
     bottomSheetViewModel.setDatePicked(LocalDate.now())
-    val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
+    // val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
+    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
-    if (isVisible.value) {
+    if (bottomSheetViewState.value.isBottomSheetExpanded) {
         ModalBottomSheet(
             onDismissRequest = {
                 bottomSheetViewModel.setBottomSheetExpanded(false)
@@ -119,9 +121,9 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         CategoriesGrid()
                         val coroutineScope = rememberCoroutineScope()
                         AcceptButton {
-                            if (bottomSheetViewModel.categoryPicked.value != null && bottomSheetViewModel.datePicked.value.isBefore(
+                            if (bottomSheetViewState.value.categoryPicked != null && bottomSheetViewState.value.datePicked.isBefore(
                                     LocalDate.now().plusDays(1)
-                                ) && bottomSheetViewModel.inputExpense.value != null && bottomSheetViewModel.inputExpense.value!! > 0
+                                ) && bottomSheetViewState.value.inputExpense != null && bottomSheetViewState.value.inputExpense!! > 0
                             ) {
                                 coroutineScope.launch {
                                     withContext(Dispatchers.IO) {
@@ -175,7 +177,8 @@ private fun CategoriesGrid() {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val categoryList = bottomSheetViewModel.expenseCategoryList
-    val selected = bottomSheetViewModel.categoryPicked.collectAsState()
+    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
+    val selected = bottomSheetViewState.value.categoryPicked // warning
     LazyHorizontalStaggeredGrid(
         modifier = Modifier.height(84.dp),
         rows = StaggeredGridCells.Fixed(2),
@@ -187,17 +190,19 @@ private fun CategoriesGrid() {
             val item = categoryList[index]
             CategoryChip(
                 category = item,
-                isSelected = (selected.value == item),
+                isSelected = (selected == item),
                 onSelect = { bottomSheetViewModel.setCategoryPicked(item) })
         }
     }
 }
+
 @Composable
 private fun DatePicker() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val datePickerStateFlow by bottomSheetViewModel.timePickerState.collectAsState()
+    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
+    val datePickerStateFlow = bottomSheetViewState.value.timePickerState
     val datePickerState = UseCaseState(visible = datePickerStateFlow)
-    val selectedDate by bottomSheetViewModel.datePicked.collectAsState()
+    val selectedDate = bottomSheetViewState.value.datePicked
     var text by remember { mutableStateOf(selectedDate.toString()) }
     text = if (!bottomSheetViewModel.isDateInOtherSpan(selectedDate)) {
         stringResource(R.string.other)
@@ -209,7 +214,6 @@ private fun DatePicker() {
             .fillMaxWidth()
             .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-
         OutlinedDateButton(
             text = stringResource(R.string.today_add_exp),
             isSelected = (selectedDate == LocalDate.now())
@@ -218,7 +222,6 @@ private fun DatePicker() {
             text = stringResource(R.string.yesterday_add_exp),
             isSelected = (selectedDate == LocalDate.now().minusDays(1))
         ) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
-
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
             Text(text = text, style = MaterialTheme.typography.bodyMedium)
         }
@@ -230,7 +233,7 @@ private fun DatePicker() {
                     bottomSheetViewModel.togglePickerState()
                 }),
             properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
-            config = DateTimeConfig(minYear = 2000, maxYear = LocalDate.now().year - 1) // WARNING about -1
+            config = DateTimeConfig(minYear = MIN_SUPPORTED_YEAR, maxYear = LocalDate.now().year - 1) // WARNING about -1
         )
     }
 }
@@ -262,7 +265,8 @@ private fun OutlinedDateButton(text: String, isSelected: Boolean, onSelect: () -
 @Composable
 private fun OutlinedTextField(label: String) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val text by bottomSheetViewModel.note.collectAsState()
+    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
+    val text = bottomSheetViewState.value.note
     OutlinedTextField(
         value = text,
         onValueChange = { bottomSheetViewModel.setNote(it) },
@@ -279,7 +283,8 @@ private fun AmountInput(
 ) {
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val currentExpense = bottomSheetViewModel.inputExpense.collectAsState()
+    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
+    val currentExpense = bottomSheetViewState.value.inputExpense
     //val currentCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val currentCurrency = bottomSheetViewModel.preferableCurrency.collectAsState()
     Row(
@@ -297,7 +302,7 @@ private fun AmountInput(
                 letterSpacing = 1.3.sp,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             ),
-            value = currentExpense.value.toString(),
+            value = currentExpense.toString(),
             onValueChange = { newText ->
                 bottomSheetViewModel.setInputExpense(newText.toFloat())
             },

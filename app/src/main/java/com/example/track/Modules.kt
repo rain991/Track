@@ -82,7 +82,7 @@ val settingsModule = module {
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get()) }
-    viewModel { BottomSheetViewModel(get(), get(), get()) }
+    viewModel { BottomSheetViewModel(get(), get(), get(), get()) }
     viewModel { ExpensesLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
