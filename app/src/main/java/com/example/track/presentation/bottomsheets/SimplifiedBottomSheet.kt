@@ -93,12 +93,14 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
     val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
     val isAddingExpense = bottomSheetViewState.value.isAddingExpense
-    val categoryList = if(isAddingExpense) {bottomSheetViewModel.expenseCategoryList} else{
+    val categoryList = if (isAddingExpense) {
+        bottomSheetViewModel.expenseCategoryList
+    } else {
         bottomSheetViewModel.incomeCategoryList
     }
-    val bottomSheetTitle = if(isAddingExpense){
-        stringResource(R.string.add_expenses)
-    }else {
+    val bottomSheetTitle = if (isAddingExpense) {
+        stringResource(R.string.add_expense)
+    } else {
         stringResource(R.string.add_income_bottom_sheet)
     }
     if (bottomSheetViewState.value.isBottomSheetExpanded) {
@@ -122,12 +124,18 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         .windowInsetsPadding(WindowInsets.navigationBars)
                 ) {
                     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                        AnimatedContent(contentAlignment = Alignment.CenterStart, targetState = bottomSheetTitle, label = "verticalTextChange", transitionSpec = {
-                            slideInVertically { it } togetherWith slideOutVertically { -it }
-                        }){
+                        AnimatedContent(
+                            modifier = Modifier.fillMaxWidth(),
+                            contentAlignment = Alignment.CenterStart,
+                            targetState = bottomSheetTitle,
+                            label = "verticalTextChange",
+                            transitionSpec = {
+                                slideInVertically { it } togetherWith slideOutVertically { -it }
+                            }) {
+                            Text(text = "Add", style = MaterialTheme.typography.titleMedium )
                             TextButton(
-                                onClick = {bottomSheetViewModel.toggleIsAddingExpense()}
-                            ){
+                                onClick = { bottomSheetViewModel.toggleIsAddingExpense() }
+                            ) {
                                 Text(text = it, style = MaterialTheme.typography.titleMedium)
                             }
                         }
@@ -142,12 +150,23 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                                     LocalDate.now().plusDays(1)
                                 ) && bottomSheetViewState.value.inputExpense != null && bottomSheetViewState.value.inputExpense!! > 0
                             ) {
-                                coroutineScope.launch {
-                                    withContext(Dispatchers.IO) {
-                                        bottomSheetViewModel.addExpense()
+                                if (bottomSheetViewState.value.isAddingExpense) {
+                                    coroutineScope.launch {
+                                        withContext(Dispatchers.IO) {
+                                            bottomSheetViewModel.addExpense()
+                                        }
+                                        withContext(Dispatchers.Main) {
+                                            bottomSheetViewModel.setBottomSheetExpanded(false)
+                                        }
                                     }
-                                    withContext(Dispatchers.Main) {
-                                        bottomSheetViewModel.setBottomSheetExpanded(false)
+                                } else {
+                                    coroutineScope.launch {
+                                        withContext(Dispatchers.IO) {
+                                            bottomSheetViewModel.addIncome()
+                                        }
+                                        withContext(Dispatchers.Main) {
+                                            bottomSheetViewModel.setBottomSheetExpanded(false)
+                                        }
                                     }
                                 }
                             } else {
@@ -190,7 +209,7 @@ fun CategoryChip(category: CategoryEntity, isSelected: Boolean, onSelect: (Categ
 }
 
 @Composable
-private fun CategoriesGrid(categoryList : List<CategoryEntity>) {
+private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
@@ -309,7 +328,8 @@ private fun AmountInput(
         BasicTextField(
             modifier = Modifier
                 .focusRequester(focusRequester)
-                .width(IntrinsicSize.Min),
+                .width(IntrinsicSize.Min)
+                .padding(start = 12.dp),
             textStyle = MaterialTheme.typography.titleMedium.copy(
                 fontSize = 54.sp,
                 letterSpacing = 1.3.sp,
@@ -346,7 +366,7 @@ private fun AcceptButton(onClick: () -> Unit) {
                 .wrapContentHeight()
                 .padding(bottom = 4.dp), shape = RoundedCornerShape(80)
         ) {
-            Text(text = stringResource(R.string.add_it_button), style = MaterialTheme.typography.bodyLarge.copy(letterSpacing = 0.9.sp))
+            Text(text = stringResource(R.string.add_it_button), style = MaterialTheme.typography.bodyLarge.copy(letterSpacing = 0.8.sp))
         }
     }
 }

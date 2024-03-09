@@ -22,15 +22,15 @@ import com.example.track.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.track.data.workers.CurrenciesRatesWorker
-import com.example.track.domain.usecases.categoriesusecases.AddCategoryUseCase
-import com.example.track.domain.usecases.categoriesusecases.DeleteCategoryUseCase
-import com.example.track.domain.usecases.categoriesusecases.EditCategoryUseCase
-import com.example.track.domain.usecases.categoriesusecases.GetCategoryListUseCase
-import com.example.track.domain.usecases.expenseusecases.AddExpensesItemUseCase
-import com.example.track.domain.usecases.expenseusecases.DeleteExpenseItemUseCase
-import com.example.track.domain.usecases.expenseusecases.EditExpenseItemUseCase
-import com.example.track.domain.usecases.expenseusecases.GetExpensesItemUseCase
-import com.example.track.domain.usecases.expenseusecases.GetExpensesListUseCase
+import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
+import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
+import com.example.track.domain.usecases.expensesRelated.categoriesusecases.EditCategoryUseCase
+import com.example.track.domain.usecases.expensesRelated.categoriesusecases.GetCategoryListUseCase
+import com.example.track.domain.usecases.expensesRelated.expenseusecases.AddExpensesItemUseCase
+import com.example.track.domain.usecases.expensesRelated.expenseusecases.DeleteExpenseItemUseCase
+import com.example.track.domain.usecases.expensesRelated.expenseusecases.EditExpenseItemUseCase
+import com.example.track.domain.usecases.expensesRelated.expenseusecases.GetExpensesItemUseCase
+import com.example.track.domain.usecases.expensesRelated.expenseusecases.GetExpensesListUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -82,7 +82,7 @@ val settingsModule = module {
 
 val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get()) }
-    viewModel { BottomSheetViewModel(get(), get(), get(), get()) }
+    viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
     viewModel { ExpensesLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }

@@ -7,13 +7,15 @@ import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.converters.convertLocalDateToDate
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
+import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
 import com.example.track.data.models.currency.Currency
 import com.example.track.data.models.incomes.IncomeCategory
+import com.example.track.data.models.incomes.IncomeItem
 import com.example.track.data.models.other.CategoryEntity
-import com.example.track.domain.usecases.expenseusecases.AddExpensesItemUseCase
+import com.example.track.domain.usecases.expensesRelated.expenseusecases.AddExpensesItemUseCase
 import com.example.track.presentation.states.BottomSheetViewState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -34,6 +36,7 @@ import java.time.LocalDate
 
 class BottomSheetViewModel(
     private val addExpensesItemUseCase: AddExpensesItemUseCase,
+    private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
     private val categoryListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
@@ -61,6 +64,7 @@ class BottomSheetViewModel(
         fourthAdditionalCurrency
     )
     private val _selectedCurrencyIndex = MutableStateFlow(value = 0)
+
     @OptIn(ExperimentalCoroutinesApi::class)
     val selectedCurrency: Flow<Currency?> = _selectedCurrencyIndex.flatMapLatest { index ->
         combine(listOfCurrencies.map { it }) { currencies ->
@@ -82,8 +86,6 @@ class BottomSheetViewModel(
         )
     )
     val expenseViewState = _expenseViewState.asStateFlow()
-
-
     init {
         viewModelScope.launch {
             categoryListRepositoryImpl.getCategoriesList().collect {
@@ -124,6 +126,24 @@ class BottomSheetViewModel(
         }
     }
 
+    suspend fun addIncome(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        withContext(dispatcher) {
+            val currentIncomeItem = IncomeItem(
+                categoryId = expenseViewState.value.categoryPicked!!.categoryId,
+                note = expenseViewState.value.note,
+                date = convertLocalDateToDate(expenseViewState.value.datePicked),
+                value = expenseViewState.value.inputExpense!!,
+                currencyTicker = selectedCurrency.first()!!.ticker
+            )
+            incomeListRepositoryImpl.addIncomeItem(currentIncomeItem)
+            setCategoryPicked(DEFAULT_CATEGORY)
+            setInputExpense(DEFAULT_EXPENSE)
+            setDatePicked(DEFAULT_DATE)
+            setNote(DEFAULT_NOTE)
+            setBottomSheetExpanded(false)
+        }
+    }
+
     fun setBottomSheetExpanded(value: Boolean) {
         _expenseViewState.value = _expenseViewState.value.copy(isBottomSheetExpanded = value)
     }
@@ -144,7 +164,7 @@ class BottomSheetViewModel(
         _expenseViewState.value = expenseViewState.value.copy(timePickerState = !_expenseViewState.value.timePickerState)
     }
 
-    fun toggleIsAddingExpense(){
+    fun toggleIsAddingExpense() {
         _expenseViewState.value = expenseViewState.value.copy(isAddingExpense = !_expenseViewState.value.isAddingExpense)
     }
 
@@ -163,7 +183,7 @@ class BottomSheetViewModel(
     }
 
     fun changeSelectedCurrency() {
-        val listOfCurrenciesValues = listOfCurrencies.map{it.value}
+        val listOfCurrenciesValues = listOfCurrencies.map { it.value }
         val selectedCurrencyIndex = _selectedCurrencyIndex.value
         for (i in (selectedCurrencyIndex + 1) until listOfCurrencies.size) {
             if (listOfCurrenciesValues[i] != null) {
@@ -178,7 +198,8 @@ class BottomSheetViewModel(
             }
         }
     }
-    private fun setSelectedCurrency(index : Int) {
+
+    private fun setSelectedCurrency(index: Int) {
         _selectedCurrencyIndex.value = index
     }
 }

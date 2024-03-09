@@ -1,4 +1,4 @@
-package com.example.track.domain.usecases.expenseusecases
+package com.example.track.domain.usecases.expensesRelated.expenseusecases
 
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 
