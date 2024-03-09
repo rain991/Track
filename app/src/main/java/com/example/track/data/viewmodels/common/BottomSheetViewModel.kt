@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
@@ -55,7 +56,7 @@ class BottomSheetViewModel(
             categoryPicked = DEFAULT_CATEGORY,
             timePickerState = false,
             datePicked = LocalDate.now(),
-            todayButtonActiveState = false,
+            todayButtonActiveState = true,
             yesterdayButtonActiveState = false
         )
     )
@@ -125,11 +126,6 @@ class BottomSheetViewModel(
 //
 //    private var _yesterdayButtonActiveState = MutableStateFlow(false)
 //    val yesterdayButtonActiveState = _yesterdayButtonActiveState.asStateFlow()
-
-    fun updateBottomSheetViewState(newViewState: BottomSheetViewState) {
-        _expenseViewState.value = newViewState
-    }
-
     fun setBottomSheetExpanded(value: Boolean) {
         // _isBottomSheetExpanded.update { value }
         _expenseViewState.value = _expenseViewState.value.copy(isBottomSheetExpanded = value)
@@ -157,23 +153,27 @@ class BottomSheetViewModel(
         _expenseViewState.value = expenseViewState.value.copy(timePickerState = !_expenseViewState.value.timePickerState)
     }
 
-    fun setDatePicked(localDate: LocalDate) {
-       // _datePicked.value = localDate
-        _expenseViewState.value = expenseViewState.value.copy(datePicked = localDate)
-        when (localDate) {
-            LocalDate.now() -> {
-                setTodayButtonState(true)
-                setYesterdayButtonState(false)
-            }
-            LocalDate.now().minusDays(1) -> {
-                setYesterdayButtonState(true)
-                setTodayButtonState(false)
-            }
-            else -> {
-                setTodayButtonState(false)
-                setYesterdayButtonState(false)
-            }
-        }
+    fun setDatePicked(neededDate: LocalDate) {
+        // _datePicked.value = localDate
+        _expenseViewState.update{expenseViewState.value.copy(
+            datePicked = neededDate,
+            todayButtonActiveState = (neededDate == LocalDate.now()),
+            yesterdayButtonActiveState = (neededDate == (LocalDate.now().minusDays(1)))
+        )}
+//        when (localDate) {
+//            LocalDate.now() -> {
+//                setTodayButtonState(true)
+//                setYesterdayButtonState(false)
+//            }
+//            LocalDate.now().minusDays(1) -> {
+//                setYesterdayButtonState(true)
+//                setTodayButtonState(false)
+//            }
+//            else -> {
+//                setTodayButtonState(false)
+//                setYesterdayButtonState(false)
+//            }
+//        }
         Log.d("MyLog", "setDatePicked:${_expenseViewState.value} ")
     }
 
@@ -182,7 +182,7 @@ class BottomSheetViewModel(
     }
 
     private fun setTodayButtonState(boolean: Boolean) {
-       // _todayButtonActiveState.update { boolean }
+        // _todayButtonActiveState.update { boolean }
         _expenseViewState.value = expenseViewState.value.copy(todayButtonActiveState = boolean)
     }
 

@@ -84,8 +84,6 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val context = LocalContext.current
     val warning = stringResource(id = R.string.warning_bottom_sheet_exp)
-    bottomSheetViewModel.setDatePicked(LocalDate.now())
-    // val isVisible = bottomSheetViewModel.isBottomSheetExpanded.collectAsState()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
     if (bottomSheetViewState.value.isBottomSheetExpanded) {
@@ -202,12 +200,11 @@ private fun DatePicker() {
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val datePickerStateFlow = bottomSheetViewState.value.timePickerState
     val datePickerState = UseCaseState(visible = datePickerStateFlow)
-    val selectedDate = bottomSheetViewState.value.datePicked
-    var text by remember { mutableStateOf(selectedDate.toString()) }
-    text = if (!bottomSheetViewModel.isDateInOtherSpan(selectedDate)) {
+    var text by remember { mutableStateOf(bottomSheetViewState.value.datePicked.toString()) }
+    text = if (!bottomSheetViewModel.isDateInOtherSpan(bottomSheetViewState.value.datePicked)) {
         stringResource(R.string.other)
     } else {
-        selectedDate.toString()
+        bottomSheetViewState.value.datePicked.toString()
     }
     Row(
         modifier = Modifier
@@ -216,18 +213,18 @@ private fun DatePicker() {
     ) {
         OutlinedDateButton(
             text = stringResource(R.string.today_add_exp),
-            isSelected = (selectedDate == LocalDate.now())
+            isSelected = (bottomSheetViewState.value.todayButtonActiveState)
         ) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
         OutlinedDateButton(
             text = stringResource(R.string.yesterday_add_exp),
-            isSelected = (selectedDate == LocalDate.now().minusDays(1))
+            isSelected = (bottomSheetViewState.value.yesterdayButtonActiveState)
         ) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
             Text(text = text, style = MaterialTheme.typography.bodyMedium)
         }
         DateTimeDialog(
             state = datePickerState,
-            selection = DateTimeSelection.Date(selectedDate = selectedDate, onNegativeClick = { bottomSheetViewModel.togglePickerState() },
+            selection = DateTimeSelection.Date(selectedDate = bottomSheetViewState.value.datePicked, onNegativeClick = { bottomSheetViewModel.togglePickerState() },
                 onPositiveClick = { date ->
                     bottomSheetViewModel.setDatePicked(date)
                     bottomSheetViewModel.togglePickerState()
