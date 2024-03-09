@@ -1,7 +1,11 @@
 package com.example.track.presentation.bottomsheets
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -65,8 +69,8 @@ import com.example.track.R
 import com.example.track.data.DataStoreManager
 import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.constants.MIN_SUPPORTED_YEAR
-import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.currency.Currency
+import com.example.track.data.models.other.CategoryEntity
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.presentation.common.parseColor
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
@@ -82,12 +86,21 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val context = LocalContext.current
-    val warning = stringResource(id = R.string.warning_bottom_sheet_exp)
+    val warningMessage = stringResource(id = R.string.warning_bottom_sheet_exp)
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
     val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
+    val isAddingExpense = bottomSheetViewState.value.isAddingExpense
+    val categoryList = if(isAddingExpense) {bottomSheetViewModel.expenseCategoryList} else{
+        bottomSheetViewModel.incomeCategoryList
+    }
+    val bottomSheetTitle = if(isAddingExpense){
+        stringResource(R.string.add_expenses)
+    }else {
+        stringResource(R.string.add_income_bottom_sheet)
+    }
     if (bottomSheetViewState.value.isBottomSheetExpanded) {
         ModalBottomSheet(
             onDismissRequest = {
@@ -97,7 +110,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
         ) {
             val controller = LocalSoftwareKeyboardController.current
             val focusRequester = remember { FocusRequester() }
-            Column(   // All content
+            Column(
                 modifier = Modifier
                     .fillMaxHeight(0.65f)
                     .fillMaxWidth()
@@ -109,16 +122,20 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         .windowInsetsPadding(WindowInsets.navigationBars)
                 ) {
                     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(24.dp)) {
-                        Text(
-                            text = stringResource(R.string.add_expenses),
-                            style = MaterialTheme.typography.titleMedium,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        )
+                        AnimatedContent(contentAlignment = Alignment.CenterStart, targetState = bottomSheetTitle, label = "verticalTextChange", transitionSpec = {
+                            slideInVertically { it } togetherWith slideOutVertically { -it }
+                        }){
+                            TextButton(
+                                onClick = {bottomSheetViewModel.toggleIsAddingExpense()}
+                            ){
+                                Text(text = it, style = MaterialTheme.typography.titleMedium)
+                            }
+                        }
                         AmountInput(focusRequester, controller, currentCurrency.value!!)
                         Spacer(Modifier.height(12.dp))
                         OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
                         DatePicker()
-                        CategoriesGrid()
+                        CategoriesGrid(categoryList)
                         val coroutineScope = rememberCoroutineScope()
                         AcceptButton {
                             if (bottomSheetViewState.value.categoryPicked != null && bottomSheetViewState.value.datePicked.isBefore(
@@ -134,7 +151,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                                     }
                                 }
                             } else {
-                                Toast.makeText(context, warning, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, warningMessage, Toast.LENGTH_SHORT).show()
                             }
                         }
                     }
@@ -146,7 +163,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
 }
 
 @Composable
-fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (ExpenseCategory) -> Unit) {
+fun CategoryChip(category: CategoryEntity, isSelected: Boolean, onSelect: (CategoryEntity) -> Unit) {
     Button(
         modifier = Modifier.height(32.dp),
         onClick = { onSelect(category) },
@@ -173,10 +190,9 @@ fun CategoryChip(category: ExpenseCategory, isSelected: Boolean, onSelect: (Expe
 }
 
 @Composable
-private fun CategoriesGrid() {
+private fun CategoriesGrid(categoryList : List<CategoryEntity>) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val categoryList = bottomSheetViewModel.expenseCategoryList
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val selected = bottomSheetViewState.value.categoryPicked // warning
     LazyHorizontalStaggeredGrid(
@@ -285,7 +301,6 @@ private fun AmountInput(
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val currentExpense = bottomSheetViewState.value.inputExpense
-    //val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState()
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,

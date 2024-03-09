@@ -54,4 +54,5 @@
     <string name="extra_currency_settings_screen">Extra currency</string>
     <string name="currencies_settings_screen">Currencies</string>
     <string name="delete_latest_currency_settings_screen">delete latest currency</string>
+    <string name="add_income_bottom_sheet">Add income</string>
 </resources>

@@ -1,6 +1,5 @@
 package com.example.track.data.viewmodels.common
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,6 +12,7 @@ import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
 import com.example.track.data.models.currency.Currency
 import com.example.track.data.models.incomes.IncomeCategory
+import com.example.track.data.models.other.CategoryEntity
 import com.example.track.domain.usecases.expenseusecases.AddExpensesItemUseCase
 import com.example.track.presentation.states.BottomSheetViewState
 import kotlinx.coroutines.CoroutineDispatcher
@@ -70,6 +70,7 @@ class BottomSheetViewModel(
 
     private val _expenseViewState = MutableStateFlow(
         BottomSheetViewState(
+            isAddingExpense = true,
             isBottomSheetExpanded = false,
             note = DEFAULT_NOTE,
             inputExpense = DEFAULT_EXPENSE,
@@ -135,12 +136,16 @@ class BottomSheetViewModel(
         _expenseViewState.value = _expenseViewState.value.copy(inputExpense = inputExpense)
     }
 
-    fun setCategoryPicked(category: ExpenseCategory?) {
+    fun setCategoryPicked(category: CategoryEntity?) {
         _expenseViewState.value = expenseViewState.value.copy(categoryPicked = category)
     }
 
     fun togglePickerState() {
         _expenseViewState.value = expenseViewState.value.copy(timePickerState = !_expenseViewState.value.timePickerState)
+    }
+
+    fun toggleIsAddingExpense(){
+        _expenseViewState.value = expenseViewState.value.copy(isAddingExpense = !_expenseViewState.value.isAddingExpense)
     }
 
     fun setDatePicked(neededDate: LocalDate) {
@@ -160,11 +165,9 @@ class BottomSheetViewModel(
     fun changeSelectedCurrency() {
         val listOfCurrenciesValues = listOfCurrencies.map{it.value}
         val selectedCurrencyIndex = _selectedCurrencyIndex.value
-        listOfCurrenciesValues.forEach { Log.d("MyLog", "changeSelectedCurrency: ${it?.ticker}")}
         for (i in (selectedCurrencyIndex + 1) until listOfCurrencies.size) {
             if (listOfCurrenciesValues[i] != null) {
                 setSelectedCurrency(i)
-                Log.d("MyLog", "changeSelectedCurrency: ${listOfCurrencies[i].value}")
                 return
             }
         }
