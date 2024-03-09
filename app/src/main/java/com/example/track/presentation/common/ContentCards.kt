@@ -6,9 +6,10 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.expandHorizontally
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.shrinkHorizontally
+import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -30,7 +31,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -46,16 +46,13 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.track.R
-import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.converters.extractAdditionalDateInformation
 import com.example.track.data.converters.extractDayOfWeekFromDate
-import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
 import com.example.track.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
-import org.koin.compose.koinInject
 import kotlin.math.absoluteValue
 
 
@@ -66,9 +63,7 @@ fun ExpensesCardTypeSimple(
     expenseCategory: ExpenseCategory,
     expensesLazyColumnViewModel: ExpensesLazyColumnViewModel
 ) {
-    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val density = LocalDensity.current
-    val currentCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val categoryColor = parseColor(expenseCategory.colorId)
     Card(
         modifier = Modifier
@@ -144,7 +139,7 @@ fun ExpensesCardTypeSimple(
                                             )
                                         ) {
                                             append(" ")
-                                            append(currentCurrency.value!!.ticker)
+                                            append(expenseItem.currencyTicker)
                                         }
 
                                     }
@@ -166,7 +161,7 @@ fun ExpensesCardTypeSimple(
                             expandFrom = Alignment.Start
                         ) + fadeIn(
                             initialAlpha = 0.3f
-                        ), exit = slideOutHorizontally() + shrinkHorizontally() + fadeOut()) {
+                        ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
                             val notion = remember { mutableStateOf("") }
                             LaunchedEffect(key1 = Unit) {
                                 withContext(Dispatchers.IO) {
@@ -197,10 +192,10 @@ fun ExpensesCardTypeSimple(
                         }
                     }
                     if (expanded) {
-                        Spacer(modifier = Modifier.weight(1f))
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
-                ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = currentCurrency.value!!.ticker, isExpanded = expanded)
+                ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = expenseItem.currencyTicker, isExpanded = expanded)
             }
         }
     }

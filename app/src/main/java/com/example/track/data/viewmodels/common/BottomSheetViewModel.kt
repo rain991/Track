@@ -24,6 +24,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.distinctUntilChanged
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
@@ -66,8 +67,6 @@ class BottomSheetViewModel(
             currencies.getOrNull(index)
         }
     }.distinctUntilChanged()
-
-
 
     private val _expenseViewState = MutableStateFlow(
         BottomSheetViewState(
@@ -113,9 +112,8 @@ class BottomSheetViewModel(
                 note = expenseViewState.value.note,
                 date = convertLocalDateToDate(expenseViewState.value.datePicked),
                 value = expenseViewState.value.inputExpense!!,
-                currencyTicker = preferableCurrency.value.ticker
+                currencyTicker = selectedCurrency.first()!!.ticker
             )
-            Log.d("MyLog", "addExpense: ${preferableCurrency.value.ticker}")
             addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
             setCategoryPicked(DEFAULT_CATEGORY)
             setInputExpense(DEFAULT_EXPENSE)
