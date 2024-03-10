@@ -4,6 +4,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
+import com.example.track.data.converters.getEndOfTheMonth
+import com.example.track.data.converters.getStartOfMonthDate
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
@@ -18,7 +20,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
 class ExpenseAndIncomeLazyColumnViewModel(
     private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
@@ -87,14 +88,8 @@ class ExpenseAndIncomeLazyColumnViewModel(
     }
 
     fun requestCountInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String {
-        val calendar = Calendar.getInstance()
-        calendar.time = financialEntity.date
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        val startDate = calendar.time
-
-        val endCalendar = calendar.clone() as Calendar
-        endCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-        val endDate = endCalendar.time
+        val startDate = getStartOfMonthDate(financialEntity.date)
+        val endDate = getEndOfTheMonth(financialEntity.date)
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
             val result = expensesListRepositoryImpl.getExpensesByCategoryInTimeSpan(
                 startOfSpan = startDate,
@@ -115,13 +110,8 @@ class ExpenseAndIncomeLazyColumnViewModel(
     }
 
     fun requestSumExpensesInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String {
-        val calendar = Calendar.getInstance()
-        calendar.time = financialEntity.date
-        calendar.set(Calendar.DAY_OF_MONTH, 1)
-        val startDate = calendar.time
-        val endCalendar = calendar.clone() as Calendar
-        endCalendar.set(Calendar.DAY_OF_MONTH, endCalendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-        val endDate = endCalendar.time
+        val startDate= getStartOfMonthDate(financialEntity.date)
+        val endDate = getEndOfTheMonth(financialEntity.date)
 
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
             val result = expensesListRepositoryImpl.getExpensesByCategoryInTimeSpan(

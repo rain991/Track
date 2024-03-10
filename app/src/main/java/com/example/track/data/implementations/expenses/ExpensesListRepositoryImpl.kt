@@ -34,6 +34,10 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
         expenseItemsDao.update(newExpenseItem)
     }
 
+    override fun getCurrentMonthSumOfExpenses(): Flow<Float> {
+        expenseItemsDao.getSumOfExpensesInTimeSpan(start = )
+    }
+
     override fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>> {
         return expenseItemsDao.getAllWithDateAsc()
     }

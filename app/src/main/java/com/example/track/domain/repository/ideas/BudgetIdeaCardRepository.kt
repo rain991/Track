@@ -1,8 +1,10 @@
 package com.example.track.domain.repository.ideas
 
+import com.example.track.data.models.idea.Idea
+
 interface BudgetIdeaCardRepository {
-fun requestMonthBudget()
-fun requestWeekBudget()
-fun requestCurrentMonthExpenses()
-fun requestBudgetExpectancy() : Float
+    suspend fun requestMonthBudget(): Int
+    suspend fun requestWeekBudget(): Float
+    fun requestCurrentMonthExpenses(idea: Idea)
+    fun requestBudgetExpectancy(idea: Idea): Float
 }

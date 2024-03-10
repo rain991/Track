@@ -15,6 +15,7 @@ interface ExpensesListRepository {
     suspend fun deleteExpenseItem(currentExpenseItem: ExpenseItem, context: CoroutineContext = Dispatchers.IO)
     suspend fun editExpenseItem(newExpenseItem: ExpenseItem, context: CoroutineContext = Dispatchers.IO)
 
+    fun getCurrentMonthSumOfExpenses() : Flow<Float>
     fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>>
     fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>>
     fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category : ExpenseCategory): List<ExpenseItem>

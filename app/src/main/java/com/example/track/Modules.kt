@@ -13,6 +13,7 @@ import com.example.track.data.implementations.currencies.CurrenciesPreferenceRep
 import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
+import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
@@ -57,6 +58,8 @@ val appModule = module {
 
     single<IncomeCategoryDao> { ExpensesDB.getInstance(androidContext()).incomeCategoryDao }
     single<IncomesCategoriesListRepositoryImpl> { IncomesCategoriesListRepositoryImpl(get()) }
+
+    single<BudgetIdeaCardRepositoryImpl>{BudgetIdeaCardRepositoryImpl(get(), get())}
 }
 
 val domainModule = module {
