@@ -14,9 +14,11 @@ interface ExpensesListRepository {
     suspend fun addExpensesItem(currentExpensesItem: ExpenseItem, context: CoroutineContext = Dispatchers.IO)
     suspend fun deleteExpenseItem(currentExpenseItem: ExpenseItem, context: CoroutineContext = Dispatchers.IO)
     suspend fun editExpenseItem(newExpenseItem: ExpenseItem, context: CoroutineContext = Dispatchers.IO)
-
-    fun getCurrentMonthSumOfExpenses() : Flow<Float>
+    fun getCategoriesByIds(listOfIds: List<Int>): List<ExpenseCategory>
+    fun getExpensesByIds(listOfIds: List<Int>): List<ExpenseItem>
+    fun getCurrentMonthSumOfExpenses(): Float
+    fun getCurrentMonthSumOfExpensesForCategories(listOfCategories : List<ExpenseCategory>) : Float
     fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>>
     fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>>
-    fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category : ExpenseCategory): List<ExpenseItem>
+    fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: ExpenseCategory): List<ExpenseItem>
 }

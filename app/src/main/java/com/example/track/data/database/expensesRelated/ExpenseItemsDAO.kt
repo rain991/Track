@@ -6,6 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
 import kotlinx.coroutines.flow.Flow
 
@@ -29,6 +30,14 @@ interface ExpenseItemsDAO {
     @Query("SELECT * FROM Expenses ORDER BY date ASC")
     fun getAllWithDateAsc(): Flow<List<ExpenseItem>>
 
+    @Query("SELECT SUM(value) FROM expenses WHERE date BETWEEN :start AND :end")
+    fun getSumOfExpensesInTimeSpan(start : Long, end : Long) : Float
+    @Query("SELECT SUM(value) FROM expenses WHERE categoryId IN (:listOfCategoriesId) AND date BETWEEN :start AND :end")
+    fun getSumOfExpensesByCategoriesIdInTimeSpan(start : Long, end : Long, listOfCategoriesId : List<Int>) : Float
+    @Query("SELECT * FROM expenses WHERE id in (:listOfIds)")
+    fun getExpensesByIds(listOfIds : List<Int>) : List<ExpenseItem>
+    @Query("SELECT * FROM expense_categories WHERE categoryId in (SELECT categoryId FROM expenses WHERE id in (:listOfIds))")
+    fun getCategoriesByExpenseItemIds(listOfIds: List<Int>) : List<ExpenseCategory>
     @Query("SELECT * FROM Expenses WHERE id=:id")
     fun findExpenseById(id: Int): ExpenseItem?
 
@@ -37,7 +46,4 @@ interface ExpenseItemsDAO {
 
     @Query("SELECT * FROM Expenses WHERE categoryId=:categoryId AND date BETWEEN :start AND :end ")
     fun findExpensesInTimeSpan(start : Long, end : Long, categoryId: Int) : List<ExpenseItem>
-
-    @Query("SELECT SUM(value) FROM expenses WHERE date BETWEEN :start AND :end")
-    fun getSumOfExpensesInTimeSpan(start : Long, end : Long) : Flow<Float>
 }

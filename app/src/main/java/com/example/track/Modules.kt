@@ -14,6 +14,7 @@ import com.example.track.data.implementations.currencies.CurrencyListRepositoryI
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
+import com.example.track.data.implementations.ideas.ExpenseLimitsCardRepositoryImpl
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
@@ -60,6 +61,7 @@ val appModule = module {
     single<IncomesCategoriesListRepositoryImpl> { IncomesCategoriesListRepositoryImpl(get()) }
 
     single<BudgetIdeaCardRepositoryImpl>{BudgetIdeaCardRepositoryImpl(get(), get())}
+    single<ExpenseLimitsCardRepositoryImpl>{ExpenseLimitsCardRepositoryImpl(get())}
 }
 
 val domainModule = module {

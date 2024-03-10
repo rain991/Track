@@ -1,11 +1,15 @@
 package com.example.track.data.implementations.expenses
 
+import com.example.track.data.converters.convertLocalDateToDate
+import com.example.track.data.converters.getEndOfTheMonth
+import com.example.track.data.converters.getStartOfMonthDate
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.Expenses.ExpenseItem
 import com.example.track.domain.repository.expenses.ExpensesListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 import java.util.Date
 import kotlin.coroutines.CoroutineContext
 
@@ -34,8 +38,27 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
         expenseItemsDao.update(newExpenseItem)
     }
 
-    override fun getCurrentMonthSumOfExpenses(): Flow<Float> {
-        expenseItemsDao.getSumOfExpensesInTimeSpan(start = )
+    override fun getCategoriesByIds(listOfIds: List<Int>): List<ExpenseCategory> {
+        return expenseItemsDao.getCategoriesByExpenseItemIds(listOfIds)
+    }
+
+    override fun getExpensesByIds(listOfIds: List<Int>): List<ExpenseItem> {
+        return expenseItemsDao.getExpensesByIds(listOfIds)
+    }
+
+
+    override fun getCurrentMonthSumOfExpenses(): Float {
+        val todayDate = convertLocalDateToDate(LocalDate.now())
+        return expenseItemsDao.getSumOfExpensesInTimeSpan(
+            start = getStartOfMonthDate(todayDate).time,
+            end = getEndOfTheMonth(todayDate).time
+        )
+    }
+
+    override fun getCurrentMonthSumOfExpensesForCategories(listOfCategories: List<ExpenseCategory>) : Float {
+        val todayDate = convertLocalDateToDate(LocalDate.now())
+       return  expenseItemsDao.getSumOfExpensesByCategoriesIdInTimeSpan(start = getStartOfMonthDate(todayDate).time,
+            end = getEndOfTheMonth(todayDate).time, listOfCategoriesId = listOfCategories.map { it.categoryId })
     }
 
     override fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>> {

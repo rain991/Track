@@ -1,23 +1,36 @@
 package com.example.track.data.implementations.ideas
 
+import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.idea.Idea
 import com.example.track.domain.repository.ideas.ExpenseLimitsCardRepository
 
-class ExpenseLimitsCardRepositoryImpl : ExpenseLimitsCardRepository {
+class ExpenseLimitsCardRepositoryImpl(
+    private val expensesListRepositoryImpl: ExpensesListRepositoryImpl
+) : ExpenseLimitsCardRepository {
     override fun requestPlannedLimit(idea: Idea): Float {
-        TODO("Not yet implemented")
+        return idea.goal.toFloat()
     }
 
-    override fun requestRelatedToAllCategories(idea: Idea): Boolean {
-        TODO("Not yet implemented")
+    override fun requestRelatedToAllCategories(idea: Idea): Boolean? {
+        return idea.relatedToAllCategories
     }
 
-    override fun requestListOfChoosedCategories(idea: Idea): List<ExpenseCategory> {
-        TODO("Not yet implemented")
+    override fun requestListOfChosenCategories(idea: Idea): List<ExpenseCategory> {
+        return if(requestRelatedToAllCategories(idea) == false) {
+            val list = listOf(idea.firstRelatedCategoryId, idea.secondRelatedCategoryId, idea.thirdRelatedCategoryId)
+            expensesListRepositoryImpl.getCategoriesByIds(list.filterNotNull())
+        }else{
+            emptyList()
+        }
     }
 
     override fun requestAlreadySpentValue(idea: Idea): Float {
-        TODO("Not yet implemented")
+        return if(idea.relatedToAllCategories == true){
+            expensesListRepositoryImpl.getCurrentMonthSumOfExpenses()
+        }else{
+            val currentChosenCategories = requestListOfChosenCategories(idea)
+            expensesListRepositoryImpl.getCurrentMonthSumOfExpensesForCategories(currentChosenCategories)
+        }
     }
 }
