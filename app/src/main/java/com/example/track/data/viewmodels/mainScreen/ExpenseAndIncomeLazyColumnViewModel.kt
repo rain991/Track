@@ -13,7 +13,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
-class ExpensesLazyColumnViewModel(
+class ExpenseAndIncomeLazyColumnViewModel(
     private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
     private val categoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl
 ) : ViewModel() {
@@ -25,7 +25,8 @@ class ExpensesLazyColumnViewModel(
     val isScrolledBelow = _isScrolledBelow.asStateFlow()
     private val _expandedExpense: MutableStateFlow<ExpenseItem?> = MutableStateFlow(value = null)
     val expandedExpense = _expandedExpense.asStateFlow()
-
+    private val _isExpenseLazyColumn = MutableStateFlow(value = true)
+    val isExpenseLazyColumn = _isExpenseLazyColumn.asStateFlow()
     init {
         viewModelScope.launch {
             categoriesListRepositoryImpl.getCategoriesList().collect {
@@ -49,6 +50,9 @@ class ExpensesLazyColumnViewModel(
         _isScrolledBelow.update { firstVisibleIndex != 0 && _expensesList.size > 8 }
     }
 
+    fun toggleIsExpenseLazyColumn(){
+        _isExpenseLazyColumn.value = !_isExpenseLazyColumn.value
+    }
     fun requestCountInMonthNotion(expenseItem: ExpenseItem, expenseCategory: ExpenseCategory): String {
         val calendar = Calendar.getInstance()
         calendar.time = expenseItem.date

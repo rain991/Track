@@ -1,4 +1,4 @@
-package com.example.track.presentation.home.mainScreen.expensesLazyColumn
+package com.example.track.presentation.home.mainScreen.expenseAndIncomeLazyColumn
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
@@ -43,8 +43,8 @@ import com.example.track.data.converters.areDatesSame
 import com.example.track.data.converters.areMonthsSame
 import com.example.track.data.converters.areYearsSame
 import com.example.track.data.converters.convertDateToLocalDate
-import com.example.track.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
-import com.example.track.presentation.common.ExpensesCardTypeSimple
+import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
+import com.example.track.presentation.common.ExpenseAndIncomeCardTypeSimple
 import com.example.track.presentation.home.mainScreen.additionalInfoCards.MainScreenInfoComposable
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
@@ -52,14 +52,15 @@ import java.time.LocalDate
 
 @Composable
 fun ExpensesLazyColumn() {
-    val expensesLazyColumnViewModel = koinViewModel<ExpensesLazyColumnViewModel>()
-    val expensesList = expensesLazyColumnViewModel.expensesList
-    val categoriesList = expensesLazyColumnViewModel.categoriesList
+    val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
+    val expensesList = expenseAndIncomeLazyColumnViewModel.expensesList
+    val categoriesList = expenseAndIncomeLazyColumnViewModel.categoriesList
     val listState = rememberLazyListState()
-    val expandedItem = expensesLazyColumnViewModel.expandedExpense.collectAsState()
+    val expandedItem = expenseAndIncomeLazyColumnViewModel.expandedExpense.collectAsState()
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > 6 } }
     var isScrollingUp by remember { mutableStateOf(false) }
-    val isScrolledBelowState = expensesLazyColumnViewModel.isScrolledBelow.collectAsState()
+    val isScrolledBelowState = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
+    val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     Box {
         Box(
             modifier = Modifier
@@ -88,7 +89,7 @@ fun ExpensesLazyColumn() {
             snapshotFlow {
                 listState.firstVisibleItemIndex
             }.collect { index ->
-                expensesLazyColumnViewModel.setScrolledBelow(index)
+                expenseAndIncomeLazyColumnViewModel.setScrolledBelow(index)
             }
         }
         Column {
@@ -158,10 +159,10 @@ fun ExpensesLazyColumn() {
                                         }
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
-                                    ExpensesCardTypeSimple(
-                                        expenseItem = currentExpense,
+                                    ExpenseAndIncomeCardTypeSimple(
+                                        financialItem = currentExpense,
                                         expenseCategory = currentCategory,expanded = (expandedItem.value==currentExpense),
-                                        expensesLazyColumnViewModel = expensesLazyColumnViewModel
+                                        expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel
                                     )
                                     if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
                                 }

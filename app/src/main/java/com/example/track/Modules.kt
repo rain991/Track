@@ -18,7 +18,7 @@ import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.login.LoginViewModel
-import com.example.track.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
+import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.track.data.workers.CurrenciesRatesWorker
@@ -83,7 +83,7 @@ val settingsModule = module {
 val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
-    viewModel { ExpensesLazyColumnViewModel(get(), get()) }
+    viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
 }

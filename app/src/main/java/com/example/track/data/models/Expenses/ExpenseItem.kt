@@ -5,6 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.track.data.models.currency.Currency
+import com.example.track.data.models.other.FinancialEntity
 import java.util.Date
 
 
@@ -26,17 +27,17 @@ import java.util.Date
 )
 data class ExpenseItem(
     @PrimaryKey(autoGenerate = true)
-    val id: Int = 0,
+    override val id: Int = 0,
     @ColumnInfo(name = "currencyTicker")
-    val currencyTicker: String,
+    override val currencyTicker: String,
     @ColumnInfo(name = "value")
-    val value: Float,
+    override val value: Float,
     @ColumnInfo(name = "note")
-    val note: String,
+    override val note: String,
     @ColumnInfo(name = "date")
-    val date: Date,
+    override val date: Date,
     @ColumnInfo(name = "enabled")
-    val enabled: Boolean = false,
+    override val enabled: Boolean = false,
     @ColumnInfo(name = "categoryId")
-    val categoryId: Int
-)
+    override val categoryId: Int
+) : FinancialEntity()

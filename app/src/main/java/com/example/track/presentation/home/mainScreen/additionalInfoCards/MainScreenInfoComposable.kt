@@ -13,13 +13,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.track.data.viewmodels.mainScreen.ExpensesLazyColumnViewModel
+import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun MainScreenInfoComposable() {
-    val expensesLazyColumnViewModel = koinViewModel<ExpensesLazyColumnViewModel>()
-    val isScrolledBelow = expensesLazyColumnViewModel.isScrolledBelow.collectAsState()
+    val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
+    val isScrolledBelow = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
     AnimatedVisibility(visible = !isScrolledBelow.value) {
 
         Row(modifier = Modifier

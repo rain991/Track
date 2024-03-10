@@ -17,7 +17,7 @@ import com.example.track.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.presentation.bottomsheets.ExtendedButtonExample
 import com.example.track.presentation.bottomsheets.SimplifiedBottomSheet
-import com.example.track.presentation.home.mainScreen.expensesLazyColumn.ExpensesLazyColumn
+import com.example.track.presentation.home.mainScreen.expenseAndIncomeLazyColumn.ExpensesLazyColumn
 import com.example.track.presentation.home.mainScreen.feed.MainScreenFeed
 import com.example.track.presentation.other.Header
 import org.koin.androidx.compose.koinViewModel
