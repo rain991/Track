@@ -39,7 +39,7 @@ fun MainExpenseScreen() {  // Primary screen
         Column(
             modifier = Modifier
                 .padding(it),
-            verticalArrangement = Arrangement.spacedBy(8.dp)) //12.dp
+            verticalArrangement = Arrangement.spacedBy(8.dp))
         {
             if(!isPageNameVisible.value) Spacer(modifier = Modifier.height(12.dp))
             MainScreenFeed()

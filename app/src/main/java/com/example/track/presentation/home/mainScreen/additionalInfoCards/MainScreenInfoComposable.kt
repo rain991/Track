@@ -22,14 +22,16 @@ fun MainScreenInfoComposable() {
     val isScrolledBelow = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
     AnimatedVisibility(visible = !isScrolledBelow.value) {
 
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)){
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+        ) {
             Card(
                 modifier = Modifier
                     .height(120.dp)
                     .weight(1f)
-                    .padding(8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
+                    .padding(start = 8.dp, end = 8.dp, top = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.primary,
@@ -42,7 +44,7 @@ fun MainScreenInfoComposable() {
                 modifier = Modifier
                     .height(120.dp)
                     .weight(1f)
-                    .padding(8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
+                    .padding(start = 8.dp, end = 8.dp, top = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
                     containerColor = MaterialTheme.colorScheme.primaryContainer,
                     contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
                     disabledContainerColor = MaterialTheme.colorScheme.primary,

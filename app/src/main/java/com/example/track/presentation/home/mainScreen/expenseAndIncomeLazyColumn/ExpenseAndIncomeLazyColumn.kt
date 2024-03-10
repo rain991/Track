@@ -104,7 +104,7 @@ fun ExpensesLazyColumn() {
             Box(
                 modifier = Modifier
                     .wrapContentWidth()
-                    .padding(start = 12.dp, bottom = if (isScrolledBelowState.value) 4.dp else 0.dp)
+                    .padding(start = 8.dp, bottom = if (isScrolledBelowState.value) 4.dp else 0.dp)
             ) {
                 Transactions()
             }
@@ -222,12 +222,12 @@ private fun Transactions() {
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
-            text = stringResource(R.string.recent_lazy_column),
-            style = MaterialTheme.typography.titleMedium,
-            textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+//        Text(
+//            text = stringResource(R.string.recent_lazy_column),
+//            style = MaterialTheme.typography.titleMedium,
+//            textAlign = TextAlign.Center,
+//            color = MaterialTheme.colorScheme.onPrimaryContainer
+//        )
         AnimatedContent(
             targetState = text,
             label = "verticalTextChange",
@@ -239,7 +239,7 @@ private fun Transactions() {
             ) {
                 Text(
                     text = it,
-                    style = MaterialTheme.typography.titleSmall,
+                    style = MaterialTheme.typography.titleMedium,
                     color = MaterialTheme.colorScheme.primary
                 )
             }

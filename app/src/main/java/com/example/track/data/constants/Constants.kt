@@ -35,4 +35,5 @@ val CURRENCIES_PREFERENCE_DEFAULT = CurrenciesPreference(
     fourthAdditionalCurrency = null
 )
 const val FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE = 6
+const val FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE = 8
 const val MIN_SUPPORTED_YEAR = 2000

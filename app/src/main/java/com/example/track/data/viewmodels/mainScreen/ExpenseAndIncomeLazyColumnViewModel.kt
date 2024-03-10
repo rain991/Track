@@ -3,6 +3,7 @@ package com.example.track.data.viewmodels.mainScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.track.data.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
@@ -73,7 +74,12 @@ class ExpenseAndIncomeLazyColumnViewModel(
     }
 
     fun setScrolledBelow(firstVisibleIndex: Int) {
-        _isScrolledBelow.update { firstVisibleIndex != 0 && _expensesList.size > 8 }
+        if (isExpenseLazyColumn.value) {
+            _isScrolledBelow.update { firstVisibleIndex != 0 && _expensesList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE }
+        } else {
+            _isScrolledBelow.update { firstVisibleIndex != 0 && _incomeList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE }
+        }
+
     }
 
     fun toggleIsExpenseLazyColumn() {
