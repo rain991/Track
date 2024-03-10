@@ -55,7 +55,7 @@ class ExpenseAndIncomeLazyColumnViewModel(
             }
         }
         viewModelScope.launch {
-            incomeListRepositoryImpl.getIncomesList().collect {
+            incomeListRepositoryImpl.getSortedIncomesListDateDesc().collect {
                 _incomeList.clear()
                 _incomeList.addAll(it)
             }

@@ -209,32 +209,40 @@ fun ExpensesLazyColumn() {
 
 @Composable
 private fun Transactions() {
-//    Text(
-//        text = "Transactions",
-//        style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
-//    )
     val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
     val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     var text by remember { mutableStateOf("") }
     if (isExpenseLazyColumn.value) {
-        text = "Expenses"
-    }else{
-        text = "Incomes"
+        text = stringResource(R.string.expenses_lazy_column)
+    } else {
+        text = stringResource(R.string.incomes_lazy_column)
     }
-    AnimatedContent(
-        targetState = text,
-        label = "verticalTextChange",
-        transitionSpec = {
-            slideInVertically { it } togetherWith slideOutVertically { -it }
-        }) {
-        TextButton(
-            onClick = { expenseAndIncomeLazyColumnViewModel.toggleIsExpenseLazyColumn() }
-        ) {
-            Text(
-                text = it,
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.Start,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Text(
+            text = stringResource(R.string.recent_lazy_column),
+            style = MaterialTheme.typography.titleMedium,
+            textAlign = TextAlign.Center,
+            color = MaterialTheme.colorScheme.onPrimaryContainer
+        )
+        AnimatedContent(
+            targetState = text,
+            label = "verticalTextChange",
+            transitionSpec = {
+                slideInVertically { it } togetherWith slideOutVertically { -it }
+            }) {
+            TextButton(
+                onClick = { expenseAndIncomeLazyColumnViewModel.toggleIsExpenseLazyColumn() }
+            ) {
+                Text(
+                    text = it,
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.primary
+                )
+            }
         }
     }
 }
@@ -275,23 +283,21 @@ private fun ExpenseDayHeader(localDate: LocalDate, isPastSmallMarkupNeeded: Bool
     Row(verticalAlignment = Alignment.Bottom) {
         Text(
             text = "${localDate.dayOfMonth}",
-            style = MaterialTheme.typography.titleMedium.copy(
-                fontSize = if (isPastSmallMarkupNeeded) 24.sp else 26.sp,
+            style = MaterialTheme.typography.titleSmall.copy(
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         )
         if (isPastSmallMarkupNeeded) {
             Text(
                 text = ".",
-                style = MaterialTheme.typography.titleMedium.copy(
-                    fontSize = 24.sp,
+                style = MaterialTheme.typography.titleSmall.copy(
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
             Text(
                 text = "${localDate.month.value}",
                 style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
-            ) // warning titleSmall not defined  
+            )
         }
     }
 }

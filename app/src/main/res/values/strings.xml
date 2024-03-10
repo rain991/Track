@@ -57,4 +57,7 @@
     <string name="add_income_bottom_sheet">income</string>
     <string name="add">Add</string>
     <string name="you_havent_added_incomes_yet_lazy_column">You haven\'t added incomes yet</string>
+    <string name="recent_lazy_column">Recent</string>
+    <string name="expenses_lazy_column">Expenses</string>
+    <string name="incomes_lazy_column">Incomes</string>
 </resources>
