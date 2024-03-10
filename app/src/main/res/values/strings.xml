@@ -41,7 +41,7 @@
     <string name="yesterday_add_exp">Yesterday</string>
     <string name="selected_date_add_exp">Selected date</string>
     <string name="note_exp_list">Note: %1$s</string>
-    <string name="warning_bottom_sheet_exp">Select category or type correct expense value</string>
+    <string name="warning_bottom_sheet_exp">Select category or type correct value</string>
     <string name="empty_exp_lazyColumn_title">You haven\'t added expenses yet</string>
     <string name="empty_exp_lazyColumn_additional1">Try it out using button in right bottom corner, it is available in every app screen</string>
     <string name="greetings_settings_screen">Hello, %1$s</string>
@@ -56,4 +56,5 @@
     <string name="delete_latest_currency_settings_screen">delete latest currency</string>
     <string name="add_income_bottom_sheet">income</string>
     <string name="add">Add</string>
+    <string name="you_havent_added_incomes_yet_lazy_column">You haven\'t added incomes yet</string>
 </resources>

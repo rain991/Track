@@ -1,6 +1,10 @@
 package com.example.track.presentation.home.mainScreen.expenseAndIncomeLazyColumn
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
+import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -20,6 +24,7 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -39,12 +44,12 @@ import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.track.R
+import com.example.track.data.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
 import com.example.track.data.converters.areDatesSame
-import com.example.track.data.converters.areMonthsSame
 import com.example.track.data.converters.areYearsSame
 import com.example.track.data.converters.convertDateToLocalDate
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
-import com.example.track.presentation.common.ExpenseAndIncomeCardTypeSimple
+import com.example.track.presentation.common.FinancialItemCardTypeSimple
 import com.example.track.presentation.home.mainScreen.additionalInfoCards.MainScreenInfoComposable
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
@@ -53,14 +58,16 @@ import java.time.LocalDate
 @Composable
 fun ExpensesLazyColumn() {
     val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
+    val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     val expensesList = expenseAndIncomeLazyColumnViewModel.expensesList
-    val categoriesList = expenseAndIncomeLazyColumnViewModel.categoriesList
+    val expenseCategoriesList = expenseAndIncomeLazyColumnViewModel.expenseCategoriesList
+    val incomeList = expenseAndIncomeLazyColumnViewModel.incomeList
+    val incomeCategoriesList = expenseAndIncomeLazyColumnViewModel.incomeCategoriesList
     val listState = rememberLazyListState()
-    val expandedItem = expenseAndIncomeLazyColumnViewModel.expandedExpense.collectAsState()
-    val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > 6 } }
+    val expandedItem = expenseAndIncomeLazyColumnViewModel.expandedFinancialEntity.collectAsState()
+    val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE } }
     var isScrollingUp by remember { mutableStateOf(false) }
     val isScrolledBelowState = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
-    val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     Box {
         Box(
             modifier = Modifier
@@ -103,27 +110,50 @@ fun ExpensesLazyColumn() {
             }
             Spacer(modifier = Modifier.height(4.dp))
             if (expensesList.isEmpty()) {
-                EmptyLazyColumnPlacement()
+                EmptyLazyColumnPlacement(isExpenseLazyColumn = isExpenseLazyColumn.value)
             } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-                    items(expensesList.size) { index ->
-                        val currentExpense = expensesList[index]
-                        val currentCategory = categoriesList.find { it.categoryId == currentExpense.categoryId }
+                    items(
+                        if (isExpenseLazyColumn.value) {
+                            expensesList.size
+                        } else {
+                            incomeList.size
+                        }
+                    ) { index ->
+                        val currentFinancialEntity = if (isExpenseLazyColumn.value) {
+                            expensesList[index]
+                        } else {
+                            incomeList[index]
+                        }
+                        val currentFinancialCategory =
+                            if (isExpenseLazyColumn.value) {
+                                expenseCategoriesList.find { it.categoryId == currentFinancialEntity.categoryId }
+                            } else {
+                                incomeCategoriesList.find { it.categoryId == currentFinancialEntity.categoryId }
+                            }
+
                         var isPreviousDayDifferent = index == 0
                         var isNextDayDifferent = false
-                        var isPreviousMonthDifferent = false
                         var isPreviousYearDifferent = false
                         if (index > 0) {
+                            val previousFinancialEntity = if (isExpenseLazyColumn.value) {
+                                expensesList[index - 1]
+                            } else {
+                                incomeList[index - 1]
+                            }
                             isPreviousDayDifferent =
-                                !areDatesSame(expensesList[index - 1].date, currentExpense.date)
-                            isPreviousMonthDifferent =
-                                !areMonthsSame(expensesList[index - 1].date, currentExpense.date)
+                                !areDatesSame(previousFinancialEntity.date, currentFinancialEntity.date)
                             isPreviousYearDifferent =
-                                !areYearsSame(expensesList[index - 1].date, currentExpense.date)
+                                !areYearsSame(previousFinancialEntity.date, currentFinancialEntity.date)
                         }
-                        if (index < expensesList.size - 1) {
-                            isNextDayDifferent =
-                                !areDatesSame(expensesList[index + 1].date, currentExpense.date)
+                        if (isExpenseLazyColumn.value) {
+                            if (index < expensesList.size - 1) {
+                                isNextDayDifferent = !areDatesSame(expensesList[index + 1].date, currentFinancialEntity.date)
+                            }
+                        } else {
+                            if (index < incomeList.size - 1) {
+                                isNextDayDifferent = !areDatesSame(incomeList[index + 1].date, currentFinancialEntity.date)
+                            }
                         }
                         Column(modifier = Modifier.padding(horizontal = 8.dp)) {
                             if (isScrollingUp) LaunchedEffect(listState) {
@@ -131,37 +161,38 @@ fun ExpensesLazyColumn() {
                                 isScrollingUp = false
                             }
                             Column {
-                                if (currentCategory != null) {
+                                if (currentFinancialCategory != null) {
                                     Row(
                                         Modifier
                                             .fillMaxWidth()
                                             .padding(horizontal = 4.dp), verticalAlignment = Alignment.Bottom
                                     ) {
                                         if (isPreviousDayDifferent) {
-                                            if(isPreviousYearDifferent){
+                                            if (isPreviousYearDifferent) {
                                                 ExpenseYearHeader(
                                                     localDate = convertDateToLocalDate(
-                                                        currentExpense.date
+                                                        currentFinancialEntity.date
                                                     )
                                                 )
                                                 Spacer(modifier = Modifier.width(2.dp))
                                             }
-                                                Spacer(modifier = Modifier.width(4.dp))
-                                                ExpenseMonthHeader(convertDateToLocalDate(currentExpense.date))
-                                                Text(
-                                                    text = ", ",
-                                                    style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
-                                                )
+                                            Spacer(modifier = Modifier.width(4.dp))
+                                            ExpenseMonthHeader(convertDateToLocalDate(currentFinancialEntity.date))
+                                            Text(
+                                                text = ", ",
+                                                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                                            )
                                             ExpenseDayHeader(
-                                                localDate = convertDateToLocalDate(currentExpense.date),
+                                                localDate = convertDateToLocalDate(currentFinancialEntity.date),
                                                 isPastSmallMarkupNeeded = false
                                             )
                                         }
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
-                                    ExpenseAndIncomeCardTypeSimple(
-                                        financialItem = currentExpense,
-                                        expenseCategory = currentCategory,expanded = (expandedItem.value==currentExpense),
+                                    FinancialItemCardTypeSimple(
+                                        financialEntity = currentFinancialEntity,
+                                        categoryEntity = currentFinancialCategory,
+                                        expanded = (expandedItem.value == currentFinancialEntity),
                                         expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel
                                     )
                                     if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
@@ -178,24 +209,54 @@ fun ExpensesLazyColumn() {
 
 @Composable
 private fun Transactions() {
-    Text(
-        text = "Transactions",
-        style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
-    )
+//    Text(
+//        text = "Transactions",
+//        style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+//    )
+    val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
+    val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
+    var text by remember { mutableStateOf("") }
+    if (isExpenseLazyColumn.value) {
+        text = "Expenses"
+    }else{
+        text = "Incomes"
+    }
+    AnimatedContent(
+        targetState = text,
+        label = "verticalTextChange",
+        transitionSpec = {
+            slideInVertically { it } togetherWith slideOutVertically { -it }
+        }) {
+        TextButton(
+            onClick = { expenseAndIncomeLazyColumnViewModel.toggleIsExpenseLazyColumn() }
+        ) {
+            Text(
+                text = it,
+                style = MaterialTheme.typography.titleMedium,
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
+    }
 }
 
 @Composable
-private fun EmptyLazyColumnPlacement() {
-    Box(modifier = Modifier
-        .fillMaxSize()
-        .padding(start = 8.dp, end = 8.dp, bottom = 24.dp)) {
+private fun EmptyLazyColumnPlacement(isExpenseLazyColumn: Boolean) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(start = 8.dp, end = 8.dp, bottom = 24.dp)
+    ) {
         Column(
             modifier = Modifier.fillMaxSize(),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
-                text = stringResource(R.string.empty_exp_lazyColumn_title),
+                text = if (isExpenseLazyColumn) {
+                    stringResource(R.string.empty_exp_lazyColumn_title)
+                } else {
+                    stringResource(R.string.you_havent_added_incomes_yet_lazy_column)
+                },
                 style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                 textAlign = TextAlign.Center
             )

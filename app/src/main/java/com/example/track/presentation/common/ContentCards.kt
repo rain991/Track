@@ -48,8 +48,7 @@ import androidx.compose.ui.unit.sp
 import com.example.track.R
 import com.example.track.data.converters.extractAdditionalDateInformation
 import com.example.track.data.converters.extractDayOfWeekFromDate
-import com.example.track.data.models.Expenses.ExpenseCategory
-import com.example.track.data.models.Expenses.ExpenseItem
+import com.example.track.data.models.other.CategoryEntity
 import com.example.track.data.models.other.FinancialEntity
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import kotlinx.coroutines.Dispatchers
@@ -58,21 +57,21 @@ import kotlin.math.absoluteValue
 
 
 @Composable
-fun ExpensesCardTypeSimple(
-    expenseItem: ExpenseItem,
-    expanded:Boolean,
-    expenseCategory: ExpenseCategory,
+fun FinancialItemCardTypeSimple(
+    financialEntity: FinancialEntity,
+    expanded: Boolean,
+    categoryEntity: CategoryEntity,
     expenseAndIncomeLazyColumnViewModel: ExpenseAndIncomeLazyColumnViewModel
 ) {
     val density = LocalDensity.current
-    val categoryColor = parseColor(expenseCategory.colorId)
+    val categoryColor = parseColor(categoryEntity.colorId)
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .animateContentSize()
             .height(if (expanded) 150.dp else 100.dp)
             .padding(vertical = 8.dp)
-            .clickable { expenseAndIncomeLazyColumnViewModel.setExpandedExpenseCard(if (expanded) null else expenseItem) },
+            .clickable { expenseAndIncomeLazyColumnViewModel.setExpandedExpenseCard(if (expanded) null else financialEntity) },
         shape = MaterialTheme.shapes.medium
     ) {
         Column(
@@ -91,10 +90,10 @@ fun ExpensesCardTypeSimple(
                             .wrapContentHeight()
                             .fillMaxWidth()
                     ) {
-                        if (expenseItem.note.isNotEmpty()) {
-                            NoteCard(expenseItem = expenseItem)
+                        if (financialEntity.note.isNotEmpty()) {
+                            NoteCard(expenseItem = financialEntity)
                         } else {
-                            CategoryCard(category = expenseCategory, containerColor = categoryColor)
+                            CategoryCard(category = categoryEntity, containerColor = categoryColor)
                         }
                     }
                     Spacer(modifier = Modifier.weight(1f))
@@ -103,13 +102,13 @@ fun ExpensesCardTypeSimple(
                         LaunchedEffect(key1 = Unit) {
                             withContext(Dispatchers.IO) {
                                 text.value = expenseAndIncomeLazyColumnViewModel.requestSumExpensesInMonthNotion(
-                                    expenseItem = expenseItem,
-                                    expenseCategory = expenseCategory
+                                    financialEntity = financialEntity,
+                                    financialCategory = categoryEntity
                                 )
                             }
                         }
                         val resultedNotion = if (!expanded) {
-                            extractDayOfWeekFromDate(date = expenseItem.date) + ", " + extractAdditionalDateInformation(date = financialItem.date)
+                            extractDayOfWeekFromDate(date = financialEntity.date) + ", " + extractAdditionalDateInformation(date = financialEntity.date)
                         } else {
                             text.value
                         }
@@ -124,7 +123,7 @@ fun ExpensesCardTypeSimple(
                                 } else {
                                     buildAnnotatedString {
                                         withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
-                                            append("${expenseCategory.note} this month: ")
+                                            append("${categoryEntity.note} this month: ")
                                         }
                                         withStyle(
                                             style = SpanStyle(
@@ -141,7 +140,7 @@ fun ExpensesCardTypeSimple(
                                             )
                                         ) {
                                             append(" ")
-                                            append(expenseItem.currencyTicker)
+                                            append(financialEntity.currencyTicker)
                                         }
 
                                     }
@@ -168,15 +167,15 @@ fun ExpensesCardTypeSimple(
                             LaunchedEffect(key1 = Unit) {
                                 withContext(Dispatchers.IO) {
                                     notion.value = expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
-                                        expenseItem = expenseItem,
-                                        expenseCategory = expenseCategory
+                                        financialEntity = financialEntity,
+                                        financialCategory = categoryEntity
                                     )
                                 }
                             }
                             Text(
                                 text = buildAnnotatedString {
                                     withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
-                                        append("${expenseCategory.note} Expenses: ")
+                                        append("${categoryEntity.note} Expenses: ")
                                     }
                                     withStyle(
                                         style = SpanStyle(
@@ -197,14 +196,14 @@ fun ExpensesCardTypeSimple(
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }
-                ExpenseValueCard(expenseItem = expenseItem, currentCurrencyName = expenseItem.currencyTicker, isExpanded = expanded)
+                ExpenseValueCard(expenseItem = financialEntity, currentCurrencyName = financialEntity.currencyTicker, isExpanded = expanded)
             }
         }
     }
 }
 
 @Composable
-private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: String, isExpanded: Boolean) {
+private fun ExpenseValueCard(expenseItem: FinancialEntity, currentCurrencyName: String, isExpanded: Boolean) {
     Card(elevation = CardDefaults.cardElevation(defaultElevation = 22.dp, focusedElevation = 14.dp), modifier = Modifier.padding(4.dp)) {
         Column(
             modifier = Modifier
@@ -225,7 +224,7 @@ private fun ExpenseValueCard(expenseItem: ExpenseItem, currentCurrencyName: Stri
 }
 
 @Composable
-private fun CategoryCard(category: ExpenseCategory, containerColor: Color) {
+private fun CategoryCard(category: CategoryEntity, containerColor: Color) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
         modifier = Modifier.wrapContentSize(),
@@ -248,7 +247,7 @@ private fun CategoryCard(category: ExpenseCategory, containerColor: Color) {
 }
 
 @Composable
-private fun NoteCard(expenseItem: ExpenseItem) {
+private fun NoteCard(expenseItem: FinancialEntity) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp), modifier = Modifier.wrapContentSize(),
         colors = CardColors(
