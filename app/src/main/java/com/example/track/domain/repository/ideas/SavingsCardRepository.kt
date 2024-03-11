@@ -5,6 +5,6 @@ import com.example.track.data.models.idea.Idea
 interface SavingsCardRepository {
     fun requestPlannedSavings(idea: Idea) : Float
     fun requestIncludedInBudget(idea: Idea) : Boolean
-    fun requestCompletenceValue(idea: Idea) : Float
-    fun requestCompletenceRate(idea: Idea) : Float
+    fun requestCompletenessValue(idea: Idea) : Float
+    fun requestCompletenessRate(idea: Idea) : Float
 }

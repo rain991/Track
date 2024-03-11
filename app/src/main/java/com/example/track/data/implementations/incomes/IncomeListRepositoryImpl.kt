@@ -47,4 +47,6 @@ class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomesListRe
     override fun getIncomesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: IncomeCategory): List<IncomeItem> {
         return incomeDao.findIncomesInTimeSpan(start = startOfSpan.time, end = endOfSpan.time, categoryId = category.categoryId)
     }
+
+
 }

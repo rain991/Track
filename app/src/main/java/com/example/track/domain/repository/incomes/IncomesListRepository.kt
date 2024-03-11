@@ -16,4 +16,5 @@ interface IncomesListRepository {
     fun getSortedIncomesListDateAsc(): Flow<List<IncomeItem>>
     fun getSortedIncomesListDateDesc(): Flow<List<IncomeItem>>
     fun getIncomesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: IncomeCategory): List<IncomeItem>
+
 }

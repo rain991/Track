@@ -37,4 +37,7 @@ interface IncomeDao {
 
     @Query("SELECT * FROM Expenses WHERE note LIKE '%' || :note || '%'")
     fun findExpenseByNotes(note: String): Flow<List<IncomeItem>>
+
+    @Query("SELECT SUM(value) FROM incomes WHERE date BETWEEN :start AND :end")
+    fun getSumOfIncomesInTimeSpan(start : Long, end : Long) : Float
 }

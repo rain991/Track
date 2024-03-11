@@ -6,7 +6,8 @@ import java.util.Date
 interface IncomePlanCardRepository {
     fun requestPlannedIncome(idea: Idea) : Float
     fun requestStartOfPeriod(idea: Idea) : Date
-    fun requestEndOfPeriod(idea: Idea) : Date
-    fun requestCompletenceValue(idea: Idea) : Float
-    fun requestCompletenceRate(idea: Idea) : Float
+    fun requestEndOfPeriod(idea: Idea) : Date?
+    fun requestCompletenessValue(idea: Idea) : Float
+    fun requestCompletenessRate(idea: Idea) : Float
+    fun getSumOfIncomesInTimeSpan(startOfSpan : Date, endOfSpan : Date) : Float
 }
