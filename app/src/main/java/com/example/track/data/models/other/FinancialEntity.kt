@@ -8,6 +8,6 @@ abstract class FinancialEntity {
     abstract val value: Float
     abstract val note: String
     abstract val date: Date
-    abstract val enabled: Boolean
+    abstract val disabled: Boolean
     abstract val categoryId: Int
 }

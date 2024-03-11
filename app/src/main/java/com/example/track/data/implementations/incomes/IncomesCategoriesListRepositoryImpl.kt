@@ -12,6 +12,10 @@ class IncomesCategoriesListRepositoryImpl(private val incomeCategoryDao : Income
         return incomeCategoryDao.getAllIncomeCategories()
     }
 
+    override fun getOtherCategoryId(): Int {
+        return incomeCategoryDao.getCategoryOtherId()
+    }
+
     override suspend fun addCategory(category: IncomeCategory, context: CoroutineContext) {
         withContext(context = context) {
             incomeCategoryDao.insert(category)

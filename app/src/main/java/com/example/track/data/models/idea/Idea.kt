@@ -24,6 +24,8 @@ data class Idea(
     val name: String,
     @ColumnInfo(name = "goal")
     val goal: Int,
+    @ColumnInfo(name = "currentValue")
+    val currentValue: Float?,
     @ColumnInfo(name = "currencyTicker")
     val currencyTicker: String,
     @ColumnInfo(name = "startDate")

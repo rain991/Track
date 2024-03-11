@@ -26,7 +26,8 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
             completed = false,
             firstRelatedCategoryId = null,
             secondRelatedCategoryId = null,
-            thirdRelatedCategoryId = null
+            thirdRelatedCategoryId = null,
+            currentValue = null
         ),
         Idea(
             id = 2,
@@ -39,7 +40,8 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
             completed = false,
             firstRelatedCategoryId = null,
             secondRelatedCategoryId = null,
-            thirdRelatedCategoryId = null
+            thirdRelatedCategoryId = null,
+            currentValue = null
         )
     )
     private val _cardIndex = MutableStateFlow(0)

@@ -36,8 +36,8 @@ data class ExpenseItem(
     override val note: String,
     @ColumnInfo(name = "date")
     override val date: Date,
-    @ColumnInfo(name = "enabled")
-    override val enabled: Boolean = false,
+    @ColumnInfo(name = "disabled")
+    override val disabled: Boolean = false,
     @ColumnInfo(name = "categoryId")
     override val categoryId: Int
 ) : FinancialEntity()

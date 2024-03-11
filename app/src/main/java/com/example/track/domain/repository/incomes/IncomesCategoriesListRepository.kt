@@ -7,7 +7,9 @@ import kotlin.coroutines.CoroutineContext
 
 interface IncomesCategoriesListRepository {
     fun getCategoriesList(): Flow<List<IncomeCategory>>
+    fun getOtherCategoryId(): Int
     suspend fun addCategory(category: IncomeCategory, context: CoroutineContext = Dispatchers.IO)
     suspend fun editCategory(category: IncomeCategory, context: CoroutineContext = Dispatchers.IO)
     suspend fun deleteCategory(category: IncomeCategory, context: CoroutineContext = Dispatchers.IO)
+
 }

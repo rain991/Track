@@ -17,6 +17,7 @@ import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
 import com.example.track.data.implementations.ideas.ExpenseLimitsCardRepositoryImpl
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.implementations.ideas.IncomePlanCardRepositoryImpl
+import com.example.track.data.implementations.ideas.SavingsCardRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
@@ -64,6 +65,7 @@ val appModule = module {
     single<BudgetIdeaCardRepositoryImpl>{BudgetIdeaCardRepositoryImpl(get(), get())}
     single<ExpenseLimitsCardRepositoryImpl>{ExpenseLimitsCardRepositoryImpl(get())}
     single<IncomePlanCardRepositoryImpl>{IncomePlanCardRepositoryImpl(get())}
+    single<SavingsCardRepositoryImpl>{SavingsCardRepositoryImpl(get(), get(), get())}
 }
 
 val domainModule = module {
