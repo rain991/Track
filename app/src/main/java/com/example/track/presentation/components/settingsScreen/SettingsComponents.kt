@@ -1,4 +1,4 @@
-package com.example.track.presentation.home.settingsScreen
+package com.example.track.presentation.components.settingsScreen
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background

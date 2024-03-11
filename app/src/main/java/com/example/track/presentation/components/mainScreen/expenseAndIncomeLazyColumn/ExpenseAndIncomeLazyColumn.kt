@@ -1,4 +1,4 @@
-package com.example.track.presentation.home.mainScreen.expenseAndIncomeLazyColumn
+package com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -50,7 +50,7 @@ import com.example.track.data.converters.areYearsSame
 import com.example.track.data.converters.convertDateToLocalDate
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.presentation.common.FinancialItemCardTypeSimple
-import com.example.track.presentation.home.mainScreen.additionalInfoCards.MainScreenInfoComposable
+import com.example.track.presentation.components.mainScreen.additionalInfoCards.MainScreenInfoComposable
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 

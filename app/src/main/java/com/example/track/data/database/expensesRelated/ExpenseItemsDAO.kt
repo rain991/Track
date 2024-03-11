@@ -32,6 +32,9 @@ interface ExpenseItemsDAO {
 
     @Query("SELECT SUM(value) FROM expenses WHERE date BETWEEN :start AND :end")
     fun getSumOfExpensesInTimeSpan(start : Long, end : Long) : Float
+
+    @Query("SELECT SUM(value) FROM expenses WHERE date BETWEEN :start AND :end")
+    fun getSumOfExpensesInTimeSpanInFlow(start : Long, end : Long) : Flow<Float>
     @Query("SELECT SUM(value) FROM expenses WHERE categoryId IN (:listOfCategoriesId) AND date BETWEEN :start AND :end")
     fun getSumOfExpensesByCategoriesIdInTimeSpan(start : Long, end : Long, listOfCategoriesId : List<Int>) : Float
     @Query("SELECT * FROM expenses WHERE id in (:listOfIds)")

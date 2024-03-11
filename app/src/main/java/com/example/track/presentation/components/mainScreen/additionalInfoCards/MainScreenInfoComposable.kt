@@ -1,4 +1,4 @@
-package com.example.track.presentation.home.mainScreen.additionalInfoCards
+package com.example.track.presentation.components.mainScreen.additionalInfoCards
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Row

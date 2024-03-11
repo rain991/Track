@@ -17,6 +17,7 @@ interface ExpensesListRepository {
     fun getCategoriesByIds(listOfIds: List<Int>): List<ExpenseCategory>
     fun getExpensesByIds(listOfIds: List<Int>): List<ExpenseItem>
     fun getCurrentMonthSumOfExpenses(): Float
+    fun getCurrentMonthSumOfExpenseInFlow() : Flow<Float>
     fun getCurrentMonthSumOfExpensesForCategories(listOfCategories : List<ExpenseCategory>) : Float
     fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>>
     fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>>
