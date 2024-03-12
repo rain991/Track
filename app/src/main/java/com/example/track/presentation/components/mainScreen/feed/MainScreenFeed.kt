@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -34,6 +35,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
+import com.example.track.R
 import com.example.track.data.constants.FEED_CARD_DELAY_FAST
 import com.example.track.data.constants.FEED_CARD_DELAY_SLOW
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
@@ -48,7 +50,7 @@ import java.time.LocalDate
 @Composable
 fun MainScreenFeed() {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
-    val pagerState = rememberPagerState(pageCount = { mainScreenFeedViewModel.maxPagerIndex.value })
+    val pagerState = rememberPagerState(pageCount = { mainScreenFeedViewModel.maxPagerIndex.value+1 })
     val ideaList = mainScreenFeedViewModel.ideaList
     val currentIndex = mainScreenFeedViewModel.cardIndex.collectAsState()
     val maxIndex = mainScreenFeedViewModel.maxPagerIndex.collectAsState()
@@ -73,7 +75,7 @@ fun MainScreenFeed() {
     ) { index ->
         when (index) {
             0 -> Main_FeedCard(budgetIdeaCardState.value)
-            1 -> NewIdea_FeedCard(mainScreenFeedViewModel = mainScreenFeedViewModel)
+            maxIndex.value -> NewIdea_FeedCard(mainScreenFeedViewModel = mainScreenFeedViewModel)
             else -> Idea_FeedCard()
         }
     }
@@ -106,7 +108,7 @@ private fun Main_FeedCard(state: BudgetIdeaCardState) {
             ) {
                 Text(
                     stringResource(id = getMonthResID(localDate = LocalDate.now())),
-                    style = MaterialTheme.typography.titleMedium,
+                    style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp),
@@ -124,7 +126,7 @@ private fun Main_FeedCard(state: BudgetIdeaCardState) {
                     }
                     withStyle(
                         style = SpanStyle(
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            color = MaterialTheme.colorScheme.onPrimary,
                             fontSize = 20.sp, fontWeight = FontWeight.SemiBold
                         )
                     ) {
@@ -143,6 +145,7 @@ private fun Main_FeedCard(state: BudgetIdeaCardState) {
                 })
                 Spacer(modifier = Modifier.weight(1f))
             }
+            Spacer(modifier = Modifier.width(8.dp))
             Column(
                 modifier = Modifier
                     .weight(1f)
@@ -150,7 +153,7 @@ private fun Main_FeedCard(state: BudgetIdeaCardState) {
 
             ) {
                 Text(
-                    "budget", style = MaterialTheme.typography.titleMedium,
+                    "budget", style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = 8.dp),
@@ -174,7 +177,7 @@ private fun Main_FeedCard(state: BudgetIdeaCardState) {
                         }
                         withStyle(
                             style = SpanStyle(
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 fontSize = 20.sp, fontWeight = FontWeight.SemiBold
                             )
                         ) {
@@ -193,7 +196,7 @@ private fun Main_FeedCard(state: BudgetIdeaCardState) {
                     Text(text = buildAnnotatedString {
                         withStyle(
                             style = SpanStyle(
-                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                color = MaterialTheme.colorScheme.onPrimary,
                                 fontSize = 20.sp, fontWeight = FontWeight.SemiBold
                             )
                         ) {
@@ -261,7 +264,6 @@ private fun Idea_FeedCard() {
 
 @Composable
 private fun NewIdea_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
-    val value = mainScreenFeedViewModel.cardIndex.collectAsState()
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -272,7 +274,35 @@ private fun NewIdea_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
-        Text(text = value.toString(), style = MaterialTheme.typography.bodyMedium)
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            TextButton(onClick = {}) {
+                Text(
+                    "Add idea",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
+            }
+        }
+        Column(
+            Modifier
+                .fillMaxWidth()
+                .fillMaxHeight(0.92f)
+                .padding(horizontal = 8.dp),
+            verticalArrangement = Arrangement.SpaceAround
+        ) {
+            Text(
+                text = stringResource(R.string.first_notion_new_idea_card),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = stringResource(R.string.second_notion_new_idea_card),
+                style = MaterialTheme.typography.bodySmall
+            )
+            Text(
+                text = stringResource(R.string.third_notion_new_idea_card),
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
     }
 }
 

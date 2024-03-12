@@ -20,7 +20,6 @@ val PREFERABLE_THEME_DEFAULT: Themes = Themes.BlueTheme
 val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.DEFAULT, rate = null)
 
 // ideas feed
-const val BASIC_CARD_COUNT_IN_FEED = 2
 const val FEED_CARD_DELAY_SLOW = 5000L
 const val FEED_CARD_DELAY_FAST = 3600L
 

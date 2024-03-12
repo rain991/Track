@@ -222,12 +222,6 @@ private fun Transactions() {
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-//        Text(
-//            text = stringResource(R.string.recent_lazy_column),
-//            style = MaterialTheme.typography.titleMedium,
-//            textAlign = TextAlign.Center,
-//            color = MaterialTheme.colorScheme.onPrimaryContainer
-//        )
         AnimatedContent(
             targetState = text,
             label = "verticalTextChange",

@@ -60,4 +60,7 @@
     <string name="recent_lazy_column">Recent</string>
     <string name="expenses_lazy_column">Expenses</string>
     <string name="incomes_lazy_column">Incomes</string>
+    <string name="first_notion_new_idea_card">Ideas is the way declare financial goals</string>
+    <string name="second_notion_new_idea_card">Available Idea types: savings, expense limits and income plans</string>
+    <string name="third_notion_new_idea_card">Ideas will notify about your goals in app</string>
 </resources>
