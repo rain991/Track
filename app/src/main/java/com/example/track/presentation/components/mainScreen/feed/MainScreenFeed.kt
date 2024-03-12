@@ -5,14 +5,19 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -23,28 +28,32 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
 import com.example.track.data.constants.FEED_CARD_DELAY_FAST
 import com.example.track.data.constants.FEED_CARD_DELAY_SLOW
-import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
+import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn.getMonthResID
+import com.example.track.presentation.states.BudgetIdeaCardState
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import java.time.LocalDate
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreenFeed() {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    val pagerState = rememberPagerState(pageCount = { mainScreenFeedViewModel.maxPagerIndex.value })
     val ideaList = mainScreenFeedViewModel.ideaList
     val currentIndex = mainScreenFeedViewModel.cardIndex.collectAsState()
     val maxIndex = mainScreenFeedViewModel.maxPagerIndex.collectAsState()
-    val pagerState = rememberPagerState(pageCount = { mainScreenFeedViewModel.maxPagerIndex.value })
+    val budgetIdeaCardViewModel = koinViewModel<BudgetIdeaCardViewModel>()
+    val budgetIdeaCardState = budgetIdeaCardViewModel.budgetCardState.collectAsState()
     LaunchedEffect(true) {
         while (true) {
             delay(if (currentIndex.value == 0 || currentIndex.value == maxIndex.value) FEED_CARD_DELAY_SLOW else FEED_CARD_DELAY_FAST)
@@ -63,7 +72,7 @@ fun MainScreenFeed() {
         contentPadding = PaddingValues(horizontal = 2.dp)
     ) { index ->
         when (index) {
-            0 -> Main_FeedCard()
+            0 -> Main_FeedCard(budgetIdeaCardState.value)
             1 -> NewIdea_FeedCard(mainScreenFeedViewModel = mainScreenFeedViewModel)
             else -> Idea_FeedCard()
         }
@@ -71,14 +80,7 @@ fun MainScreenFeed() {
 }
 
 @Composable
-private fun Main_FeedCard() {
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
-    val budgetIdeaCardRepositoryImpl = koinInject<BudgetIdeaCardRepositoryImpl>()
-    val currentBudget
-
-    LaunchedEffect(key1 = Unit) {
-        val currentBudget = budgetIdeaCardRepositoryImpl.requestMonthBudget()
-    }
+private fun Main_FeedCard(state: BudgetIdeaCardState) {
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -89,12 +91,36 @@ private fun Main_FeedCard() {
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
-        Row(modifier = Modifier) {
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.End) {
-                Text(stringResource(id = getMonthResID(localDate = LocalDate.now())))
-                buildAnnotatedString {
-                    withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
-                        append("${categoryEntity.note} this month: ")
+        Row(
+            modifier = Modifier//.weight(1f)
+                .padding(top = 8.dp)
+                .fillMaxWidth()
+                .fillMaxHeight(fraction = 0.9f)
+        ) {
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(0.92f),
+                verticalArrangement = Arrangement.Top,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Text(
+                    stringResource(id = getMonthResID(localDate = LocalDate.now())),
+                    style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    textAlign = TextAlign.End
+                )
+                Spacer(modifier = Modifier.weight(1f))
+                Text(buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium
+                        )
+                    ) {
+                        append("Planned  ")
                     }
                     withStyle(
                         style = SpanStyle(
@@ -102,28 +128,115 @@ private fun Main_FeedCard() {
                             fontSize = 20.sp, fontWeight = FontWeight.SemiBold
                         )
                     ) {
-                        append(it)
+                        append(state.budget.toString())
                     }
                     withStyle(
                         style = SpanStyle(
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Medium
                         )
                     ) {
                         append(" ")
-                        append(financialEntity.currencyTicker)
+                        append(state.currencyTicker)
                     }
 
+                })
+                Spacer(modifier = Modifier.weight(1f))
+            }
+            Column(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxHeight(0.92f)
+
+            ) {
+                Text(
+                    "budget", style = MaterialTheme.typography.titleMedium,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp),
+                    textAlign = TextAlign.Start
+                )
+                Column(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(vertical = 8.dp),
+                    verticalArrangement = Arrangement.SpaceBetween,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Text(text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        ) {
+                            append("Spent ")
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                fontSize = 20.sp, fontWeight = FontWeight.SemiBold
+                            )
+                        ) {
+                            append(state.currentExpensesSum.toString())
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        ) {
+                            append(" ")
+                            append(state.currencyTicker)
+                        }
+                    }, textAlign = TextAlign.Center)
+                    Text(text = buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                fontSize = 20.sp, fontWeight = FontWeight.SemiBold
+                            )
+                        ) {
+                            append(state.budgetExpectancy.times(100).toString())
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        ) {
+                            append("% expectancy rate ")
+                        }
+                    })
                 }
             }
-            Column(modifier = Modifier.weight(1f), verticalArrangement = Arrangement.SpaceBetween, horizontalAlignment = Alignment.Start) {
-
-            }
         }
-
-
-        Text(text = mainScreenFeedViewModel.cardIndex.toString(), style = MaterialTheme.typography.bodyMedium)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(bottom = 8.dp),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            LinearProgressIndicator(
+                progress = { state.budgetExpectancy },
+                modifier = Modifier
+                    .fillMaxWidth(fraction = 0.6f),
+                color = MaterialTheme.colorScheme.onPrimaryContainer
+            )
+        }
     }
+}
+
+@Preview(showSystemUi = true)
+@Composable
+private fun Prev() {
+    val state = BudgetIdeaCardState(
+        budget = 100f,
+        budgetExpectancy = 0.35f,
+        currentExpensesSum = 35f,
+        currencyTicker = "UAH"
+    )
+    Main_FeedCard(state = state)
 }
 
 @Composable
@@ -139,7 +252,10 @@ private fun Idea_FeedCard() {
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         )
     ) {
-        Text(text = mainScreenFeedViewModel.cardIndex.toString(), style = MaterialTheme.typography.bodyMedium)
+        Text(
+            text = mainScreenFeedViewModel.cardIndex.toString(),
+            style = MaterialTheme.typography.bodyMedium
+        )
     }
 }
 

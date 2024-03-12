@@ -6,13 +6,14 @@ import com.example.track.domain.repository.ideas.BudgetIdeaCardRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.transform
+import kotlinx.coroutines.flow.zip
 
 class BudgetIdeaCardRepositoryImpl(
     private val dataStoreManager: DataStoreManager,
     private val expensesListRepositoryImpl: ExpensesListRepositoryImpl
 ) : BudgetIdeaCardRepository {
-    override suspend fun requestMonthBudget(): Int {
-        return dataStoreManager.budgetFlow.first()
+    override suspend fun requestMonthBudget(): Flow<Int> {
+        return dataStoreManager.budgetFlow
     }
 
     override suspend fun requestWeekBudget(): Float {
@@ -24,7 +25,11 @@ class BudgetIdeaCardRepositoryImpl(
     }
 
     override suspend fun requestBudgetExpectancy(): Flow<Float> {
-        return expensesListRepositoryImpl.getCurrentMonthSumOfExpenseInFlow().transform { value -> value / 4 }
+        return requestMonthBudget().zip(
+            other = requestCurrentMonthExpenses(),
+            transform = { first, second ->
+                second.div(first)
+            })
     }
 
 }
