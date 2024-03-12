@@ -26,7 +26,6 @@ class BudgetIdeaCardViewModel(private val budgetIdeaCardRepositoryImpl: BudgetId
                 setBudgetExpectancy(it)
             }
         }
-
     }
 
     private fun setBudget(budget: Float) {
