@@ -63,10 +63,10 @@ val appModule = module {
     single<IncomeCategoryDao> { ExpensesDB.getInstance(androidContext()).incomeCategoryDao }
     single<IncomesCategoriesListRepositoryImpl> { IncomesCategoriesListRepositoryImpl(get()) }
 
-    single<BudgetIdeaCardRepositoryImpl>{BudgetIdeaCardRepositoryImpl(get(), get())}
-    single<ExpenseLimitsCardRepositoryImpl>{ExpenseLimitsCardRepositoryImpl(get())}
-    single<IncomePlanCardRepositoryImpl>{IncomePlanCardRepositoryImpl(get())}
-    single<SavingsCardRepositoryImpl>{SavingsCardRepositoryImpl(get(), get(), get())}
+    single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
+    single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
+    single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get()) }
+    single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get(), get()) }
 }
 
 val domainModule = module {
@@ -96,5 +96,6 @@ val viewModelModule = module {
     viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
-    viewModel {BudgetIdeaCardViewModel(get(),get())}
+    viewModel { BudgetIdeaCardViewModel(get(), get()) }
+    viewModel { MainScreenFeedViewModel(get()) }
 }

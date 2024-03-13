@@ -1,6 +1,7 @@
 package com.example.track.presentation.components.mainScreen.feed
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -265,7 +266,9 @@ private fun Idea_FeedCard() {
 @Composable
 private fun NewIdea_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
     Card(
-        modifier = Modifier
+        modifier = Modifier.clickable {
+            mainScreenFeedViewModel.setIsNewIdeaDialogVisible(true)
+        }
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,

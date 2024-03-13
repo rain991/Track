@@ -15,6 +15,7 @@ import com.example.track.R
 import com.example.track.data.DataStoreManager
 import com.example.track.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
+import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.bottomsheets.ExtendedButtonExample
 import com.example.track.presentation.bottomsheets.SimplifiedBottomSheet
 import com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn.ExpensesLazyColumn
@@ -24,10 +25,12 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
-fun MainExpenseScreen() {  // Primary screen
+fun MainExpenseScreen() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
+    val isIdeaDialogVisible = mainScreenFeedViewModel.isNewIdeaDialogVisible.collectAsState()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
           if(isPageNameVisible.value) Header(categoryName = stringResource(R.string.expenses))

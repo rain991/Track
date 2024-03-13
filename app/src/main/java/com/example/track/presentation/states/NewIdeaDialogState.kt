@@ -10,10 +10,9 @@ sealed class IdeaSelectorTypes(val name: String) {
 }
 
 data class NewIdeaDialogState(
-    val isVisible: Boolean,
     val goal: Float,
     val typeSelected: IdeaSelectorTypes,
-    val relatedToAllCategories: Boolean,
+    val relatedToAllCategories: Boolean?,
     val eachMonth: Boolean?,
     val endDate: Date?,
     val selectedCategory1: ExpenseCategory?,

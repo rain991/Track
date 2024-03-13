@@ -1,100 +1,82 @@
 package com.example.track.presentation.components.mainScreen.dialogs
 
-//@Composable
-//fun NewIdeaDialog(value: String, setShowDialog: (Boolean) -> Unit, setValue: (String) -> Unit) {
-//
-//    val txtFieldError = remember { mutableStateOf("") }
-//    val txtField = remember { mutableStateOf(value) }
-//
-//    Dialog(onDismissRequest = { setShowDialog(false) }) {
-//        Surface(
-//            shape = RoundedCornerShape(16.dp),
-//        ) {
-//            Box(
-//                contentAlignment = Layout.Alignment.Center
-//            ) {
-//                Column(modifier = Modifier.padding(20.dp)) {
-//
-//                    Row(
-//                        modifier = Modifier.fillMaxWidth(),
-//                        horizontalArrangement = Arrangement.SpaceBetween,
-//                        verticalAlignment = Alignment.CenterVertically
-//                    ) {
-//                        Text(
-//                            text = "Set value",
-//                            style = TextStyle(
-//                                fontSize = 24.sp,
-//                                fontFamily = FontFamily.Default,
-//                                fontWeight = FontWeight.Bold
-//                            )
-//                        )
-//                        Icon(
-//                            imageVector = Icons.Filled.Cancel,
-//                            contentDescription = "",
-//                            tint = colorResource(R.color.darker_gray),
-//                            modifier = Modifier
-//                                .width(30.dp)
-//                                .height(30.dp)
-//                                .clickable { setShowDialog(false) }
-//                        )
-//                    }
-//
-//                    Spacer(modifier = Modifier.height(20.dp))
-//
-//                    TextField(
-//                        modifier = Modifier
-//                            .fillMaxWidth()
-//                            .border(
-//                                BorderStroke(
-//                                    width = 2.dp,
-//                                    color = colorResource(id = if (txtFieldError.value.isEmpty()) R.color.holo_green_light else R.color.holo_red_dark)
-//                                ),
-//                                shape = RoundedCornerShape(50)
-//                            ),
-//                        colors = TextFieldDefaults.textFieldColors(
-//                            backgroundColor = Color.Transparent,
-//                            focusedIndicatorColor = Color.Transparent,
-//                            unfocusedIndicatorColor = Color.Transparent
-//                        ),
-//                        leadingIcon = {
-//                            Icon(
-//                                imageVector = Icons.Filled.Money,
-//                                contentDescription = "",
-//                                tint = colorResource(R.color.holo_green_light),
-//                                modifier = Modifier
-//                                    .width(20.dp)
-//                                    .height(20.dp)
-//                            )
-//                        },
-//                        placeholder = { Text(text = "Enter value") },
-//                        value = txtField.value,
-//                        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-//                        onValueChange = {
-//                            txtField.value = it.take(10)
-//                        })
-//
-//                    Spacer(modifier = Modifier.height(20.dp))
-//
-//                    Box(modifier = Modifier.padding(40.dp, 0.dp, 40.dp, 0.dp)) {
-//                        Button(
-//                            onClick = {
-//                                if (txtField.value.isEmpty()) {
-//                                    txtFieldError.value = "Field can not be empty"
-//                                    return@Button
-//                                }
-//                                setValue(txtField.value)
-//                                setShowDialog(false)
-//                            },
-//                            shape = RoundedCornerShape(50.dp),
-//                            modifier = Modifier
-//                                .fillMaxWidth()
-//                                .height(50.dp)
-//                        ) {
-//                            Text(text = "Done")
-//                        }
-//                    }
-//                }
-//            }
-//        }
-//    }
-//}
+import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SegmentedButton
+import androidx.compose.material3.SegmentedButtonDefaults
+import androidx.compose.material3.SingleChoiceSegmentedButtonRow
+import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.Dialog
+import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
+import com.example.track.presentation.states.IdeaSelectorTypes
+import org.koin.androidx.compose.koinViewModel
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun NewIdeaDialog() {
+    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    val newIdeaDialogState = mainScreenFeedViewModel.newIdeaDialogState.collectAsState()
+    Dialog(onDismissRequest = { mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false) }) {
+        Surface(
+            shape = RoundedCornerShape(8.dp),
+        ) {
+            Column {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
+                    Text(
+                        text = "Add idea",
+                        style = MaterialTheme.typography.titleSmall
+                    )
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                val options = listOf(IdeaSelectorTypes.Savings, IdeaSelectorTypes.ExpenseLimit, IdeaSelectorTypes.IncomePlans)
+                SingleChoiceSegmentedButtonRow {
+                    options.forEachIndexed { index, label ->
+                        SegmentedButton(
+                            shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+                            onClick = { mainScreenFeedViewModel.setTypeSelected(label) },
+                            selected = newIdeaDialogState.value.typeSelected == label
+                        ) {
+                            Text(text = label.name, style = MaterialTheme.typography.bodyMedium)
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                TextField(
+                    value = text,
+                    onValueChange = { bottomSheetViewModel.setNote(it) },
+                    label = { Text(label) },
+                    maxLines = 1,
+                    modifier = Modifier
+                        .padding(horizontal = 8.dp)
+                        .border(
+                            width = 2.dp,
+                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)),
+                            shape = RoundedCornerShape(4.dp)
+                        ),
+                    colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background)
+                )
+            }
+        }
+    }
+}
