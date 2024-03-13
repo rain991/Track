@@ -30,7 +30,6 @@ fun CurrencyDropDownMenu(currencyList: List<Currency>, selectedOption: Currency,
             isExpanded = !isExpanded
         }
     ) {
-
         TextField(
             value = selectedOption.ticker,
             readOnly = true,

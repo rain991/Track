@@ -14,38 +14,39 @@ import java.time.LocalDate
 
 class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepositoryImpl) : ViewModel() {
     var ideaList = listOf<Idea>(
-//        Idea(
-//            id = 1,
-//            "first",
-//            goal = 500,
-//            currencyTicker = "USD",
-//            startDate = convertLocalDateToDate(LocalDate.now()),
-//            endDate = null,
-//            relatedToAllCategories = null,
-//            completed = false,
-//            firstRelatedCategoryId = null,
-//            secondRelatedCategoryId = null,
-//            thirdRelatedCategoryId = null,
-//            currentValue = null
-//        ),
-//        Idea(
-//            id = 2,
-//            "second",
-//            goal = 200,
-//            currencyTicker = "UAH",
-//            startDate = convertLocalDateToDate(LocalDate.now()),
-//            endDate = null,
-//            relatedToAllCategories = null,
-//            completed = false,
-//            firstRelatedCategoryId = null,
-//            secondRelatedCategoryId = null,
-//            thirdRelatedCategoryId = null,
-//            currentValue = null
-//        )
+        Idea(
+            id = 1,
+            "first",
+            goal = 500,
+            currencyTicker = "USD",
+            startDate = convertLocalDateToDate(LocalDate.now()),
+            endDate = null,
+            relatedToAllCategories = null,
+            completed = false,
+            firstRelatedCategoryId = null,
+            secondRelatedCategoryId = null,
+            thirdRelatedCategoryId = null,
+            currentValue = null
+        ),
+        Idea(
+            id = 2,
+            "second",
+            goal = 200,
+            currencyTicker = "UAH",
+            startDate = convertLocalDateToDate(LocalDate.now()),
+            endDate = null,
+            relatedToAllCategories = null,
+            completed = false,
+            firstRelatedCategoryId = null,
+            secondRelatedCategoryId = null,
+            thirdRelatedCategoryId = null,
+            currentValue = null
+        )
     )
+    private val _isAddingIdea = MutableStateFlow(false)
+    val isAddingIdea = _isAddingIdea.asStateFlow()
     private val _cardIndex = MutableStateFlow(0)
     val cardIndex = _cardIndex.asStateFlow()
-
     private val _maxPagerIndex = MutableStateFlow(ideaList.size+1)
     val maxPagerIndex = _maxPagerIndex.asStateFlow()
     init {
@@ -55,11 +56,13 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
             }
         }
     }
-    private fun setCardIndex(index: Int) {
-        _cardIndex.value = index
+    fun setIsAddingIdea(value : Boolean){
+        _isAddingIdea.update { value }
     }
-
     fun incrementCardIndex() {
         if (_cardIndex.value < ideaList.size+2) _cardIndex.update { _cardIndex.value + 1 } else setCardIndex(0)
+    }
+    private fun setCardIndex(index: Int) {
+        _cardIndex.value = index
     }
 }

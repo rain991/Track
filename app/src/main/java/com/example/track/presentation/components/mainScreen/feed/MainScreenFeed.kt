@@ -87,8 +87,8 @@ private fun Main_FeedCard(state: BudgetIdeaCardState) {
         modifier = Modifier
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             disabledContainerColor = MaterialTheme.colorScheme.primary,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         )
@@ -249,8 +249,8 @@ private fun Idea_FeedCard() {
         modifier = Modifier
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             disabledContainerColor = MaterialTheme.colorScheme.primary,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         )
@@ -268,8 +268,8 @@ private fun NewIdea_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
         modifier = Modifier
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary,
+            containerColor = MaterialTheme.colorScheme.primaryContainer,
+            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             disabledContainerColor = MaterialTheme.colorScheme.primary,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         )
