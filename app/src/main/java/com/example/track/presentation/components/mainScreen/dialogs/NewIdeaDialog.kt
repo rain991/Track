@@ -2,7 +2,6 @@ package com.example.track.presentation.components.mainScreen.dialogs
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -23,9 +24,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import com.example.track.R
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
+import com.example.track.presentation.common.ui.CustomDatePicker
 import com.example.track.presentation.states.IdeaSelectorTypes
 import org.koin.androidx.compose.koinViewModel
 
@@ -61,21 +65,69 @@ fun NewIdeaDialog() {
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+                Spacer(modifier = Modifier.height(4.dp))
                 TextField(
-                    value = text,
-                    onValueChange = { bottomSheetViewModel.setNote(it) },
-                    label = { Text(label) },
+                    value = newIdeaDialogState.value.goal.toString(),
+                    onValueChange = { string ->
+                        mainScreenFeedViewModel.setGoal(string.toFloat())
+                    },
+                    label = { stringResource(R.string.goal) },
                     maxLines = 1,
                     modifier = Modifier
                         .padding(horizontal = 8.dp)
                         .border(
                             width = 2.dp,
-                            brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)),
+                            brush = Brush.horizontalGradient(
+                                listOf(
+                                    MaterialTheme.colorScheme.primary,
+                                    MaterialTheme.colorScheme.secondary
+                                )
+                            ),
                             shape = RoundedCornerShape(4.dp)
                         ),
                     colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background)
                 )
+                if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Text(text = "Each month limit")
+                        Switch(
+                            checked = newIdeaDialogState.value.eachMonth ?: true,
+                            onCheckedChange = { mainScreenFeedViewModel.setSelectedToAllCategories(it) })
+                    }
+                }
+                if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit || newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.IncomePlans)
+                    Spacer(modifier = Modifier.height(4.dp))
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    Text(
+                        text = if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
+                            stringResource(R.string.limit_end_date_ideas)
+                        } else {
+                            stringResource(R.string.plan_end_date_ideas)
+                        }
+                    )
+                    Button(onClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
+                        Text(
+                            text = if (newIdeaDialogState.value.endDate != null) newIdeaDialogState.value.endDate.toString() else "Date",
+                            style = MaterialTheme.typography.bodySmall
+                        )
+                    }
+                    CustomDatePicker(
+                        isVisible = newIdeaDialogState.value.isDateDialogVisible,
+                        onNegativeClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
+                        onPositiveClick = { date -> mainScreenFeedViewModel.setEndDate(date) }
+                    )
+                }
+                if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
+                    Spacer(modifier = Modifier.height(4.dp))
+                    Row(modifier = Modifier.fillMaxWidth()) {
+                        Text(text = stringResource(R.string.related_to_all_categories_ideas))
+                        Switch(
+                            checked = newIdeaDialogState.value.relatedToAllCategories ?: true,
+                            onCheckedChange = { mainScreenFeedViewModel.setSelectedToAllCategories(it) })
+                    }
+                }
+
             }
         }
     }

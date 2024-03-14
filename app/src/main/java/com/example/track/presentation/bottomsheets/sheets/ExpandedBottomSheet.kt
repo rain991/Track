@@ -1,4 +1,4 @@
-package com.example.track.presentation.bottomsheets
+package com.example.track.presentation.bottomsheets.sheets
 
 
 // WARNING bottomsheet is deprecated, should use simplifiedbottomsheet instead

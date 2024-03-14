@@ -1,4 +1,4 @@
-package com.example.track.presentation.common
+package com.example.track.presentation.common.ui
 
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.LinearEasing
@@ -30,6 +30,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
+
+
+@Composable
+fun CustomTabSample() {
+    val (selected, setSelected) = remember {
+        mutableIntStateOf(0)
+    }
+
+    CustomTab(
+        items = listOf("Expenses", "Incomes"),
+        selectedItemIndex = selected,
+        onClick = setSelected,
+    )
+}
 
 @Composable
 private fun MyTabIndicator(
@@ -128,18 +142,4 @@ private fun CustomTab(
             }
         }
     }
-}
-
-
-@Composable
-fun CustomTabSample() {
-    val (selected, setSelected) = remember {
-        mutableIntStateOf(0)
-    }
-
-    CustomTab(
-        items = listOf("Expenses", "Incomes"),
-        selectedItemIndex = selected,
-        onClick = setSelected,
-    )
 }

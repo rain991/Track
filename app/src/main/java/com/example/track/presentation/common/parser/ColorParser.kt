@@ -1,4 +1,4 @@
-package com.example.track.presentation.common
+package com.example.track.presentation.common.parser
 
 import androidx.compose.ui.graphics.Color
 

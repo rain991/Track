@@ -1,4 +1,4 @@
-package com.example.track.presentation.bottomsheets
+package com.example.track.presentation.common
 
 import androidx.compose.ui.graphics.Color
 

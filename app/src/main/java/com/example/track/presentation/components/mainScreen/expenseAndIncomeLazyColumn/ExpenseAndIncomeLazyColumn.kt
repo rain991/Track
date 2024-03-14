@@ -49,7 +49,7 @@ import com.example.track.data.converters.areDatesSame
 import com.example.track.data.converters.areYearsSame
 import com.example.track.data.converters.convertDateToLocalDate
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
-import com.example.track.presentation.common.FinancialItemCardTypeSimple
+import com.example.track.presentation.common.ui.FinancialItemCardTypeSimple
 import com.example.track.presentation.components.mainScreen.additionalInfoCards.MainScreenInfoComposable
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate

@@ -1,4 +1,4 @@
-package com.example.track.presentation.common
+package com.example.track.presentation.common.ui
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -51,6 +51,7 @@ import com.example.track.data.converters.extractDayOfWeekFromDate
 import com.example.track.data.models.other.CategoryEntity
 import com.example.track.data.models.other.FinancialEntity
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
+import com.example.track.presentation.common.parser.parseColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.absoluteValue

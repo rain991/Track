@@ -23,6 +23,7 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     private val _newIdeaDialogState = MutableStateFlow(NewIdeaDialogState(
         goal = 0f,
         typeSelected = IdeaSelectorTypes.Savings,
+        isDateDialogVisible = false,
         relatedToAllCategories = null,
         eachMonth = true,
         endDate = null,
@@ -51,6 +52,9 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     }
     fun setTypeSelected(value : IdeaSelectorTypes){
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(typeSelected = value)
+    }
+    fun setIsDatePickerDialogVisible(value: Boolean){
+        _newIdeaDialogState.value = newIdeaDialogState.value.copy(isDateDialogVisible = value)
     }
     fun setSelectedToAllCategories(value: Boolean){
         if(value){

@@ -1,4 +1,4 @@
-package com.example.track.presentation.bottomsheets
+package com.example.track.presentation.bottomsheets.sheets
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
@@ -76,7 +76,7 @@ import com.example.track.data.constants.MIN_SUPPORTED_YEAR
 import com.example.track.data.models.currency.Currency
 import com.example.track.data.models.other.CategoryEntity
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
-import com.example.track.presentation.common.parseColor
+import com.example.track.presentation.common.parser.parseColor
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
@@ -223,30 +223,6 @@ fun CategoryChip(category: CategoryEntity, isSelected: Boolean, onSelect: (Categ
         }
     }
 }
-
-@Composable
-private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
-    val lazyHorizontalState = rememberLazyStaggeredGridState()
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
-    val selected = bottomSheetViewState.value.categoryPicked // warning
-    LazyHorizontalStaggeredGrid(
-        modifier = Modifier.height(84.dp),
-        rows = StaggeredGridCells.Fixed(2),
-        state = lazyHorizontalState,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
-    ) {
-        items(count = categoryList.size) { index ->
-            val item = categoryList[index]
-            CategoryChip(
-                category = item,
-                isSelected = (selected == item),
-                onSelect = { bottomSheetViewModel.setCategoryPicked(item) })
-        }
-    }
-}
-
 @Composable
 private fun DatePicker() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
@@ -255,7 +231,7 @@ private fun DatePicker() {
     val datePickerState = UseCaseState(visible = datePickerStateFlow)
     var text by remember { mutableStateOf(bottomSheetViewState.value.datePicked.toString()) }
     text = if (!bottomSheetViewModel.isDateInOtherSpan(bottomSheetViewState.value.datePicked)) {
-        stringResource(R.string.other)
+        stringResource(R.string.date)
     } else {
         bottomSheetViewState.value.datePicked.toString()
     }
@@ -286,6 +262,28 @@ private fun DatePicker() {
             properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
             config = DateTimeConfig(minYear = MIN_SUPPORTED_YEAR, maxYear = LocalDate.now().year - 1) // WARNING about -1
         )
+    }
+}
+@Composable
+private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
+    val lazyHorizontalState = rememberLazyStaggeredGridState()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
+    val selected = bottomSheetViewState.value.categoryPicked // warning
+    LazyHorizontalStaggeredGrid(
+        modifier = Modifier.height(84.dp),
+        rows = StaggeredGridCells.Fixed(2),
+        state = lazyHorizontalState,
+        verticalArrangement = Arrangement.spacedBy(12.dp),
+        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
+    ) {
+        items(count = categoryList.size) { index ->
+            val item = categoryList[index]
+            CategoryChip(
+                category = item,
+                isSelected = (selected == item),
+                onSelect = { bottomSheetViewModel.setCategoryPicked(item) })
+        }
     }
 }
 

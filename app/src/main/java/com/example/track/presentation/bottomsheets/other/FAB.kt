@@ -1,4 +1,4 @@
-package com.example.track.presentation.bottomsheets
+package com.example.track.presentation.bottomsheets.other
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
