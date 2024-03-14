@@ -44,6 +44,9 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
             }
         }
     }
+    fun addNewIdea(){
+      //  ideaListRepositoryImpl.addIdea(Idea())
+    }
     fun setIsNewIdeaDialogVisible(value : Boolean){
         _isNewIdeaDialogVisible.value = value
     }

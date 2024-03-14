@@ -5,13 +5,16 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -23,10 +26,13 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.common.ui.CustomDatePicker
@@ -38,58 +44,70 @@ import org.koin.androidx.compose.koinViewModel
 fun NewIdeaDialog() {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     val newIdeaDialogState = mainScreenFeedViewModel.newIdeaDialogState.collectAsState()
-    Dialog(onDismissRequest = { mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false) }) {
+    Dialog(
+        onDismissRequest = { mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false) },
+        properties = DialogProperties(usePlatformDefaultWidth = false)
+    ) {
         Surface(
+            modifier = Modifier
+                .fillMaxWidth(0.9f)
+                .fillMaxHeight(0.55f),
             shape = RoundedCornerShape(8.dp),
         ) {
-            Column {
+            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.Center
+                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
                         text = "Add idea",
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
-                Spacer(modifier = Modifier.height(8.dp))
                 val options = listOf(IdeaSelectorTypes.Savings, IdeaSelectorTypes.ExpenseLimit, IdeaSelectorTypes.IncomePlans)
-                SingleChoiceSegmentedButtonRow {
-                    options.forEachIndexed { index, label ->
-                        SegmentedButton(
-                            shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
-                            onClick = { mainScreenFeedViewModel.setTypeSelected(label) },
-                            selected = newIdeaDialogState.value.typeSelected == label
-                        ) {
-                            Text(text = label.name, style = MaterialTheme.typography.bodyMedium)
+                Row() {
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.scale(0.8f)) {
+                        options.forEachIndexed { index, label ->
+                            SegmentedButton(
+                                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+                                onClick = { mainScreenFeedViewModel.setTypeSelected(label) },
+                                selected = newIdeaDialogState.value.typeSelected == label
+                            ) {
+                                Text(,text = label.name, style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center)
+                            }
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(4.dp))
-                TextField(
-                    value = newIdeaDialogState.value.goal.toString(),
-                    onValueChange = { string ->
-                        mainScreenFeedViewModel.setGoal(string.toFloat())
-                    },
-                    label = { stringResource(R.string.goal) },
-                    maxLines = 1,
+                Row(
                     modifier = Modifier
-                        .padding(horizontal = 8.dp)
-                        .border(
-                            width = 2.dp,
-                            brush = Brush.horizontalGradient(
-                                listOf(
-                                    MaterialTheme.colorScheme.primary,
-                                    MaterialTheme.colorScheme.secondary
-                                )
+                        .scale(0.9f)
+                        .fillMaxWidth(0.45f)
+                ) {
+                    TextField(
+                        value = newIdeaDialogState.value.goal.toString(),
+                        onValueChange = { string ->
+                            mainScreenFeedViewModel.setGoal(string.toFloat())
+                        },
+                        label = { stringResource(R.string.goal) },
+                        maxLines = 1,
+                        modifier = Modifier
+                            .padding(horizontal = 8.dp)
+                            .border(
+                                width = 2.dp,
+                                brush = Brush.horizontalGradient(
+                                    listOf(
+                                        MaterialTheme.colorScheme.primary,
+                                        MaterialTheme.colorScheme.secondary
+                                    )
+                                ),
+                                shape = RoundedCornerShape(4.dp)
                             ),
-                            shape = RoundedCornerShape(4.dp)
-                        ),
-                    colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background)
-                )
+                        colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background)
+                    )
+                }
+
                 if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
                     Spacer(modifier = Modifier.height(4.dp))
-                    Row(modifier = Modifier.fillMaxWidth()) {
+                    Row() {
                         Text(text = "Each month limit")
                         Switch(
                             checked = newIdeaDialogState.value.eachMonth ?: true,
@@ -98,7 +116,7 @@ fun NewIdeaDialog() {
                 }
                 if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit || newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.IncomePlans)
                     Spacer(modifier = Modifier.height(4.dp))
-                Row(modifier = Modifier.fillMaxWidth()) {
+                Row() {
                     Text(
                         text = if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
                             stringResource(R.string.limit_end_date_ideas)
@@ -120,14 +138,36 @@ fun NewIdeaDialog() {
                 }
                 if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
                     Spacer(modifier = Modifier.height(4.dp))
-                    Row(modifier = Modifier.fillMaxWidth()) {
+                    Row() {
                         Text(text = stringResource(R.string.related_to_all_categories_ideas))
                         Switch(
                             checked = newIdeaDialogState.value.relatedToAllCategories ?: true,
                             onCheckedChange = { mainScreenFeedViewModel.setSelectedToAllCategories(it) })
                     }
                 }
+                if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
+                    Spacer(modifier = Modifier.weight(1f))
+                } else {
+                    Spacer(Modifier.height(8.dp))
+                }
 
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(end = 8.dp, bottom = 8.dp), horizontalArrangement = Arrangement.End
+                ) {
+                    OutlinedButton(
+                        modifier = Modifier.scale(0.8f),
+                        onClick = { mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false) }) {
+                        Text("Decline")
+                    }
+                    FilledTonalButton(modifier = Modifier.scale(0.9f), onClick = {
+                        mainScreenFeedViewModel.addNewIdea()
+                        mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false)
+                    }) {
+                        Text("Add")
+                    }
+                }
             }
         }
     }

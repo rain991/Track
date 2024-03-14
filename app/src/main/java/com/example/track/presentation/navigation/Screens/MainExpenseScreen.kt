@@ -18,6 +18,7 @@ import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.bottomsheets.other.ExtendedButtonExample
 import com.example.track.presentation.bottomsheets.sheets.SimplifiedBottomSheet
+import com.example.track.presentation.components.mainScreen.dialogs.NewIdeaDialog
 import com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn.ExpensesLazyColumn
 import com.example.track.presentation.components.mainScreen.feed.MainScreenFeed
 import com.example.track.presentation.other.Header
@@ -49,5 +50,6 @@ fun MainExpenseScreen() {
             ExpensesLazyColumn()
         }
         SimplifiedBottomSheet(dataStoreManager = settingsData)
+        if(isIdeaDialogVisible.value) NewIdeaDialog()
     }
 }

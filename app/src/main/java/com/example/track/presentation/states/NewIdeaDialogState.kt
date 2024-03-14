@@ -5,7 +5,7 @@ import java.util.Date
 
 sealed class IdeaSelectorTypes(val name: String) {
     object ExpenseLimit : IdeaSelectorTypes("Expense limit")
-    object IncomePlans : IdeaSelectorTypes("Income plans")
+    object IncomePlans : IdeaSelectorTypes("Income plan")
     object Savings : IdeaSelectorTypes("Savings")
 }
 
