@@ -29,7 +29,8 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
         endDate = null,
         selectedCategory1 = null,
         selectedCategory2 = null,
-        selectedCategory3 = null
+        selectedCategory3 = null,
+        includedInBudget = true
     ))
     val newIdeaDialogState = _newIdeaDialogState.asStateFlow()
     private val _cardIndex = MutableStateFlow(0)
@@ -38,14 +39,14 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     val maxPagerIndex = _maxPagerIndex.asStateFlow()
     init {
         viewModelScope.launch {
-//            ideaListRepositoryImpl.getIdeasList().collect {
-//                _ideaList.clear()
-//                _ideaList.addAll(it)
-//            }
+            ideaListRepositoryImpl.getIdeasList().collect {
+                _ideaList.clear()
+                _ideaList.addAll(it)
+            }
         }
     }
-    fun addNewIdea(){
-      //  ideaListRepositoryImpl.addIdea(Idea())
+    suspend fun addNewIdea(){
+      //  ideaListRepositoryImpl.addIdea()
     }
     fun setIsNewIdeaDialogVisible(value : Boolean){
         _isNewIdeaDialogVisible.value = value
@@ -53,7 +54,7 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     fun setGoal(value : Float){
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(goal = value)
     }
-    fun setTypeSelected(value : IdeaSelectorTypes){
+    fun setTypeSelected(value : IdeaSelectorTypes){ // shold have more changes
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(typeSelected = value)
     }
     fun setIsDatePickerDialogVisible(value: Boolean){
@@ -71,18 +72,32 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     }
     fun setEachMonth(value: Boolean){
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(eachMonth = value)
+        _newIdeaDialogState.value = newIdeaDialogState.value.copy(endDate = null)
     }
     fun setEndDate(value: Date?){
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(endDate = value)
     }
-    fun setSelectedCategory1(value : ExpenseCategory?){
-        _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory1 = value)
+    fun setSelectedCategory(value : ExpenseCategory?){
+        if(_newIdeaDialogState.value.selectedCategory1 == null){
+            _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory1 = value)
+            return
+        }
+        if(newIdeaDialogState.value.selectedCategory2 == null){
+            _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory2 = value)
+            return
+        }
+        if(newIdeaDialogState.value.selectedCategory3 == null){
+            _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory3 = value)
+            return
+        }
+        setWarningMessage("You have already selected 3 categories")
     }
-    fun setSelectedCategory2(value : ExpenseCategory?){
-        _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory2 = value)
+    fun setWarningMessage(value : String){
+        _newIdeaDialogState.value = newIdeaDialogState.value.copy(warningMessage = value)
     }
-    fun setSelectedCategory3(value : ExpenseCategory?){
-        _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory3 = value)
+
+    fun setIncludedInBudget(value : Boolean){
+        _newIdeaDialogState.value = newIdeaDialogState.value.copy(includedInBudget = value)
     }
     fun incrementCardIndex() {
         if (_cardIndex.value < ideaList.size+2) _cardIndex.update { _cardIndex.value + 1 } else setCardIndex(0)

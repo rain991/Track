@@ -53,7 +53,7 @@ val appModule = module {
     single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
     single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
 
-    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl() }
+    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(),get(),get()) }
     single <SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao}
     single <ExpenseLimitsDao> { ExpensesDB.getInstance(androidContext()).expenseLimitsDao}
     single <IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao}

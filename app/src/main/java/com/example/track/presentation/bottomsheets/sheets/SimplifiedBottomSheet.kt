@@ -36,7 +36,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -76,7 +75,7 @@ import com.example.track.data.constants.MIN_SUPPORTED_YEAR
 import com.example.track.data.models.currency.Currency
 import com.example.track.data.models.other.CategoryEntity
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
-import com.example.track.presentation.common.parser.parseColor
+import com.example.track.presentation.common.ui.CategoryChip
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
@@ -191,35 +190,7 @@ fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
                         }
                     }
                 }
-
             }
-        }
-    }
-}
-
-@Composable
-fun CategoryChip(category: CategoryEntity, isSelected: Boolean, onSelect: (CategoryEntity) -> Unit) {
-    Button(
-        modifier = Modifier.height(32.dp),
-        onClick = { onSelect(category) },
-        colors = ButtonColors(
-            containerColor = parseColor(hexColor = category.colorId),
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledContainerColor = parseColor(hexColor = category.colorId),
-            disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-    ) {
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            AnimatedVisibility(visible = isSelected) {
-                Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = stringResource(R.string.checked_category_add_exp),
-                    modifier = Modifier.height(28.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-            if (isSelected) Spacer(modifier = Modifier.width(8.dp))
-            Text(text = category.note, style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary))
         }
     }
 }

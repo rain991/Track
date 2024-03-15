@@ -12,6 +12,7 @@ sealed class IdeaSelectorTypes(val name: String) {
 data class NewIdeaDialogState(
     val goal: Float,
     val typeSelected: IdeaSelectorTypes,
+    val includedInBudget : Boolean,
     val isDateDialogVisible: Boolean,
     val relatedToAllCategories: Boolean?,
     val eachMonth: Boolean?,
@@ -19,4 +20,5 @@ data class NewIdeaDialogState(
     val selectedCategory1: ExpenseCategory?,
     val selectedCategory2: ExpenseCategory?,
     val selectedCategory3: ExpenseCategory?,
+    val warningMessage : String = ""
 )
