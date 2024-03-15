@@ -66,6 +66,6 @@
     <string name="goal">Goal</string>
     <string name="date">Date</string>
     <string name="limit_end_date_ideas">Limit end date</string>
-    <string name="plan_end_date_ideas">Plan end date</string>
+    <string name="plan_end_date_ideas">Planned end date</string>
     <string name="related_to_all_categories_ideas">Related to all categories</string>
 </resources>

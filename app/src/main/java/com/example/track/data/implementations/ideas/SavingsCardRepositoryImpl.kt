@@ -16,7 +16,7 @@ class SavingsCardRepositoryImpl(
 ) : SavingsCardRepository {
     override suspend fun addToSavings(idea: Idea, value: Float, isIncludedInBudget: Boolean) {
         if (idea.relatedToAllCategories == true) { //relatedToAllCategories
-            ideaDao.update(idea.copy(currentValue = idea.currentValue?.plus(value)))
+            //ideaDao.update(idea.copy(currentValue = idea.currentValue?.plus(value)))
             incomeDao.insert(
                 IncomeItem(
                     currencyTicker = idea.currencyTicker,
@@ -40,11 +40,11 @@ class SavingsCardRepositoryImpl(
     }
 
     override fun requestCompletenessValue(idea: Idea): Float {
-        return idea.currentValue!!
+        return 0.0f//idea.currentValue!!
     }
 
     override fun requestCompletenessRate(idea: Idea): Float {
-        return idea.goal.div(idea.currentValue!!)
+        return 0.0f //idea.goal.div(idea.currentValue!!)
     }
 
 }

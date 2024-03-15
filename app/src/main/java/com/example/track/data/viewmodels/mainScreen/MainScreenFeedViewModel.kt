@@ -25,7 +25,7 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
         typeSelected = IdeaSelectorTypes.Savings,
         isDateDialogVisible = false,
         relatedToAllCategories = null,
-        eachMonth = true,
+        eachMonth = null,
         endDate = null,
         selectedCategory1 = null,
         selectedCategory2 = null,

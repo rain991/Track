@@ -24,16 +24,16 @@ data class Idea(
     val name: String,
     @ColumnInfo(name = "goal")
     val goal: Int,
-    @ColumnInfo(name = "currentValue")
-    val currentValue: Float?,
+    @ColumnInfo(name = "eachMonth")
+    val eachMonth: Boolean?,
     @ColumnInfo(name = "currencyTicker")
     val currencyTicker: String,
+    @ColumnInfo(name = "completed")
+    val completed: Boolean = false,
     @ColumnInfo(name = "startDate")
     val startDate: Date,
     @ColumnInfo(name = "endDate")
     val endDate: Date?,
-    @ColumnInfo(name = "completed")
-    val completed: Boolean = false,
     @ColumnInfo(name = "relatedToAllCategories")
     val relatedToAllCategories : Boolean?,
     @ColumnInfo(name = "firstRelatedCategoryId")
