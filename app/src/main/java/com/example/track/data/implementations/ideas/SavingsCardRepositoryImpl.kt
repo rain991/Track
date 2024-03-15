@@ -1,7 +1,6 @@
 package com.example.track.data.implementations.ideas
 
 import com.example.track.data.converters.convertLocalDateToDate
-import com.example.track.data.database.ideaRelated.IdeaDao
 import com.example.track.data.database.incomeRelated.IncomeDao
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.models.idea.Idea
@@ -10,16 +9,16 @@ import com.example.track.domain.repository.ideas.SavingsCardRepository
 import java.time.LocalDate
 
 class SavingsCardRepositoryImpl(
-    private val ideaDao: IdeaDao,
+//    private val ideaDao: IdeaDao,
     private val incomeDao: IncomeDao,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl
 ) : SavingsCardRepository {
     override suspend fun addToSavings(idea: Idea, value: Float, isIncludedInBudget: Boolean) {
-        if (idea.relatedToAllCategories == true) { //relatedToAllCategories
+       // if (idea.relatedToAllCategories == true) { //relatedToAllCategories
             //ideaDao.update(idea.copy(currentValue = idea.currentValue?.plus(value)))
             incomeDao.insert(
                 IncomeItem(
-                    currencyTicker = idea.currencyTicker,
+                    currencyTicker = "sd",
                     categoryId = incomesCategoriesListRepositoryImpl.getOtherCategoryId(),
                     value = value,
                     date = convertLocalDateToDate(
@@ -29,14 +28,14 @@ class SavingsCardRepositoryImpl(
                 )
             )
         }
-    }
+
 
     override fun requestPlannedSavings(idea: Idea): Float {
         return idea.goal.toFloat()
     }
 
     override fun requestIncludedInBudget(idea: Idea): Boolean? {
-        return idea.relatedToAllCategories
+        return false//idea.relatedToAllCategories
     }
 
     override fun requestCompletenessValue(idea: Idea): Float {

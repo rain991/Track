@@ -6,7 +6,9 @@ import com.example.track.data.database.currenciesRelated.CurrenciesPreferenceDao
 import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
-import com.example.track.data.database.ideaRelated.IdeaDao
+import com.example.track.data.database.ideaRelated.ExpenseLimitsDao
+import com.example.track.data.database.ideaRelated.IncomePlansDao
+import com.example.track.data.database.ideaRelated.SavingsDao
 import com.example.track.data.database.incomeRelated.IncomeCategoryDao
 import com.example.track.data.database.incomeRelated.IncomeDao
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
@@ -51,8 +53,10 @@ val appModule = module {
     single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
     single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
 
-    single<IdeaDao> { ExpensesDB.getInstance(androidContext()).ideaDao }
-    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get()) }
+    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl() }
+    single <SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao}
+    single <ExpenseLimitsDao> { ExpensesDB.getInstance(androidContext()).expenseLimitsDao}
+    single <IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao}
 
     single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
     single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
@@ -66,7 +70,7 @@ val appModule = module {
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
     single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
     single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get()) }
-    single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get(), get()) }
+    single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get()) }
 }
 
 val domainModule = module {

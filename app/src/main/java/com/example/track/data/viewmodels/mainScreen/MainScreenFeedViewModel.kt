@@ -38,10 +38,10 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     val maxPagerIndex = _maxPagerIndex.asStateFlow()
     init {
         viewModelScope.launch {
-            ideaListRepositoryImpl.getIdeasList().collect {
-                _ideaList.clear()
-                _ideaList.addAll(it)
-            }
+//            ideaListRepositoryImpl.getIdeasList().collect {
+//                _ideaList.clear()
+//                _ideaList.addAll(it)
+//            }
         }
     }
     fun addNewIdea(){

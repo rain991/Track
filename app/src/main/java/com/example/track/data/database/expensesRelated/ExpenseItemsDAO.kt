@@ -21,13 +21,13 @@ interface ExpenseItemsDAO {
     @Delete
     suspend fun deleteItem(expenseItem: ExpenseItem)
 
-    @Query("SELECT * FROM Expenses")
+    @Query("SELECT * FROM expenses")
     fun getAll(): Flow<List<ExpenseItem>>
 
-    @Query("SELECT * FROM Expenses ORDER BY date DESC")
+    @Query("SELECT * FROM expenses ORDER BY date DESC")
     fun getAllWithDateDesc(): Flow<List<ExpenseItem>>
 
-    @Query("SELECT * FROM Expenses ORDER BY date ASC")
+    @Query("SELECT * FROM expenses ORDER BY date ASC")
     fun getAllWithDateAsc(): Flow<List<ExpenseItem>>
 
     @Query("SELECT SUM(value) FROM expenses WHERE date BETWEEN :start AND :end")
@@ -41,12 +41,12 @@ interface ExpenseItemsDAO {
     fun getExpensesByIds(listOfIds : List<Int>) : List<ExpenseItem>
     @Query("SELECT * FROM expense_categories WHERE categoryId in (SELECT categoryId FROM expenses WHERE id in (:listOfIds))")
     fun getCategoriesByExpenseItemIds(listOfIds: List<Int>) : List<ExpenseCategory>
-    @Query("SELECT * FROM Expenses WHERE id=:id")
+    @Query("SELECT * FROM expenses WHERE id=:id")
     fun findExpenseById(id: Int): ExpenseItem?
 
-    @Query("SELECT * FROM Expenses WHERE note LIKE '%' || :note || '%'")
+    @Query("SELECT * FROM expenses WHERE note LIKE '%' || :note || '%'")
     fun findExpenseByNotes(note: String): Flow<List<ExpenseItem>>
 
-    @Query("SELECT * FROM Expenses WHERE categoryId=:categoryId AND date BETWEEN :start AND :end ")
+    @Query("SELECT * FROM expenses WHERE categoryId=:categoryId AND date BETWEEN :start AND :end ")
     fun findExpensesInTimeSpan(start : Long, end : Long, categoryId: Int) : List<ExpenseItem>
 }

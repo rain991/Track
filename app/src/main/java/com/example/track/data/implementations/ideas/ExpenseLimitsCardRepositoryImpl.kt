@@ -13,12 +13,12 @@ class ExpenseLimitsCardRepositoryImpl(
     }
 
     override fun requestRelatedToAllCategories(idea: Idea): Boolean? {
-        return idea.relatedToAllCategories
+        return false // idea.relatedToAllCategories
     }
 
     override fun requestListOfChosenCategories(idea: Idea): List<ExpenseCategory> {
         return if(requestRelatedToAllCategories(idea) == false) {
-            val list = listOf(idea.firstRelatedCategoryId, idea.secondRelatedCategoryId, idea.thirdRelatedCategoryId)
+            val list = listOf<Int>(/*idea.firstRelatedCategoryId, idea.secondRelatedCategoryId, idea.thirdRelatedCategoryId*/)
             expensesListRepositoryImpl.getCategoriesByIds(list.filterNotNull())
         }else{
             emptyList()
@@ -26,11 +26,12 @@ class ExpenseLimitsCardRepositoryImpl(
     }
 
     override fun requestAlreadySpentValue(idea: Idea): Float {
-        return if(idea.relatedToAllCategories == true){
-            expensesListRepositoryImpl.getCurrentMonthSumOfExpenses()
-        }else{
-            val currentChosenCategories = requestListOfChosenCategories(idea)
-            expensesListRepositoryImpl.getCurrentMonthSumOfExpensesForCategories(currentChosenCategories)
-        }
+//        return if(idea.relatedToAllCategories == true){
+//            expensesListRepositoryImpl.getCurrentMonthSumOfExpenses()
+//        }else{
+//            val currentChosenCategories = requestListOfChosenCategories(idea)
+//            expensesListRepositoryImpl.getCurrentMonthSumOfExpensesForCategories(currentChosenCategories)
+//        }
+        return 0f
     }
 }

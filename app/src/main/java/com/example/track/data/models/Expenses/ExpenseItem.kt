@@ -10,7 +10,7 @@ import java.util.Date
 
 
 @Entity(
-    tableName = "Expenses",
+    tableName = "expenses",
     foreignKeys = [ForeignKey(
         entity = ExpenseCategory::class,
         parentColumns = ["categoryId"],

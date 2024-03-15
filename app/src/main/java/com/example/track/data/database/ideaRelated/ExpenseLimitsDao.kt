@@ -6,20 +6,20 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.track.data.models.idea.Idea
+import com.example.track.data.models.idea.ExpenseLimits
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface IdeaDao {
+interface ExpenseLimitsDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insert(idea: Idea)
+    suspend fun insert(expenseLimits: ExpenseLimits)
 
     @Update
-    suspend fun update(idea: Idea)
+    suspend fun update(expenseLimits: ExpenseLimits)
 
     @Delete
-    suspend fun delete(idea: Idea)
+    suspend fun delete(expenseLimits: ExpenseLimits)
 
-    @Query("SELECT * FROM idea")
-    fun getAllData() : Flow<List<Idea>>
+    @Query("SELECT * FROM expenseLimits")
+    fun getAllData() : Flow<List<ExpenseLimits>>
 }
