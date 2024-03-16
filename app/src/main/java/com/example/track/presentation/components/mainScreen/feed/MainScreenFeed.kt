@@ -266,9 +266,10 @@ private fun Idea_FeedCard() {
 @Composable
 private fun NewIdea_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
     Card(
-        modifier = Modifier.clickable {
-            mainScreenFeedViewModel.setIsNewIdeaDialogVisible(true)
-        }
+        modifier = Modifier
+            .clickable {
+                mainScreenFeedViewModel.setIsNewIdeaDialogVisible(true)
+            }
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer,
@@ -280,7 +281,7 @@ private fun NewIdea_FeedCard(mainScreenFeedViewModel: MainScreenFeedViewModel) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             TextButton(onClick = {}) {
                 Text(
-                    "Add idea",
+                    stringResource(R.string.new_idea_main_screen_feed),
                     style = MaterialTheme.typography.titleSmall,
                     color = MaterialTheme.colorScheme.onPrimary
                 )

@@ -1,6 +1,7 @@
 package com.example.track.presentation.components.mainScreen.dialogs
 
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -72,6 +73,8 @@ fun NewIdeaDialog() {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     val newIdeaDialogState = mainScreenFeedViewModel.newIdeaDialogState.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
+    // val coroutineScope = rememberCoroutineScope()
+    Log.d("MyLog", "NewIdeaDialog: ${newIdeaDialogState.value}")
     val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Dialog(
         onDismissRequest = { mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false) },
@@ -79,12 +82,13 @@ fun NewIdeaDialog() {
     ) {
         Surface(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
+                .fillMaxWidth(0.96f)
                 .wrapContentHeight(),
             shape = RoundedCornerShape(8.dp),
         ) {
-            if(newIdeaDialogState.value.warningMessage != ""){
-                Toast.makeText(LocalContext.current,newIdeaDialogState.value.warningMessage, Toast.LENGTH_SHORT)
+            if (newIdeaDialogState.value.warningMessage != "") {
+                Toast.makeText(LocalContext.current, newIdeaDialogState.value.warningMessage, Toast.LENGTH_SHORT).show()
+                mainScreenFeedViewModel.setWarningMessage("")
             }
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(
@@ -97,7 +101,11 @@ fun NewIdeaDialog() {
                 }
                 val options = listOf(IdeaSelectorTypes.Savings, IdeaSelectorTypes.ExpenseLimit, IdeaSelectorTypes.IncomePlans)
                 Row {
-                    SingleChoiceSegmentedButtonRow() {
+                    SingleChoiceSegmentedButtonRow(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 4.dp, end = 12.dp)
+                    ) {
                         options.forEachIndexed { index, label ->
                             SegmentedButton(
                                 modifier = Modifier.safeContentPadding(),
@@ -128,7 +136,7 @@ fun NewIdeaDialog() {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically
+                        .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Start
                 ) {
                     Text(
                         text = when (newIdeaDialogState.value.typeSelected) {
@@ -138,8 +146,9 @@ fun NewIdeaDialog() {
                         },
                         style = MaterialTheme.typography.bodyMedium
                     )
-                    Spacer(modifier = Modifier.width(8.dp))
+                    Spacer(modifier = Modifier.weight(1f))
                     IdeaInputField(preferableCurrency = preferableCurrency.value)
+                    Spacer(modifier = Modifier.weight(1f))
                 }
                 when (newIdeaDialogState.value.typeSelected) {
                     IdeaSelectorTypes.ExpenseLimit -> ExpenseLimitsDialogInputs(newIdeaDialogState = newIdeaDialogState.value)
@@ -168,6 +177,7 @@ fun NewIdeaDialog() {
     }
 }
 
+
 @Composable
 private fun SavingsDialogInputs(
     newIdeaDialogState: NewIdeaDialogState
@@ -175,18 +185,20 @@ private fun SavingsDialogInputs(
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     Row(
         modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically
+            .fillMaxWidth()
+            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = "Included in budget")
         Spacer(modifier = Modifier.width(8.dp))
-        Switch(checked = newIdeaDialogState.includedInBudget, onCheckedChange = { it -> mainScreenFeedViewModel.setIncludedInBudget(it) })
+        Switch(
+            checked = newIdeaDialogState.includedInBudget ?: true,
+            onCheckedChange = { it -> mainScreenFeedViewModel.setIncludedInBudget(it) })
     }
     Spacer(modifier = Modifier.height(4.dp))
     Row(
         modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically
+            .fillMaxWidth()
+            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = stringResource(R.string.plan_end_date_ideas))
@@ -212,21 +224,21 @@ private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     Row(
         modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically
+            .fillMaxWidth()
+            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = "Each month limit")
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
             checked = newIdeaDialogState.eachMonth ?: true,
-            onCheckedChange = { mainScreenFeedViewModel.setSelectedToAllCategories(it) })
+            onCheckedChange = { mainScreenFeedViewModel.setEachMonth(it) })
     }
     Spacer(modifier = Modifier.height(4.dp))
-    if (newIdeaDialogState.eachMonth == false){
+    if (newIdeaDialogState.eachMonth == false) {
         Row(
             modifier = Modifier
-                .fillMaxWidth(0.9f)
-                .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(stringResource(R.string.limit_end_date_ideas))
@@ -249,8 +261,8 @@ private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
     }
     Row(
         modifier = Modifier
-            .fillMaxWidth(0.9f)
-            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically
+            .fillMaxWidth()
+            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(text = stringResource(R.string.related_to_all_categories_ideas))
         Spacer(modifier = Modifier.width(8.dp))
@@ -258,71 +270,38 @@ private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
             checked = newIdeaDialogState.relatedToAllCategories ?: true,
             onCheckedChange = { mainScreenFeedViewModel.setSelectedToAllCategories(it) })
     }
-    if(newIdeaDialogState.relatedToAllCategories != true) NewIdeaCategoriesGrid()
+    if (newIdeaDialogState.relatedToAllCategories != true) {
+        //Spacer(modifier = Modifier.height(8.dp))
+        NewIdeaCategoriesGrid()
+    }
 }
 
 @Composable
 private fun IncomePlanDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
-//    if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
-//        Spacer(modifier = Modifier.height(4.dp))
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth(0.9f)
-//                .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Text(text = "Each month limit")
-//            Spacer(modifier = Modifier.width(8.dp))
-//            Switch(
-//                checked = newIdeaDialogState.value.eachMonth ?: true,
-//                onCheckedChange = { mainScreenFeedViewModel.setSelectedToAllCategories(it) })
-//        }
-//    }
-//    if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit || newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.IncomePlans) {
-//        Spacer(modifier = Modifier.height(4.dp))
-//    }
-//    Row(
-//        modifier = Modifier
-//            .fillMaxWidth(0.9f)
-//            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically
-//    ) {
-//        Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-//            Text(
-//                text = if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
-//                    stringResource(R.string.limit_end_date_ideas)
-//                } else {
-//                    stringResource(R.string.plan_end_date_ideas)
-//                }
-//            )
-//            Text(text = "optional", style = MaterialTheme.typography.labelSmall)
-//        }
-//        Spacer(modifier = Modifier.width(12.dp))
-//        Button(onClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
-//            Text(
-//                text = if (newIdeaDialogState.value.endDate != null) newIdeaDialogState.value.endDate.toString() else "Date",
-//                style = MaterialTheme.typography.bodySmall
-//            )
-//        }
-//        CustomDatePicker(
-//            isVisible = newIdeaDialogState.value.isDateDialogVisible,
-//            onNegativeClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
-//            onPositiveClick = { date -> mainScreenFeedViewModel.setEndDate(date) }
-//        )
-//    }
-//
-//    if (newIdeaDialogState.value.typeSelected == IdeaSelectorTypes.ExpenseLimit) {
-//        Spacer(modifier = Modifier.height(4.dp))
-//        Row(
-//            modifier = Modifier
-//                .fillMaxWidth(0.9f)
-//                .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically
-//        ) {
-//            Text(text = stringResource(R.string.related_to_all_categories_ideas))
-//            Spacer(modifier = Modifier.width(8.dp))
-//            Switch(
-//                checked = newIdeaDialogState.value.relatedToAllCategories ?: true,
-//                onCheckedChange = { mainScreenFeedViewModel.setSelectedToAllCategories(it) })
-//        }
-//    }
+    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    Spacer(modifier = Modifier.height(4.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(bottom = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+            Text(stringResource(R.string.plan_end_date_ideas))
+            Text(text = "optional", style = MaterialTheme.typography.labelSmall)
+        }
+        Spacer(modifier = Modifier.width(12.dp))
+        Button(onClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
+            Text(
+                text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else "Date",
+                style = MaterialTheme.typography.bodySmall
+            )
+        }
+        CustomDatePicker(
+            isVisible = newIdeaDialogState.isDateDialogVisible,
+            onNegativeClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
+            onPositiveClick = { date -> mainScreenFeedViewModel.setEndDate(date) }
+        )
+    }
 }
 
 @Composable
@@ -375,17 +354,18 @@ private fun NewIdeaCategoriesGrid() {
     val secondSelectedCategory = bottomSheetViewState.value.selectedCategory2
     val thirdSelectedCategory = bottomSheetViewState.value.selectedCategory3
     LazyHorizontalStaggeredGrid(
-        modifier = Modifier.height(60.dp),
+        modifier = Modifier.height(84.dp),
         rows = StaggeredGridCells.Fixed(2),
         state = lazyHorizontalState,
         verticalArrangement = Arrangement.spacedBy(4.dp),
-        horizontalItemSpacing = 4.dp, contentPadding = PaddingValues(horizontal = 4.dp)
+        horizontalItemSpacing = 2.dp, contentPadding = PaddingValues(horizontal = 2.dp)
     ) {
         items(count = expenseCategoriesList.value.size) { index ->
             val item = expenseCategoriesList.value[index]
             CategoryChip(
                 category = item,
                 isSelected = (item == firstSelectedCategory || item == secondSelectedCategory || item == thirdSelectedCategory),
+                chipScale = 0.92f,
                 onSelect = { mainScreenFeedViewModel.setSelectedCategory(item) })
         }
     }

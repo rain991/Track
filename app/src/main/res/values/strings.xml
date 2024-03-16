@@ -68,4 +68,5 @@
     <string name="limit_end_date_ideas">Limit end date</string>
     <string name="plan_end_date_ideas">Planned end date</string>
     <string name="related_to_all_categories_ideas">Related to all categories</string>
+    <string name="new_idea_main_screen_feed">New idea</string>
 </resources>
