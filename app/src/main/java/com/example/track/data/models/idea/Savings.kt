@@ -6,10 +6,10 @@ import java.util.Date
 @Entity(tableName = "savings")
 data class Savings(
     @PrimaryKey(autoGenerate = true)
-    override val id: Int,
+    override val id: Int = 0,
     override val goal: Float,
     override val completed: Boolean,
     override val startDate: Date,
-    override val endDate: Date,
+    override val endDate: Date?,
     val includedInBudget : Boolean
 ) : Idea()

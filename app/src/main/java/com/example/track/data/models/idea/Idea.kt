@@ -7,5 +7,5 @@ abstract class Idea {
     abstract val  goal: Float
     abstract val  completed: Boolean
     abstract val  startDate: Date
-    abstract val  endDate: Date
+    abstract val  endDate: Date?
 }

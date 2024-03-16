@@ -37,6 +37,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
@@ -64,6 +65,7 @@ import com.example.track.presentation.common.ui.CategoryChip
 import com.example.track.presentation.common.ui.CustomDatePicker
 import com.example.track.presentation.states.IdeaSelectorTypes
 import com.example.track.presentation.states.NewIdeaDialogState
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -73,7 +75,7 @@ fun NewIdeaDialog() {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     val newIdeaDialogState = mainScreenFeedViewModel.newIdeaDialogState.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
-    // val coroutineScope = rememberCoroutineScope()
+     val coroutineScope = rememberCoroutineScope()
     Log.d("MyLog", "NewIdeaDialog: ${newIdeaDialogState.value}")
     val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Dialog(
@@ -166,8 +168,10 @@ fun NewIdeaDialog() {
                         Text("Decline")
                     }
                     FilledTonalButton(modifier = Modifier.scale(0.9f), onClick = {
-                        //  mainScreenFeedViewModel.addNewIdea()
-                        mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false)
+                        coroutineScope.launch{
+                            mainScreenFeedViewModel.addNewIdea()
+                        }
+                      //  mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false)
                     }) {
                         Text("Add")
                     }

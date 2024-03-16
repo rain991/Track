@@ -30,14 +30,14 @@ import java.util.Date
 )
 data class ExpenseLimits(
     @PrimaryKey(autoGenerate = true)
-    override val id: Int,
+    override val id: Int = 0,
     override val goal: Float,
     override val completed: Boolean,
     override val startDate: Date,
-    override val endDate: Date,
-    val isEachMonth: Boolean,
+    override val endDate: Date?,
+    val isEachMonth: Boolean?,
     val isRelatedToAllCategories: Boolean,
-    val firstRelatedCategoryId: Int,
-    val secondRelatedCategoryId: Int,
-    val thirdRelatedCategoryId: Int,
+    val firstRelatedCategoryId: Int?,
+    val secondRelatedCategoryId: Int?,
+    val thirdRelatedCategoryId: Int?,
 ) : Idea()

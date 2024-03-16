@@ -3,15 +3,20 @@ package com.example.track.data.viewmodels.mainScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.track.data.converters.convertLocalDateToDate
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.models.Expenses.ExpenseCategory
+import com.example.track.data.models.idea.ExpenseLimits
 import com.example.track.data.models.idea.Idea
+import com.example.track.data.models.idea.IncomePlans
+import com.example.track.data.models.idea.Savings
 import com.example.track.presentation.states.IdeaSelectorTypes
 import com.example.track.presentation.states.NewIdeaDialogState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.time.LocalDate
 import java.util.Date
 
 
@@ -50,11 +55,71 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     }
 
     suspend fun addNewIdea() {
-        //  ideaListRepositoryImpl.addIdea()
+        lateinit var idea : Idea
+        when (newIdeaDialogState.value.typeSelected) {
+            IdeaSelectorTypes.Savings -> {
+                if (newIdeaDialogState.value.includedInBudget != null && newIdeaDialogState.value.goal > 0) {
+                   idea = Savings(
+                        goal = newIdeaDialogState.value.goal,
+                        completed = false,
+                        startDate = convertLocalDateToDate(LocalDate.now()),
+                        endDate = newIdeaDialogState.value.endDate,
+                        includedInBudget = newIdeaDialogState.value.includedInBudget!!
+                    )
+                } else {
+                    setWarningMessage("Goal should be greater than 0")
+                    return
+                }
+            }
+            IdeaSelectorTypes.IncomePlans -> {
+                if (newIdeaDialogState.value.goal > 0) {
+                    idea = IncomePlans(
+                        goal = newIdeaDialogState.value.goal,
+                        completed = false,
+                        startDate = convertLocalDateToDate(LocalDate.now()),
+                        endDate = newIdeaDialogState.value.endDate
+                    )
+                } else {
+                    setWarningMessage("Goal should be greater than 0")
+                    return
+                }
+            }
+
+            IdeaSelectorTypes.ExpenseLimit -> {
+                if (newIdeaDialogState.value.relatedToAllCategories!=null && newIdeaDialogState.value.goal > 0 && (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) && (newIdeaDialogState.value.relatedToAllCategories == true || newIdeaDialogState.value.selectedCategory1 != null || newIdeaDialogState.value.selectedCategory2 != null || newIdeaDialogState.value.selectedCategory3 != null)) {
+                    idea = ExpenseLimits(
+                        goal = newIdeaDialogState.value.goal,
+                        completed = false,
+                        startDate = convertLocalDateToDate(LocalDate.now()),
+                        endDate = newIdeaDialogState.value.endDate,
+                        isEachMonth = newIdeaDialogState.value.eachMonth,
+                        isRelatedToAllCategories = newIdeaDialogState.value.relatedToAllCategories!!,
+                        firstRelatedCategoryId = newIdeaDialogState.value.selectedCategory1?.categoryId,
+                        secondRelatedCategoryId = newIdeaDialogState.value.selectedCategory2?.categoryId,
+                        thirdRelatedCategoryId = newIdeaDialogState.value.selectedCategory3?.categoryId
+                    )
+                } else {
+                    if (newIdeaDialogState.value.goal <= 0) {
+                        setWarningMessage("Goal should be greater than 0")
+                    } else if (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) {
+                        setWarningMessage("Incorrect date")
+                    }
+                    return
+                }
+            }
+        }
+        ideaListRepositoryImpl.addIdea(idea)
+        setIsNewIdeaDialogVisible(false)
+        setGoal(0.0f)
     }
 
     fun setIsNewIdeaDialogVisible(value: Boolean) {
         _isNewIdeaDialogVisible.value = value
+        if(value){
+            setTypeSelected(IdeaSelectorTypes.Savings)
+            setIncludedInBudget(true)
+            setEndDate(null)
+        }
     }
 
     fun setGoal(value: Float) {
