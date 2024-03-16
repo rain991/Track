@@ -12,6 +12,10 @@ class ExpensesCategoriesListRepositoryImpl(private val categoryDao: ExpenseCateg
         return categoryDao.getAllCategories()
     }
 
+    override fun getCategoryById(id : Int): ExpenseCategory {
+        return categoryDao.getCategoryById(id)
+    }
+
     override suspend fun addCategory(category: ExpenseCategory, context: CoroutineContext) {
         withContext(context = context) {
             categoryDao.insert(category)

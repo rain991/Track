@@ -15,6 +15,7 @@ data class NewIdeaDialogState(
     val includedInBudget : Boolean?,
     val eachMonth: Boolean?,
     val endDate: Date?,
+    val label : String?,
     val isDateDialogVisible: Boolean,
     val relatedToAllCategories: Boolean?,
     val selectedCategory1: ExpenseCategory?,

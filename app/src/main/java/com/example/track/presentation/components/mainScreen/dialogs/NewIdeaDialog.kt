@@ -3,6 +3,7 @@ package com.example.track.presentation.components.mainScreen.dialogs
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -34,6 +35,8 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
@@ -43,6 +46,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -187,6 +191,27 @@ private fun SavingsDialogInputs(
     newIdeaDialogState: NewIdeaDialogState
 ) {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    val labelInputText = newIdeaDialogState.label
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        TextField(
+            value = labelInputText ?: "",
+            onValueChange = { mainScreenFeedViewModel.setLabel(it) },
+            label = { "Saving for" },
+            maxLines = 1,
+            modifier = Modifier
+                .padding(horizontal = 8.dp)
+                .border(
+                    width = 2.dp,
+                    brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)),
+                    shape = RoundedCornerShape(4.dp)
+                ),
+            colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background)
+        )
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -275,7 +300,6 @@ private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
             onCheckedChange = { mainScreenFeedViewModel.setSelectedToAllCategories(it) })
     }
     if (newIdeaDialogState.relatedToAllCategories != true) {
-        //Spacer(modifier = Modifier.height(8.dp))
         NewIdeaCategoriesGrid()
     }
 }

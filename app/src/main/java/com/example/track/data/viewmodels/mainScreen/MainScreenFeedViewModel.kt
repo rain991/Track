@@ -36,7 +36,8 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
             selectedCategory1 = null,
             selectedCategory2 = null,
             selectedCategory3 = null,
-            includedInBudget = true
+            includedInBudget = true,
+            label = null
         )
     )
     val newIdeaDialogState = _newIdeaDialogState.asStateFlow()
@@ -55,22 +56,29 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     }
 
     suspend fun addNewIdea() {
-        lateinit var idea : Idea
+        lateinit var idea: Idea
         when (newIdeaDialogState.value.typeSelected) {
             IdeaSelectorTypes.Savings -> {
-                if (newIdeaDialogState.value.includedInBudget != null && newIdeaDialogState.value.goal > 0) {
-                   idea = Savings(
+                if (newIdeaDialogState.value.includedInBudget != null && newIdeaDialogState.value.goal > 0 && newIdeaDialogState.value.label != null) {
+                    idea = Savings(
                         goal = newIdeaDialogState.value.goal,
                         completed = false,
                         startDate = convertLocalDateToDate(LocalDate.now()),
                         endDate = newIdeaDialogState.value.endDate,
-                        includedInBudget = newIdeaDialogState.value.includedInBudget!!
+                        includedInBudget = newIdeaDialogState.value.includedInBudget!!,
+                        label = newIdeaDialogState.value.label ?: "",
+                        value = 0f
                     )
                 } else {
-                    setWarningMessage("Goal should be greater than 0")
+                    if (newIdeaDialogState.value.goal <= 0) {
+                        setWarningMessage("Goal should be greater than 0")
+                    }else if (newIdeaDialogState.value.label == null){
+                        setWarningMessage("Type correct saving label")
+                    }
                     return
                 }
             }
+
             IdeaSelectorTypes.IncomePlans -> {
                 if (newIdeaDialogState.value.goal > 0) {
                     idea = IncomePlans(
@@ -86,7 +94,7 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
             }
 
             IdeaSelectorTypes.ExpenseLimit -> {
-                if (newIdeaDialogState.value.relatedToAllCategories!=null && newIdeaDialogState.value.goal > 0 && (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) && (newIdeaDialogState.value.relatedToAllCategories == true || newIdeaDialogState.value.selectedCategory1 != null || newIdeaDialogState.value.selectedCategory2 != null || newIdeaDialogState.value.selectedCategory3 != null)) {
+                if (newIdeaDialogState.value.relatedToAllCategories != null && newIdeaDialogState.value.goal > 0 && (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) && (newIdeaDialogState.value.relatedToAllCategories == true || newIdeaDialogState.value.selectedCategory1 != null || newIdeaDialogState.value.selectedCategory2 != null || newIdeaDialogState.value.selectedCategory3 != null)) {
                     idea = ExpenseLimits(
                         goal = newIdeaDialogState.value.goal,
                         completed = false,
@@ -115,7 +123,7 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
 
     fun setIsNewIdeaDialogVisible(value: Boolean) {
         _isNewIdeaDialogVisible.value = value
-        if(value){
+        if (value) {
             setTypeSelected(IdeaSelectorTypes.Savings)
             setIncludedInBudget(true)
             setEndDate(null)
@@ -194,6 +202,10 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
 
     fun setIncludedInBudget(value: Boolean) {
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(includedInBudget = value)
+    }
+
+    fun setLabel(label: String) {
+        _newIdeaDialogState.value = newIdeaDialogState.value.copy(label = label)
     }
 
     fun incrementCardIndex() {
