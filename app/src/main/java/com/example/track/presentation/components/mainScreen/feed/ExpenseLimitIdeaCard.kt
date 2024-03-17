@@ -15,6 +15,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
@@ -22,13 +23,18 @@ import com.example.track.data.implementations.expenses.ExpensesCategoriesListRep
 import com.example.track.data.models.idea.ExpenseLimits
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.common.ui.CategoryChip
+import kotlinx.coroutines.flow.map
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
-fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedForAbsolute: Float, completitionRate: Float) {
+fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits) {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepositoryImpl>()
+    val completedForAbsolute = mainScreenFeedViewModel.getCompletionValue(expenseLimit).collectAsState(initial = 0.0f)
+    val completitionRate = mainScreenFeedViewModel.getCompletionValue(expenseLimit).map {
+        expenseLimit.goal.div(it)
+    }.collectAsState(initial = 0.0f)
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -84,7 +90,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedForAbsolute: Floa
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
                 Text(text = "Completed for")
                 Spacer(Modifier.width(2.dp))
-                Text(text = completedForAbsolute.toString())
+                Text(text = completedForAbsolute.value.toString())
             }
         }
     }

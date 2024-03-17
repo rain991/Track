@@ -22,4 +22,7 @@ interface IncomePlansDao {
 
     @Query("SELECT * FROM incomePlans")
     fun getAllData() : Flow<List<IncomePlans>>
+
+    @Query("SELECT SUM(value) FROM incomes WHERE date>:startDate")
+    fun getIncomeSumFromDate(startDate : Long) : Float
 }

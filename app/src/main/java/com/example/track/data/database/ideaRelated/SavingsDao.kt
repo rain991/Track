@@ -22,4 +22,7 @@ interface SavingsDao {
 
     @Query("SELECT * FROM savings")
     fun getAllData() : Flow<List<Savings>>
+
+    @Query("SELECT * FROM savings WHERE startDate>:startDate")
+    fun getSavingsFromDate(startDate : Long) : Flow<Savings>
 }

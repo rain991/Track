@@ -22,4 +22,7 @@ interface ExpenseLimitsDao {
 
     @Query("SELECT * FROM expenseLimits")
     fun getAllData() : Flow<List<ExpenseLimits>>
+
+    @Query("SELECT SUM(value) FROM expenses WHERE date>:startDate")
+    fun getExpenseSumFromDate(startDate : Long) : Float
 }

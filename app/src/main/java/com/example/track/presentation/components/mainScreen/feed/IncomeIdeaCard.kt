@@ -13,17 +13,23 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.track.data.models.idea.IncomePlans
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
+import kotlinx.coroutines.flow.map
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun IncomeIdeaCard(incomePlans: IncomePlans, completedForAbsolute : Float, completitionRate : Float) {
+fun IncomeIdeaCard(incomePlans: IncomePlans) {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    val completedForAbsolute = mainScreenFeedViewModel.getCompletionValue(incomePlans).collectAsState(initial = 0.0f)
+    val completitionRate = mainScreenFeedViewModel.getCompletionValue(incomePlans).map {
+        incomePlans.goal.div(it)
+    }.collectAsState(initial = 0.0f)
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -50,7 +56,7 @@ fun IncomeIdeaCard(incomePlans: IncomePlans, completedForAbsolute : Float, compl
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
                 Text(text = "Completed for")
                 Spacer(Modifier.width(2.dp))
-                Text(text = completedForAbsolute.toString())
+                Text(text = completedForAbsolute.value.toString())
             }
         }
         Spacer(Modifier.height(2.dp))
@@ -63,7 +69,7 @@ fun IncomeIdeaCard(incomePlans: IncomePlans, completedForAbsolute : Float, compl
         }
         Spacer(Modifier.height(4.dp))
         LinearProgressIndicator(
-            progress = { completitionRate },
+            progress = { completitionRate.value },
             modifier = Modifier
                 .fillMaxWidth(fraction = 0.6f)
         )

@@ -1,5 +1,6 @@
 package com.example.track.data.viewmodels.mainScreen
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,6 +13,7 @@ import com.example.track.data.models.idea.IncomePlans
 import com.example.track.data.models.idea.Savings
 import com.example.track.presentation.states.IdeaSelectorTypes
 import com.example.track.presentation.states.NewIdeaDialogState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -51,6 +53,8 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
             ideaListRepositoryImpl.getIdeasList().collect {
                 _ideaList.clear()
                 _ideaList.addAll(it)
+                setMaxPagerIndex(ideaList.size+1)
+
             }
         }
     }
@@ -72,7 +76,7 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
                 } else {
                     if (newIdeaDialogState.value.goal <= 0) {
                         setWarningMessage("Goal should be greater than 0")
-                    }else if (newIdeaDialogState.value.label == null){
+                    } else if (newIdeaDialogState.value.label == null) {
                         setWarningMessage("Type correct saving label")
                     }
                     return
@@ -119,6 +123,10 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
         ideaListRepositoryImpl.addIdea(idea)
         setIsNewIdeaDialogVisible(false)
         setGoal(0.0f)
+    }
+
+    fun getCompletionValue(idea: Idea): Flow<Float> {
+        return ideaListRepositoryImpl.getCompletionValue(idea)
     }
 
     fun setIsNewIdeaDialogVisible(value: Boolean) {
@@ -211,8 +219,12 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     fun incrementCardIndex() {
         if (_cardIndex.value < ideaList.size + 2) _cardIndex.update { _cardIndex.value + 1 } else setCardIndex(0)
     }
-
+    private fun setMaxPagerIndex(value : Int){
+        _maxPagerIndex.value = value
+    }
     private fun setCardIndex(index: Int) {
         _cardIndex.value = index
     }
+
+
 }
