@@ -22,4 +22,7 @@ interface IncomeCategoryDao {
 
     @Query("SELECT * FROM income_categories")
     fun getAllIncomeCategories(): Flow<List<IncomeCategory>>
+
+    @Query("SELECT categoryId FROM income_categories WHERE note = 'Other'")
+    fun getCategoryOtherId() : Int
 }

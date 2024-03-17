@@ -17,7 +17,5 @@ class App : Application(), KoinComponent {
             workManagerFactory()
             modules(listOf(settingsModule, appModule, domainModule, viewModelModule, workerFactoryModule))
         }
-
     }
-
 }

@@ -15,19 +15,23 @@ import com.example.track.R
 import com.example.track.data.DataStoreManager
 import com.example.track.data.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
-import com.example.track.presentation.bottomsheets.ExtendedButtonExample
-import com.example.track.presentation.bottomsheets.SimplifiedBottomSheet
-import com.example.track.presentation.home.mainScreen.expensesLazyColumn.ExpensesLazyColumn
-import com.example.track.presentation.home.mainScreen.feed.MainScreenFeed
+import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
+import com.example.track.presentation.bottomsheets.other.ExtendedButtonExample
+import com.example.track.presentation.bottomsheets.sheets.SimplifiedBottomSheet
+import com.example.track.presentation.components.mainScreen.dialogs.NewIdeaDialog
+import com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn.ExpensesLazyColumn
+import com.example.track.presentation.components.mainScreen.feed.MainScreenFeed
 import com.example.track.presentation.other.Header
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
-fun MainExpenseScreen() {  // Primary screen
+fun MainExpenseScreen() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
+    val isIdeaDialogVisible = mainScreenFeedViewModel.isNewIdeaDialogVisible.collectAsState()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
           if(isPageNameVisible.value) Header(categoryName = stringResource(R.string.expenses))
@@ -39,12 +43,13 @@ fun MainExpenseScreen() {  // Primary screen
         Column(
             modifier = Modifier
                 .padding(it),
-            verticalArrangement = Arrangement.spacedBy(8.dp)) //12.dp
+            verticalArrangement = Arrangement.spacedBy(8.dp))
         {
             if(!isPageNameVisible.value) Spacer(modifier = Modifier.height(12.dp))
             MainScreenFeed()
             ExpensesLazyColumn()
         }
         SimplifiedBottomSheet(dataStoreManager = settingsData)
+        if(isIdeaDialogVisible.value) NewIdeaDialog()
     }
 }

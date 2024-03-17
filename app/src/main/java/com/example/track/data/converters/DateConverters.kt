@@ -8,6 +8,21 @@ import java.util.Date
 import java.util.Locale
 
 
+
+fun getStartOfMonthDate(date : Date) : Date{
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    calendar.set(Calendar.DAY_OF_MONTH, 1)
+    return calendar.time
+}
+
+fun getEndOfTheMonth(date: Date) : Date{
+    val calendar = Calendar.getInstance()
+    calendar.time = date
+    calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
+    return calendar.time
+}
+
 fun parseStringToDate(dateString: String): LocalDate {
     val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd")
     return LocalDate.parse(dateString, formatter)
@@ -16,6 +31,8 @@ fun parseStringToDate(dateString: String): LocalDate {
 fun areDatesSame(date1: LocalDate, date2: LocalDate): Boolean { // year, month and day is same in dates
     return (date1.isEqual(date2))
 }
+
+
 
 fun areDatesSame(date1: Date, date2: Date): Boolean {
     val cal1 = Calendar.getInstance()

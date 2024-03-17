@@ -6,8 +6,8 @@ import com.example.track.data.DataStoreManager
 import com.example.track.data.constants.BUDGET_DEFAULT
 import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.constants.NAME_DEFAULT
-import com.example.track.data.implementations.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.implementations.CurrencyListRepositoryImpl
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.example.track.data.models.currency.Currency
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

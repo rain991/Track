@@ -37,6 +37,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Color.Companion.Black
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -57,11 +58,8 @@ import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
-// consts to ENUM
 const val FIRSTNAME_INPUT_ID = 102
 const val INCOME_INPUT_ID = 703
-
-//val uiColor = if (isSystemInDarkTheme()) Color.White else Black
 @Composable
 fun LoginScreen(navController: NavController) {
     val loginViewModel = koinViewModel<LoginViewModel>()
@@ -183,7 +181,8 @@ private fun LoginHeader() {
                 .fillMaxHeight(fraction = 0.45f),
             painter = painterResource(id = R.drawable.header),
             contentDescription = null,
-            contentScale = ContentScale.FillBounds
+            contentScale = ContentScale.FillBounds,
+            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary)
         )
         Box(contentAlignment = Alignment.Center, modifier = Modifier.offset(5.dp, (-75).dp)) {
             Row(
