@@ -13,23 +13,36 @@ import androidx.compose.material3.CardColors
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.track.data.models.idea.IncomePlans
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
-import kotlinx.coroutines.flow.map
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun IncomeIdeaCard(incomePlans: IncomePlans) {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
-    val completedForAbsolute = mainScreenFeedViewModel.getCompletionValue(incomePlans).collectAsState(initial = 0.0f)
-    val completitionRate = mainScreenFeedViewModel.getCompletionValue(incomePlans).map {
-        incomePlans.goal.div(it)
-    }.collectAsState(initial = 0.0f)
+    var completedAbsoluteValue by remember { mutableFloatStateOf(0.0f) }
+    var completedCompletitionRate by remember { mutableFloatStateOf(0.0f) }
+    LaunchedEffect(key1 = mainScreenFeedViewModel.ideaList) {
+        completedAbsoluteValue = mainScreenFeedViewModel.getCompletionValue(incomePlans).value
+        mainScreenFeedViewModel.getCompletionValue(incomePlans).collect {
+            if (it != 0.0f) {
+                completedCompletitionRate = incomePlans.goal.div(it)
+            } else 0.0f
+        }
+    }
+
+
+
+
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -56,11 +69,11 @@ fun IncomeIdeaCard(incomePlans: IncomePlans) {
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
                 Text(text = "Completed for")
                 Spacer(Modifier.width(2.dp))
-                Text(text = completedForAbsolute.value.toString())
+                Text(text = completedAbsoluteValue.toString())
             }
         }
         Spacer(Modifier.height(2.dp))
-        if (incomePlans.endDate!=null) {
+        if (incomePlans.endDate != null) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(text = "Preferable period:")
                 Spacer(Modifier.width(2.dp))
@@ -69,7 +82,7 @@ fun IncomeIdeaCard(incomePlans: IncomePlans) {
         }
         Spacer(Modifier.height(4.dp))
         LinearProgressIndicator(
-            progress = { completitionRate.value },
+            progress = { completedCompletitionRate },
             modifier = Modifier
                 .fillMaxWidth(fraction = 0.6f)
         )

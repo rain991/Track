@@ -7,7 +7,7 @@ import kotlin.coroutines.CoroutineContext
 
 interface IdeaListRepository {
     suspend fun getIdeasList(context: CoroutineContext = Dispatchers.IO): Flow<List<Idea>>
-    fun getCompletionValue(idea : Idea) : Flow<Float>
+  suspend fun getCompletionValue(idea : Idea) : Flow<Float>
     suspend fun addIdea(idea: Idea, context: CoroutineContext = Dispatchers.IO)
     suspend fun editIdea(idea: Idea, context: CoroutineContext = Dispatchers.IO)
     suspend fun deleteIdea(idea: Idea, context: CoroutineContext = Dispatchers.IO)

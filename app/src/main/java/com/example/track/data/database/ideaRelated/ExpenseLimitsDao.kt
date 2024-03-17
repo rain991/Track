@@ -21,8 +21,8 @@ interface ExpenseLimitsDao {
     suspend fun delete(expenseLimits: ExpenseLimits)
 
     @Query("SELECT * FROM expenseLimits")
-    fun getAllData() : Flow<List<ExpenseLimits>>
+    fun getAllData(): Flow<List<ExpenseLimits>>
 
     @Query("SELECT SUM(value) FROM expenses WHERE date>:startDate")
-    fun getExpenseSumFromDate(startDate : Long) : Float
+    fun getExpenseSumFromDate(startDate: Long): Float
 }

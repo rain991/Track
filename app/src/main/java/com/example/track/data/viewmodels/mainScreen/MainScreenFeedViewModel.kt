@@ -1,6 +1,5 @@
 package com.example.track.data.viewmodels.mainScreen
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -13,11 +12,15 @@ import com.example.track.data.models.idea.IncomePlans
 import com.example.track.data.models.idea.Savings
 import com.example.track.presentation.states.IdeaSelectorTypes
 import com.example.track.presentation.states.NewIdeaDialogState
-import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.Date
 
@@ -48,13 +51,13 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     private val _maxPagerIndex = MutableStateFlow(ideaList.size + 1)
     val maxPagerIndex = _maxPagerIndex.asStateFlow()
 
+
     init {
         viewModelScope.launch {
             ideaListRepositoryImpl.getIdeasList().collect {
                 _ideaList.clear()
                 _ideaList.addAll(it)
-                setMaxPagerIndex(ideaList.size+1)
-
+                setMaxPagerIndex(ideaList.size + 1)
             }
         }
     }
@@ -125,8 +128,10 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
         setGoal(0.0f)
     }
 
-    fun getCompletionValue(idea: Idea): Flow<Float> {
-        return ideaListRepositoryImpl.getCompletionValue(idea)
+    suspend fun getCompletionValue(idea: Idea): StateFlow<Float> {
+        return withContext(Dispatchers.IO) {
+            ideaListRepositoryImpl.getCompletionValue(idea).stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = 0.0f)
+        }
     }
 
     fun setIsNewIdeaDialogVisible(value: Boolean) {
@@ -219,9 +224,11 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     fun incrementCardIndex() {
         if (_cardIndex.value < ideaList.size + 2) _cardIndex.update { _cardIndex.value + 1 } else setCardIndex(0)
     }
-    private fun setMaxPagerIndex(value : Int){
+
+    private fun setMaxPagerIndex(value: Int) {
         _maxPagerIndex.value = value
     }
+
     private fun setCardIndex(index: Int) {
         _cardIndex.value = index
     }

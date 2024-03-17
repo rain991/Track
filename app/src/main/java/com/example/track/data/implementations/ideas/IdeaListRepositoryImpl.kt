@@ -8,8 +8,10 @@ import com.example.track.data.models.idea.Idea
 import com.example.track.data.models.idea.IncomePlans
 import com.example.track.data.models.idea.Savings
 import com.example.track.domain.repository.ideas.IdeaListRepository
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
@@ -26,15 +28,17 @@ class IdeaListRepositoryImpl(
                 incomePlansDao.getAllData(),
                 savingsDao.getAllData()
             )
-        }
+        }.flowOn(Dispatchers.IO)
     }
 
-    override fun getCompletionValue(idea : Idea): Flow<Float> {
+    override suspend fun getCompletionValue(idea : Idea): Flow<Float> {
         var value = 0.0f
-        when (idea) {
-            is ExpenseLimits -> value = expenseLimitsDao.getExpenseSumFromDate(idea.startDate.time)
-            is IncomePlans -> value = incomePlansDao.getIncomeSumFromDate(idea.startDate.time)
-            is Savings -> value = idea.value
+        withContext(Dispatchers.IO){
+            when (idea) {
+                is ExpenseLimits -> value = expenseLimitsDao.getExpenseSumFromDate(idea.startDate.time)
+                is IncomePlans -> value = incomePlansDao.getIncomeSumFromDate(idea.startDate.time)
+                is Savings -> value = idea.value
+            }
         }
         return flow{
             emit(value)
