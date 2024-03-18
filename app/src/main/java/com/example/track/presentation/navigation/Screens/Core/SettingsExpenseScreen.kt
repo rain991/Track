@@ -1,4 +1,4 @@
-package com.example.track.presentation.navigation.Screens
+package com.example.track.presentation.navigation.Screens.Core
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Column

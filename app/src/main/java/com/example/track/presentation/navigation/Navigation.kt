@@ -9,6 +9,10 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.track.data.DataStoreManager
 import com.example.track.presentation.login.LoginScreen
+import com.example.track.presentation.navigation.Screens.Additional.CategoriesSettingsScreen
+import com.example.track.presentation.navigation.Screens.Additional.CurrenciesSettingsScreen
+import com.example.track.presentation.navigation.Screens.Additional.IdeasListSettingsScreen
+import com.example.track.presentation.navigation.Screens.Additional.PersonalSettingsScreen
 import com.example.track.presentation.other.ScreenManager
 
 @Composable
@@ -23,7 +27,6 @@ fun Navigation(dataStoreManager: DataStoreManager) {
             navController.navigate(Screen.MainScreen.route)
         }
     }
-
     NavHost(
         navController = navController,
         startDestination = Screen.MainScreen.route
@@ -33,6 +36,18 @@ fun Navigation(dataStoreManager: DataStoreManager) {
         }
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(navController)
+        }
+        composable(route = Screen.CurrenciesSettingsScreen.route){
+            CurrenciesSettingsScreen()
+        }
+        composable(route = Screen.IdeasListSettingsScreen.route){
+            IdeasListSettingsScreen()
+        }
+        composable(route = Screen.PersonalSettingsScreen.route){
+            PersonalSettingsScreen(navController)
+        }
+        composable(route = Screen.CategoriesSettingsScreen.route){
+            CategoriesSettingsScreen(navController)
         }
     }
 }

@@ -18,9 +18,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.track.presentation.navigation.Screens.MainExpenseScreen
-import com.example.track.presentation.navigation.Screens.SettingsExpenseScreen
-import com.example.track.presentation.navigation.Screens.StatisticsExpenseScreen
+import com.example.track.presentation.navigation.Screens.Core.MainExpenseScreen
+import com.example.track.presentation.navigation.Screens.Core.SettingsExpenseScreen
+import com.example.track.presentation.navigation.Screens.Core.StatisticsExpenseScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

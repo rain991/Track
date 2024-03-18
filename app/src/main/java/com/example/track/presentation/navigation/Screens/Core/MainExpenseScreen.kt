@@ -1,4 +1,4 @@
-package com.example.track.presentation.navigation.Screens
+package com.example.track.presentation.navigation.Screens.Core
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
