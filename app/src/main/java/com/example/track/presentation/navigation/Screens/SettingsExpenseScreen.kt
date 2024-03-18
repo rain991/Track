@@ -23,8 +23,8 @@ import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.track.presentation.bottomsheets.other.ExtendedButtonExample
 import com.example.track.presentation.bottomsheets.sheets.SimplifiedBottomSheet
-import com.example.track.presentation.components.settingsScreen.CurrenciesSettings
-import com.example.track.presentation.components.settingsScreen.ThemePreferences
+import com.example.track.presentation.components.settingsScreen.common.ThemePreferences
+import com.example.track.presentation.components.settingsScreen.components.CurrenciesSettings
 import com.example.track.presentation.other.Header
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject

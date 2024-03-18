@@ -30,19 +30,15 @@ import org.koin.androidx.compose.koinViewModel
 fun IncomeIdeaCard(incomePlans: IncomePlans) {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     var completedAbsoluteValue by remember { mutableFloatStateOf(0.0f) }
-    var completedCompletitionRate by remember { mutableFloatStateOf(0.0f) }
+    var complitionRate by remember { mutableFloatStateOf(0.0f) }
     LaunchedEffect(key1 = mainScreenFeedViewModel.ideaList) {
         completedAbsoluteValue = mainScreenFeedViewModel.getCompletionValue(incomePlans).value
         mainScreenFeedViewModel.getCompletionValue(incomePlans).collect {
             if (it != 0.0f) {
-                completedCompletitionRate = incomePlans.goal.div(it)
+                complitionRate = incomePlans.goal.div(it)
             } else 0.0f
         }
     }
-
-
-
-
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -82,7 +78,7 @@ fun IncomeIdeaCard(incomePlans: IncomePlans) {
         }
         Spacer(Modifier.height(4.dp))
         LinearProgressIndicator(
-            progress = { completedCompletitionRate },
+            progress = { complitionRate },
             modifier = Modifier
                 .fillMaxWidth(fraction = 0.6f)
         )

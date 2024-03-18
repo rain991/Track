@@ -11,8 +11,6 @@ import com.example.track.domain.repository.ideas.IdeaListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.flow.flowOn
-import kotlinx.coroutines.flow.merge
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
@@ -21,26 +19,30 @@ class IdeaListRepositoryImpl(
     private val incomePlansDao: IncomePlansDao,
     private val savingsDao: SavingsDao
 ) : IdeaListRepository {
-    override suspend fun getIdeasList(context: CoroutineContext): Flow<List<Idea>> {
+    override suspend fun getIncomesPlansList(context: CoroutineContext): Flow<List<IncomePlans>> {
         return withContext(context) {
-            merge(
-                expenseLimitsDao.getAllData(),
-                incomePlansDao.getAllData(),
-                savingsDao.getAllData()
-            )
-        }.flowOn(Dispatchers.IO)
+         incomePlansDao.getAllData()}
     }
 
-    override suspend fun getCompletionValue(idea : Idea): Flow<Float> {
+    override suspend fun getExpenseLimitsList(context: CoroutineContext): Flow<List<ExpenseLimits>> {
+        return withContext(context) {
+            expenseLimitsDao.getAllData()}
+    }
+
+    override suspend fun getSavingsList(context: CoroutineContext): Flow<List<Savings>> {
+        return withContext(context) {
+            savingsDao.getAllData()}
+    }
+    override suspend fun getCompletionValue(idea: Idea): Flow<Float> {
         var value = 0.0f
-        withContext(Dispatchers.IO){
+        withContext(Dispatchers.IO) {
             when (idea) {
                 is ExpenseLimits -> value = expenseLimitsDao.getExpenseSumFromDate(idea.startDate.time)
                 is IncomePlans -> value = incomePlansDao.getIncomeSumFromDate(idea.startDate.time)
                 is Savings -> value = idea.value
             }
         }
-        return flow{
+        return flow {
             emit(value)
         }
     }

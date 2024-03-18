@@ -35,16 +35,15 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits) {
     val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepositoryImpl>()
     var completedAbsoluteValue by remember { mutableFloatStateOf(0.0f) }
-    var completedCompletitionRate by remember { mutableFloatStateOf(0.0f) }
+    var complitionRate by remember { mutableFloatStateOf(0.0f) }
     LaunchedEffect(key1 = mainScreenFeedViewModel.ideaList) {
         completedAbsoluteValue = mainScreenFeedViewModel.getCompletionValue(expenseLimit).value
         mainScreenFeedViewModel.getCompletionValue(expenseLimit).collect {
             if (it != 0.0f) {
-                completedCompletitionRate = expenseLimit.goal.div(it)
+                complitionRate = expenseLimit.goal.div(it)
             } else 0.0f
         }
     }
-
     Card(
         modifier = Modifier
             .height(140.dp)

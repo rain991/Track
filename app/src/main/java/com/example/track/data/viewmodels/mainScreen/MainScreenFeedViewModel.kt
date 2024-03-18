@@ -54,8 +54,22 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
 
     init {
         viewModelScope.launch {
-            ideaListRepositoryImpl.getIdeasList().collect {
-                _ideaList.clear()
+            ideaListRepositoryImpl.getIncomesPlansList().collect {
+                _ideaList.distinct()
+                _ideaList.addAll(it)
+                setMaxPagerIndex(ideaList.size + 1)
+            }
+        }
+        viewModelScope.launch {
+            ideaListRepositoryImpl.getSavingsList().collect {
+                _ideaList.distinct()
+                _ideaList.addAll(it)
+                setMaxPagerIndex(ideaList.size + 1)
+            }
+        }
+        viewModelScope.launch {
+            ideaListRepositoryImpl.getExpenseLimitsList().collect {
+                _ideaList.distinct()
                 _ideaList.addAll(it)
                 setMaxPagerIndex(ideaList.size + 1)
             }
