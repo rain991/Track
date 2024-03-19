@@ -55,8 +55,8 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
         Column(Modifier.wrapContentSize()) {
             Text(
                 text = stringResource(R.string.theme_settings_screen),
-                style = MaterialTheme.typography.titleMedium.copy(fontSize = 22.sp),
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+                style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp),
+                color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(start = 4.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
@@ -70,7 +70,7 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
                 ) {
                     Text(
                         stringResource(R.string.use_device_theme_settings_screen),
-                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                         modifier = Modifier.padding(start = 4.dp), textAlign = TextAlign.Start
                     )
                     SettingsSwitch(checked = useDeviceTheme.value, onCheckedChange = {
@@ -87,7 +87,7 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
                     AnimatedVisibility(visible = !useDeviceTheme.value, modifier = Modifier.fillMaxSize()) {
                         Text(
                             text = stringResource(R.string.preferable_theme_settings_screen),
-                            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                             modifier = Modifier
                                 .fillMaxHeight()
                                 .padding(start = 4.dp), textAlign = TextAlign.Start
@@ -106,7 +106,7 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
             ) {
                 Text(
                     text = stringResource(R.string.show_page_name_setttings_screen),
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                     modifier = Modifier.padding(start = 4.dp)
                 )
                 SettingsSwitch(checked = showPageNameChecked.value, onCheckedChange = {

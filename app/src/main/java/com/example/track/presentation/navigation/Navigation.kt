@@ -32,21 +32,24 @@ fun Navigation(dataStoreManager: DataStoreManager) {
         startDestination = Screen.MainScreen.route
     ) {
         composable(route = Screen.MainScreen.route) {
-            ScreenManager()
+            ScreenManager(navController)
         }
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(navController)
         }
-        composable(route = Screen.CurrenciesSettingsScreen.route){
-            CurrenciesSettingsScreen()
+        composable(route = Screen.CurrenciesSettingsScreen.route) {
+            CurrenciesSettingsScreen(navController)
         }
-        composable(route = Screen.IdeasListSettingsScreen.route){
-            IdeasListSettingsScreen()
+        composable(route = Screen.IdeasListSettingsScreen.route) {
+            IdeasListSettingsScreen(navController)
         }
-        composable(route = Screen.PersonalSettingsScreen.route){
+        composable(route = Screen.PersonalSettingsScreen.route) {
             PersonalSettingsScreen(navController)
         }
-        composable(route = Screen.CategoriesSettingsScreen.route){
+        composable(route = Screen.CategoriesSettingsScreen.route) {
+            CategoriesSettingsScreen(navController)
+        }
+        composable(route = Screen.IdeaListSettingsScreen.route) {
             CategoriesSettingsScreen(navController)
         }
     }

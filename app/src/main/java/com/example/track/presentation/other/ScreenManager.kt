@@ -18,13 +18,14 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavHostController
 import com.example.track.presentation.navigation.Screens.Core.MainExpenseScreen
 import com.example.track.presentation.navigation.Screens.Core.SettingsExpenseScreen
 import com.example.track.presentation.navigation.Screens.Core.StatisticsExpenseScreen
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun ScreenManager() {
+fun ScreenManager(navHostController: NavHostController) {
     val pagerState = rememberPagerState(initialPage = 1) { 3 }
     Column(
         modifier = Modifier.fillMaxSize()
@@ -34,7 +35,7 @@ fun ScreenManager() {
             modifier = Modifier.weight(1f)
         ) { page ->
             when (page) {
-                0 -> SettingsExpenseScreen()
+                0 -> SettingsExpenseScreen(navHostController)
                 1 -> MainExpenseScreen()
                 2 -> StatisticsExpenseScreen()
             }
