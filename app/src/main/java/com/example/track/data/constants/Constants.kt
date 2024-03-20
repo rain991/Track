@@ -8,6 +8,7 @@ import com.example.track.presentation.themes.Themes
 // Retrofit
 const val API_KEY = "88441b2e585647a7842c35c23251558f"
 const val CURRENCY_CALL_URL_DEFAULT = "https://api.currencyfreaks.com"
+const val INCORRECT_RATE = -1f
 
 // user
 const val NAME_DEFAULT: String = "User"
