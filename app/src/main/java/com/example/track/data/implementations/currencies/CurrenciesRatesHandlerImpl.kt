@@ -1,6 +1,6 @@
 package com.example.track.data.implementations.currencies
 
-import com.example.track.data.constants.INCORRECT_RATE
+import com.example.track.data.constants.INCORRECT_CONVERSION_RESULT
 import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.models.Expenses.ExpenseItem
 import com.example.track.data.models.currency.Currency
@@ -16,19 +16,31 @@ class CurrenciesRatesHandlerImpl(
     override suspend fun convertValueToBasicCurrency(financialEntity: FinancialEntity): Float {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         val rowCurrency = currencyDao.getCurrencyByTicker(financialEntity.currencyTicker)
-        return if (preferableCurrency.rate != null && rowCurrency.rate!=null) {
-             rowCurrency.rate.div(preferableCurrency.rate) * financialEntity.value
+        return if (preferableCurrency.rate != null && rowCurrency.rate != null) {
+            (preferableCurrency.rate.div(rowCurrency.rate) * financialEntity.value).toFloat()
         } else {
-            INCORRECT_RATE
+            INCORRECT_CONVERSION_RESULT
         }
     }
 
     override suspend fun convertValueToBasicCurrency(value: Float, currency: Currency): Float {
-        TODO("Not yet implemented")
+        val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
+        return if (preferableCurrency.rate != null && currency.rate != null) {
+            (preferableCurrency.rate.div(currency.rate) * value).toFloat()
+        } else {
+            INCORRECT_CONVERSION_RESULT
+        }
+
     }
 
     override suspend fun convertValueToBasicCurrency(value: Float, currencyTicker: String): Float {
-        TODO("Not yet implemented")
+        val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
+        val currency = currencyDao.getCurrencyByTicker(currencyTicker)
+        return if (preferableCurrency.rate != null && currency.rate != null) {
+            (preferableCurrency.rate.div(currency.rate) * value).toFloat()
+        } else {
+            INCORRECT_CONVERSION_RESULT
+        }
     }
 
     override suspend fun getRateToPreferableCurrency(currency: Currency): Float {
@@ -36,7 +48,7 @@ class CurrenciesRatesHandlerImpl(
         return if (preferableCurrency.rate != null && currency.rate != null) {
             currency.rate.div(preferableCurrency.rate).toFloat()
         } else {
-            INCORRECT_RATE
+            INCORRECT_CONVERSION_RESULT
         }
     }
 
@@ -56,26 +68,17 @@ class CurrenciesRatesHandlerImpl(
             }
 
             else -> {
-                return INCORRECT_RATE
+                return INCORRECT_CONVERSION_RESULT
             }
         }
-        if (rowCurrencyTicker != null && preferableCurrency.rate != null) {
-            val rowCurrency = currencyDao.getCurrencyByTicker(rowCurrencyTicker)
-            if (rowCurrency.rate != null) {
-                val convertRate = rowCurrency.rate.div(preferableCurrency.rate)
-                val
+        if (rowCurrencyTicker == null) return INCORRECT_CONVERSION_RESULT
+        val rowCurrency = currencyDao.getCurrencyByTicker(rowCurrencyTicker)
+        return if (preferableCurrency.rate != null && rowCurrency.rate != null) {
+            val convertRate = preferableCurrency.rate.div(rowCurrency.rate)
+            (listOfRowValues.sum() * convertRate).toFloat()
 
-            }
         } else {
-            return INCORRECT_RATE
-        }
-
-
-
-        return if (preferableCurrency.rate != null && currency.rate != null) {
-            currency.rate.div(preferableCurrency.rate).toFloat()
-        } else {
-            INCORRECT_RATE
+            INCORRECT_CONVERSION_RESULT
         }
     }
 }
