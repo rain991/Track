@@ -246,6 +246,4 @@ class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListReposi
     private fun setCardIndex(index: Int) {
         _cardIndex.value = index
     }
-
-
 }
