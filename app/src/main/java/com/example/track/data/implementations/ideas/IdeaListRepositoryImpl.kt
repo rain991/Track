@@ -70,4 +70,7 @@ class IdeaListRepositoryImpl(
             is Savings -> savingsDao.delete(idea)
         }
     }
+    override fun getCountOfIdeas(): Int {
+        return (expenseLimitsDao.getCountOfExpenseLimits() + incomePlansDao.getCountOfIncomePlans() + savingsDao.getCountOfSavings())
+    }
 }

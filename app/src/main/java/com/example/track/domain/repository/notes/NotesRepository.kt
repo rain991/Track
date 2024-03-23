@@ -18,6 +18,6 @@ interface NotesRepository {
     fun requestBiggestIncomeMonthly(): Float
     fun requestBiggestExpenseAnualy(): Float
     fun requestBiggestIncomeAnualy(): Float
-    fun requestLoginCounts() : Int
+    suspend fun requestLoginCounts() : Int
     fun requestIdeasCount() : Int
 }

@@ -25,4 +25,7 @@ interface IncomePlansDao {
 
     @Query("SELECT SUM(value) FROM incomes WHERE date>:startDate")
     fun getIncomeSumFromDate(startDate : Long) : Float
+
+    @Query("SELECT Count(id) FROM incomePlans")
+    fun getCountOfIncomePlans(): Int
 }

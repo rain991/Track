@@ -25,4 +25,7 @@ interface SavingsDao {
 
     @Query("SELECT * FROM savings WHERE startDate>:startDate")
     fun getSavingsFromDate(startDate : Long) : Flow<Savings>
+
+    @Query("SELECT Count(id) FROM savings")
+    fun getCountOfSavings(): Int
 }

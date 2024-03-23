@@ -16,4 +16,5 @@ interface IdeaListRepository {
     suspend fun addIdea(idea: Idea, context: CoroutineContext = Dispatchers.IO)
     suspend fun editIdea(idea: Idea, context: CoroutineContext = Dispatchers.IO)
     suspend fun deleteIdea(idea: Idea, context: CoroutineContext = Dispatchers.IO)
+    fun getCountOfIdeas() : Int
 }
