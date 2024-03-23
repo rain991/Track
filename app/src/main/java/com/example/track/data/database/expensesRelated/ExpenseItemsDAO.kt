@@ -30,6 +30,11 @@ interface ExpenseItemsDAO {
     @Query("SELECT * FROM expenses ORDER BY date ASC")
     fun getAllWithDateAsc(): Flow<List<ExpenseItem>>
 
+    @Query("SELECT * FROM expenses WHERE date BETWEEN :start AND :end ORDER BY date DESC")
+    fun getExpensesInTimeSpanDateDecs(start: Long, end: Long): Flow<List<ExpenseItem>>
+    @Query("SELECT * FROM expenses WHERE date BETWEEN :start AND :end ORDER BY date ASC")
+    fun getExpensesInTimeSpanDateAsc(start: Long, end: Long): Flow<List<ExpenseItem>>
+
     @Query("SELECT Count(value) FROM expenses WHERE date BETWEEN :start AND :end")
     fun getCountOfExpensesInTimeSpan(start: Long, end: Long): Int
 

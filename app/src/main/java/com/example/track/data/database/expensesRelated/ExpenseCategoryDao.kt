@@ -28,4 +28,7 @@ interface ExpenseCategoryDao {
 
     @Query("DELETE FROM expense_categories")
     suspend fun deleteAllData()
+
+    @Query("SELECT Count(value) FROM expenses WHERE categoryId = :categoryId AND date BETWEEN :start AND :end")
+    fun countExpensesByCategoryInTimeSpan(start: Long, end: Long, categoryId : Int): Flow<Int>
 }
