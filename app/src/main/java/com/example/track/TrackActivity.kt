@@ -12,7 +12,7 @@ import androidx.work.WorkManager
 import androidx.work.workDataOf
 import com.example.track.data.DataStoreManager
 import com.example.track.data.workers.CurrenciesRatesWorker
-import com.example.track.presentation.navigation.Navigation
+import com.example.track.presentation.charts.StatisticsThirdSLot
 import com.example.track.presentation.themes.BlueTheme.BlueTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -39,8 +39,9 @@ class TrackActivity : ComponentActivity() {
             .enqueueUniquePeriodicWork("currenciesRateRequest", ExistingPeriodicWorkPolicy.KEEP, workRequest)
         setContent {
             BlueTheme {
-                Navigation(dataStore)
+                //Navigation(dataStore)
                // StatisticsCharts()
+                StatisticsThirdSLot()
             }
         }
     }
