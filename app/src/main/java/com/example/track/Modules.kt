@@ -11,6 +11,7 @@ import com.example.track.data.database.ideaRelated.IncomePlansDao
 import com.example.track.data.database.ideaRelated.SavingsDao
 import com.example.track.data.database.incomeRelated.IncomeCategoryDao
 import com.example.track.data.database.incomeRelated.IncomeDao
+import com.example.track.data.implementations.charts.ChartsRepositoryImpl
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.currencies.CurrenciesRatesHandlerImpl
 import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
@@ -23,12 +24,14 @@ import com.example.track.data.implementations.ideas.IncomePlanCardRepositoryImpl
 import com.example.track.data.implementations.ideas.SavingsCardRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
+import com.example.track.data.implementations.notes.NotesRepositoryImpl
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
+import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.data.workers.CurrenciesRatesWorker
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
@@ -53,12 +56,12 @@ val appModule = module {
 
     single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
     single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
-    single<CurrenciesRatesHandlerImpl>{CurrenciesRatesHandlerImpl(get(), get())}
+    single<CurrenciesRatesHandlerImpl> { CurrenciesRatesHandlerImpl(get(), get()) }
 
-    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(),get(),get()) }
-    single <SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao}
-    single <ExpenseLimitsDao> { ExpensesDB.getInstance(androidContext()).expenseLimitsDao}
-    single <IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao}
+    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get()) }
+    single<SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao }
+    single<ExpenseLimitsDao> { ExpensesDB.getInstance(androidContext()).expenseLimitsDao }
+    single<IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao }
 
     single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
     single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
@@ -73,6 +76,9 @@ val appModule = module {
     single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
     single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get()) }
     single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get()) }
+
+    single<ChartsRepositoryImpl> { ChartsRepositoryImpl(get(), get(), get(), get()) }
+    single<NotesRepositoryImpl> { NotesRepositoryImpl(get(), get(), get(), get()) }
 }
 
 val domainModule = module {
@@ -104,4 +110,5 @@ val viewModelModule = module {
     viewModel { SettingsViewModel(get(), get(), get()) }
     viewModel { BudgetIdeaCardViewModel(get(), get()) }
     viewModel { MainScreenFeedViewModel(get()) }
+    viewModel { StatisticsViewModel(get(), get()) }
 }

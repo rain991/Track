@@ -1,4 +1,4 @@
-package com.example.track.presentation.states
+package com.example.track.presentation.states.common
 
 import com.example.track.data.models.Expenses.ExpenseCategory
 import java.util.Date

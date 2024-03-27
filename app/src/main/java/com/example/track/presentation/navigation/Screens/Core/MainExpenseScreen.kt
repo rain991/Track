@@ -21,7 +21,7 @@ import com.example.track.presentation.bottomsheets.sheets.SimplifiedBottomSheet
 import com.example.track.presentation.components.mainScreen.dialogs.NewIdeaDialog
 import com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn.ExpensesLazyColumn
 import com.example.track.presentation.components.mainScreen.feed.MainScreenFeed
-import com.example.track.presentation.other.Header
+import com.example.track.presentation.screenManager.Header
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 

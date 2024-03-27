@@ -13,7 +13,7 @@ import com.example.track.presentation.navigation.Screens.Additional.CategoriesSe
 import com.example.track.presentation.navigation.Screens.Additional.CurrenciesSettingsScreen
 import com.example.track.presentation.navigation.Screens.Additional.IdeasListSettingsScreen
 import com.example.track.presentation.navigation.Screens.Additional.PersonalSettingsScreen
-import com.example.track.presentation.other.ScreenManager
+import com.example.track.presentation.screenManager.ScreenManager
 
 @Composable
 fun Navigation(dataStoreManager: DataStoreManager) {

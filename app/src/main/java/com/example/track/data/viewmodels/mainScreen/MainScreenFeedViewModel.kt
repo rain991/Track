@@ -10,8 +10,8 @@ import com.example.track.data.models.idea.ExpenseLimits
 import com.example.track.data.models.idea.Idea
 import com.example.track.data.models.idea.IncomePlans
 import com.example.track.data.models.idea.Savings
-import com.example.track.presentation.states.IdeaSelectorTypes
-import com.example.track.presentation.states.NewIdeaDialogState
+import com.example.track.presentation.states.common.IdeaSelectorTypes
+import com.example.track.presentation.states.common.NewIdeaDialogState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

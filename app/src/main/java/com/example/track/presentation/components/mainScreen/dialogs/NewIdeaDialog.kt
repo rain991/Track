@@ -67,8 +67,8 @@ import com.example.track.data.models.currency.Currency
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.common.ui.CategoryChip
 import com.example.track.presentation.common.ui.CustomDatePicker
-import com.example.track.presentation.states.IdeaSelectorTypes
-import com.example.track.presentation.states.NewIdeaDialogState
+import com.example.track.presentation.states.common.IdeaSelectorTypes
+import com.example.track.presentation.states.common.NewIdeaDialogState
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject

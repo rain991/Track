@@ -1,4 +1,4 @@
-package com.example.track.presentation.states
+package com.example.track.presentation.states.common
 
 data class BudgetIdeaCardState(
     val budget : Float,

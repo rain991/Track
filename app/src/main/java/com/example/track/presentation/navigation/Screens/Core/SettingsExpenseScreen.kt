@@ -36,7 +36,7 @@ import com.example.track.presentation.bottomsheets.sheets.SimplifiedBottomSheet
 import com.example.track.presentation.components.settingsScreen.common.ThemePreferences
 import com.example.track.presentation.components.settingsScreen.mainContent.SettingsLinkedRow
 import com.example.track.presentation.navigation.Screen
-import com.example.track.presentation.other.Header
+import com.example.track.presentation.screenManager.Header
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 

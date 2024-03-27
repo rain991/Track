@@ -6,7 +6,7 @@ import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
 import com.example.track.data.models.currency.Currency
-import com.example.track.presentation.states.BudgetIdeaCardState
+import com.example.track.presentation.states.common.BudgetIdeaCardState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

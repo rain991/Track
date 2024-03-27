@@ -16,7 +16,7 @@ import com.example.track.data.models.incomes.IncomeCategory
 import com.example.track.data.models.incomes.IncomeItem
 import com.example.track.data.models.other.CategoryEntity
 import com.example.track.domain.usecases.expensesRelated.expenseusecases.AddExpensesItemUseCase
-import com.example.track.presentation.states.BottomSheetViewState
+import com.example.track.presentation.states.common.BottomSheetViewState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
