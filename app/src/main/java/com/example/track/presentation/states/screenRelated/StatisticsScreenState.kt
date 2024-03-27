@@ -1,5 +1,11 @@
 package com.example.track.presentation.states.screenRelated
 
-class StatisticsScreenState {
-
-}
+data class StatisticsScreenState(
+    val hasEnoughContent: Boolean,
+    val firstSlotMessage: String,
+    val secondSlotMainMessage: String,
+    val secondSlotAdditionalMessage: String,
+    val chartBottomAxesLabels: List<String>,
+    val chartData: List<Float>,
+    val fourthSlotMessage: String
+)

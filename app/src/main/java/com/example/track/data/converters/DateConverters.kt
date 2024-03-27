@@ -38,7 +38,6 @@ fun getEndOfWeekDate(date: Date): Date {
 }
 
 fun getStartOfYearDate(date: Date): Date {
-
     val cal = Calendar.getInstance()
     cal.time = date
     cal.set(Calendar.MONTH, Calendar.JANUARY)
