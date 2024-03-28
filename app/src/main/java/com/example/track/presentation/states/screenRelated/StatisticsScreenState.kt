@@ -7,5 +7,6 @@ data class StatisticsScreenState(
     val secondSlotAdditionalMessage: String,
     val chartBottomAxesLabels: List<String>,
     val chartData: List<Float>,
-    val fourthSlotMessage: String
+    val fourthSlotMainMessage: String,
+    val fourthSlotAdditionalMessage : String
 )
