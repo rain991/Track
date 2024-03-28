@@ -31,7 +31,7 @@ interface IncomeDao {
     fun getCountOfIncomesInTimeSpan(start: Long, end: Long): Int
 
     @Query("SELECT MAX(value) FROM incomes WHERE date BETWEEN :start AND :end")
-    fun getBiggestIncomeInTimeSpan(start: Long, end: Long): Float
+    fun getBiggestIncomeInTimeSpan(start: Long, end: Long): Float?
 
     @Query("SELECT * FROM incomes WHERE disabled=0 ORDER BY date DESC")
     fun getAllWithDateDesc(): Flow<List<IncomeItem>>

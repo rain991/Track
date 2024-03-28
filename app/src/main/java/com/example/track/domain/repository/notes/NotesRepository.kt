@@ -14,10 +14,10 @@ interface NotesRepository {
     fun requestCountOfIncomesWeekly(): Int
     fun requestCountOfExpensesAnualy(): Int
     fun requestCountOfIncomeAnualy(): Int
-    fun requestBiggestExpenseMonthly(): Float
-    fun requestBiggestIncomeMonthly(): Float
-    fun requestBiggestExpenseAnualy(): Float
-    fun requestBiggestIncomeAnualy(): Float
+    fun requestBiggestExpenseMonthly(): Float?
+    fun requestBiggestIncomeMonthly(): Float?
+    fun requestBiggestExpenseAnualy(): Float?
+    fun requestBiggestIncomeAnualy(): Float?
     suspend fun requestLoginCounts() : Int
     fun requestIdeasCount() : Int
 }

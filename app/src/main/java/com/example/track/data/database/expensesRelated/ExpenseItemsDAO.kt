@@ -31,7 +31,7 @@ interface ExpenseItemsDAO {
     fun getAllWithDateAsc(): Flow<List<ExpenseItem>>
 
     @Query("SELECT * FROM expenses WHERE date BETWEEN :start AND :end ORDER BY date DESC")
-    fun getExpensesInTimeSpanDateDecs(start: Long, end: Long): Flow<List<ExpenseItem>>
+    fun getExpensesInTimeSpanDateDesc(start: Long, end: Long): Flow<List<ExpenseItem>>
     @Query("SELECT * FROM expenses WHERE date BETWEEN :start AND :end ORDER BY date ASC")
     fun getExpensesInTimeSpanDateAsc(start: Long, end: Long): Flow<List<ExpenseItem>>
 
@@ -42,7 +42,7 @@ interface ExpenseItemsDAO {
     fun getSumOfExpensesInTimeSpan(start: Long, end: Long): Float
 
     @Query("SELECT MAX(value) FROM expenses WHERE date BETWEEN :start AND :end")
-    fun getBiggestExpenseInTimeSpan(start: Long, end: Long): Float
+    fun getBiggestExpenseInTimeSpan(start: Long, end: Long): Float?
 
     @Query("SELECT SUM(value) FROM expenses WHERE date BETWEEN :start AND :end")
     fun getSumOfExpensesInTimeSpanInFlow(start: Long, end: Long): Flow<Float>

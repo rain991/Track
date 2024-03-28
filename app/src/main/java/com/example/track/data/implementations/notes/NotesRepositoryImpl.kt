@@ -82,22 +82,22 @@ class NotesRepositoryImpl(
         return incomeDao.getCountOfIncomesInTimeSpan(start = getStartOfYearDate(todayDate).time, end = getEndOfYearDate(todayDate).time)
     }
 
-    override fun requestBiggestExpenseMonthly(): Float {
+    override fun requestBiggestExpenseMonthly(): Float? {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getBiggestExpenseInTimeSpan(start = getStartOfMonthDate(todayDate).time, end = getEndOfTheMonth(todayDate).time)
     }
 
-    override fun requestBiggestIncomeMonthly(): Float {
+    override fun requestBiggestIncomeMonthly(): Float? {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getBiggestExpenseInTimeSpan(start = getStartOfMonthDate(todayDate).time, end = getEndOfTheMonth(todayDate).time)
     }
 
-    override fun requestBiggestExpenseAnualy(): Float {
+    override fun requestBiggestExpenseAnualy(): Float? {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getBiggestExpenseInTimeSpan(start = getStartOfYearDate(todayDate).time, end = getEndOfYearDate(todayDate).time)
     }
 
-    override fun requestBiggestIncomeAnualy(): Float {
+    override fun requestBiggestIncomeAnualy(): Float? {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return incomeDao.getBiggestIncomeInTimeSpan(start = getStartOfYearDate(todayDate).time, end = getEndOfYearDate(todayDate).time)
     }

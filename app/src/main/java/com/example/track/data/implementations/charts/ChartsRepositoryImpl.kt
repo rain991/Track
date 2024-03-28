@@ -25,7 +25,7 @@ class ChartsRepositoryImpl(
 ) : ChartsRepository {
     override suspend fun requestCurrentMonthExpensesDesc(): List<ExpenseItem> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
-        return expenseItemsDao.getExpensesInTimeSpanDateDecs(start = getStartOfMonthDate(todayDate).time,
+        return expenseItemsDao.getExpensesInTimeSpanDateDesc(start = getStartOfMonthDate(todayDate).time,
             end = getEndOfTheMonth(todayDate).time).first()
     }
 
@@ -37,7 +37,7 @@ class ChartsRepositoryImpl(
 
     override suspend fun requestCurrentYearExpensesDesc(): List<ExpenseItem> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
-        return expenseItemsDao.getExpensesInTimeSpanDateDecs(start = getStartOfYearDate(todayDate).time,
+        return expenseItemsDao.getExpensesInTimeSpanDateDesc(start = getStartOfYearDate(todayDate).time,
             end = getEndOfYearDate(todayDate).time).first()
     }
 
