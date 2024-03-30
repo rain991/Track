@@ -23,25 +23,25 @@ class ChartsRepositoryImpl(
     private val expenseCategoryDao: ExpenseCategoryDao,
     private val incomeCategoryDao: IncomeCategoryDao
 ) : ChartsRepository {
-    override suspend fun requestCurrentMonthExpensesDesc(): List<ExpenseItem> {
+    override suspend fun requestCurrentMonthExpensesDateDesc(): List<ExpenseItem> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getExpensesInTimeSpanDateDesc(start = getStartOfMonthDate(todayDate).time,
             end = getEndOfTheMonth(todayDate).time).first()
     }
 
-    override suspend fun requestCurrentMonthIncomesDesc(): List<IncomeItem> {
+    override suspend fun requestCurrentMonthIncomesDateDesc(): List<IncomeItem> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return incomeDao.getIncomesInTimeSpanDateDecs(start = getStartOfMonthDate(todayDate).time,
             end = getEndOfTheMonth(todayDate).time).first()
     }
 
-    override suspend fun requestCurrentYearExpensesDesc(): List<ExpenseItem> {
+    override suspend fun requestCurrentYearExpensesDateDesc(): List<ExpenseItem> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getExpensesInTimeSpanDateDesc(start = getStartOfYearDate(todayDate).time,
             end = getEndOfYearDate(todayDate).time).first()
     }
 
-    override suspend fun requestCurrentYearIncomesDesc(): List<IncomeItem> {
+    override suspend fun requestCurrentYearIncomesDateDesc(): List<IncomeItem> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return incomeDao.getIncomesInTimeSpanDateDecs(start = getStartOfYearDate(todayDate).time,
             end = getEndOfYearDate(todayDate).time).first()

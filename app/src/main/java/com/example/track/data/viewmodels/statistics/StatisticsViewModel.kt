@@ -33,7 +33,7 @@ class StatisticsViewModel(
             firstSlotMessage = "",
             secondSlotMainMessage = "",
             secondSlotAdditionalMessage = "",
-            chartBottomAxesLabels = listOf<String>(),
+            chartBottomAxesLabels = listOf<LocalDate>(),
             chartData = listOf<Float>(),
             fourthSlotMainMessage = "",
             fourthSlotAdditionalMessage = ""
@@ -83,7 +83,52 @@ class StatisticsViewModel(
         }
     }
 
-    private suspend fun requestDataForFourthSlotScreenState() {
+    private suspend fun requestDataForThirdSlotScreenState() {
+        val countOfOptionSets = 2  // count of different list
+        val listOfMonthOptions = listOf(
+            chartsRepositoryImpl.requestCurrentMonthExpensesDateDesc(),
+            chartsRepositoryImpl.requestCurrentMonthIncomesDateDesc()
+        )
+
+        val listOfYearOptions = listOf(
+            chartsRepositoryImpl.requestCurrentYearExpensesDateDesc(),
+            chartsRepositoryImpl.requestCurrentYearIncomesDateDesc()
+        )
+        val currentDataSetIdentifier = Random.nextInt(0, countOfOptionSets)
+        val listOfFinancialEntity = when (currentDataSetIdentifier) {
+            0 -> {
+                listOfMonthOptions[Random.nextInt(0, listOfMonthOptions.size)]
+            }
+
+            1 -> {
+                listOfYearOptions[Random.nextInt(0, listOfYearOptions.size)]
+            }
+
+            else -> {
+                emptyList()
+            }
+        }
+        val listOfValues = listOfFinancialEntity.map { // warning currency rate
+            it.value
+        }
+        val chartBottomAxesLabels = when (currentDataSetIdentifier) {
+            0 -> {
+                getMonthlyChartsAxesLabels()
+            }
+
+            1 -> {
+                getAnualyChartsAxesLabels()
+            }
+
+            else -> {
+                emptyList<LocalDate>()
+            }
+        }
+        setChartData(listOfValues)
+        setChartBottomAxesLabels(chartBottomAxesLabels)
+    }
+
+    private suspend fun requestDataForFourthSlotScreenState() { //low scalability
         val requestedMapOfResults = mutableMapOf<String, Number?>()
         requestedMapOfResults["requestSumOfExpensesMonthly"] = notesRepositoryImpl.requestSumOfExpensesMonthly()
         requestedMapOfResults["requestSumOfIncomesMonthly"] = notesRepositoryImpl.requestSumOfIncomesMonthly()
@@ -93,8 +138,6 @@ class StatisticsViewModel(
         val sortedIncomeDistribution = currentMonthIncomeDistribution.toList().sortedByDescending { it.second }.toMap()
         val filteredResMap = requestedMapOfResults.filterValues { it != null && it.toFloat() > 0f }
         val filteredResMapSize = filteredResMap.size
-
-
         if (filteredResMapSize == 0) return
         if (filteredResMapSize == 1) {
             if (Random.nextBoolean()) {
@@ -134,6 +177,9 @@ class StatisticsViewModel(
 
     init {
         requestDataForSecondSlotScreenState()
+        viewModelScope.launch {
+            requestDataForFourthSlotScreenState()
+        }
         viewModelScope.launch {
             requestDataForFirstSlotScreenState()
         }
@@ -210,7 +256,7 @@ class StatisticsViewModel(
         _statisticsScreenState.value = statisticsScreenState.value.copy(secondSlotAdditionalMessage = value)
     }
 
-    private fun setChartBottomAxesLabels(value: List<String>) {
+    private fun setChartBottomAxesLabels(value: List<LocalDate>) {
         _statisticsScreenState.value = statisticsScreenState.value.copy(chartBottomAxesLabels = value)
     }
 
