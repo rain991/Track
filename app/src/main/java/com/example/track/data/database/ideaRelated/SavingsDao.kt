@@ -27,5 +27,5 @@ interface SavingsDao {
     fun getSavingsFromDate(startDate : Long) : Flow<Savings>
 
     @Query("SELECT Count(id) FROM savings")
-    fun getCountOfSavings(): Int
+    suspend fun getCountOfSavings(): Int
 }

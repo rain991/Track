@@ -5,7 +5,6 @@ import com.example.track.data.implementations.expenses.ExpensesListRepositoryImp
 import com.example.track.domain.repository.ideas.BudgetIdeaCardRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.transform
 import kotlinx.coroutines.flow.zip
 
 class BudgetIdeaCardRepositoryImpl(
@@ -20,7 +19,7 @@ class BudgetIdeaCardRepositoryImpl(
         return dataStoreManager.budgetFlow.first().toFloat() / 4
     }
 
-    override fun requestCurrentMonthExpenses(): Flow<Float> {
+    override suspend fun requestCurrentMonthExpenses(): Flow<Float> {
         return expensesListRepositoryImpl.getCurrentMonthSumOfExpenseInFlow()
     }
 

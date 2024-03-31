@@ -40,8 +40,6 @@ class TrackActivity : ComponentActivity() {
         setContent {
             BlueTheme {
                 Navigation(dataStore)
-               // StatisticsCharts()
-//                StatisticsThirdSLot()
             }
         }
     }

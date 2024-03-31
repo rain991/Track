@@ -42,7 +42,6 @@ import com.example.track.domain.usecases.expensesRelated.expenseusecases.DeleteE
 import com.example.track.domain.usecases.expensesRelated.expenseusecases.EditExpenseItemUseCase
 import com.example.track.domain.usecases.expensesRelated.expenseusecases.GetExpensesItemUseCase
 import com.example.track.domain.usecases.expensesRelated.expenseusecases.GetExpensesListUseCase
-import org.koin.android.ext.koin.androidApplication
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -110,6 +109,5 @@ val viewModelModule = module {
     viewModel { MainScreenFeedViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
     viewModel { BudgetIdeaCardViewModel(get(), get()) }
-    viewModel { MainScreenFeedViewModel(get()) }
-    viewModel { StatisticsViewModel(get(), get(), androidApplication().applicationContext) }
+    viewModel { StatisticsViewModel(get(), get()) }
 }

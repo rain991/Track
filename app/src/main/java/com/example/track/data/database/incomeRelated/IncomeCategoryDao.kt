@@ -24,7 +24,7 @@ interface IncomeCategoryDao {
     fun getAllIncomeCategories(): Flow<List<IncomeCategory>>
 
     @Query("SELECT categoryId FROM income_categories WHERE note = 'Other'")
-    fun getCategoryOtherId() : Int
+    suspend fun getCategoryOtherId() : Int
 
     @Query("SELECT Count(value) FROM incomes WHERE categoryId = :categoryId AND date BETWEEN :start AND :end")
     fun countIncomesByCategoryInTimeSpan(start: Long, end: Long, categoryId : Int): Flow<Int>

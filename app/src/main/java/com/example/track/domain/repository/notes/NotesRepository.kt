@@ -4,20 +4,20 @@ import java.util.Date
 
 
 interface NotesRepository {
-    fun requestSumOfExpensesMonthly(): Float
-    fun requestSumOfIncomesMonthly(): Float
-    fun requestCountOfExpensesInSpan(startDate : Date, endDate: Date): Int
-    fun requestCountOfIncomesInSpan(startDate : Date, endDate: Date): Int
-    fun requestCountOfExpensesMonthly(): Int
-    fun requestCountOfIncomesMonthly(): Int
-    fun requestCountOfExpensesWeekly(): Int
-    fun requestCountOfIncomesWeekly(): Int
-    fun requestCountOfExpensesAnualy(): Int
-    fun requestCountOfIncomeAnualy(): Int
-    fun requestBiggestExpenseMonthly(): Float?
-    fun requestBiggestIncomeMonthly(): Float?
-    fun requestBiggestExpenseAnualy(): Float?
-    fun requestBiggestIncomeAnualy(): Float?
-    suspend fun requestLoginCounts() : Int
-    fun requestIdeasCount() : Int
+    suspend fun requestSumOfExpensesMonthly(): Float
+    suspend fun requestSumOfIncomesMonthly(): Float
+    suspend fun requestCountOfExpensesInSpan(startDate : Date, endDate: Date): Int
+    suspend fun requestCountOfIncomesInSpan(startDate : Date, endDate: Date): Int
+    suspend fun requestCountOfExpensesMonthly(): Int
+   suspend fun requestCountOfIncomesMonthly(): Int
+   suspend fun requestCountOfExpensesWeekly(): Int
+   suspend fun requestCountOfIncomesWeekly(): Int
+   suspend fun requestCountOfExpensesAnualy(): Int
+   suspend fun requestCountOfIncomeAnualy(): Int
+   suspend fun requestBiggestExpenseMonthly(): Float?
+   suspend fun requestBiggestIncomeMonthly(): Float?
+   suspend fun requestBiggestExpenseAnualy(): Float?
+   suspend fun requestBiggestIncomeAnualy(): Float?
+   suspend fun requestLoginCounts() : Int
+   suspend fun requestIdeasCount() : Int
 }

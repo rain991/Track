@@ -18,14 +18,14 @@ class IncomePlanCardRepositoryImpl(private val incomeDao: IncomeDao)  : IncomePl
         return idea.endDate
     }
 
-    override fun requestCompletenessValue(idea: Idea): Float {
+    override suspend fun requestCompletenessValue(idea: Idea): Float {
     return incomeDao.getSumOfIncomesInTimeSpan(start = idea.startDate.time, end = idea.endDate!!.time) //  warning !! call
     }
 
-    override fun requestCompletenessRate(idea: Idea): Float {
+    override suspend fun requestCompletenessRate(idea: Idea): Float {
         return idea.goal.div(incomeDao.getSumOfIncomesInTimeSpan(start = idea.startDate.time, end = idea.endDate!!.time))
     }
-    override fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Float {
+    override suspend fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Float {
         return incomeDao.getSumOfIncomesInTimeSpan(start = startOfSpan.time, end = endOfSpan.time)
     }
 

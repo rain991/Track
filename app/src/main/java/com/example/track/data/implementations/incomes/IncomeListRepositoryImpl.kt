@@ -14,7 +14,7 @@ class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomesListRe
         return incomeDao.getAllIncomes()
     }
 
-    override fun getIncomesItem(incomeItemId: Int): IncomeItem? {
+    override suspend fun getIncomesItem(incomeItemId: Int): IncomeItem? {
         return incomeDao.findIncomeById(incomeItemId)
     }
 
@@ -44,7 +44,7 @@ class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomesListRe
         return incomeDao.getAllWithDateDesc()
     }
 
-    override fun getIncomesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: IncomeCategory): List<IncomeItem> {
+    override suspend fun getIncomesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: IncomeCategory): List<IncomeItem> {
         return incomeDao.findIncomesInTimeSpan(start = startOfSpan.time, end = endOfSpan.time, categoryId = category.categoryId)
     }
 

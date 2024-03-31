@@ -16,9 +16,9 @@ interface ExpensesListRepository {
     suspend fun editExpenseItem(newExpenseItem: ExpenseItem, context: CoroutineContext = Dispatchers.IO)
     fun getCategoriesByIds(listOfIds: List<Int>): List<ExpenseCategory>
     fun getExpensesByIds(listOfIds: List<Int>): List<ExpenseItem>
-    fun getCurrentMonthSumOfExpenses(): Float
-    fun getCurrentMonthSumOfExpenseInFlow() : Flow<Float>
-    fun getCurrentMonthSumOfExpensesForCategories(listOfCategories : List<ExpenseCategory>) : Float
+    suspend  fun getCurrentMonthSumOfExpenses(): Float
+    suspend fun getCurrentMonthSumOfExpenseInFlow() : Flow<Float>
+    suspend fun getCurrentMonthSumOfExpensesForCategories(listOfCategories : List<ExpenseCategory>) : Float
     fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>>
     fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>>
     fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: ExpenseCategory): List<ExpenseItem>

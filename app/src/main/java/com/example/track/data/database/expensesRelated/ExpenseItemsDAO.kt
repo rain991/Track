@@ -31,24 +31,24 @@ interface ExpenseItemsDAO {
     fun getAllWithDateAsc(): Flow<List<ExpenseItem>>
 
     @Query("SELECT * FROM expenses WHERE date BETWEEN :start AND :end ORDER BY date DESC")
-    fun getExpensesInTimeSpanDateDesc(start: Long, end: Long): Flow<List<ExpenseItem>>
+     fun getExpensesInTimeSpanDateDesc(start: Long, end: Long): Flow<List<ExpenseItem>>
     @Query("SELECT * FROM expenses WHERE date BETWEEN :start AND :end ORDER BY date ASC")
-    fun getExpensesInTimeSpanDateAsc(start: Long, end: Long): Flow<List<ExpenseItem>>
+     fun getExpensesInTimeSpanDateAsc(start: Long, end: Long): Flow<List<ExpenseItem>>
 
     @Query("SELECT Count(value) FROM expenses WHERE date BETWEEN :start AND :end")
-    fun getCountOfExpensesInTimeSpan(start: Long, end: Long): Int
+    suspend fun getCountOfExpensesInTimeSpan(start: Long, end: Long): Int
 
     @Query("SELECT SUM(value) FROM expenses WHERE date BETWEEN :start AND :end")
-    fun getSumOfExpensesInTimeSpan(start: Long, end: Long): Float
+    suspend fun getSumOfExpensesInTimeSpan(start: Long, end: Long): Float
 
     @Query("SELECT MAX(value) FROM expenses WHERE date BETWEEN :start AND :end")
-    fun getBiggestExpenseInTimeSpan(start: Long, end: Long): Float?
+    suspend fun getBiggestExpenseInTimeSpan(start: Long, end: Long): Float?
 
     @Query("SELECT SUM(value) FROM expenses WHERE date BETWEEN :start AND :end")
     fun getSumOfExpensesInTimeSpanInFlow(start: Long, end: Long): Flow<Float>
 
     @Query("SELECT SUM(value) FROM expenses WHERE categoryId IN (:listOfCategoriesId) AND date BETWEEN :start AND :end")
-    fun getSumOfExpensesByCategoriesIdInTimeSpan(start: Long, end: Long, listOfCategoriesId: List<Int>): Float
+    suspend fun getSumOfExpensesByCategoriesIdInTimeSpan(start: Long, end: Long, listOfCategoriesId: List<Int>): Float
 
     @Query("SELECT * FROM expenses WHERE id in (:listOfIds)")
     fun getExpensesByIds(listOfIds: List<Int>): List<ExpenseItem>

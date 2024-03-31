@@ -12,7 +12,7 @@ class IncomesCategoriesListRepositoryImpl(private val incomeCategoryDao : Income
         return incomeCategoryDao.getAllIncomeCategories()
     }
 
-    override fun getOtherCategoryId(): Int {
+    override suspend fun getOtherCategoryId(): Int {
         return incomeCategoryDao.getCategoryOtherId()
     }
 

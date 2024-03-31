@@ -51,7 +51,6 @@ fun Header(categoryName: String) {
             .fillMaxWidth().height(48.dp).padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-
         Text(
             text = categoryName,
             style = TextStyle(
@@ -61,7 +60,5 @@ fun Header(categoryName: String) {
             modifier = Modifier.fillMaxWidth(),
             textAlign = TextAlign.Center
         )
-
     }
-
 }

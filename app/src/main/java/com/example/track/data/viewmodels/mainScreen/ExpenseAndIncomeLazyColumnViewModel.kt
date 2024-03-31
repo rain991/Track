@@ -87,7 +87,7 @@ class ExpenseAndIncomeLazyColumnViewModel(
         _isExpenseLazyColumn.value = !_isExpenseLazyColumn.value
     }
 
-    fun requestCountInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String {
+    suspend fun requestCountInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String {
         val startDate = getStartOfMonthDate(financialEntity.date)
         val endDate = getEndOfTheMonth(financialEntity.date)
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
@@ -109,7 +109,7 @@ class ExpenseAndIncomeLazyColumnViewModel(
         }
     }
 
-    fun requestSumExpensesInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String {
+    suspend fun requestSumExpensesInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String {
         val startDate= getStartOfMonthDate(financialEntity.date)
         val endDate = getEndOfTheMonth(financialEntity.date)
 

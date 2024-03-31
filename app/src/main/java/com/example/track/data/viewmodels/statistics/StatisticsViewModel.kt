@@ -1,6 +1,5 @@
 package com.example.track.data.viewmodels.statistics
 
-import android.content.Context
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.converters.convertDateToLocalDate
@@ -15,6 +14,7 @@ import com.example.track.data.models.Expenses.ExpenseCategory
 import com.example.track.data.models.incomes.IncomeCategory
 import com.example.track.data.models.other.CategoryEntity
 import com.example.track.presentation.states.screenRelated.StatisticsScreenState
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -23,10 +23,8 @@ import kotlin.random.Random
 
 class StatisticsViewModel(
     private val chartsRepositoryImpl: ChartsRepositoryImpl,
-    private val notesRepositoryImpl: NotesRepositoryImpl,
-    private val applicationContext: Context
-) :
-    ViewModel() {
+    private val notesRepositoryImpl: NotesRepositoryImpl
+) : ViewModel() {
     private val _statisticsScreenState = MutableStateFlow(
         StatisticsScreenState(
             hasEnoughContent = false,
@@ -40,6 +38,20 @@ class StatisticsViewModel(
         )
     )
     val statisticsScreenState = _statisticsScreenState.asStateFlow()
+    init {
+        viewModelScope.launch(Dispatchers.IO) {
+            requestDataForFirstSlotScreenState()
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            requestDataForSecondSlotScreenState()
+        }
+        viewModelScope.launch (Dispatchers.IO){
+            requestDataForThirdSlotScreenState()
+        }
+        viewModelScope.launch(Dispatchers.IO) {
+            requestDataForFourthSlotScreenState()
+        }
+    }
     private suspend fun requestDataForFirstSlotScreenState() {
         val requestedMapOfResults = mutableMapOf<String, Number?>()
         requestedMapOfResults["requestBiggestExpenseMonthly"] = notesRepositoryImpl.requestBiggestExpenseMonthly()
@@ -50,12 +62,13 @@ class StatisticsViewModel(
         val filteredResMap = requestedMapOfResults.filterValues { it != null && it.toFloat() > 0f }
         val filteredResMapSize = filteredResMap.size
         if (filteredResMapSize == 0) return
+        setHasEnoughContent(true)
         val randomIndex = (0..filteredResMapSize).shuffled().first() - 1
         val resultValue = filteredResMap.entries.elementAt(randomIndex)
         setFirstSlotMessage(getMessageForCurrentSlotEntry(resultValueKey = resultValue.key, value = resultValue.value!!))
     }
 
-    private fun requestDataForSecondSlotScreenState() {
+    private suspend fun requestDataForSecondSlotScreenState() {
         val requestedMapOfResults = mutableMapOf<String, Number?>()
         requestedMapOfResults["requestBiggestIncomeMonthly"] = (notesRepositoryImpl.requestBiggestIncomeMonthly())
         requestedMapOfResults["requestCountOfExpensesMonthly"] = (notesRepositoryImpl.requestCountOfExpensesMonthly())
@@ -67,9 +80,11 @@ class StatisticsViewModel(
         val filteredResMap = requestedMapOfResults.filterValues { it != null && it.toFloat() > 0f }
         val filteredResMapSize = filteredResMap.size
         if (filteredResMapSize == 0) return
+        setHasEnoughContent(true)
         if (filteredResMapSize == 1) {
             val resultValue = filteredResMap.entries.elementAt(0)
             setSecondSlotMainMessage(getMessageForCurrentSlotEntry(resultValue.key, resultValue.value!!))
+
             return
         } else {
             val randomIndex = (0..filteredResMapSize).shuffled().first() - 1
@@ -139,6 +154,7 @@ class StatisticsViewModel(
         val filteredResMap = requestedMapOfResults.filterValues { it != null && it.toFloat() > 0f }
         val filteredResMapSize = filteredResMap.size
         if (filteredResMapSize == 0) return
+        setHasEnoughContent(true)
         if (filteredResMapSize == 1) {
             if (Random.nextBoolean()) {
                 val resultValue = filteredResMap.entries.elementAt(0)
@@ -175,15 +191,7 @@ class StatisticsViewModel(
     }
 
 
-    init {
-        requestDataForSecondSlotScreenState()
-        viewModelScope.launch {
-            requestDataForFourthSlotScreenState()
-        }
-        viewModelScope.launch {
-            requestDataForFirstSlotScreenState()
-        }
-    }
+
 
     private fun getMessageForCurrentSlotEntry(resultValueKey: String, value: Number): String {
         return when (resultValueKey) {

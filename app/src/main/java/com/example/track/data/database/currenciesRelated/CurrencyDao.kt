@@ -17,14 +17,14 @@ interface CurrencyDao {
     @Update
     suspend fun update(currency: Currency)
 
+    @Delete
+    suspend fun delete(currency: Currency)
+
     @Query("UPDATE currency SET rate= :rate WHERE ticker=:currencyTicker")
     suspend fun updateRate(rate: Double, currencyTicker: String)
 
     @Query("SELECT * FROM currency WHERE ticker=:currencyTicker ")
     suspend fun getCurrencyByTicker(currencyTicker: String): Currency
-
-    @Delete
-    suspend fun delete(currency: Currency)
 
     @Query("SELECT * FROM currency")
     fun getAllData(): Flow<List<Currency>>

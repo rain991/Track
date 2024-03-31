@@ -47,7 +47,7 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
     }
 
 
-    override fun getCurrentMonthSumOfExpenses(): Float {
+    override suspend fun getCurrentMonthSumOfExpenses(): Float {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getSumOfExpensesInTimeSpan(
             start = getStartOfMonthDate(todayDate).time,
@@ -55,7 +55,7 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
         )
     }
 
-    override fun getCurrentMonthSumOfExpenseInFlow(): Flow<Float> {
+    override suspend fun getCurrentMonthSumOfExpenseInFlow(): Flow<Float> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getSumOfExpensesInTimeSpanInFlow(
             start = getStartOfMonthDate(todayDate).time,
@@ -63,7 +63,7 @@ class ExpensesListRepositoryImpl(private val expenseItemsDao: ExpenseItemsDAO) :
         )
     }
 
-    override fun getCurrentMonthSumOfExpensesForCategories(listOfCategories: List<ExpenseCategory>) : Float {
+    override suspend fun getCurrentMonthSumOfExpensesForCategories(listOfCategories: List<ExpenseCategory>) : Float {
         val todayDate = convertLocalDateToDate(LocalDate.now())
        return  expenseItemsDao.getSumOfExpensesByCategoriesIdInTimeSpan(start = getStartOfMonthDate(todayDate).time,
             end = getEndOfTheMonth(todayDate).time, listOfCategoriesId = listOfCategories.map { it.categoryId })
