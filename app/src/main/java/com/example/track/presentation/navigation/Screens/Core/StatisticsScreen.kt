@@ -1,5 +1,6 @@
 package com.example.track.presentation.navigation.Screens.Core
 
+import android.util.Log
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -20,6 +21,7 @@ import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.presentation.bottomsheets.other.ExtendedButtonExample
 import com.example.track.presentation.bottomsheets.sheets.SimplifiedBottomSheet
 import com.example.track.presentation.charts.StatisticsFirstSlot
+import com.example.track.presentation.charts.StatisticsFourthSlot
 import com.example.track.presentation.charts.StatisticsSecondSlot
 import com.example.track.presentation.charts.StatisticsThirdSLot
 import com.example.track.presentation.components.statisticsScreen.EmptyStatisticsScreen
@@ -68,12 +70,23 @@ fun StatisticsExpenseScreen() {
                     }
                 }
                 Box(modifier = Modifier.weight(1.3f)) {
-                    StatisticsThirdSLot(isColumnChart = false, dataSet = statisticsScreenState.value.chartData, chartBottomAxesLabel = statisticsScreenState.value.chartBottomAxesLabels)
+                    StatisticsThirdSLot(
+                        isColumnChart = false,
+                        dataSet = statisticsScreenState.value.chartData,
+                        chartBottomAxesLabel = statisticsScreenState.value.chartBottomAxesLabels
+                    )
                 }
                 Box(modifier = Modifier.weight(1f)) {
                     Row(modifier = Modifier.fillMaxWidth()) {
-
+                        StatisticsFourthSlot(
+                            text1 = statisticsScreenState.value.fourthSlotMainMessage,
+                            text2 = statisticsScreenState.value.fourthSlotAdditionalMessage,
+                            modifier = Modifier.fillMaxWidth(),
+                            textStyle = MaterialTheme.typography.titleSmall,
+                            isSplitted = statisticsScreenState.value.fourthSlotAdditionalMessage != ""
+                        )
                     }
+                    Log.d("MyLog", "onCreate: ${statisticsScreenState.value}")
                 }
             }
         }

@@ -23,7 +23,6 @@ fun ExtendedButtonExample(
     isButtonExpanded: Boolean,
     onClick: () -> Unit
 ) {
-
     Box(
         modifier = Modifier
             .fillMaxSize()

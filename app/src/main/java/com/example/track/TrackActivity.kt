@@ -42,5 +42,6 @@ class TrackActivity : ComponentActivity() {
                 Navigation(dataStore)
             }
         }
+
     }
 }

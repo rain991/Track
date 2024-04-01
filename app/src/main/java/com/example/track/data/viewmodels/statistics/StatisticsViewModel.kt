@@ -63,7 +63,7 @@ class StatisticsViewModel(
         val filteredResMapSize = filteredResMap.size
         if (filteredResMapSize == 0) return
         setHasEnoughContent(true)
-        val randomIndex = (0..filteredResMapSize).shuffled().first() - 1
+        val randomIndex = (0..<filteredResMapSize).shuffled().first()
         val resultValue = filteredResMap.entries.elementAt(randomIndex)
         setFirstSlotMessage(getMessageForCurrentSlotEntry(resultValueKey = resultValue.key, value = resultValue.value!!))
     }
@@ -84,14 +84,13 @@ class StatisticsViewModel(
         if (filteredResMapSize == 1) {
             val resultValue = filteredResMap.entries.elementAt(0)
             setSecondSlotMainMessage(getMessageForCurrentSlotEntry(resultValue.key, resultValue.value!!))
-
             return
         } else {
-            val randomIndex = (0..filteredResMapSize).shuffled().first() - 1
+            val randomIndex = (0..<filteredResMapSize).shuffled().first()
             val mainMessageResult = filteredResMap.entries.elementAt(randomIndex)
             setSecondSlotMainMessage(getMessageForCurrentSlotEntry(mainMessageResult.key, mainMessageResult.value!!))
             val additionalMap = filteredResMap.filter { it != mainMessageResult }
-            val additionalRandomIndex = (0..additionalMap.size).shuffled().first() - 1
+            val additionalRandomIndex = (0..<additionalMap.size).shuffled().first()
             val additionalMessageResult = filteredResMap.entries.elementAt(additionalRandomIndex)
             setSecondSlotAdditionalMessage(getMessageForCurrentSlotEntry(additionalMessageResult.key, additionalMessageResult.value!!))
             return
