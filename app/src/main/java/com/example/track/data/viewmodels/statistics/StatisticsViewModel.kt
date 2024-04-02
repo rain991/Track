@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import java.time.LocalDate
+import java.util.Date
 import kotlin.random.Random
 
 class StatisticsViewModel(
@@ -31,13 +32,13 @@ class StatisticsViewModel(
             firstSlotMessage = "",
             secondSlotMainMessage = "",
             secondSlotAdditionalMessage = "",
-            chartBottomAxesLabels = listOf<LocalDate>(),
-            chartData = listOf<Float>(),
+            chartData = listOf<Pair<Float, Date>>(),
             fourthSlotMainMessage = "",
             fourthSlotAdditionalMessage = ""
         )
     )
     val statisticsScreenState = _statisticsScreenState.asStateFlow()
+
     init {
         viewModelScope.launch(Dispatchers.IO) {
             requestDataForFirstSlotScreenState()
@@ -45,13 +46,14 @@ class StatisticsViewModel(
         viewModelScope.launch(Dispatchers.IO) {
             requestDataForSecondSlotScreenState()
         }
-        viewModelScope.launch (Dispatchers.IO){
+        viewModelScope.launch(Dispatchers.IO) {
             requestDataForThirdSlotScreenState()
         }
         viewModelScope.launch(Dispatchers.IO) {
             requestDataForFourthSlotScreenState()
         }
     }
+
     private suspend fun requestDataForFirstSlotScreenState() {
         val requestedMapOfResults = mutableMapOf<String, Number?>()
         requestedMapOfResults["requestBiggestExpenseMonthly"] = notesRepositoryImpl.requestBiggestExpenseMonthly()
@@ -122,27 +124,10 @@ class StatisticsViewModel(
                 emptyList()
             }
         }
-        val listOfValues = listOfFinancialEntity.map { // warning currency rate
-            it.value
-        }
-        val chartBottomAxesLabels = when (currentDataSetIdentifier) {
-            0 -> {
-                getMonthlyChartsAxesLabels()
-            }
-
-            1 -> {
-                getAnualyChartsAxesLabels()
-            }
-
-            else -> {
-                emptyList<LocalDate>()
-            }
-        }
-        setChartData(listOfValues)
-        setChartBottomAxesLabels(chartBottomAxesLabels)
+        setChartData(listOfFinancialEntity)
     }
 
-    private suspend fun requestDataForFourthSlotScreenState() { //low scalability
+    private suspend fun requestDataForFourthSlotScreenState() {
         val requestedMapOfResults = mutableMapOf<String, Number?>()
         requestedMapOfResults["requestSumOfExpensesMonthly"] = notesRepositoryImpl.requestSumOfExpensesMonthly()
         requestedMapOfResults["requestSumOfIncomesMonthly"] = notesRepositoryImpl.requestSumOfIncomesMonthly()
@@ -150,47 +135,20 @@ class StatisticsViewModel(
         val currentMonthIncomeDistribution = chartsRepositoryImpl.requestCurrentMonthIncomeCategoriesDistribution()
         val sortedExpenseDistribution = currentMonthExpenseDistribution.toList().sortedByDescending { it.second }.toMap()
         val sortedIncomeDistribution = currentMonthIncomeDistribution.toList().sortedByDescending { it.second }.toMap()
-        val filteredResMap = requestedMapOfResults.filterValues { it != null && it.toFloat() > 0f }
-        val filteredResMapSize = filteredResMap.size
-        if (filteredResMapSize == 0) return
-        setHasEnoughContent(true)
-        if (filteredResMapSize == 1) {
-            if (Random.nextBoolean()) {
-                val resultValue = filteredResMap.entries.elementAt(0)
-                setFourthSlotMainMessage(getMessageForCurrentSlotEntry(resultValue.key, resultValue.value!!))
-            } else {
-                if (Random.nextBoolean()) {
-                    setFourthSlotMainMessage(getMessageForCurrentCategoriesDistribution(sortedExpenseDistribution))
-                } else {
-                    setFourthSlotMainMessage(getMessageForCurrentCategoriesDistribution(sortedIncomeDistribution))
-                }
-            }
-            return
-        } else {
-            if (Random.nextBoolean()) {
-                val resultValue = filteredResMap.entries.elementAt(0)
-                setFourthSlotMainMessage(getMessageForCurrentSlotEntry(resultValue.key, resultValue.value!!))
-                if (Random.nextBoolean()) {
-                    setFourthSlotAdditionalMessage(getMessageForCurrentCategoriesDistribution(sortedExpenseDistribution))
-                } else {
-                    setFourthSlotAdditionalMessage(getMessageForCurrentCategoriesDistribution(sortedIncomeDistribution))
-                }
-            } else {
-
-                if (Random.nextBoolean()) {
-                    setFourthSlotMainMessage(getMessageForCurrentCategoriesDistribution(sortedExpenseDistribution))
-                } else {
-                    setFourthSlotMainMessage(getMessageForCurrentCategoriesDistribution(sortedIncomeDistribution))
-                }
-                val resultValue = filteredResMap.entries.elementAt(0)
-                setFourthSlotAdditionalMessage(getMessageForCurrentSlotEntry(resultValue.key, resultValue.value!!))
-            }
-            return
+        val filteredResMap = requestedMapOfResults.filterValues { it != null }
+        val stringResults = mutableListOf<String>()
+        val firstRes = filteredResMap.entries.elementAt(0)
+        val secondAdditionalRes = filteredResMap.entries.elementAtOrNull(1)
+        if (secondAdditionalRes != null) {
+            stringResults.add(getMessageForCurrentSlotEntry(secondAdditionalRes.key, secondAdditionalRes.value!!))
         }
+        stringResults.add(getMessageForCurrentSlotEntry(firstRes.key, firstRes.value!!))
+        stringResults.add(getMessageForCurrentCategoriesDistribution(sortedExpenseDistribution))
+        stringResults.add(getMessageForCurrentCategoriesDistribution(sortedIncomeDistribution))
+        stringResults.shuffle()
+        setFourthSlotMainMessage(stringResults[0])
+        setFourthSlotAdditionalMessage(stringResults[1])
     }
-
-
-
 
     private fun getMessageForCurrentSlotEntry(resultValueKey: String, value: Number): String {
         return when (resultValueKey) {
@@ -263,11 +221,7 @@ class StatisticsViewModel(
         _statisticsScreenState.value = statisticsScreenState.value.copy(secondSlotAdditionalMessage = value)
     }
 
-    private fun setChartBottomAxesLabels(value: List<LocalDate>) {
-        _statisticsScreenState.value = statisticsScreenState.value.copy(chartBottomAxesLabels = value)
-    }
-
-    private fun setChartData(value: List<Float>) {
+    private fun setChartData(value: List<Pair<Float, Date>>) {
         _statisticsScreenState.value = statisticsScreenState.value.copy(chartData = value)
     }
 

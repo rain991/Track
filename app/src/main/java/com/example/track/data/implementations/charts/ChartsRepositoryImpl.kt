@@ -10,13 +10,12 @@ import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.database.incomeRelated.IncomeCategoryDao
 import com.example.track.data.database.incomeRelated.IncomeDao
 import com.example.track.data.models.Expenses.ExpenseCategory
-import com.example.track.data.models.Expenses.ExpenseItem
 import com.example.track.data.models.incomes.IncomeCategory
-import com.example.track.data.models.incomes.IncomeItem
 import com.example.track.domain.repository.charts.ChartsRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
+import java.util.Date
 import kotlin.coroutines.CoroutineContext
 
 class ChartsRepositoryImpl(
@@ -25,43 +24,48 @@ class ChartsRepositoryImpl(
     private val expenseCategoryDao: ExpenseCategoryDao,
     private val incomeCategoryDao: IncomeCategoryDao
 ) : ChartsRepository {
-    override suspend fun requestCurrentMonthExpensesDateDesc(context: CoroutineContext): List<ExpenseItem> {
+    override suspend fun requestCurrentMonthExpensesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return withContext(context) {
-            expenseItemsDao.getExpensesInTimeSpanDateDesc(
+          val monthExpenses =  expenseItemsDao.getExpensesInTimeSpanDateDesc(
                 start = getStartOfMonthDate(todayDate).time,
                 end = getEndOfTheMonth(todayDate).time
             ).first()
+            monthExpenses.map{it.value to it.date}
         }
     }
 
-    override suspend fun requestCurrentMonthIncomesDateDesc(context: CoroutineContext): List<IncomeItem> {
+    override suspend fun requestCurrentMonthIncomesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return withContext(context) {
-            incomeDao.getIncomesInTimeSpanDateDecs(
+           val monthIncomes =  incomeDao.getIncomesInTimeSpanDateDecs(
                 start = getStartOfMonthDate(todayDate).time,
                 end = getEndOfTheMonth(todayDate).time
             ).first()
+            monthIncomes.map{it.value to it.date}
         }
     }
 
-    override suspend fun requestCurrentYearExpensesDateDesc(context: CoroutineContext): List<ExpenseItem> {
+    override suspend fun requestCurrentYearExpensesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return withContext(context) {
-            expenseItemsDao.getExpensesInTimeSpanDateDesc(
+           val yearExpenses =  expenseItemsDao.getExpensesInTimeSpanDateDesc(
                 start = getStartOfYearDate(todayDate).time,
                 end = getEndOfYearDate(todayDate).time
             ).first()
+            yearExpenses.map{it.value to it.date}
         }
+
     }
 
-    override suspend fun requestCurrentYearIncomesDateDesc(context: CoroutineContext): List<IncomeItem> {
+    override suspend fun requestCurrentYearIncomesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return withContext(context) {
-            incomeDao.getIncomesInTimeSpanDateDecs(
+            val yearIncomes = incomeDao.getIncomesInTimeSpanDateDecs(
                 start = getStartOfYearDate(todayDate).time,
                 end = getEndOfYearDate(todayDate).time
             ).first()
+            yearIncomes.map { it.value to it.date }
         }
     }
 

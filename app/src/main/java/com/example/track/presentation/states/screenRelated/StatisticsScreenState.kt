@@ -1,14 +1,13 @@
 package com.example.track.presentation.states.screenRelated
 
-import java.time.LocalDate
+import java.util.Date
 
 data class StatisticsScreenState(
     val hasEnoughContent: Boolean,
     val firstSlotMessage: String,
     val secondSlotMainMessage: String,
     val secondSlotAdditionalMessage: String,
-    val chartBottomAxesLabels: List<LocalDate>,
-    val chartData: List<Float>,
+    val chartData: List<Pair<Float, Date>>,
     val fourthSlotMainMessage: String,
     val fourthSlotAdditionalMessage : String
 )
