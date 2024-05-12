@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.track.R
-import com.example.track.data.DataStoreManager
-import com.example.track.data.constants.SHOW_PAGE_NAME_DEFAULT
+import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.track.presentation.bottomsheets.other.ExtendedButtonExample

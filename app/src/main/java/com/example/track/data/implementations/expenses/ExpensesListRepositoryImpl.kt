@@ -1,11 +1,11 @@
 package com.example.track.data.implementations.expenses
 
-import com.example.track.data.converters.convertLocalDateToDate
-import com.example.track.data.converters.getEndOfTheMonth
-import com.example.track.data.converters.getStartOfMonthDate
+import com.example.track.data.other.converters.convertLocalDateToDate
+import com.example.track.data.other.converters.getEndOfTheMonth
+import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
-import com.example.track.data.models.Expenses.ExpenseCategory
-import com.example.track.data.models.Expenses.ExpenseItem
+import com.example.track.domain.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.Expenses.ExpenseItem
 import com.example.track.domain.repository.expenses.ExpensesListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

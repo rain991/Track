@@ -1,7 +1,7 @@
 package com.example.track.domain.repository.charts
 
-import com.example.track.data.models.Expenses.ExpenseCategory
-import com.example.track.data.models.incomes.IncomeCategory
+import com.example.track.domain.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.incomes.IncomeCategory
 import kotlinx.coroutines.Dispatchers
 import java.util.Date
 import kotlin.coroutines.CoroutineContext

@@ -44,10 +44,10 @@ import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.track.R
-import com.example.track.data.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
-import com.example.track.data.converters.areDatesSame
-import com.example.track.data.converters.areYearsSame
-import com.example.track.data.converters.convertDateToLocalDate
+import com.example.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
+import com.example.track.data.other.converters.areDatesSame
+import com.example.track.data.other.converters.areYearsSame
+import com.example.track.data.other.converters.convertDateToLocalDate
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.presentation.common.ui.FinancialItemCardTypeSimple
 import com.example.track.presentation.components.mainScreen.additionalInfoCards.MainScreenInfoComposable

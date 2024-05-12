@@ -1,7 +1,7 @@
 package com.example.track.data.implementations.currencies
 
 import com.example.track.data.database.currenciesRelated.CurrencyDao
-import com.example.track.data.models.currency.Currency
+import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.repository.currencies.CurrencyListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext

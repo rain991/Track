@@ -1,6 +1,6 @@
 package com.example.track.domain.repository.ideas
 
-import com.example.track.data.models.idea.Idea
+import com.example.track.domain.models.idea.Idea
 import java.util.Date
 
 interface IncomePlanCardRepository {

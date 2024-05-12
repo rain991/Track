@@ -1,7 +1,7 @@
 package com.example.track.data.implementations.ideas
 
 import com.example.track.data.database.incomeRelated.IncomeDao
-import com.example.track.data.models.idea.Idea
+import com.example.track.domain.models.idea.Idea
 import com.example.track.domain.repository.ideas.IncomePlanCardRepository
 import java.util.Date
 

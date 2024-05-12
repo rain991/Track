@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
-import com.example.track.data.models.idea.Savings
+import com.example.track.domain.models.idea.Savings
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import org.koin.androidx.compose.koinViewModel
 

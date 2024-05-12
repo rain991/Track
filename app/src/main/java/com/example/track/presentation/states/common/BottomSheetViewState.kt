@@ -1,6 +1,6 @@
 package com.example.track.presentation.states.common
 
-import com.example.track.data.models.other.CategoryEntity
+import com.example.track.domain.models.other.CategoryEntity
 import java.time.LocalDate
 
 data class BottomSheetViewState(

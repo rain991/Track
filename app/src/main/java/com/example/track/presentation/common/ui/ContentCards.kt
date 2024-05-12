@@ -46,10 +46,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.track.R
-import com.example.track.data.converters.extractAdditionalDateInformation
-import com.example.track.data.converters.extractDayOfWeekFromDate
-import com.example.track.data.models.other.CategoryEntity
-import com.example.track.data.models.other.FinancialEntity
+import com.example.track.data.other.converters.extractAdditionalDateInformation
+import com.example.track.data.other.converters.extractDayOfWeekFromDate
+import com.example.track.domain.models.other.CategoryEntity
+import com.example.track.domain.models.other.FinancialEntity
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.presentation.common.parser.parseColor
 import kotlinx.coroutines.Dispatchers

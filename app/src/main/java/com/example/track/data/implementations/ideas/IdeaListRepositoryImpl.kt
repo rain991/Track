@@ -3,10 +3,10 @@ package com.example.track.data.implementations.ideas
 import com.example.track.data.database.ideaRelated.ExpenseLimitsDao
 import com.example.track.data.database.ideaRelated.IncomePlansDao
 import com.example.track.data.database.ideaRelated.SavingsDao
-import com.example.track.data.models.idea.ExpenseLimits
-import com.example.track.data.models.idea.Idea
-import com.example.track.data.models.idea.IncomePlans
-import com.example.track.data.models.idea.Savings
+import com.example.track.domain.models.idea.ExpenseLimits
+import com.example.track.domain.models.idea.Idea
+import com.example.track.domain.models.idea.IncomePlans
+import com.example.track.domain.models.idea.Savings
 import com.example.track.domain.repository.ideas.IdeaListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow

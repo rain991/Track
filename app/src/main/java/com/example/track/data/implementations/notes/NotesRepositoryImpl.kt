@@ -1,13 +1,13 @@
 package com.example.track.data.implementations.notes
 
-import com.example.track.data.DataStoreManager
-import com.example.track.data.converters.convertLocalDateToDate
-import com.example.track.data.converters.getEndOfTheMonth
-import com.example.track.data.converters.getEndOfWeekDate
-import com.example.track.data.converters.getEndOfYearDate
-import com.example.track.data.converters.getStartOfMonthDate
-import com.example.track.data.converters.getStartOfWeekDate
-import com.example.track.data.converters.getStartOfYearDate
+import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.data.other.converters.convertLocalDateToDate
+import com.example.track.data.other.converters.getEndOfTheMonth
+import com.example.track.data.other.converters.getEndOfWeekDate
+import com.example.track.data.other.converters.getEndOfYearDate
+import com.example.track.data.other.converters.getStartOfMonthDate
+import com.example.track.data.other.converters.getStartOfWeekDate
+import com.example.track.data.other.converters.getStartOfYearDate
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.database.incomeRelated.IncomeDao
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl

@@ -1,7 +1,7 @@
 package com.example.track.domain.repository.incomes
 
-import com.example.track.data.models.incomes.IncomeCategory
-import com.example.track.data.models.incomes.IncomeItem
+import com.example.track.domain.models.incomes.IncomeCategory
+import com.example.track.domain.models.incomes.IncomeItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import java.util.Date

@@ -1,6 +1,6 @@
 package com.example.track.domain.repository.ideas
 
-import com.example.track.data.models.idea.Idea
+import com.example.track.domain.models.idea.Idea
 
 interface SavingsCardRepository {
    suspend fun addToSavings(idea : Idea, value : Float, isIncludedInBudget : Boolean)

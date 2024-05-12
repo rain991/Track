@@ -1,6 +1,6 @@
 package com.example.track.presentation.states.common
 
-import com.example.track.data.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.Expenses.ExpenseCategory
 import java.util.Date
 
 sealed class IdeaSelectorTypes(val name: String) {

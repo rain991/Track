@@ -25,10 +25,10 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.track.R
-import com.example.track.data.DataStoreManager
-import com.example.track.data.constants.NAME_DEFAULT
-import com.example.track.data.constants.SHOW_PAGE_NAME_DEFAULT
-import com.example.track.data.constants.USE_SYSTEM_THEME_DEFAULT
+import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.data.other.constants.NAME_DEFAULT
+import com.example.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
+import com.example.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch

@@ -1,6 +1,6 @@
 package com.example.track.domain.repository.currencies
 
-import com.example.track.data.models.currency.Currency
+import com.example.track.domain.models.currency.Currency
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext

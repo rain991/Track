@@ -19,7 +19,7 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.track.R
-import com.example.track.data.models.other.CategoryEntity
+import com.example.track.domain.models.other.CategoryEntity
 import com.example.track.presentation.common.parser.parseColor
 
 @Composable

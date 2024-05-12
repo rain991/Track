@@ -10,8 +10,8 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
-import com.example.track.data.DataStoreManager
-import com.example.track.data.workers.CurrenciesRatesWorker
+import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.data.other.workers.CurrenciesRatesWorker
 import com.example.track.presentation.navigation.Navigation
 import com.example.track.presentation.themes.BlueTheme.BlueTheme
 import kotlinx.coroutines.CoroutineScope
@@ -42,6 +42,5 @@ class TrackActivity : ComponentActivity() {
                 Navigation(dataStore)
             }
         }
-
     }
 }

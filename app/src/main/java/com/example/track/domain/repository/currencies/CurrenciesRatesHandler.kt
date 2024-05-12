@@ -1,7 +1,7 @@
 package com.example.track.domain.repository.currencies
 
-import com.example.track.data.models.currency.Currency
-import com.example.track.data.models.other.FinancialEntity
+import com.example.track.domain.models.currency.Currency
+import com.example.track.domain.models.other.FinancialEntity
 
 interface CurrenciesRatesHandler {
     suspend fun convertValueToBasicCurrency(financialEntity: FinancialEntity) : Float

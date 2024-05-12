@@ -1,5 +1,5 @@
 package com.example.track.data.retrofit
-import com.example.track.data.constants.CURRENCY_CALL_URL_DEFAULT
+import com.example.track.data.other.constants.CURRENCY_CALL_URL_DEFAULT
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

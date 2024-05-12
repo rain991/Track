@@ -69,11 +69,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
-import com.example.track.data.DataStoreManager
-import com.example.track.data.constants.CURRENCY_DEFAULT
-import com.example.track.data.constants.MIN_SUPPORTED_YEAR
-import com.example.track.data.models.currency.Currency
-import com.example.track.data.models.other.CategoryEntity
+import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.MIN_SUPPORTED_YEAR
+import com.example.track.domain.models.currency.Currency
+import com.example.track.domain.models.other.CategoryEntity
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.presentation.common.ui.CategoryChip
 import com.maxkeppeker.sheets.core.models.base.UseCaseState

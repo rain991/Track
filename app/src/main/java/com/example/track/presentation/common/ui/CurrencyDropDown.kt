@@ -17,7 +17,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.wear.compose.material.Text
 import com.example.track.R
-import com.example.track.data.models.currency.Currency
+import com.example.track.domain.models.currency.Currency
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

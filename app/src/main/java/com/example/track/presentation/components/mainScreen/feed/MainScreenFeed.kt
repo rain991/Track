@@ -37,11 +37,11 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
 import com.example.track.R
-import com.example.track.data.constants.FEED_CARD_DELAY_FAST
-import com.example.track.data.constants.FEED_CARD_DELAY_SLOW
-import com.example.track.data.models.idea.ExpenseLimits
-import com.example.track.data.models.idea.IncomePlans
-import com.example.track.data.models.idea.Savings
+import com.example.track.data.other.constants.FEED_CARD_DELAY_FAST
+import com.example.track.data.other.constants.FEED_CARD_DELAY_SLOW
+import com.example.track.domain.models.idea.ExpenseLimits
+import com.example.track.domain.models.idea.IncomePlans
+import com.example.track.domain.models.idea.Savings
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn.getMonthResID
@@ -84,7 +84,7 @@ fun MainScreenFeed() {
             maxIndex.value -> NewIdea_FeedCard(mainScreenFeedViewModel = mainScreenFeedViewModel)
             else -> when(ideaList[index-1]){
                 is Savings -> SavingsIdeaCard(savings = ideaList[index-1] as Savings)
-                is IncomePlans -> IncomeIdeaCard(incomePlans = ideaList[index-1] as IncomePlans )
+                is IncomePlans -> IncomeIdeaCard(incomePlans = ideaList[index-1] as IncomePlans)
                 is ExpenseLimits -> ExpenseLimitIdeaCard(expenseLimit = ideaList[index-1] as ExpenseLimits)
             }
         }

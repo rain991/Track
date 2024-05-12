@@ -48,7 +48,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.Text
 import com.example.track.R
-import com.example.track.data.models.currency.Currency
+import com.example.track.domain.models.currency.Currency
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.presentation.navigation.Screen
 import com.example.track.ui.theme.focusedTextFieldText

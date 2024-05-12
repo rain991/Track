@@ -60,10 +60,10 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
-import com.example.track.data.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.models.currency.Currency
+import com.example.track.domain.models.currency.Currency
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.common.ui.CategoryChip
 import com.example.track.presentation.common.ui.CustomDatePicker

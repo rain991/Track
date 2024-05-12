@@ -29,8 +29,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.track.R
-import com.example.track.data.constants.CURRENCY_DEFAULT
-import com.example.track.data.models.currency.Currency
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.domain.models.currency.Currency
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 
 import com.example.track.presentation.login.CurrencyDropDownMenu

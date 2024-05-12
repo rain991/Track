@@ -1,8 +1,8 @@
 package com.example.track.data.implementations.incomes
 
 import com.example.track.data.database.incomeRelated.IncomeDao
-import com.example.track.data.models.incomes.IncomeCategory
-import com.example.track.data.models.incomes.IncomeItem
+import com.example.track.domain.models.incomes.IncomeCategory
+import com.example.track.domain.models.incomes.IncomeItem
 import com.example.track.domain.repository.incomes.IncomesListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

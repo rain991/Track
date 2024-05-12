@@ -1,7 +1,7 @@
 package com.example.track.data.implementations.expenses
 
 import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
-import com.example.track.data.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.Expenses.ExpenseCategory
 import com.example.track.domain.repository.expenses.ExpensesCategoriesListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext

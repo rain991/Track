@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.example.track.presentation.navigation.Screens.Core.MainExpenseScreen
 import com.example.track.presentation.navigation.Screens.Core.SettingsExpenseScreen
-import com.example.track.presentation.navigation.Screens.Core.StatisticsExpenseScreen
+import com.example.track.presentation.navigation.Screens.Core.StatisticScreenPlaceholder
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -37,7 +37,8 @@ fun ScreenManager(navHostController: NavHostController) {
             when (page) {
                 0 -> SettingsExpenseScreen(navHostController)
                 1 -> MainExpenseScreen()
-                2 -> StatisticsExpenseScreen()
+                2 -> StatisticScreenPlaceholder()
+                    //StatisticsExpenseScreen()
             }
         }
     }
@@ -48,7 +49,9 @@ fun ScreenManager(navHostController: NavHostController) {
 fun Header(categoryName: String) {
     Row(
         modifier = Modifier
-            .fillMaxWidth().height(48.dp).padding(8.dp),
+            .fillMaxWidth()
+            .height(48.dp)
+            .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Text(

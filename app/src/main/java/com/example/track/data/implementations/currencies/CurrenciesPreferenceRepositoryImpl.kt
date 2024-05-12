@@ -1,8 +1,8 @@
 package com.example.track.data.implementations.currencies
 
 import com.example.track.data.database.currenciesRelated.CurrenciesPreferenceDao
-import com.example.track.data.models.currency.CurrenciesPreference
-import com.example.track.data.models.currency.Currency
+import com.example.track.domain.models.currency.CurrenciesPreference
+import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import kotlinx.coroutines.flow.Flow
 

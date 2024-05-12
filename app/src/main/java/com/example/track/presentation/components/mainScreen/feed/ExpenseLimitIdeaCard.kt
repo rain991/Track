@@ -24,7 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.models.idea.ExpenseLimits
+import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.common.ui.CategoryChip
 import org.koin.androidx.compose.koinViewModel

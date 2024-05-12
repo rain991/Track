@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.track.data.models.idea.ExpenseLimits
+import com.example.track.domain.models.idea.ExpenseLimits
 import kotlinx.coroutines.flow.Flow
 
 @Dao

@@ -1,6 +1,6 @@
 package com.example.track.data.implementations.ideas
 
-import com.example.track.data.DataStoreManager
+import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.domain.repository.ideas.BudgetIdeaCardRepository
 import kotlinx.coroutines.flow.Flow

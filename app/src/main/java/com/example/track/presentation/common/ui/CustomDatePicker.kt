@@ -2,8 +2,8 @@ package com.example.track.presentation.common.ui
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.window.DialogProperties
-import com.example.track.data.constants.MIN_SUPPORTED_YEAR
-import com.example.track.data.converters.convertLocalDateToDate
+import com.example.track.data.other.constants.MIN_SUPPORTED_YEAR
+import com.example.track.data.other.converters.convertLocalDateToDate
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig

@@ -18,7 +18,7 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
-import com.example.track.data.DataStoreManager
+import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.presentation.navigation.Screen
 import org.koin.compose.koinInject
 

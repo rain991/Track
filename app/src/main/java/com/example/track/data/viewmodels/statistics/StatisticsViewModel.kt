@@ -2,17 +2,17 @@ package com.example.track.data.viewmodels.statistics
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.converters.convertDateToLocalDate
-import com.example.track.data.converters.convertLocalDateToDate
-import com.example.track.data.converters.getEndOfTheMonth
-import com.example.track.data.converters.getEndOfYearDate
-import com.example.track.data.converters.getStartOfMonthDate
-import com.example.track.data.converters.getStartOfYearDate
+import com.example.track.data.other.converters.convertDateToLocalDate
+import com.example.track.data.other.converters.convertLocalDateToDate
+import com.example.track.data.other.converters.getEndOfTheMonth
+import com.example.track.data.other.converters.getEndOfYearDate
+import com.example.track.data.other.converters.getStartOfMonthDate
+import com.example.track.data.other.converters.getStartOfYearDate
 import com.example.track.data.implementations.charts.ChartsRepositoryImpl
 import com.example.track.data.implementations.notes.NotesRepositoryImpl
-import com.example.track.data.models.Expenses.ExpenseCategory
-import com.example.track.data.models.incomes.IncomeCategory
-import com.example.track.data.models.other.CategoryEntity
+import com.example.track.domain.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.incomes.IncomeCategory
+import com.example.track.domain.models.other.CategoryEntity
 import com.example.track.presentation.states.screenRelated.StatisticsScreenState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

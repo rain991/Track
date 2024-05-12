@@ -1,6 +1,6 @@
 package com.example.track.domain.repository.incomes
 
-import com.example.track.data.models.incomes.IncomeCategory
+import com.example.track.domain.models.incomes.IncomeCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext

@@ -1,9 +1,9 @@
 package com.example.track.domain.repository.ideas
 
-import com.example.track.data.models.idea.ExpenseLimits
-import com.example.track.data.models.idea.Idea
-import com.example.track.data.models.idea.IncomePlans
-import com.example.track.data.models.idea.Savings
+import com.example.track.domain.models.idea.ExpenseLimits
+import com.example.track.domain.models.idea.Idea
+import com.example.track.domain.models.idea.IncomePlans
+import com.example.track.domain.models.idea.Savings
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext

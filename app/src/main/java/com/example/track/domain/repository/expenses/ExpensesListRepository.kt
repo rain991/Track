@@ -1,7 +1,7 @@
 package com.example.track.domain.repository.expenses
 
-import com.example.track.data.models.Expenses.ExpenseCategory
-import com.example.track.data.models.Expenses.ExpenseItem
+import com.example.track.domain.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.Expenses.ExpenseItem
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import java.util.Date

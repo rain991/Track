@@ -3,10 +3,10 @@ package com.example.track.data.viewmodels.settingsScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.DataStoreManager
+import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
-import com.example.track.data.models.currency.Currency
+import com.example.track.domain.models.currency.Currency
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first

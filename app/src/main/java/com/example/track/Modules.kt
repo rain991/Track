@@ -1,7 +1,7 @@
 package com.example.track
 
-import com.example.track.data.DataStoreManager
-import com.example.track.data.database.ExpensesDB
+import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.data.database.db.ExpensesDB
 import com.example.track.data.database.currenciesRelated.CurrenciesPreferenceDao
 import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
@@ -32,7 +32,7 @@ import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnVi
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
-import com.example.track.data.workers.CurrenciesRatesWorker
+import com.example.track.data.other.workers.CurrenciesRatesWorker
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.EditCategoryUseCase
