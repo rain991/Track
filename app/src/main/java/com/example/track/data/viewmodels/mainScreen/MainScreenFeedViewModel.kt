@@ -5,13 +5,13 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
-import com.example.track.domain.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.idea.Idea
 import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
-import com.example.track.presentation.states.common.IdeaSelectorTypes
-import com.example.track.presentation.states.common.NewIdeaDialogState
+import com.example.track.presentation.states.componentRelated.IdeaSelectorTypes
+import com.example.track.presentation.states.componentRelated.NewIdeaDialogState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted

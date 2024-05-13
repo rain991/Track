@@ -1,6 +1,6 @@
 package com.example.track.domain.repository.ideas
 
-import com.example.track.domain.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.idea.Idea
 
 interface ExpenseLimitsCardRepository {

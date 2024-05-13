@@ -10,12 +10,12 @@ import com.example.track.data.implementations.expenses.ExpensesCategoriesListRep
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
-import com.example.track.domain.models.Expenses.ExpenseCategory
-import com.example.track.domain.models.Expenses.ExpenseItem
+import com.example.track.domain.models.expenses.ExpenseCategory
+import com.example.track.domain.models.expenses.ExpenseItem
 import com.example.track.domain.models.incomes.IncomeCategory
 import com.example.track.domain.models.incomes.IncomeItem
-import com.example.track.domain.models.other.CategoryEntity
-import com.example.track.domain.models.other.FinancialEntity
+import com.example.track.domain.models.abstractLayer.CategoryEntity
+import com.example.track.domain.models.abstractLayer.FinancialEntity
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update

@@ -33,7 +33,7 @@ import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.domain.models.currency.Currency
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 
-import com.example.track.presentation.login.CurrencyDropDownMenu
+import com.example.track.presentation.components.login.CurrencyDropDownMenu
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 

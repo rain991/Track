@@ -16,8 +16,8 @@ import com.example.track.data.database.ideaRelated.IncomePlansDao
 import com.example.track.data.database.ideaRelated.SavingsDao
 import com.example.track.data.database.incomeRelated.IncomeCategoryDao
 import com.example.track.data.database.incomeRelated.IncomeDao
-import com.example.track.domain.models.Expenses.ExpenseCategory
-import com.example.track.domain.models.Expenses.ExpenseItem
+import com.example.track.domain.models.expenses.ExpenseCategory
+import com.example.track.domain.models.expenses.ExpenseItem
 import com.example.track.domain.models.currency.CurrenciesPreference
 import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.idea.ExpenseLimits

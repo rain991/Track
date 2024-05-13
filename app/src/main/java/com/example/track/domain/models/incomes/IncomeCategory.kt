@@ -3,7 +3,7 @@ package com.example.track.domain.models.incomes
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import com.example.track.domain.models.other.CategoryEntity
+import com.example.track.domain.models.abstractLayer.CategoryEntity
 
 @Entity(tableName = "income_categories")
 data class IncomeCategory(

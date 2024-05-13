@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
 import com.example.track.domain.models.currency.Currency
-import com.example.track.domain.models.other.FinancialEntity
+import com.example.track.domain.models.abstractLayer.FinancialEntity
 import java.util.Date
 
 @Entity(

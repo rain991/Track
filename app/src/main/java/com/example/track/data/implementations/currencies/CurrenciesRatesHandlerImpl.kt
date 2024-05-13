@@ -2,10 +2,10 @@ package com.example.track.data.implementations.currencies
 
 import com.example.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.example.track.data.database.currenciesRelated.CurrencyDao
-import com.example.track.domain.models.Expenses.ExpenseItem
+import com.example.track.domain.models.expenses.ExpenseItem
 import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.incomes.IncomeItem
-import com.example.track.domain.models.other.FinancialEntity
+import com.example.track.domain.models.abstractLayer.FinancialEntity
 import com.example.track.domain.repository.currencies.CurrenciesRatesHandler
 import kotlinx.coroutines.flow.first
 

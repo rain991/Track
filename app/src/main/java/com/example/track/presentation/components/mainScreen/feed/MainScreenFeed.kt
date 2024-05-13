@@ -45,7 +45,7 @@ import com.example.track.domain.models.idea.Savings
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn.getMonthResID
-import com.example.track.presentation.states.common.BudgetIdeaCardState
+import com.example.track.presentation.states.componentRelated.BudgetIdeaCardState
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate

@@ -1,15 +1,15 @@
 package com.example.track.data.implementations.charts
 
+import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
+import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
+import com.example.track.data.database.incomeRelated.IncomeCategoryDao
+import com.example.track.data.database.incomeRelated.IncomeDao
 import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.data.other.converters.getEndOfTheMonth
 import com.example.track.data.other.converters.getEndOfYearDate
 import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.data.other.converters.getStartOfYearDate
-import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
-import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
-import com.example.track.data.database.incomeRelated.IncomeCategoryDao
-import com.example.track.data.database.incomeRelated.IncomeDao
-import com.example.track.domain.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.incomes.IncomeCategory
 import com.example.track.domain.repository.charts.ChartsRepository
 import kotlinx.coroutines.flow.first
@@ -98,7 +98,5 @@ class ChartsRepositoryImpl(
             }
             resultMap
         }
-
-
     }
 }

@@ -7,12 +7,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.track.data.other.dataStore.DataStoreManager
-import com.example.track.presentation.login.LoginScreen
-import com.example.track.presentation.navigation.Screens.Additional.CategoriesSettingsScreen
-import com.example.track.presentation.navigation.Screens.Additional.CurrenciesSettingsScreen
-import com.example.track.presentation.navigation.Screens.Additional.IdeasListSettingsScreen
-import com.example.track.presentation.navigation.Screens.Additional.PersonalSettingsScreen
-import com.example.track.presentation.screenManager.ScreenManager
+import com.example.track.presentation.components.login.LoginScreen
+import com.example.track.presentation.screens.Additional.CategoriesSettingsScreen
+import com.example.track.presentation.screens.Additional.CurrenciesSettingsScreen
+import com.example.track.presentation.screens.Additional.IdeasListSettingsScreen
+import com.example.track.presentation.screens.Additional.PersonalSettingsScreen
+import com.example.track.presentation.other.ScreenManager
 
 @Composable
 fun Navigation(dataStoreManager: DataStoreManager) {
