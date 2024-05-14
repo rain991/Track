@@ -1,15 +1,17 @@
-package com.example.track.data.implementations.currencies
+package com.example.track.data.core
 
-import com.example.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.example.track.data.database.currenciesRelated.CurrencyDao
-import com.example.track.domain.models.expenses.ExpenseItem
-import com.example.track.domain.models.currency.Currency
-import com.example.track.domain.models.incomes.IncomeItem
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.example.track.domain.models.abstractLayer.FinancialEntity
+import com.example.track.domain.models.currency.Currency
+import com.example.track.domain.models.expenses.ExpenseItem
+import com.example.track.domain.models.incomes.IncomeItem
 import com.example.track.domain.repository.currencies.CurrenciesRatesHandler
 import kotlinx.coroutines.flow.first
 
-class CurrenciesRatesHandlerImpl(
+// Handles functions to convert values between currencies
+class CurrenciesRatesHandler(
     private val currencyDao: CurrencyDao,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
 ) : CurrenciesRatesHandler {
@@ -61,12 +63,10 @@ class CurrenciesRatesHandlerImpl(
                 listOfRowValues.clear()
                 listOfRowValues.addAll(listOfFinancialEntity.map { it.value })
             }
-
             is IncomeItem -> {
                 listOfRowValues.clear()
                 listOfRowValues.addAll(listOfFinancialEntity.map { it.value })
             }
-
             else -> {
                 return INCORRECT_CONVERSION_RESULT
             }
@@ -76,7 +76,6 @@ class CurrenciesRatesHandlerImpl(
         return if (preferableCurrency.rate != null && rowCurrency.rate != null) {
             val convertRate = preferableCurrency.rate.div(rowCurrency.rate)
             (listOfRowValues.sum() * convertRate).toFloat()
-
         } else {
             INCORRECT_CONVERSION_RESULT
         }

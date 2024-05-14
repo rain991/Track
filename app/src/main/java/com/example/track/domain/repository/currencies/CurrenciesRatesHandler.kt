@@ -1,11 +1,10 @@
 package com.example.track.domain.repository.currencies
 
-import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.abstractLayer.FinancialEntity
+import com.example.track.domain.models.currency.Currency
 
 interface CurrenciesRatesHandler {
     suspend fun convertValueToBasicCurrency(financialEntity: FinancialEntity) : Float
-
     suspend fun convertValueToBasicCurrency(value : Float, currency: Currency) : Float
     suspend fun convertValueToBasicCurrency(value : Float, currencyTicker: String) : Float
     suspend fun getRateToPreferableCurrency(currency : Currency) : Float

@@ -1,9 +1,11 @@
 package com.example.track
 
-import com.example.track.data.other.dataStore.DataStoreManager
-import com.example.track.data.database.db.ExpensesDB
+import com.example.track.data.core.ChartHandler
+import com.example.track.data.core.CurrenciesRatesHandler
+import com.example.track.data.core.NotesHandler
 import com.example.track.data.database.currenciesRelated.CurrenciesPreferenceDao
 import com.example.track.data.database.currenciesRelated.CurrencyDao
+import com.example.track.data.database.db.ExpensesDB
 import com.example.track.data.database.expensesRelated.ExpenseCategoryDao
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.database.ideaRelated.ExpenseLimitsDao
@@ -13,7 +15,6 @@ import com.example.track.data.database.incomeRelated.IncomeCategoryDao
 import com.example.track.data.database.incomeRelated.IncomeDao
 import com.example.track.data.implementations.charts.ChartsRepositoryImpl
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.implementations.currencies.CurrenciesRatesHandlerImpl
 import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
@@ -25,6 +26,8 @@ import com.example.track.data.implementations.ideas.SavingsCardRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.notes.NotesRepositoryImpl
+import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.data.other.workers.CurrenciesRatesWorker
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
@@ -32,7 +35,6 @@ import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnVi
 import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
-import com.example.track.data.other.workers.CurrenciesRatesWorker
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.EditCategoryUseCase
@@ -47,38 +49,56 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
 import org.koin.dsl.module
 
-val appModule = module {
-    single<ExpenseItemsDAO> { ExpensesDB.getInstance(androidContext()).expenseItemsDao }
-    single<ExpensesListRepositoryImpl> { ExpensesListRepositoryImpl(get()) }
+val workerFactoryModule = module {
+    worker { CurrenciesRatesWorker(get(), get(), get()) }
+}
 
-    single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
+val settingsModule = module {
+    single<DataStoreManager> { DataStoreManager(get()) }
+}
+
+val coreModule = module {
+    single<CurrenciesRatesHandler> { CurrenciesRatesHandler(get(), get()) }
+    single<NotesHandler> { NotesHandler() }
+    single<ChartHandler> { ChartHandler() }
+}
+
+val appModule = module {
+    // Expense related
+    single<ExpensesListRepositoryImpl> { ExpensesListRepositoryImpl(get(),get()) }
     single<ExpensesCategoriesListRepositoryImpl> { ExpensesCategoriesListRepositoryImpl(get()) }
 
-    single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
-    single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
-    single<CurrenciesRatesHandlerImpl> { CurrenciesRatesHandlerImpl(get(), get()) }
-
-    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get()) }
-    single<SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao }
-    single<ExpenseLimitsDao> { ExpensesDB.getInstance(androidContext()).expenseLimitsDao }
-    single<IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao }
-
-    single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
-    single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
-
-    single<IncomeDao> { ExpensesDB.getInstance(androidContext()).incomeDao }
+    // Income related
     single<IncomeListRepositoryImpl> { IncomeListRepositoryImpl(get()) }
-
-    single<IncomeCategoryDao> { ExpensesDB.getInstance(androidContext()).incomeCategoryDao }
     single<IncomesCategoriesListRepositoryImpl> { IncomesCategoriesListRepositoryImpl(get()) }
 
+    // Currencies
+    single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
+    single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
+
+    // Ideas
+    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get()) }
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
     single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
     single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get()) }
     single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get()) }
 
+    // Statistic related
     single<ChartsRepositoryImpl> { ChartsRepositoryImpl(get(), get(), get(), get()) }
     single<NotesRepositoryImpl> { NotesRepositoryImpl(get(), get(), get(), get()) }
+}
+
+val databaseModule = module {
+    // Dao objects
+    single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
+    single<IncomeCategoryDao> { ExpensesDB.getInstance(androidContext()).incomeCategoryDao }
+    single<ExpenseItemsDAO> { ExpensesDB.getInstance(androidContext()).expenseItemsDao }
+    single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
+    single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
+    single<SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao }
+    single<IncomeDao> { ExpensesDB.getInstance(androidContext()).incomeDao }
+    single<ExpenseLimitsDao> { ExpensesDB.getInstance(androidContext()).expenseLimitsDao }
+    single<IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao }
 }
 
 val domainModule = module {
@@ -92,14 +112,6 @@ val domainModule = module {
     factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get()) }
     factory<EditCategoryUseCase> { EditCategoryUseCase(get()) }
     factory<GetCategoryListUseCase> { GetCategoryListUseCase() }
-}
-
-val workerFactoryModule = module {
-    worker { CurrenciesRatesWorker(get(), get(), get()) }
-}
-
-val settingsModule = module {
-    single<DataStoreManager> { DataStoreManager(get()) }
 }
 
 val viewModelModule = module {

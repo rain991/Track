@@ -8,7 +8,6 @@ import com.example.track.presentation.themes.Themes
 // Retrofit
 const val API_KEY = "88441b2e585647a7842c35c23251558f"
 const val CURRENCY_CALL_URL_DEFAULT = "https://api.currencyfreaks.com"
-const val INCORRECT_CONVERSION_RESULT = -1f
 
 // user
 const val NAME_DEFAULT: String = "User"
@@ -37,3 +36,4 @@ val CURRENCIES_PREFERENCE_DEFAULT = CurrenciesPreference(
 const val FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE = 6
 const val FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE = 8
 const val MIN_SUPPORTED_YEAR = 2000
+const val INCORRECT_CONVERSION_RESULT = -1f

@@ -149,7 +149,7 @@ class StatisticsViewModel(
         setFourthSlotMainMessage(stringResults[0])
         setFourthSlotAdditionalMessage(stringResults[1])
     }
-
+    // WILL BE DEPRECATED
     private fun getMessageForCurrentSlotEntry(resultValueKey: String, value: Number): String {
         return when (resultValueKey) {
             // First Slot
