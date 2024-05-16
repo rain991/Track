@@ -49,14 +49,16 @@ import com.example.track.data.other.converters.areDatesSame
 import com.example.track.data.other.converters.areYearsSame
 import com.example.track.data.other.converters.convertDateToLocalDate
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
+import com.example.track.presentation.components.common.parser.getMonthResID
 import com.example.track.presentation.components.common.ui.FinancialItemCardTypeSimple
-import com.example.track.presentation.components.mainScreen.additionalInfoCards.MainScreenInfoComposable
+import com.example.track.presentation.components.mainScreen.additionalInfoCards.TrackScreenInfoComposable
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
-
+/*  Contains lazy column used in expense screen. Also contains such private composable functions:
+    Transactions (ui to switch between expeneses and incomes), EmptyLazyColumnPlacement, ExpenseDayHeader, ExpenseMonthHeader, ExpenseYearHeader   */
 @Composable
-fun ExpensesLazyColumn() {
+fun ExpenseAndIncomeLazyColumn() {
     val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
     val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     val expensesList = expenseAndIncomeLazyColumnViewModel.expensesList
@@ -100,7 +102,7 @@ fun ExpensesLazyColumn() {
             }
         }
         Column {
-            MainScreenInfoComposable()
+            TrackScreenInfoComposable()
             Box(
                 modifier = Modifier
                     .wrapContentWidth()
@@ -318,23 +320,3 @@ private fun ExpenseYearHeader(localDate: LocalDate) {
         )
     }
 }
-
-fun getMonthResID(localDate: LocalDate): Int {
-    val monthResId = when (localDate.monthValue) {
-        1 -> R.string.january
-        2 -> R.string.february
-        3 -> R.string.march
-        4 -> R.string.april
-        5 -> R.string.may
-        6 -> R.string.june
-        7 -> R.string.july
-        8 -> R.string.august
-        9 -> R.string.september
-        10 -> R.string.october
-        11 -> R.string.november
-        12 -> R.string.december
-        else -> R.string.unknown_month
-    }
-    return monthResId
-}
-

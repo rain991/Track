@@ -1,13 +1,14 @@
 package com.example.track.domain.repository.ideas
 
 import com.example.track.domain.models.idea.Idea
+import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 interface IncomePlanCardRepository {
     fun requestPlannedIncome(idea: Idea) : Float
     fun requestStartOfPeriod(idea: Idea) : Date
     fun requestEndOfPeriod(idea: Idea) : Date?
-    suspend fun requestCompletenessValue(idea: Idea) : Float
-    suspend fun requestCompletenessRate(idea: Idea) : Float
-    suspend fun getSumOfIncomesInTimeSpan(startOfSpan : Date, endOfSpan : Date) : Float
+    suspend fun requestCompletenessValue(idea: Idea) : Flow<Float>
+    suspend fun requestCompletenessRate(idea: Idea) :  Flow<Float>
+    suspend fun getSumOfIncomesInTimeSpan(startOfSpan : Date, endOfSpan : Date) :  Flow<Float>
 }

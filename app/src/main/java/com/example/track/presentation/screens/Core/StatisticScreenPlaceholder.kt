@@ -12,12 +12,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.example.track.R
-import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
-import com.example.track.presentation.components.bottomsheets.other.ExtendedButtonExample
-import com.example.track.presentation.other.Header
+import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.presentation.components.common.ui.Header
+import com.example.track.presentation.components.other.ExtendedButtonExample
 import org.koin.compose.koinInject
 
+
+/*  Temporary used till full version of statistic screen implemented    */
 @Composable
 fun StatisticScreenPlaceholder() {
 //    val statisticsViewModel = koinViewModel<StatisticsViewModel>()
@@ -27,7 +29,7 @@ fun StatisticScreenPlaceholder() {
     //  val statisticsScreenState = statisticsViewModel.statisticsScreenState.collectAsState()
     Scaffold(
         topBar = {
-            if (isPageNameVisible.value) Header(categoryName = stringResource(R.string.statistic))
+            if (isPageNameVisible.value) Header(pageName = stringResource(R.string.statistic))
         },
         floatingActionButton = {
             ExtendedButtonExample(isButtonExpanded = false, onClick = { })

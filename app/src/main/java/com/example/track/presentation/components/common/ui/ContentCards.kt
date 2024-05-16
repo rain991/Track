@@ -48,15 +48,16 @@ import androidx.compose.ui.unit.sp
 import com.example.track.R
 import com.example.track.data.other.converters.extractAdditionalDateInformation
 import com.example.track.data.other.converters.extractDayOfWeekFromDate
+import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.abstractLayer.FinancialEntity
-import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.presentation.components.common.parser.parseColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import kotlin.math.absoluteValue
 
-
+/*  FinancialItemCardTypeSimple used in expenses screen for single expense or income entity in lazy column
+    Also contains ExpenseValueCard(rectangle on right with values and currency), CategoryCard(colored category name), NoteCard(contains notion)  */
 @Composable
 fun FinancialItemCardTypeSimple(
     financialEntity: FinancialEntity,
@@ -243,7 +244,6 @@ private fun CategoryCard(category: CategoryEntity, containerColor: Color) {
                 textAlign = TextAlign.Center
             )
         }
-
     }
 }
 

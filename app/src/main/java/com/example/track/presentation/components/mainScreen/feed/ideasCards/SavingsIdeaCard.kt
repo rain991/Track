@@ -1,4 +1,4 @@
-package com.example.track.presentation.components.mainScreen.feed
+package com.example.track.presentation.components.mainScreen.feed.ideasCards
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -18,12 +18,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.track.domain.models.idea.Savings
-import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
-import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SavingsIdeaCard(savings: Savings) {
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+  //  val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -36,7 +34,7 @@ fun SavingsIdeaCard(savings: Savings) {
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Text(
-                text = "${savings.label}",
+                text = savings.label,
                 style = MaterialTheme.typography.titleSmall
             )
         }
@@ -49,9 +47,7 @@ fun SavingsIdeaCard(savings: Savings) {
         Spacer(Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
-                Text(text = "Planned")
-                Spacer(Modifier.width(2.dp))
-                Text(text = "${savings.goal}")
+                Text(text = "Planned ${savings.goal}")
             }
             Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
                 Text(text = "Completed for")

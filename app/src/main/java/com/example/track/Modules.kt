@@ -32,7 +32,7 @@ import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
-import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
+import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
@@ -65,7 +65,7 @@ val coreModule = module {
 
 val appModule = module {
     // Expense related
-    single<ExpensesListRepositoryImpl> { ExpensesListRepositoryImpl(get(),get()) }
+    single<ExpensesListRepositoryImpl> { ExpensesListRepositoryImpl(get(), get(), get()) }
     single<ExpensesCategoriesListRepositoryImpl> { ExpensesCategoriesListRepositoryImpl(get()) }
 
     // Income related
@@ -80,12 +80,12 @@ val appModule = module {
     single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get()) }
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
     single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
-    single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get()) }
+    single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get(), get(), get()) }
     single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get()) }
 
     // Statistic related
     single<ChartsRepositoryImpl> { ChartsRepositoryImpl(get(), get(), get(), get()) }
-    single<NotesRepositoryImpl> { NotesRepositoryImpl(get(), get(), get(), get()) }
+    single<NotesRepositoryImpl> { NotesRepositoryImpl(get(), get(), get(), get(), get(),get()) }
 }
 
 val databaseModule = module {
@@ -118,7 +118,7 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
     viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get()) }
-    viewModel { MainScreenFeedViewModel(get()) }
+    viewModel { TrackScreenFeedViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
     viewModel { BudgetIdeaCardViewModel(get(), get()) }
     viewModel { StatisticsViewModel(get(), get()) }

@@ -1,4 +1,4 @@
-package com.example.track.presentation.components.bottomsheets.sheets
+package com.example.track.presentation.components.bottomSheet
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
@@ -69,12 +69,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
-import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.constants.MIN_SUPPORTED_YEAR
-import com.example.track.domain.models.currency.Currency
-import com.example.track.domain.models.abstractLayer.CategoryEntity
+import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
+import com.example.track.domain.models.abstractLayer.CategoryEntity
+import com.example.track.domain.models.currency.Currency
 import com.example.track.presentation.components.common.ui.CategoryChip
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeler.sheets.date_time.DateTimeDialog
@@ -88,7 +88,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SimplifiedBottomSheet(dataStoreManager: DataStoreManager) {
+fun BottomSheet(dataStoreManager: DataStoreManager) {
     val context = LocalContext.current
     val warningMessage = stringResource(id = R.string.warning_bottom_sheet_exp)
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()

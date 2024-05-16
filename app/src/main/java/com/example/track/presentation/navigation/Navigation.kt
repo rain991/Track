@@ -8,11 +8,11 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.presentation.components.login.LoginScreen
+import com.example.track.presentation.other.TrackScreenManager
 import com.example.track.presentation.screens.Additional.CategoriesSettingsScreen
 import com.example.track.presentation.screens.Additional.CurrenciesSettingsScreen
 import com.example.track.presentation.screens.Additional.IdeasListSettingsScreen
 import com.example.track.presentation.screens.Additional.PersonalSettingsScreen
-import com.example.track.presentation.other.ScreenManager
 
 @Composable
 fun Navigation(dataStoreManager: DataStoreManager) {
@@ -30,7 +30,7 @@ fun Navigation(dataStoreManager: DataStoreManager) {
         startDestination = Screen.MainScreen.route
     ) {
         composable(route = Screen.MainScreen.route) {
-            ScreenManager(navController)
+            TrackScreenManager(navController)
         }
         composable(route = Screen.LoginScreen.route) {
             LoginScreen(navController)

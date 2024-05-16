@@ -18,10 +18,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExposedDropdownMenuBox
-import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.TextField
@@ -41,15 +37,14 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.wear.compose.material.Text
 import com.example.track.R
-import com.example.track.domain.models.currency.Currency
 import com.example.track.data.viewmodels.login.LoginViewModel
+import com.example.track.presentation.components.common.ui.CurrencyDropDownMenu
 import com.example.track.presentation.navigation.Screen
 import com.example.track.ui.theme.focusedTextFieldText
 import com.example.track.ui.theme.md_theme_light_primary
@@ -60,6 +55,7 @@ import org.koin.androidx.compose.koinViewModel
 
 const val FIRSTNAME_INPUT_ID = 102
 const val INCOME_INPUT_ID = 703
+
 @Composable
 fun LoginScreen(navController: NavController) {
     val loginViewModel = koinViewModel<LoginViewModel>()
@@ -67,9 +63,7 @@ fun LoginScreen(navController: NavController) {
     Surface(modifier = Modifier.fillMaxSize()) {
         Column(modifier = Modifier.fillMaxSize()) {
             LoginHeader()
-
             Spacer(modifier = Modifier.height(32.dp))
-
             LoginContent(loginViewModel, navController, coroutineScope)
         }
     }
@@ -120,53 +114,6 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                 text = stringResource(R.string.lets_start),
                 style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
             )
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun CurrencyDropDownMenu(currencyList: List<Currency>, selectedOption: Currency, onSelect: (Currency) -> Unit) {
-    val uiColor = if (isSystemInDarkTheme()) Color.White else Black
-    var isExpanded by remember { mutableStateOf(false) }
-    ExposedDropdownMenuBox(
-        expanded = isExpanded,
-        onExpandedChange = {
-            isExpanded = !isExpanded
-        }
-    ) {
-
-        TextField(
-            value = selectedOption.ticker,
-            readOnly = true,
-            onValueChange = {},
-            label = { Text(stringResource(R.string.currency), style = TextStyle(color = uiColor)) },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(
-                    expanded = isExpanded
-                )
-            },
-            colors = ExposedDropdownMenuDefaults.textFieldColors(),
-            modifier = Modifier.menuAnchor()
-        )
-        ExposedDropdownMenu(
-            expanded = isExpanded,
-            onDismissRequest = {
-                isExpanded = false
-            }
-        ) {
-            currencyList.forEach { selectionOption ->
-                DropdownMenuItem(
-                    text = { Text(text = selectionOption.name, color = uiColor) },
-                    onClick = {
-                        onSelect(selectionOption)
-                        isExpanded = false
-                    },
-                    trailingIcon = {
-                        Text(text = selectionOption.ticker, color = uiColor)
-                    }
-                )
-            }
         }
     }
 }

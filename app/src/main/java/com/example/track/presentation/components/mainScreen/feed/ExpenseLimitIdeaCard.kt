@@ -24,21 +24,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
+import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.domain.models.idea.ExpenseLimits
-import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.components.common.ui.CategoryChip
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
+/*  Contains Card used in expense screen feed to show expense limit entity  */
 @Composable
 fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits) {
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
     val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepositoryImpl>()
     var completedAbsoluteValue by remember { mutableFloatStateOf(0.0f) }
     var complitionRate by remember { mutableFloatStateOf(0.0f) }
-    LaunchedEffect(key1 = mainScreenFeedViewModel.ideaList) {
-        completedAbsoluteValue = mainScreenFeedViewModel.getCompletionValue(expenseLimit).value
-        mainScreenFeedViewModel.getCompletionValue(expenseLimit).collect {
+    LaunchedEffect(key1 = trackScreenFeedViewModel.ideaList) {
+        completedAbsoluteValue = trackScreenFeedViewModel.getCompletionValue(expenseLimit).value
+        trackScreenFeedViewModel.getCompletionValue(expenseLimit).collect {
             if (it != 0.0f) {
                 complitionRate = expenseLimit.goal.div(it)
             } else 0.0f

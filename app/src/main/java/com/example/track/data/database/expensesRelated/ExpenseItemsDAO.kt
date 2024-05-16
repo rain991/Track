@@ -40,10 +40,10 @@ interface ExpenseItemsDAO {
     suspend fun getCountOfExpensesInTimeSpan(start: Long, end: Long): Int
 
     @Query("SELECT MAX(value) FROM expenses WHERE date BETWEEN :start AND :end")
-    suspend fun getBiggestExpenseInTimeSpan(start: Long, end: Long): Float?
+     fun getBiggestExpenseInTimeSpan(start: Long, end: Long): Float?
 
     @Query("SELECT * FROM expenses WHERE categoryId IN (:listOfCategoriesId) AND date BETWEEN :start AND :end")
-    suspend fun getExpensesByCategoriesIdInTimeSpan(start: Long, end: Long, listOfCategoriesId: List<Int>): Flow<List<ExpenseItem>>
+     fun getExpensesByCategoriesIdInTimeSpan(start: Long, end: Long, listOfCategoriesId: List<Int>): Flow<List<ExpenseItem>>
 
     @Query("SELECT * FROM expenses WHERE id in (:listOfIds)")
     fun getExpensesByIds(listOfIds: List<Int>): List<ExpenseItem>

@@ -1,11 +1,12 @@
-package com.example.track.presentation.components.common
+package com.example.track.presentation.components.common.ui
 
 import androidx.compose.ui.graphics.Color
 
 
-val GreenColor = Color(0xFF2FD286)
+/*  Swipe to confirm is used in bottom sheet to accept adding new financial entity  */
 
-enum class ConfirmationState {
+val GreenColor = Color(0xFF2FD286)
+private enum class ConfirmationState {
     Default, Confirmed
 }
 

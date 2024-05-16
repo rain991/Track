@@ -33,18 +33,6 @@ import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-
-@Composable
-fun SettingsHeader(modifier: Modifier, dataStoreManager: DataStoreManager) {
-    val currentUserName = dataStoreManager.nameFlow.collectAsState(initial = NAME_DEFAULT)
-    Text(
-        text = stringResource(R.string.greetings_settings_screen, currentUserName.value),
-        modifier = modifier,
-        style = MaterialTheme.typography.titleMedium.copy(fontSize = 40.sp, color = MaterialTheme.colorScheme.onPrimaryContainer)
-    )
-    Spacer(modifier = Modifier.height(20.dp))
-}
-
 @Composable
 fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
     val settingsViewModel = koinViewModel<SettingsViewModel>()

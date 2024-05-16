@@ -1,4 +1,4 @@
-package com.example.track.presentation.components.mainScreen.feed
+package com.example.track.presentation.components.mainScreen.feed.ideasCards
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -22,18 +22,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
+import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.domain.models.idea.IncomePlans
-import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import org.koin.androidx.compose.koinViewModel
-
+/*  Contains Card used in expense screen feed to show income plan entity  */
 @Composable
-fun IncomeIdeaCard(incomePlans: IncomePlans) {
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+fun IncomePlanIdeaCard(incomePlans: IncomePlans) {
+    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
     var completedAbsoluteValue by remember { mutableFloatStateOf(0.0f) }
     var complitionRate by remember { mutableFloatStateOf(0.0f) }
-    LaunchedEffect(key1 = mainScreenFeedViewModel.ideaList) {
-        completedAbsoluteValue = mainScreenFeedViewModel.getCompletionValue(incomePlans).value
-        mainScreenFeedViewModel.getCompletionValue(incomePlans).collect {
+    LaunchedEffect(key1 = trackScreenFeedViewModel.ideaList) {
+        completedAbsoluteValue = trackScreenFeedViewModel.getCompletionValue(incomePlans).value
+        trackScreenFeedViewModel.getCompletionValue(incomePlans).collect {
             if (it != 0.0f) {
                 complitionRate = incomePlans.goal.div(it)
             } else 0.0f

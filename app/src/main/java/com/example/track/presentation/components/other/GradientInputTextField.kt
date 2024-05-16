@@ -1,4 +1,4 @@
-package com.example.track.presentation.components.bottomsheets.other
+package com.example.track.presentation.components.other
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding

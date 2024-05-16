@@ -3,8 +3,8 @@ package com.example.track.data.viewmodels.mainScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
+import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.idea.Idea
@@ -25,7 +25,7 @@ import java.time.LocalDate
 import java.util.Date
 
 
-class MainScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepositoryImpl) : ViewModel() {
+class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepositoryImpl) : ViewModel() {
     private val _ideaList = mutableStateListOf<Idea>()
     val ideaList: List<Idea> = _ideaList
     private val _isNewIdeaDialogVisible = MutableStateFlow(false)

@@ -1,7 +1,6 @@
 package com.example.track.presentation.components.mainScreen.dialogs
 
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
@@ -60,11 +59,11 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
-import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.domain.models.currency.Currency
-import com.example.track.data.viewmodels.mainScreen.MainScreenFeedViewModel
 import com.example.track.presentation.components.common.ui.CategoryChip
 import com.example.track.presentation.components.common.ui.CustomDatePicker
 import com.example.track.presentation.states.componentRelated.IdeaSelectorTypes
@@ -73,17 +72,18 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
+/*  Contains components related to creating a new idea dialog: SavingsDialogInputs, ExpenseLimitsDialogInputs, IncomePlanDialogInputs,
+    IdeaInputField, NewIdeaCategoriesGrid  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewIdeaDialog() {
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
-    val newIdeaDialogState = mainScreenFeedViewModel.newIdeaDialogState.collectAsState()
+    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
+    val newIdeaDialogState = trackScreenFeedViewModel.newIdeaDialogState.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
-     val coroutineScope = rememberCoroutineScope()
-    Log.d("MyLog", "NewIdeaDialog: ${newIdeaDialogState.value}")
+    val coroutineScope = rememberCoroutineScope()
     val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Dialog(
-        onDismissRequest = { mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false) },
+        onDismissRequest = { trackScreenFeedViewModel.setIsNewIdeaDialogVisible(false) },
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Surface(
@@ -94,7 +94,7 @@ fun NewIdeaDialog() {
         ) {
             if (newIdeaDialogState.value.warningMessage != "") {
                 Toast.makeText(LocalContext.current, newIdeaDialogState.value.warningMessage, Toast.LENGTH_SHORT).show()
-                mainScreenFeedViewModel.setWarningMessage("")
+                trackScreenFeedViewModel.setWarningMessage("")
             }
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(
@@ -116,7 +116,7 @@ fun NewIdeaDialog() {
                             SegmentedButton(
                                 modifier = Modifier.safeContentPadding(),
                                 shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
-                                onClick = { mainScreenFeedViewModel.setTypeSelected(label) },
+                                onClick = { trackScreenFeedViewModel.setTypeSelected(label) },
                                 selected = newIdeaDialogState.value.typeSelected == label
                             ) {
                                 if (label == IdeaSelectorTypes.ExpenseLimit) {
@@ -168,14 +168,13 @@ fun NewIdeaDialog() {
                 ) {
                     OutlinedButton(
                         modifier = Modifier.scale(0.8f),
-                        onClick = { mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false) }) {
+                        onClick = { trackScreenFeedViewModel.setIsNewIdeaDialogVisible(false) }) {
                         Text("Decline")
                     }
                     FilledTonalButton(modifier = Modifier.scale(0.9f), onClick = {
-                        coroutineScope.launch{
-                            mainScreenFeedViewModel.addNewIdea()
+                        coroutineScope.launch {
+                            trackScreenFeedViewModel.addNewIdea()
                         }
-                      //  mainScreenFeedViewModel.setIsNewIdeaDialogVisible(false)
                     }) {
                         Text("Add")
                     }
@@ -190,7 +189,7 @@ fun NewIdeaDialog() {
 private fun SavingsDialogInputs(
     newIdeaDialogState: NewIdeaDialogState
 ) {
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
     val labelInputText = newIdeaDialogState.label
     Row(
         modifier = Modifier
@@ -199,7 +198,7 @@ private fun SavingsDialogInputs(
     ) {
         TextField(
             value = labelInputText ?: "",
-            onValueChange = { mainScreenFeedViewModel.setLabel(it) },
+            onValueChange = { trackScreenFeedViewModel.setLabel(it) },
             label = { "Saving for" },
             maxLines = 1,
             modifier = Modifier
@@ -221,7 +220,7 @@ private fun SavingsDialogInputs(
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
             checked = newIdeaDialogState.includedInBudget ?: true,
-            onCheckedChange = { it -> mainScreenFeedViewModel.setIncludedInBudget(it) })
+            onCheckedChange = { it -> trackScreenFeedViewModel.setIncludedInBudget(it) })
     }
     Spacer(modifier = Modifier.height(4.dp))
     Row(
@@ -234,7 +233,7 @@ private fun SavingsDialogInputs(
             Text(text = "optional", style = MaterialTheme.typography.labelSmall)
         }
         Spacer(modifier = Modifier.width(12.dp))
-        Button(onClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
+        Button(onClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
             Text(
                 text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else "Date",
                 style = MaterialTheme.typography.bodySmall
@@ -242,15 +241,15 @@ private fun SavingsDialogInputs(
         }
         CustomDatePicker(
             isVisible = newIdeaDialogState.isDateDialogVisible,
-            onNegativeClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
-            onPositiveClick = { date -> mainScreenFeedViewModel.setEndDate(date) }
+            onNegativeClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
+            onPositiveClick = { date -> trackScreenFeedViewModel.setEndDate(date) }
         )
     }
 }
 
 @Composable
 private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -260,7 +259,7 @@ private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
             checked = newIdeaDialogState.eachMonth ?: true,
-            onCheckedChange = { mainScreenFeedViewModel.setEachMonth(it) })
+            onCheckedChange = { trackScreenFeedViewModel.setEachMonth(it) })
     }
     Spacer(modifier = Modifier.height(4.dp))
     if (newIdeaDialogState.eachMonth == false) {
@@ -274,7 +273,7 @@ private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
                 Text(text = "optional", style = MaterialTheme.typography.labelSmall)
             }
             Spacer(modifier = Modifier.width(12.dp))
-            Button(onClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
+            Button(onClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
                 Text(
                     text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else "Date",
                     style = MaterialTheme.typography.bodySmall
@@ -282,8 +281,8 @@ private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
             }
             CustomDatePicker(
                 isVisible = newIdeaDialogState.isDateDialogVisible,
-                onNegativeClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
-                onPositiveClick = { date -> mainScreenFeedViewModel.setEndDate(date) }
+                onNegativeClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
+                onPositiveClick = { date -> trackScreenFeedViewModel.setEndDate(date) }
             )
         }
         Spacer(modifier = Modifier.height(4.dp))
@@ -297,7 +296,7 @@ private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
             checked = newIdeaDialogState.relatedToAllCategories ?: true,
-            onCheckedChange = { mainScreenFeedViewModel.setSelectedToAllCategories(it) })
+            onCheckedChange = { trackScreenFeedViewModel.setSelectedToAllCategories(it) })
     }
     if (newIdeaDialogState.relatedToAllCategories != true) {
         NewIdeaCategoriesGrid()
@@ -306,7 +305,7 @@ private fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
 
 @Composable
 private fun IncomePlanDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
     Spacer(modifier = Modifier.height(4.dp))
     Row(
         modifier = Modifier
@@ -318,7 +317,7 @@ private fun IncomePlanDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
             Text(text = "optional", style = MaterialTheme.typography.labelSmall)
         }
         Spacer(modifier = Modifier.width(12.dp))
-        Button(onClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
+        Button(onClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
             Text(
                 text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else "Date",
                 style = MaterialTheme.typography.bodySmall
@@ -326,8 +325,8 @@ private fun IncomePlanDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         }
         CustomDatePicker(
             isVisible = newIdeaDialogState.isDateDialogVisible,
-            onNegativeClick = { mainScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
-            onPositiveClick = { date -> mainScreenFeedViewModel.setEndDate(date) }
+            onNegativeClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
+            onPositiveClick = { date -> trackScreenFeedViewModel.setEndDate(date) }
         )
     }
 }
@@ -337,8 +336,8 @@ private fun IdeaInputField(preferableCurrency: Currency) {
     val focusManager = LocalFocusManager.current
     val controller = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
-    val newIdeaDialogState = mainScreenFeedViewModel.newIdeaDialogState.collectAsState()
+    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
+    val newIdeaDialogState = trackScreenFeedViewModel.newIdeaDialogState.collectAsState()
     val currentInputValue = newIdeaDialogState.value.goal
     Row(
         verticalAlignment = Alignment.CenterVertically, modifier = Modifier.wrapContentHeight()
@@ -355,7 +354,7 @@ private fun IdeaInputField(preferableCurrency: Currency) {
             ),
             value = currentInputValue.toString(),
             onValueChange = { newText ->
-                mainScreenFeedViewModel.setGoal(newText.toFloat())
+                trackScreenFeedViewModel.setGoal(newText.toFloat())
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
@@ -374,10 +373,10 @@ private fun IdeaInputField(preferableCurrency: Currency) {
 @Composable
 private fun NewIdeaCategoriesGrid() {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
-    val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
     val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepositoryImpl>()
     val expenseCategoriesList = expenseCategoriesListRepositoryImpl.getCategoriesList().collectAsState(initial = listOf())
-    val bottomSheetViewState = mainScreenFeedViewModel.newIdeaDialogState.collectAsState()
+    val bottomSheetViewState = trackScreenFeedViewModel.newIdeaDialogState.collectAsState()
     val firstSelectedCategory = bottomSheetViewState.value.selectedCategory1
     val secondSelectedCategory = bottomSheetViewState.value.selectedCategory2
     val thirdSelectedCategory = bottomSheetViewState.value.selectedCategory3
@@ -394,7 +393,7 @@ private fun NewIdeaCategoriesGrid() {
                 category = item,
                 isSelected = (item == firstSelectedCategory || item == secondSelectedCategory || item == thirdSelectedCategory),
                 chipScale = 0.92f,
-                onSelect = { mainScreenFeedViewModel.setSelectedCategory(item) })
+                onSelect = { trackScreenFeedViewModel.setSelectedCategory(item) })
         }
     }
 }
