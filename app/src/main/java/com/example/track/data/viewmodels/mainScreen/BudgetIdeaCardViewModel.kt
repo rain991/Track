@@ -2,13 +2,14 @@ package com.example.track.data.viewmodels.mainScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.domain.models.currency.Currency
 import com.example.track.presentation.states.componentRelated.BudgetIdeaCardState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class BudgetIdeaCardViewModel(
@@ -24,22 +25,14 @@ class BudgetIdeaCardViewModel(
         )
     )
     val budgetCardState = _budgetCardState.asStateFlow()
-
-    init {
+    suspend fun initializeStates() {
         viewModelScope.launch {
-            budgetIdeaCardRepositoryImpl.requestMonthBudget().collect{
-                setBudget(it.toFloat())
-            }
             budgetIdeaCardRepositoryImpl.requestCurrentMonthExpenses().collect {
                 setCurrentExpenseSum(it)
+                setBudgetExpectancy(budgetIdeaCardRepositoryImpl.requestBudgetExpectancy().first())
+                setBudget(budgetIdeaCardRepositoryImpl.requestMonthBudget().first().toFloat())
+                setCurrency(currenciesPreferenceRepositoryImpl.getPreferableCurrency().first())
             }
-            budgetIdeaCardRepositoryImpl.requestBudgetExpectancy().collect {
-                setBudgetExpectancy(it)
-            }
-            currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect {
-                setCurrency(it)
-            }
-
         }
     }
 

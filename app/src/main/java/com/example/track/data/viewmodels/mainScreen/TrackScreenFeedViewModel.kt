@@ -236,7 +236,7 @@ class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepos
     }
 
     fun incrementCardIndex() {
-        if (_cardIndex.value < ideaList.size + 2) _cardIndex.update { _cardIndex.value + 1 } else setCardIndex(0)
+        if (_cardIndex.value < ideaList.size + 1) _cardIndex.update { _cardIndex.value + 1 } else setCardIndex(0)
     }
 
     private fun setMaxPagerIndex(value: Int) {
