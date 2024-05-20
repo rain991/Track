@@ -59,7 +59,7 @@ val settingsModule = module {
 
 val coreModule = module {
     single<CurrenciesRatesHandler> { CurrenciesRatesHandler(get(), get()) }
-    single<NotesHandler> { NotesHandler() }
+    single<NotesHandler> { NotesHandler(get(), get()) }
     single<ChartHandler> { ChartHandler() }
 }
 
@@ -69,7 +69,7 @@ val appModule = module {
     single<ExpensesCategoriesListRepositoryImpl> { ExpensesCategoriesListRepositoryImpl(get()) }
 
     // Income related
-    single<IncomeListRepositoryImpl> { IncomeListRepositoryImpl(get()) }
+    single<IncomeListRepositoryImpl> { IncomeListRepositoryImpl(get(),get(),get()) }
     single<IncomesCategoriesListRepositoryImpl> { IncomesCategoriesListRepositoryImpl(get()) }
 
     // Currencies
@@ -80,12 +80,12 @@ val appModule = module {
     single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get()) }
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
     single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
-    single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get(), get(), get()) }
+    single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get(), get(), get(),get()) }
     single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get()) }
 
     // Statistic related
     single<ChartsRepositoryImpl> { ChartsRepositoryImpl(get(), get(), get(), get()) }
-    single<NotesRepositoryImpl> { NotesRepositoryImpl(get(), get(), get(), get(), get(),get()) }
+    single<NotesRepositoryImpl> { NotesRepositoryImpl(get(), get(), get(), get(), get(), get()) }
 }
 
 val databaseModule = module {
@@ -117,7 +117,7 @@ val domainModule = module {
 val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get()) }
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
-    viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get()) }
+    viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get(), get()) }
     viewModel { TrackScreenFeedViewModel(get()) }
     viewModel { SettingsViewModel(get(), get(), get()) }
     viewModel { BudgetIdeaCardViewModel(get(), get()) }

@@ -44,6 +44,8 @@ import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.track.R
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
 import com.example.track.data.other.converters.areDatesSame
 import com.example.track.data.other.converters.areYearsSame
@@ -53,6 +55,7 @@ import com.example.track.presentation.components.common.parser.getMonthResID
 import com.example.track.presentation.components.common.ui.FinancialItemCardTypeSimple
 import com.example.track.presentation.components.mainScreen.additionalInfoCards.TrackScreenInfoComposable
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import java.time.LocalDate
 
 /*  Contains lazy column used in expense screen. Also contains such private composable functions:
@@ -70,6 +73,8 @@ fun ExpenseAndIncomeLazyColumn() {
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE } }
     var isScrollingUp by remember { mutableStateOf(false) }
     val isScrolledBelowState = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
+    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
+    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Box {
         Box(
             modifier = Modifier
@@ -195,7 +200,8 @@ fun ExpenseAndIncomeLazyColumn() {
                                         financialEntity = currentFinancialEntity,
                                         categoryEntity = currentFinancialCategory,
                                         expanded = (expandedItem.value == currentFinancialEntity),
-                                        expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel
+                                        expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel,
+                                        preferableCurrencyTicker = preferableCurrency.value.ticker
                                     )
                                     if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
                                 }

@@ -19,7 +19,7 @@ class CurrenciesRatesHandler(
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         val rowCurrency = currencyDao.getCurrencyByTicker(financialEntity.currencyTicker)
         return if (preferableCurrency.rate != null && rowCurrency.rate != null) {
-            (preferableCurrency.rate.div(rowCurrency.rate) * financialEntity.value).toFloat()
+            (financialEntity.value * rowCurrency.rate.div(preferableCurrency.rate)).toFloat()
         } else {
             INCORRECT_CONVERSION_RESULT
         }

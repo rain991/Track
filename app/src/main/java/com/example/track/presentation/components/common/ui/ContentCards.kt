@@ -63,6 +63,7 @@ fun FinancialItemCardTypeSimple(
     financialEntity: FinancialEntity,
     expanded: Boolean,
     categoryEntity: CategoryEntity,
+    preferableCurrencyTicker : String,
     expenseAndIncomeLazyColumnViewModel: ExpenseAndIncomeLazyColumnViewModel
 ) {
     val density = LocalDensity.current
@@ -142,7 +143,7 @@ fun FinancialItemCardTypeSimple(
                                             )
                                         ) {
                                             append(" ")
-                                            append(financialEntity.currencyTicker)
+                                            append(preferableCurrencyTicker)
                                         }
 
                                     }
