@@ -33,6 +33,7 @@ import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
+import com.example.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
 import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
@@ -69,7 +70,7 @@ val appModule = module {
     single<ExpensesCategoriesListRepositoryImpl> { ExpensesCategoriesListRepositoryImpl(get()) }
 
     // Income related
-    single<IncomeListRepositoryImpl> { IncomeListRepositoryImpl(get(),get(),get()) }
+    single<IncomeListRepositoryImpl> { IncomeListRepositoryImpl(get(), get(), get()) }
     single<IncomesCategoriesListRepositoryImpl> { IncomesCategoriesListRepositoryImpl(get()) }
 
     // Currencies
@@ -80,7 +81,7 @@ val appModule = module {
     single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get()) }
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
     single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
-    single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get(), get(), get(),get()) }
+    single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get(), get(), get(), get()) }
     single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get()) }
 
     // Statistic related
@@ -122,4 +123,5 @@ val viewModelModule = module {
     viewModel { SettingsViewModel(get(), get(), get()) }
     viewModel { BudgetIdeaCardViewModel(get(), get()) }
     viewModel { StatisticsViewModel(get(), get()) }
+    viewModel { TrackScreenInfoCardsViewModel(get(), get(),get()) }
 }
