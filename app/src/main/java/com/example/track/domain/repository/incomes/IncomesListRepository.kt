@@ -17,4 +17,5 @@ interface IncomesListRepository {
     fun getSortedIncomesListDateDesc(): Flow<List<IncomeItem>>
     suspend fun getIncomesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: IncomeCategory): List<IncomeItem>
     suspend fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float>
+    suspend fun getCountOfIncomesInSpan(startDate: Date, endDate: Date): Int
 }

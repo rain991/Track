@@ -55,6 +55,10 @@ class ExpensesListRepositoryImpl(
         return expenseItemsDao.getExpensesByIds(listOfIds)
     }
 
+    override suspend fun getCountOfExpensesInSpan(startDate: Date, endDate: Date): Int {
+        return expenseItemsDao.getCountOfExpensesInTimeSpan(start = startDate.time, end = endDate.time)
+    }
+
     override suspend fun getCurrentMonthSumOfExpenseInFlow(): Flow<Float> = flow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         val todayDate = convertLocalDateToDate(LocalDate.now())
