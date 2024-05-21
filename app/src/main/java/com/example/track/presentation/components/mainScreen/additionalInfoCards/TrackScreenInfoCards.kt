@@ -69,7 +69,7 @@ fun TrackScreenInfoCards() {
                                 fontSize = 14.sp, fontWeight = FontWeight.Medium
                             )
                         ) {
-                            append(screenState.value.preferableCurrency.ticker)
+                            append(" " + screenState.value.preferableCurrency.ticker)
                         }
                     })
 
@@ -87,7 +87,7 @@ fun TrackScreenInfoCards() {
                                 fontSize = 14.sp, fontWeight = FontWeight.Medium
                             )
                         ) {
-                            append("operations")
+                            append(" operations")
                         }
                     })
                 }
@@ -120,7 +120,7 @@ fun TrackScreenInfoCards() {
                                     fontSize = 14.sp, fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append(screenState.value.preferableCurrency.ticker)
+                                append(" " + screenState.value.preferableCurrency.ticker)
                             }
                         })
 
@@ -138,7 +138,7 @@ fun TrackScreenInfoCards() {
                                     fontSize = 14.sp, fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append("operations")
+                                append(" operations")
                             }
                         })
                     }

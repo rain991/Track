@@ -1,7 +1,7 @@
 package com.example.track.data.implementations.ideas
 
-import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
+import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.domain.repository.ideas.BudgetIdeaCardRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first
@@ -11,7 +11,7 @@ class BudgetIdeaCardRepositoryImpl(
     private val dataStoreManager: DataStoreManager,
     private val expensesListRepositoryImpl: ExpensesListRepositoryImpl
 ) : BudgetIdeaCardRepository {
-    override suspend fun requestMonthBudget(): Flow<Int> {
+    override suspend fun requestMonthBudget(): Flow<Float> {
         return dataStoreManager.budgetFlow
     }
 

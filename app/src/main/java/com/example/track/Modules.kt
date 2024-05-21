@@ -120,7 +120,7 @@ val viewModelModule = module {
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
     viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get(), get()) }
     viewModel { TrackScreenFeedViewModel(get()) }
-    viewModel { SettingsViewModel(get(), get(), get()) }
+    viewModel { SettingsViewModel(get(), get(), get(),get()) }
     viewModel { BudgetIdeaCardViewModel(get(), get()) }
     viewModel { StatisticsViewModel(get(), get()) }
     viewModel { TrackScreenInfoCardsViewModel(get(), get(),get()) }

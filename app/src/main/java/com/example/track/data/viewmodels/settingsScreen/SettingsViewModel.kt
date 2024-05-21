@@ -3,9 +3,10 @@ package com.example.track.data.viewmodels.settingsScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.data.core.CurrenciesRatesHandler
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
+import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.domain.models.currency.Currency
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -16,7 +17,8 @@ import kotlinx.coroutines.launch
 class SettingsViewModel(
     private val dataStoreManager: DataStoreManager,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
-    currencyListRepositoryImpl: CurrencyListRepositoryImpl
+    private val currencyListRepositoryImpl: CurrencyListRepositoryImpl,
+    private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : ViewModel() {
     private val _currencyList = mutableStateListOf<Currency>()
     val currencyList: List<Currency> = _currencyList
@@ -45,6 +47,13 @@ class SettingsViewModel(
         if (firstAdditionalCurrencyStateFlow.first() != value && secondAdditionalCurrencyStateFlow.first() != value &&
             thirdAdditionalCurrencyStateFlow.first() != value && fourthAdditionalCurrencyStateFlow.first() != value
         ) {
+            dataStoreManager.setBudget(
+                currenciesRatesHandler.convertValueToAnyCurrency(
+                    dataStoreManager.budgetFlow.first(),
+                    currenciesPreferenceRepositoryImpl.getPreferableCurrency().first(),
+                    value
+                )
+            )
             currenciesPreferenceRepositoryImpl.setPreferableCurrency(value)
         } else {
             setToastMessage("${value.ticker} is already in use")
@@ -135,12 +144,15 @@ class SettingsViewModel(
             return
         }
     }
+
     private fun setToastMessage(message: String) {
         _toastStateFlow.update { message }
     }
+
     fun clearToastMessage() {
         _toastStateFlow.update { "" }
     }
+
     suspend fun getRandomNotUsedCurrency(): Currency {
         val usedCurrencies = listOfNotNull(
             preferableCurrencyStateFlow.first(),

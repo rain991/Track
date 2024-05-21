@@ -9,10 +9,10 @@ import androidx.navigation.compose.rememberNavController
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.presentation.components.login.LoginScreen
 import com.example.track.presentation.other.TrackScreenManager
-import com.example.track.presentation.screens.Additional.CategoriesSettingsScreen
-import com.example.track.presentation.screens.Additional.CurrenciesSettingsScreen
-import com.example.track.presentation.screens.Additional.IdeasListSettingsScreen
-import com.example.track.presentation.screens.Additional.PersonalSettingsScreen
+import com.example.track.presentation.screens.additional.CategoriesSettingsScreen
+import com.example.track.presentation.screens.additional.CurrenciesSettingsScreen
+import com.example.track.presentation.screens.additional.IdeasListSettingsScreen
+import com.example.track.presentation.screens.additional.PersonalSettingsScreen
 
 @Composable
 fun Navigation(dataStoreManager: DataStoreManager) {

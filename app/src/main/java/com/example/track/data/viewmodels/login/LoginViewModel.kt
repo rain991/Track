@@ -2,12 +2,12 @@ package com.example.track.data.viewmodels.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.example.track.data.other.constants.BUDGET_DEFAULT
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.constants.NAME_DEFAULT
-import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
+import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.domain.models.currency.Currency
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -60,7 +60,7 @@ class LoginViewModel(
         _firstNameStateFlow.update { firstName }
     }
 
-    fun setIncomeStateFlow(income: Int) {
+    fun setIncomeStateFlow(income: Float) {
         _incomeStateFlow.update { income }
     }
 }

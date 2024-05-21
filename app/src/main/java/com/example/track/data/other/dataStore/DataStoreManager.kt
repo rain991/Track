@@ -3,6 +3,7 @@ package com.example.track.data.other.dataStore
 import android.content.Context
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
+import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.track.data.other.constants.BUDGET_DEFAULT
@@ -21,7 +22,7 @@ class DataStoreManager(private val context: Context) {
         //USER
         private val LOGIN_COUNT = intPreferencesKey("first_launch")
         private val NAME = stringPreferencesKey("user_name")
-        private val BUDGET = intPreferencesKey("user_budget")
+        private val BUDGET = floatPreferencesKey("user_budget")
 
         //THEME
         private val USE_SYSTEM_THEME = booleanPreferencesKey("use_system_theme")
@@ -45,8 +46,8 @@ class DataStoreManager(private val context: Context) {
             }
         }
     }
-    val budgetFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: BUDGET_DEFAULT }
-    suspend fun setBudget(newBudget: Int, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+    val budgetFlow: Flow<Float> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: BUDGET_DEFAULT }
+    suspend fun setBudget(newBudget: Float, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             context.dataStore.edit {
                 it[BUDGET] = newBudget

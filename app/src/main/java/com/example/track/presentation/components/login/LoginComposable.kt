@@ -178,7 +178,7 @@ private fun LoginTextField(
                 textValue = it
                 if (INPUT_ID == INCOME_INPUT_ID) {
                     incomeData = it
-                    loginViewModel.setIncomeStateFlow(it.toInt())
+                    loginViewModel.setIncomeStateFlow(it.toFloat())
                 } else {
                     firstNameData = it
                     loginViewModel.setFirstNameStateFlow(it)

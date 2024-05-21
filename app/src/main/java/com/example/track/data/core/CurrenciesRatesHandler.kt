@@ -10,7 +10,8 @@ import com.example.track.domain.models.incomes.IncomeItem
 import com.example.track.domain.repository.currencies.CurrenciesRatesHandler
 import kotlinx.coroutines.flow.first
 
-// Handles functions to convert values between currencies
+/*  Handles functions to convert values between currencies
+    IMPORTANT : if you use any of those functions remember to check correctness of conversation by checking if result ==  INCORRECT_CONVERSION_RESULT */
 class CurrenciesRatesHandler(
     private val currencyDao: CurrencyDao,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
@@ -20,6 +21,14 @@ class CurrenciesRatesHandler(
         val rowCurrency = currencyDao.getCurrencyByTicker(financialEntity.currencyTicker)
         return if (preferableCurrency.rate != null && rowCurrency.rate != null) {
             (financialEntity.value * rowCurrency.rate.div(preferableCurrency.rate)).toFloat()
+        } else {
+            INCORRECT_CONVERSION_RESULT
+        }
+    }
+
+    override suspend fun convertValueToAnyCurrency(value: Float, basicCurrency: Currency, targetCurrency: Currency): Float {
+        return if (basicCurrency.rate != null && targetCurrency.rate != null) {
+            (value * basicCurrency.rate.div(targetCurrency.rate)).toFloat()
         } else {
             INCORRECT_CONVERSION_RESULT
         }
@@ -63,10 +72,12 @@ class CurrenciesRatesHandler(
                 listOfRowValues.clear()
                 listOfRowValues.addAll(listOfFinancialEntity.map { it.value })
             }
+
             is IncomeItem -> {
                 listOfRowValues.clear()
                 listOfRowValues.addAll(listOfFinancialEntity.map { it.value })
             }
+
             else -> {
                 return INCORRECT_CONVERSION_RESULT
             }

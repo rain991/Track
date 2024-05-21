@@ -5,6 +5,7 @@ import com.example.track.domain.models.currency.Currency
 
 interface CurrenciesRatesHandler {
     suspend fun convertValueToBasicCurrency(financialEntity: FinancialEntity) : Float
+    suspend fun convertValueToAnyCurrency(value: Float, basicCurrency: Currency, targetCurrency: Currency) : Float
     suspend fun convertValueToBasicCurrency(value : Float, currency: Currency) : Float
     suspend fun convertValueToBasicCurrency(value : Float, currencyTicker: String) : Float
     suspend fun getRateToPreferableCurrency(currency : Currency) : Float

@@ -1,4 +1,4 @@
-package com.example.track.presentation.screens.Additional
+package com.example.track.presentation.screens.additional
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -23,7 +23,7 @@ import com.example.track.presentation.navigation.Screen
 import org.koin.compose.koinInject
 
 @Composable
-fun CategoriesSettingsScreen(navController: NavHostController) {
+fun IdeasListSettingsScreen(navController: NavHostController){
     val settingsData = koinInject<DataStoreManager>()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -32,7 +32,7 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back to settings screen")
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Text(text = "Categories", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+                Text(text = "Ideas", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
                 Spacer(modifier = Modifier.weight(1.2f))
             }
         },bottomBar = { }
