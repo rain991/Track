@@ -9,7 +9,7 @@ import com.example.track.presentation.themes.Themes
 const val API_KEY = "88441b2e585647a7842c35c23251558f"
 const val CURRENCY_CALL_URL_DEFAULT = "https://api.currencyfreaks.com"
 
-// user
+// DEFAULTS
 const val NAME_DEFAULT: String = "User"
 const val LOGIN_COUNT_DEFAULT = 0
 const val NEEDS_LOGIN: Boolean = true
@@ -18,6 +18,10 @@ const val SHOW_PAGE_NAME_DEFAULT: Boolean = true
 const val USE_SYSTEM_THEME_DEFAULT: Boolean = true
 val PREFERABLE_THEME_DEFAULT: Themes = Themes.BlueTheme
 val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.DEFAULT, rate = null)
+val IDEA_NOTE_MAX_LENGTH = 60
+
+
+
 
 // ideas feed
 const val FEED_CARD_DELAY_SLOW = 4500L

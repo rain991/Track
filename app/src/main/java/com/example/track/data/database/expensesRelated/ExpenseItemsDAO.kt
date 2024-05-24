@@ -37,7 +37,7 @@ interface ExpenseItemsDAO {
     fun getExpensesInTimeSpanDateAsc(start: Long, end: Long): Flow<List<ExpenseItem>>
 
     @Query("SELECT Count(value) FROM expenses WHERE date BETWEEN :start AND :end")
-    suspend fun getCountOfExpensesInTimeSpan(start: Long, end: Long): Int
+    fun getCountOfExpensesInTimeSpan(start: Long, end: Long): Flow<Int>
 
     @Query("SELECT MAX(value) FROM expenses WHERE date BETWEEN :start AND :end")
      fun getBiggestExpenseInTimeSpan(start: Long, end: Long): Float?

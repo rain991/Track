@@ -50,12 +50,13 @@ class TrackScreenInfoCardsViewModel(
                 }
             }
             async {
-                setCurrentMonthExpensesCount(
-                    value = expensesListRepositoryImpl.getCountOfExpensesInSpan(
-                        startDate = startOfMonthDate,
-                        endDate = endOfMonthDate
-                    )
-                )
+                expensesListRepositoryImpl.getCountOfExpensesInSpan(
+                    startDate = startOfMonthDate,
+                    endDate = endOfMonthDate
+                ).collect {
+                    setCurrentMonthExpensesCount(it)
+                }
+
             }
             async {
                 incomeListRepositoryImpl.getSumOfIncomesInTimeSpan(
@@ -66,12 +67,13 @@ class TrackScreenInfoCardsViewModel(
                 }
             }
             async {
-                setCurrentMonthIncomesCount(
-                    value = incomeListRepositoryImpl.getCountOfIncomesInSpan(
-                        startDate = startOfMonthDate,
-                        endDate = endOfMonthDate
-                    )
-                )
+                incomeListRepositoryImpl.getCountOfIncomesInSpan(
+                    startDate = startOfMonthDate,
+                    endDate = endOfMonthDate
+                ).collect {
+                    setCurrentMonthIncomesCount(it)
+                }
+
             }
         }
     }

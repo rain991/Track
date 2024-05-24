@@ -1,7 +1,6 @@
 package com.example.track.presentation.components.other
 
 import androidx.compose.foundation.border
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.MaterialTheme
@@ -22,7 +21,6 @@ fun GradientInputTextField(value : String, label : String, keyboardType: Keyboar
         label = { Text(label) },
         maxLines = maxLines,
         modifier = Modifier
-            .padding(horizontal = 8.dp)
             .border(
                 width = 2.dp,
                 brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)),

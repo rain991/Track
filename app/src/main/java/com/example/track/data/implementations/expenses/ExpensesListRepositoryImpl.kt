@@ -55,7 +55,7 @@ class ExpensesListRepositoryImpl(
         return expenseItemsDao.getExpensesByIds(listOfIds)
     }
 
-    override suspend fun getCountOfExpensesInSpan(startDate: Date, endDate: Date): Int {
+    override suspend fun getCountOfExpensesInSpan(startDate: Date, endDate: Date): Flow<Int> {
         return expenseItemsDao.getCountOfExpensesInTimeSpan(start = startDate.time, end = endDate.time)
     }
 

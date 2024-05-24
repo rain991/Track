@@ -4,8 +4,8 @@ import com.example.track.data.implementations.expenses.ExpensesListRepositoryImp
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.domain.repository.ideas.BudgetIdeaCardRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.zip
 
 class BudgetIdeaCardRepositoryImpl(
     private val dataStoreManager: DataStoreManager,
@@ -24,11 +24,8 @@ class BudgetIdeaCardRepositoryImpl(
     }
 
     override suspend fun requestBudgetExpectancy(): Flow<Float> {
-        return requestMonthBudget().zip(
-            other = requestCurrentMonthExpenses(),
-            transform = { first, second ->
-                second.div(first)
-            })
+        return requestMonthBudget().combine(requestCurrentMonthExpenses()){
+            monthBudget, currentMonthExpense -> currentMonthExpense.div(monthBudget)
+        }
     }
-
 }

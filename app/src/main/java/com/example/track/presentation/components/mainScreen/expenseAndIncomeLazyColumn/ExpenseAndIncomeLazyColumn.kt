@@ -53,7 +53,7 @@ import com.example.track.data.other.converters.convertDateToLocalDate
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.presentation.components.common.parser.getMonthResID
 import com.example.track.presentation.components.common.ui.FinancialItemCardTypeSimple
-import com.example.track.presentation.components.mainScreen.additionalInfoCards.TrackScreenInfoCards
+import com.example.track.presentation.components.mainScreen.TrackScreenInfoCards.TrackScreenInfoCards
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import java.time.LocalDate

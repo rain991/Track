@@ -1,9 +1,11 @@
-package com.example.track.presentation.components.mainScreen.additionalInfoCards
+package com.example.track.presentation.components.mainScreen.TrackScreenInfoCards
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -14,10 +16,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -50,62 +54,69 @@ fun TrackScreenInfoCards() {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
+                        .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                        Text(text = "Expenses", style = MaterialTheme.typography.titleLarge)
+                        Text(text = "Expenses", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold))
                     }
-                    Text(text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        ) {
-                            append(screenState.value.currentMonthExpensesSum.toString())
-                        }
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 14.sp, fontWeight = FontWeight.Medium
-                            )
-                        ) {
-                            append(" " + screenState.value.preferableCurrency.ticker)
-                        }
-                    })
+                    if (screenState.value.currentMonthExpensesSum > 0) {
+                        Text(text = buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            ) {
+                                append(screenState.value.currentMonthExpensesSum.toString())
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 14.sp, fontWeight = FontWeight.Medium
+                                )
+                            ) {
+                                append(" " + screenState.value.preferableCurrency.ticker)
+                            }
+                        })
 
-                    Text(text = buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        ) {
-                            append(screenState.value.currentMonthExpensesCount.toString())
+                        Text(text = buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 16.sp,
+                                    fontWeight = FontWeight.Medium
+                                )
+                            ) {
+                                append(screenState.value.currentMonthExpensesCount.toString())
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 14.sp, fontWeight = FontWeight.Medium
+                                )
+                            ) {
+                                append(" operations")
+                            }
+                        })
+                    } else {
+                        Box(modifier = Modifier.fillMaxWidth().fillMaxHeight(), contentAlignment = Alignment.Center) {
+                            Text("0 operations this month", style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium), textAlign = TextAlign.Center)
                         }
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 14.sp, fontWeight = FontWeight.Medium
-                            )
-                        ) {
-                            append(" operations")
-                        }
-                    })
+                    }
                 }
             }
-                Card(
+            Card(
+                modifier = Modifier
+                    .height(120.dp)
+                    .weight(0.5f)
+                    .padding(start = 8.dp, end = 8.dp, top = 8.dp), shape = RoundedCornerShape(8.dp)
+            ) {
+                Column(
                     modifier = Modifier
-                        .height(120.dp)
-                        .weight(0.5f)
-                        .padding(start = 8.dp, end = 8.dp, top = 8.dp), shape = RoundedCornerShape(8.dp)
+                        .fillMaxWidth()
+                        .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
-                    ) {
-                        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                            Text(text = "Incomes", style = MaterialTheme.typography.titleLarge)
-                        }
+                    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                        Text(text = "Incomes", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold))
+                    }
+                    if (screenState.value.currentMonthIncomesSum > 0) {
                         Text(text = buildAnnotatedString {
                             withStyle(
                                 style = SpanStyle(
@@ -141,8 +152,13 @@ fun TrackScreenInfoCards() {
                                 append(" operations")
                             }
                         })
+                    } else {
+                        Box(modifier = Modifier.fillMaxWidth().fillMaxHeight(), contentAlignment = Alignment.Center) {
+                            Text("0 operations this month", style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium), textAlign = TextAlign.Center)
+                        }
                     }
                 }
             }
         }
     }
+}

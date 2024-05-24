@@ -1,5 +1,6 @@
 package com.example.track.data.viewmodels.mainScreen
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
@@ -7,9 +8,9 @@ import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.domain.models.currency.Currency
 import com.example.track.presentation.states.componentRelated.BudgetIdeaCardState
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 
 class BudgetIdeaCardViewModel(
@@ -25,13 +26,28 @@ class BudgetIdeaCardViewModel(
         )
     )
     val budgetCardState = _budgetCardState.asStateFlow()
-    suspend fun initializeStates() {    
+    suspend fun initializeStates() {
         viewModelScope.launch {
-            budgetIdeaCardRepositoryImpl.requestCurrentMonthExpenses().collect {
-                setCurrentExpenseSum(it)
-                setBudgetExpectancy(budgetIdeaCardRepositoryImpl.requestBudgetExpectancy().first())
-                setBudget(budgetIdeaCardRepositoryImpl.requestMonthBudget().first().toFloat())
-                setCurrency(currenciesPreferenceRepositoryImpl.getPreferableCurrency().first())
+            async {
+                budgetIdeaCardRepositoryImpl.requestCurrentMonthExpenses().collect {
+                    setCurrentExpenseSum(it)
+                }
+            }
+            async {
+                budgetIdeaCardRepositoryImpl.requestBudgetExpectancy().collect {
+                    setBudgetExpectancy(it)
+                    Log.d("MyLog", "initializeStates: budget expectancy is $it")
+                }
+            }
+            async {
+                budgetIdeaCardRepositoryImpl.requestMonthBudget().collect {
+                    setBudget(it)
+                }
+            }
+            async {
+                currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect {
+                    setCurrency(it)
+                }
             }
         }
     }

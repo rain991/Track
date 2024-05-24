@@ -1,4 +1,4 @@
-package com.example.track.presentation.components.mainScreen.feed
+package com.example.track.presentation.components.mainScreen.feed.ideasCards
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

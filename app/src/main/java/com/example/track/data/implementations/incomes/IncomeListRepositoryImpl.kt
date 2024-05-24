@@ -76,7 +76,7 @@ class IncomeListRepositoryImpl(
             emit(sumOfIncomesInPreferableCurrency)
         }
     }
-    override suspend fun getCountOfIncomesInSpan(startDate: Date, endDate: Date): Int {
+    override suspend fun getCountOfIncomesInSpan(startDate: Date, endDate: Date): Flow<Int> {
         return incomeDao.getCountOfIncomesInTimeSpan(start = startDate.time, end = endDate.time)
     }
 }

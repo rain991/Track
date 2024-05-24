@@ -19,7 +19,7 @@ import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.util.Date
 
-class NotesRepositoryImpl(  // should use repositoreis instead of daos
+class NotesRepositoryImpl(
     private val incomeDao: IncomeDao,
     private val expenseItemsDao: ExpenseItemsDAO,
     private val dataStoreManager: DataStoreManager,
@@ -53,11 +53,11 @@ class NotesRepositoryImpl(  // should use repositoreis instead of daos
     }
 
     override suspend fun requestCountOfExpensesInSpan(startDate: Date, endDate: Date): Int {
-        return expenseItemsDao.getCountOfExpensesInTimeSpan(start = startDate.time, end = endDate.time)
+        return expenseItemsDao.getCountOfExpensesInTimeSpan(start = startDate.time, end = endDate.time).first()
     }
 
     override suspend fun requestCountOfIncomesInSpan(startDate: Date, endDate: Date): Int {
-        return incomeDao.getCountOfIncomesInTimeSpan(start = startDate.time, end = endDate.time)
+        return incomeDao.getCountOfIncomesInTimeSpan(start = startDate.time, end = endDate.time).first()
     }
 
     override suspend fun requestCountOfExpensesMonthly(): Int {
@@ -65,7 +65,7 @@ class NotesRepositoryImpl(  // should use repositoreis instead of daos
         return expenseItemsDao.getCountOfExpensesInTimeSpan(
             start = getStartOfMonthDate(todayDate).time,
             end = getEndOfTheMonth(todayDate).time
-        )
+        ).first()
     }
 
     override suspend fun requestCountOfIncomesMonthly(): Int {
@@ -73,7 +73,7 @@ class NotesRepositoryImpl(  // should use repositoreis instead of daos
         return incomeDao.getCountOfIncomesInTimeSpan(
             start = getStartOfMonthDate(todayDate).time,
             end = getEndOfTheMonth(todayDate).time
-        )
+        ).first()
     }
 
     override suspend fun requestCountOfExpensesWeekly(): Int {
@@ -81,12 +81,12 @@ class NotesRepositoryImpl(  // should use repositoreis instead of daos
         return expenseItemsDao.getCountOfExpensesInTimeSpan(
             start = getStartOfWeekDate(todayDate).time,
             end = getEndOfWeekDate(todayDate).time
-        )
+        ).first()
     }
 
     override suspend fun requestCountOfIncomesWeekly(): Int {
         val todayDate = convertLocalDateToDate(LocalDate.now())
-        return incomeDao.getCountOfIncomesInTimeSpan(start = getStartOfWeekDate(todayDate).time, end = getEndOfWeekDate(todayDate).time)
+        return incomeDao.getCountOfIncomesInTimeSpan(start = getStartOfWeekDate(todayDate).time, end = getEndOfWeekDate(todayDate).time).first()
     }
 
     override suspend fun requestCountOfExpensesAnualy(): Int {
@@ -94,12 +94,12 @@ class NotesRepositoryImpl(  // should use repositoreis instead of daos
         return expenseItemsDao.getCountOfExpensesInTimeSpan(
             start = getStartOfYearDate(todayDate).time,
             end = getEndOfYearDate(todayDate).time
-        )
+        ).first()
     }
 
     override suspend fun requestCountOfIncomeAnualy(): Int {
         val todayDate = convertLocalDateToDate(LocalDate.now())
-        return incomeDao.getCountOfIncomesInTimeSpan(start = getStartOfYearDate(todayDate).time, end = getEndOfYearDate(todayDate).time)
+        return incomeDao.getCountOfIncomesInTimeSpan(start = getStartOfYearDate(todayDate).time, end = getEndOfYearDate(todayDate).time).first()
     }
 
     override suspend fun requestBiggestExpenseMonthly(): Float? {

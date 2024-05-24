@@ -1,21 +1,23 @@
 package com.example.track.presentation.components.mainScreen.feed.feedCards
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -25,12 +27,19 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
+import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.presentation.components.common.parser.getMonthResID
-import com.example.track.presentation.states.componentRelated.BudgetIdeaCardState
+import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
+// Along code is always used to name as BudgetIdeaCard
 @Composable
-fun TrackMainFeedCard(state: BudgetIdeaCardState) {
+fun TrackMainFeedCard() {
+    val budgetIdeaCardViewModel = koinViewModel<BudgetIdeaCardViewModel>()
+    val state = budgetIdeaCardViewModel.budgetCardState.collectAsState()
+    LaunchedEffect(key1 = Unit) {
+        budgetIdeaCardViewModel.initializeStates()
+    }
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -47,77 +56,84 @@ fun TrackMainFeedCard(state: BudgetIdeaCardState) {
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+                    .padding(horizontal = 8.dp, vertical = 4.dp),
                 textAlign = TextAlign.Center
             )
-            Text(buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                ) {
-                    append("Planned  ")
-                }
-                withStyle(
-                    style = SpanStyle(
-                        fontSize = 20.sp, fontWeight = FontWeight.SemiBold
-                    )
-                ) {
-                    append(state.budget.toString())
-                }
-                withStyle(
-                    style = SpanStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                ) {
-                    append(" ")
-                    append(state.currencyTicker)
-                }
-            })
-
-            Text(buildAnnotatedString {
-                withStyle(
-                    style = SpanStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                ) {
-                    append("Spent  ")
-                }
-                withStyle(
-                    style = SpanStyle(
-
-                        fontSize = 20.sp, fontWeight = FontWeight.SemiBold
-                    )
-                ) {
-                    append(state.currentExpensesSum.toString())
-                }
-                withStyle(
-                    style = SpanStyle(
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Medium
-                    )
-                ) {
-                    append(" ")
-                    append(state.currencyTicker)
-                }
-            })
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        Row(
-            modifier = Modifier
-                //.weight(1f)
+            Row(modifier = Modifier
                 .fillMaxWidth()
-                .padding(bottom = 8.dp),
-            horizontalArrangement = Arrangement.Center, verticalAlignment = Alignment.CenterVertically
-        ) {
-            LinearProgressIndicator(
-                progress = { state.budgetExpectancy },
-                modifier = Modifier
-                    .fillMaxWidth(fraction = 0.6f), strokeCap = StrokeCap.Square
-            )
+                .fillMaxHeight(0.84f)) {
+                Column(modifier = Modifier
+                    .weight(0.6f)
+                    .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly) {
+                    Text(buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        ) {
+                            append("Planned  ")
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 20.sp, fontWeight = FontWeight.SemiBold
+                            )
+                        ) {
+                            append(state.value.budget.toString())
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        ) {
+                            append(" ")
+                            append(state.value.currencyTicker)
+                        }
+                    })
+
+                    Text(buildAnnotatedString {
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        ) {
+                            append("Spent  ")
+                        }
+                        withStyle(
+                            style = SpanStyle(
+
+                                fontSize = 20.sp, fontWeight = FontWeight.SemiBold
+                            )
+                        ) {
+                            append(state.value.currentExpensesSum.toString())
+                        }
+                        withStyle(
+                            style = SpanStyle(
+                                fontSize = 16.sp,
+                                fontWeight = FontWeight.Medium
+                            )
+                        ) {
+                            append(" ")
+                            append(state.value.currencyTicker)
+                        }
+                    })
+                }
+                Column(modifier = Modifier
+                    .weight(0.4f)
+                    .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
+                    CustomCircularProgressIndicator(
+                        modifier = Modifier
+                            .size(96.dp)
+                            .background(MaterialTheme.colorScheme.surfaceVariant),
+                        initialValue =  (state.value.budgetExpectancy * 100).toInt(),
+                        primaryColor = MaterialTheme.colorScheme.primary,
+                        secondaryColor = MaterialTheme.colorScheme.secondary,
+                        circleRadius = 90f
+                    )
+                }
+            }
         }
     }
 }

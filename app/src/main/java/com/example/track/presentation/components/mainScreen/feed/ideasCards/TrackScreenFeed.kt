@@ -14,32 +14,28 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.track.data.other.constants.FEED_CARD_DELAY_FAST
 import com.example.track.data.other.constants.FEED_CARD_DELAY_SLOW
-import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
-import com.example.track.presentation.components.mainScreen.feed.ExpenseLimitIdeaCard
 import com.example.track.presentation.components.mainScreen.feed.feedCards.NewIdeaFeedCard
 import com.example.track.presentation.components.mainScreen.feed.feedCards.TrackMainFeedCard
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 
 
-/*  It is main screen feed which contains automatically scrollable pager which always starting with card TrackMainFeedCard
+/*  It is main screen feed which contains automatically scrollabl   e pager which always starting with card TrackMainFeedCard
     and ending with NewIdeaFeedCard. Also contains :   */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackScreenFeed() {
     val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
-    val pagerState = rememberPagerState(pageCount = { trackScreenFeedViewModel.maxPagerIndex.value })
-    val ideaList = trackScreenFeedViewModel.ideaList
     val currentIndex = trackScreenFeedViewModel.cardIndex.collectAsState()
     val maxIndex = trackScreenFeedViewModel.maxPagerIndex.collectAsState()
-    val budgetIdeaCardViewModel = koinViewModel<BudgetIdeaCardViewModel>()
-    val budgetIdeaCardState = budgetIdeaCardViewModel.budgetCardState.collectAsState()
+    val ideaList = trackScreenFeedViewModel.ideaList
+    val pagerState = rememberPagerState(pageCount = { maxIndex.value + 1 })
+
     LaunchedEffect(true) {
-        budgetIdeaCardViewModel.initializeStates()
         while (true) {
             delay(if (currentIndex.value == 0 || currentIndex.value == maxIndex.value) FEED_CARD_DELAY_SLOW else FEED_CARD_DELAY_FAST)
             trackScreenFeedViewModel.incrementCardIndex()
@@ -57,7 +53,7 @@ fun TrackScreenFeed() {
         contentPadding = PaddingValues(horizontal = 2.dp)
     ) { index ->
         when (index) {
-            0 -> TrackMainFeedCard(budgetIdeaCardState.value)
+            0 -> TrackMainFeedCard()
             maxIndex.value -> NewIdeaFeedCard(trackScreenFeedViewModel = trackScreenFeedViewModel)
             else -> when (ideaList[index - 1]) {
                 is Savings -> SavingsIdeaCard(savings = ideaList[index - 1] as Savings) // WARNING AS CAST

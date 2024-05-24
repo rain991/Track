@@ -34,8 +34,7 @@ fun NewIdeaFeedCard(trackScreenFeedViewModel: TrackScreenFeedViewModel) {
             TextButton(onClick = {}) {
                 Text(
                     stringResource(R.string.new_idea_main_screen_feed),
-                    style = MaterialTheme.typography.titleSmall,
-                    color = MaterialTheme.colorScheme.onPrimary
+                    style = MaterialTheme.typography.titleSmall
                 )
             }
         }
