@@ -98,7 +98,44 @@ class ExpensesListRepositoryImpl(
                 }
                 emit(sumOfExpensesInPreferableCurrency)
             }
+    }
 
+    override suspend fun getSumOfExpenses(start : Long, end : Long): Flow<Float> = flow {
+        val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
+        expenseItemsDao.getExpensesInTimeSpanDateAsc(start = start,
+            end = end)
+            .collect { foundedExpenseItems ->
+                var sumOfExpensesInPreferableCurrency = 0.0f
+                val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
+                val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
+                listOfExpensesInPreferableCurrency.forEach { it -> sumOfExpensesInPreferableCurrency += it.value }
+                listOfExpensesNotInPreferableCurrency.forEach { it ->
+                    val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
+                    if (convertedValue != INCORRECT_CONVERSION_RESULT) {
+                        sumOfExpensesInPreferableCurrency += convertedValue
+                    }
+                }
+                emit(sumOfExpensesInPreferableCurrency)
+            }
+    }
+
+    override suspend fun getSumOfExpensesByCategories(start : Long, end : Long,listOfCategories: List<ExpenseCategory>): Flow<Float> = flow {
+        val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
+        expenseItemsDao.getExpensesByCategoriesIdInTimeSpan(start = start,
+            end = end,  listOfCategoriesId = listOfCategories.map { it.categoryId })
+            .collect { foundedExpenseItems ->
+                var sumOfExpensesInPreferableCurrency = 0.0f
+                val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
+                val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
+                listOfExpensesInPreferableCurrency.forEach { it -> sumOfExpensesInPreferableCurrency += it.value }
+                listOfExpensesNotInPreferableCurrency.forEach { it ->
+                    val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
+                    if (convertedValue != INCORRECT_CONVERSION_RESULT) {
+                        sumOfExpensesInPreferableCurrency += convertedValue
+                    }
+                }
+                emit(sumOfExpensesInPreferableCurrency)
+            }
     }
 
     override fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>> {

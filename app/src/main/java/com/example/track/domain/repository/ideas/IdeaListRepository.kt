@@ -1,7 +1,7 @@
 package com.example.track.domain.repository.ideas
 
 import com.example.track.domain.models.idea.ExpenseLimits
-import com.example.track.domain.models.idea.Idea
+import com.example.track.domain.models.abstractLayer.Idea
 import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
 import kotlinx.coroutines.Dispatchers

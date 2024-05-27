@@ -6,7 +6,7 @@ import com.example.track.data.implementations.currencies.CurrenciesPreferenceRep
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.example.track.data.other.converters.convertLocalDateToDate
-import com.example.track.domain.models.idea.Idea
+import com.example.track.domain.models.abstractLayer.Idea
 import com.example.track.domain.repository.ideas.IncomePlanCardRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.first

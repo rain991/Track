@@ -53,7 +53,7 @@ fun TrackMainFeedCard() {
         ) {
             Text(
                 text = stringResource(id = getMonthResID(localDate = LocalDate.now())) + " " + "budget",
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
+                style = MaterialTheme.typography.titleSmall,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),

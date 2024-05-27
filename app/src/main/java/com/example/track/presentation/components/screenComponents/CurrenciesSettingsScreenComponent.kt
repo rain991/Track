@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.track.R
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
-import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
+import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
 import com.example.track.presentation.components.common.ui.CurrencyDropDownMenu
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -38,12 +38,12 @@ import org.koin.androidx.compose.koinViewModel
     Also contains CurrenciesMinusTextButton and Plus buttons to remove and add new currencies relatively    */
 @Composable
 fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
-    val settingsViewModel = koinViewModel<SettingsViewModel>()
-    val preferableCurrency = settingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT)
-    val firstAdditionalCurrency = settingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = null)
-    val secondAdditionalCurrency = settingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = null)
-    val thirdAdditionalCurrency = settingsViewModel.thirdAdditionalCurrencyStateFlow.collectAsState(initial = null)
-    val fourthAdditionalCurrency = settingsViewModel.fourthAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
+    val preferableCurrency = currenciesSettingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT)
+    val firstAdditionalCurrency = currenciesSettingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val secondAdditionalCurrency = currenciesSettingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val thirdAdditionalCurrency = currenciesSettingsViewModel.thirdAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val fourthAdditionalCurrency = currenciesSettingsViewModel.fourthAdditionalCurrencyStateFlow.collectAsState(initial = null)
     val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = Modifier
@@ -71,11 +71,11 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
             )
             Box(Modifier.width(140.dp)) {
                 CurrencyDropDownMenu(
-                    currencyList = settingsViewModel.currencyList,
+                    currencyList = currenciesSettingsViewModel.currencyList,
                     selectedOption = preferableCurrency.value,
                     onSelect = {
                         coroutineScope.launch {
-                            settingsViewModel.setPreferableCurrency(it)
+                            currenciesSettingsViewModel.setPreferableCurrency(it)
                         }
                     })
             }
@@ -94,11 +94,11 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 )
                 Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
-                        currencyList = settingsViewModel.currencyList,
+                        currencyList = currenciesSettingsViewModel.currencyList,
                         selectedOption = firstAdditionalCurrency.value ?: CURRENCY_DEFAULT,
                         onSelect = {
                             coroutineScope.launch {
-                                settingsViewModel.setFirstAdditionalCurrency(it)
+                                currenciesSettingsViewModel.setFirstAdditionalCurrency(it)
                             }
                         })
                 }
@@ -120,11 +120,11 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 )
                 Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
-                        currencyList = settingsViewModel.currencyList,
+                        currencyList = currenciesSettingsViewModel.currencyList,
                         selectedOption = secondAdditionalCurrency.value ?: CURRENCY_DEFAULT,
                         onSelect = {
                             coroutineScope.launch {
-                                settingsViewModel.setSecondAdditionalCurrency(it)
+                                currenciesSettingsViewModel.setSecondAdditionalCurrency(it)
                             }
                         })
                 }
@@ -146,11 +146,11 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 )
                 Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
-                        currencyList = settingsViewModel.currencyList,
+                        currencyList = currenciesSettingsViewModel.currencyList,
                         selectedOption = thirdAdditionalCurrency.value ?: CURRENCY_DEFAULT,
                         onSelect = {
                             coroutineScope.launch {
-                                settingsViewModel.setThirdAdditionalCurrency(it)
+                                currenciesSettingsViewModel.setThirdAdditionalCurrency(it)
                             }
                         })
                 }
@@ -172,11 +172,11 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 )
                 Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
-                        currencyList = settingsViewModel.currencyList,
+                        currencyList = currenciesSettingsViewModel.currencyList,
                         selectedOption = fourthAdditionalCurrency.value ?: CURRENCY_DEFAULT,
                         onSelect = {
                             coroutineScope.launch {
-                                settingsViewModel.setFourthAdditionalCurrency(it)
+                                currenciesSettingsViewModel.setFourthAdditionalCurrency(it)
                             }
                         })
                 }
@@ -194,19 +194,19 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 CurrenciesPlusTextButton {
                     if (firstAdditionalCurrency.value == null) {
                         coroutineScope.launch {
-                            settingsViewModel.setFirstAdditionalCurrency(settingsViewModel.getRandomNotUsedCurrency())
+                            currenciesSettingsViewModel.setFirstAdditionalCurrency(currenciesSettingsViewModel.getRandomNotUsedCurrency())
                         }
                     } else if (secondAdditionalCurrency.value == null) {
                         coroutineScope.launch {
-                            settingsViewModel.setSecondAdditionalCurrency(settingsViewModel.getRandomNotUsedCurrency())
+                            currenciesSettingsViewModel.setSecondAdditionalCurrency(currenciesSettingsViewModel.getRandomNotUsedCurrency())
                         }
                     } else if (thirdAdditionalCurrency.value == null) {
                         coroutineScope.launch {
-                            settingsViewModel.setThirdAdditionalCurrency(settingsViewModel.getRandomNotUsedCurrency())
+                            currenciesSettingsViewModel.setThirdAdditionalCurrency(currenciesSettingsViewModel.getRandomNotUsedCurrency())
                         }
                     } else if (fourthAdditionalCurrency.value == null) {
                         coroutineScope.launch {
-                            settingsViewModel.setFourthAdditionalCurrency(settingsViewModel.getRandomNotUsedCurrency())
+                            currenciesSettingsViewModel.setFourthAdditionalCurrency(currenciesSettingsViewModel.getRandomNotUsedCurrency())
                         }
                     }
                 }
@@ -214,7 +214,7 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 AnimatedVisibility(visible = firstAdditionalCurrency.value != null || secondAdditionalCurrency.value != null || thirdAdditionalCurrency.value != null || fourthAdditionalCurrency.value != null) {
                     CurrenciesMinusTextButton {
                         coroutineScope.launch {
-                            settingsViewModel.setLatestCurrencyAsNull()
+                            currenciesSettingsViewModel.setLatestCurrencyAsNull()
                         }
                     }
                 }

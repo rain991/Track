@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class SettingsViewModel(
+class CurrenciesSettingsViewModel(
     private val dataStoreManager: DataStoreManager,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
     private val currencyListRepositoryImpl: CurrencyListRepositoryImpl,
@@ -55,6 +55,8 @@ class SettingsViewModel(
                 )
             )
             currenciesPreferenceRepositoryImpl.setPreferableCurrency(value)
+
+
         } else {
             setToastMessage("${value.ticker} is already in use")
         }

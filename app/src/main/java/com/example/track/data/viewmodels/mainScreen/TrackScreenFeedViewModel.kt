@@ -5,9 +5,9 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.other.converters.convertLocalDateToDate
+import com.example.track.domain.models.abstractLayer.Idea
 import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.idea.ExpenseLimits
-import com.example.track.domain.models.idea.Idea
 import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
 import com.example.track.presentation.states.componentRelated.IdeaSelectorTypes

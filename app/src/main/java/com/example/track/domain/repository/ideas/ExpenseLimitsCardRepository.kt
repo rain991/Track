@@ -1,7 +1,7 @@
 package com.example.track.domain.repository.ideas
 
 import com.example.track.domain.models.expenses.ExpenseCategory
-import com.example.track.domain.models.idea.Idea
+import com.example.track.domain.models.abstractLayer.Idea
 
 interface ExpenseLimitsCardRepository {
     fun requestPlannedLimit(idea: Idea) : Float

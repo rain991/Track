@@ -14,7 +14,7 @@ import com.example.track.R
 import com.example.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
-import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
+import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
 import com.example.track.presentation.components.bottomSheet.BottomSheet
 import com.example.track.presentation.components.common.ui.Header
 import com.example.track.presentation.components.other.ExtendedButtonExample
@@ -25,10 +25,10 @@ import org.koin.compose.koinInject
 @Composable
 fun SettingsExpenseScreen(navHostController: NavHostController) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val settingsViewModel = koinViewModel<SettingsViewModel>()
+    val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
-    val toastState = settingsViewModel.toastStateFlow.collectAsState()
+    val toastState = currenciesSettingsViewModel.toastStateFlow.collectAsState()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             if (isPageNameVisible.value) Header(pageName = stringResource(R.string.settings))
@@ -42,7 +42,7 @@ fun SettingsExpenseScreen(navHostController: NavHostController) {
         BottomSheet(dataStoreManager = settingsData)
         if (toastState.value.length > 1) {
             Toast.makeText(LocalContext.current, toastState.value, Toast.LENGTH_SHORT).show()
-            settingsViewModel.clearToastMessage()
+            currenciesSettingsViewModel.clearToastMessage()
         }
         Box(
             modifier = Modifier

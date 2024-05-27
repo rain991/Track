@@ -144,9 +144,9 @@ fun CustomCircularProgressIndicator(
                         circleCenter.y + 36.dp.toPx() / 3f,  // 45.dp 3f
                         Paint().apply {
                             textSize = if (initialValue.toString().length <= 2){
-                                32.sp.toPx()
+                                28.sp.toPx()
                             } else{
-                                24.sp.toPx()
+                                20.sp.toPx()
                             }
                             textAlign = Paint.Align.CENTER
                             color = Color.White.toArgb()

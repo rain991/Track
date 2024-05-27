@@ -30,11 +30,12 @@ import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.other.workers.CurrenciesRatesWorker
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.data.viewmodels.login.LoginViewModel
+import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
-import com.example.track.data.viewmodels.settingsScreen.SettingsViewModel
+import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
@@ -120,8 +121,9 @@ val viewModelModule = module {
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
     viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get(), get()) }
     viewModel { TrackScreenFeedViewModel(get()) }
-    viewModel { SettingsViewModel(get(), get(), get(),get()) }
+    viewModel { CurrenciesSettingsViewModel(get(), get(), get(),get()) }
     viewModel { BudgetIdeaCardViewModel(get(), get()) }
     viewModel { StatisticsViewModel(get(), get()) }
     viewModel { TrackScreenInfoCardsViewModel(get(), get(),get()) }
+    viewModel { AddToSavingIdeaDialogViewModel()}
 }

@@ -1,72 +1,80 @@
 package com.example.track.presentation.components.mainScreen.feed.ideasCards
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
+import com.example.track.data.other.converters.convertLocalDateToDate
+import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import com.example.track.domain.models.idea.Savings
+import java.time.LocalDate
 
 @Composable
-fun SavingsIdeaCard(savings: Savings) {
-  //  val mainScreenFeedViewModel = koinViewModel<MainScreenFeedViewModel>()
+fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker : String, addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel) {
     Card(
         modifier = Modifier
             .height(140.dp)
-            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.primary,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(
-                text = savings.label,
-                style = MaterialTheme.typography.titleSmall
-            )
-        }
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(
-                text = "Saving",
-                style = MaterialTheme.typography.bodySmall
-            )
-        }
-        Spacer(Modifier.height(8.dp))
-        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-            Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
-                Text(text = "Planned ${savings.goal}")
-            }
-            Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
-                Text(text = "Completed for")
-                Spacer(Modifier.width(2.dp))
-                Text(text = "${savings.value}")
-            }
-        }
-        Spacer(Modifier.height(2.dp))
-        if (savings.includedInBudget) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = "Included in budget")
-            }
-        }
-        Spacer(Modifier.height(4.dp))
-        val progress = savings.goal.div(savings.value)
-        LinearProgressIndicator(
-            progress = { progress },
+        Column(
             modifier = Modifier
-                .fillMaxWidth(fraction = 0.6f)
-        )
+                .fillMaxSize()
+                .padding(horizontal = 8.dp)
+        ) {
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text(text = savings.label, style = MaterialTheme.typography.titleSmall)
+            }
+            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Text(text = "Saving", style = MaterialTheme.typography.bodySmall)
+            }
+            Spacer(Modifier.height(8.dp))
+            Row(modifier = Modifier.fillMaxWidth()) {
+                Column(modifier = Modifier.weight(0.5f), verticalArrangement = Arrangement.SpaceEvenly) {
+                    Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
+                        Text(text = "Planned ${savings.goal} " + preferableCurrencyTicker)
+                    }
+                    Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
+                        Text(text = "Completed for" + " ${savings.value} " + preferableCurrencyTicker)
+                    }
+                }
+                Column(modifier = Modifier
+                    .weight(0.5f)
+                    .fillMaxHeight(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
+                   androidx.compose.material3.Button(onClick = { /*TODO*/ }){
+                        Text(text = "Add")
+                    }
+                }
+            }
+        }
     }
+}
+
+@Preview
+@Composable
+fun prev() {
+    SavingsIdeaCard(
+        savings = Savings(
+            goal = 500f,
+            completed = false,
+            startDate = convertLocalDateToDate(LocalDate.now()),
+            endDate = convertLocalDateToDate(LocalDate.now()),
+            includedInBudget = true,
+            label = "sfdgdfg",
+            value = 230f
+        ), preferableCurrencyTicker = "TKS"
+    )
 }

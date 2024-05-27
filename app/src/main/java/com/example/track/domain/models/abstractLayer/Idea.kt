@@ -1,4 +1,4 @@
-package com.example.track.domain.models.idea
+package com.example.track.domain.models.abstractLayer
 
 import java.util.Date
 

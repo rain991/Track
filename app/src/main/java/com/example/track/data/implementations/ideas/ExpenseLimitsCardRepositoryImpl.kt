@@ -2,7 +2,7 @@ package com.example.track.data.implementations.ideas
 
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.domain.models.expenses.ExpenseCategory
-import com.example.track.domain.models.idea.Idea
+import com.example.track.domain.models.abstractLayer.Idea
 import com.example.track.domain.repository.ideas.ExpenseLimitsCardRepository
 
 class ExpenseLimitsCardRepositoryImpl(

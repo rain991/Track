@@ -3,6 +3,7 @@ package com.example.track.domain.models.idea
 import androidx.room.Entity
 import androidx.room.ForeignKey
 import androidx.room.PrimaryKey
+import com.example.track.domain.models.abstractLayer.Idea
 import com.example.track.domain.models.expenses.ExpenseCategory
 import java.util.Date
 
