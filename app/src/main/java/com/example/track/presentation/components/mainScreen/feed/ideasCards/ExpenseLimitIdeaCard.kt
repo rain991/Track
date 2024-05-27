@@ -23,7 +23,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
-import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
+import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.presentation.components.common.ui.CategoryChip
@@ -78,15 +78,15 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits) {
                 Text(text = "for selected categories:")
                 Row(modifier = Modifier.wrapContentWidth()) {
                     if (expenseLimit.firstRelatedCategoryId != null) CategoryChip(
-                        category = expenseCategoriesListRepositoryImpl.getCategoryById(
+                        category = expenseCategoriesListRepositoryImpl.getCategoriesByIds(
                             expenseLimit.firstRelatedCategoryId
                         ), isSelected = false, onSelect = {})
                     if (expenseLimit.secondRelatedCategoryId != null) CategoryChip(
-                        category = expenseCategoriesListRepositoryImpl.getCategoryById(
+                        category = expenseCategoriesListRepositoryImpl.getCategoriesByIds(
                             expenseLimit.secondRelatedCategoryId
                         ), isSelected = false, onSelect = {})
                     if (expenseLimit.thirdRelatedCategoryId != null) CategoryChip(
-                        category = expenseCategoriesListRepositoryImpl.getCategoryById(
+                        category = expenseCategoriesListRepositoryImpl.getCategoriesByIds(
                             expenseLimit.thirdRelatedCategoryId
                         ), isSelected = false, onSelect = {})
                 }

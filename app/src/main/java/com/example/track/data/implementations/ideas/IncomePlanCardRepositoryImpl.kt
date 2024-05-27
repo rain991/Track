@@ -3,9 +3,10 @@ package com.example.track.data.implementations.ideas
 import com.example.track.data.core.CurrenciesRatesHandler
 import com.example.track.data.database.incomeRelated.IncomeDao
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
+import com.example.track.data.implementations.incomes.IncomeCoreRepositoryImpl
 import com.example.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.example.track.data.other.converters.convertLocalDateToDate
+import com.example.track.data.other.converters.getEndOfTheMonth
 import com.example.track.domain.models.abstractLayer.Idea
 import com.example.track.domain.repository.ideas.IncomePlanCardRepository
 import kotlinx.coroutines.flow.Flow
@@ -17,7 +18,8 @@ import java.util.Date
 class IncomePlanCardRepositoryImpl(
     private val incomeDao: IncomeDao,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
-    private val currenciesRatesHandler: CurrenciesRatesHandler, private val incomeListRepositoryImpl: IncomeListRepositoryImpl
+    private val currenciesRatesHandler: CurrenciesRatesHandler,
+    private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl
 ) : IncomePlanCardRepository {
     override fun requestPlannedIncome(idea: Idea): Float {
         return idea.goal
@@ -36,7 +38,7 @@ class IncomePlanCardRepositoryImpl(
         val todayDate = convertLocalDateToDate(LocalDate.now())
         incomeDao.getIncomesInTimeSpanDateDecs(
             start = idea.startDate.time,
-            end = idea.endDate?.time ?: Long.MAX_VALUE
+            end = idea.endDate?.time ?: getEndOfTheMonth(convertLocalDateToDate(LocalDate.now())).time
         ).collect { foundedIncomeItems ->
             var sumOfIncomesInPreferableCurrency = 0.0f
             val listOfIncomesInPreferableCurrency = foundedIncomeItems.filter { it.currencyTicker == preferableCurrency.ticker }
@@ -59,6 +61,6 @@ class IncomePlanCardRepositoryImpl(
     }
 
     override suspend fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float> {
-        return incomeListRepositoryImpl.getSumOfIncomesInTimeSpan(startOfSpan, endOfSpan)
+        return incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(startOfSpan, endOfSpan)
     }
 }

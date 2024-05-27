@@ -1,7 +1,7 @@
 package com.example.track.data.implementations.ideas
 
 import com.example.track.data.database.incomeRelated.IncomeDao
-import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
+import com.example.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.domain.models.abstractLayer.Idea
 import com.example.track.domain.models.incomes.IncomeItem

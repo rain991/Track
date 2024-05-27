@@ -3,18 +3,18 @@ package com.example.track.data.viewmodels.common
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
+import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
+import com.example.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.converters.convertLocalDateToDate
-import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
+import com.example.track.domain.models.abstractLayer.CategoryEntity
+import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.expenses.ExpenseItem
-import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.incomes.IncomeCategory
 import com.example.track.domain.models.incomes.IncomeItem
-import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.usecases.expensesRelated.expenseusecases.AddExpensesItemUseCase
 import com.example.track.presentation.states.componentRelated.BottomSheetViewState
 import kotlinx.coroutines.CoroutineDispatcher
@@ -117,7 +117,7 @@ class BottomSheetViewModel(
                 value = expenseViewState.value.inputExpense!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
-            addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
+            addExpensesItemUseCase(currentExpenseItem)
             setCategoryPicked(DEFAULT_CATEGORY)
             setInputExpense(DEFAULT_EXPENSE)
             setDatePicked(DEFAULT_DATE)

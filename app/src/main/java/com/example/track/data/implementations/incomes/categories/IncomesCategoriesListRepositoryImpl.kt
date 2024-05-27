@@ -1,13 +1,13 @@
-package com.example.track.data.implementations.incomes
+package com.example.track.data.implementations.incomes.categories
 
 import com.example.track.data.database.incomeRelated.IncomeCategoryDao
 import com.example.track.domain.models.incomes.IncomeCategory
-import com.example.track.domain.repository.incomes.IncomesCategoriesListRepository
+import com.example.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlin.coroutines.CoroutineContext
 
-class IncomesCategoriesListRepositoryImpl(private val incomeCategoryDao : IncomeCategoryDao) : IncomesCategoriesListRepository{
+class IncomesCategoriesListRepositoryImpl(private val incomeCategoryDao : IncomeCategoryDao) : IncomesCategoriesListRepository {
     override fun getCategoriesList(): Flow<List<IncomeCategory>> {
         return incomeCategoryDao.getAllIncomeCategories()
     }

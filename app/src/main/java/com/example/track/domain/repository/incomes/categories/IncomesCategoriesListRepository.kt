@@ -1,4 +1,4 @@
-package com.example.track.domain.repository.incomes
+package com.example.track.domain.repository.incomes.categories
 
 import com.example.track.domain.models.incomes.IncomeCategory
 import kotlinx.coroutines.Dispatchers

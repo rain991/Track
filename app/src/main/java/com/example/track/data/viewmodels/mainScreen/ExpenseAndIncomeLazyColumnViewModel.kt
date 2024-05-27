@@ -4,10 +4,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.core.NotesHandler
-import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
+import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
+import com.example.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.abstractLayer.FinancialEntity

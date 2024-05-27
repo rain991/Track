@@ -21,7 +21,7 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.util.Date
 import kotlin.random.Random
-
+// DEPRECATED. Should be reworked as statistic screen is being implemented
 class StatisticsViewModel(
     private val chartsRepositoryImpl: ChartsRepositoryImpl,
     private val notesRepositoryImpl: NotesRepositoryImpl

@@ -1,6 +1,8 @@
 package com.example.track.data.core
 
+import com.example.track.data.implementations.expenses.ExpensesCoreRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
+import com.example.track.data.implementations.incomes.IncomeCoreRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.other.converters.getEndOfTheMonth
 import com.example.track.data.other.converters.getStartOfMonthDate
@@ -14,7 +16,9 @@ import kotlinx.coroutines.flow.first
 
 class NotesHandler(
     private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
-    private val incomeListRepositoryImpl: IncomeListRepositoryImpl
+    private val expenseCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
+    private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
+    private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl
 ) {
     suspend fun requestCountInMonthNotionForFinancialCard(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String {
         val startDate = getStartOfMonthDate(financialEntity.date)
@@ -44,12 +48,12 @@ class NotesHandler(
     ): String {
         val startDate = getStartOfMonthDate(financialEntity.date)
         val endDate = getEndOfTheMonth(financialEntity.date)
-
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
-            val result = expensesListRepositoryImpl.getCurrentMonthSumOfExpensesByCategories(listOf(financialCategory))
+            val result =
+                expenseCoreRepositoryImpl.getCurrentMonthSumOfExpensesByCategoriesId(listOf(financialCategory).map { it.categoryId })
             return result.first().toString()
         } else if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
-            val result = incomeListRepositoryImpl.getSumOfIncomesInTimeSpan(startDate, endDate)
+            val result = incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(startDate, endDate)
             return result.first().toString()
         } else {
             return ""

@@ -24,11 +24,14 @@ interface ExpenseCategoryDao {
     fun getAllCategories(): Flow<List<ExpenseCategory>>
 
     @Query("SELECT * FROM expense_categories WHERE categoryId = :id")
-    fun getCategoryById(id : Int) : ExpenseCategory
+    fun getCategoryById(id: Int): ExpenseCategory
+
+    @Query("SELECT * FROM expense_categories WHERE categoryId in (:listOfIds)")
+    fun getCategoriesByIds(listOfIds: List<Int>): List<ExpenseCategory>
+
+    @Query("SELECT Count(value) FROM expenses WHERE categoryId = :categoryId AND date BETWEEN :start AND :end")
+    fun countExpensesByCategoryInTimeSpan(start: Long, end: Long, categoryId: Int): Flow<Int>
 
     @Query("DELETE FROM expense_categories")
     suspend fun deleteAllData()
-
-    @Query("SELECT Count(value) FROM expenses WHERE categoryId = :categoryId AND date BETWEEN :start AND :end")
-    fun countExpensesByCategoryInTimeSpan(start: Long, end: Long, categoryId : Int): Flow<Int>
 }

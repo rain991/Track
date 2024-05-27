@@ -3,8 +3,8 @@ package com.example.track.data.viewmodels.mainScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
+import com.example.track.data.implementations.expenses.ExpensesCoreRepositoryImpl
+import com.example.track.data.implementations.incomes.IncomeCoreRepositoryImpl
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.data.other.converters.getEndOfTheMonth
@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class TrackScreenInfoCardsViewModel(
-    private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
-    private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
+    private val expensesCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
+    private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
 ) : ViewModel() {
     private val _cardsState = MutableStateFlow(
@@ -40,7 +40,7 @@ class TrackScreenInfoCardsViewModel(
         val endOfMonthDate = getEndOfTheMonth(todayDate)
         viewModelScope.launch(start = CoroutineStart.DEFAULT) {
             async {
-                expensesListRepositoryImpl.getCurrentMonthSumOfExpenseInFlow().collect {
+                expensesCoreRepositoryImpl.getCurrentMonthSumOfExpense().collect {
                     setCurrentMonthExpensesSum(it)
                 }
             }
@@ -50,7 +50,7 @@ class TrackScreenInfoCardsViewModel(
                 }
             }
             async {
-                expensesListRepositoryImpl.getCountOfExpensesInSpan(
+                expensesCoreRepositoryImpl.getCountOfExpensesInSpan(
                     startDate = startOfMonthDate,
                     endDate = endOfMonthDate
                 ).collect {
@@ -59,7 +59,7 @@ class TrackScreenInfoCardsViewModel(
 
             }
             async {
-                incomeListRepositoryImpl.getSumOfIncomesInTimeSpan(
+                incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
                     startOfSpan = startOfMonthDate,
                     endOfSpan = endOfMonthDate
                 ).collect {
@@ -67,7 +67,7 @@ class TrackScreenInfoCardsViewModel(
                 }
             }
             async {
-                incomeListRepositoryImpl.getCountOfIncomesInSpan(
+                incomeCoreRepositoryImpl.getCountOfIncomesInSpan(
                     startDate = startOfMonthDate,
                     endDate = endOfMonthDate
                 ).collect {
