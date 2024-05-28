@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
+import com.example.track.data.implementations.incomes.IncomeItemRepositoryImpl
 import com.example.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.converters.convertLocalDateToDate
@@ -36,7 +36,7 @@ import java.time.LocalDate
 
 class BottomSheetViewModel(
     private val addExpensesItemUseCase: AddExpensesItemUseCase,
-    private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
+    private val incomeItemRepositoryImpl: IncomeItemRepositoryImpl,
     private val categoryListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
@@ -135,7 +135,7 @@ class BottomSheetViewModel(
                 value = expenseViewState.value.inputExpense!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
-            incomeListRepositoryImpl.addIncomeItem(currentIncomeItem)
+            incomeItemRepositoryImpl.addIncomeItem(currentIncomeItem)
             setCategoryPicked(DEFAULT_CATEGORY)
             setInputExpense(DEFAULT_EXPENSE)
             setDatePicked(DEFAULT_DATE)

@@ -21,6 +21,7 @@ import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
+import com.example.track.presentation.components.mainScreen.feed.dialogs.AddToSavingDialog
 import com.example.track.presentation.components.mainScreen.feed.feedCards.NewIdeaFeedCard
 import com.example.track.presentation.components.mainScreen.feed.feedCards.TrackMainFeedCard
 import kotlinx.coroutines.delay
@@ -41,6 +42,7 @@ fun TrackScreenFeed() {
     val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val ideaList = trackScreenFeedViewModel.ideaList
     val pagerState = rememberPagerState(pageCount = { maxIndex.value + 1 })
+    val currentSavingAddingDialogState = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
     LaunchedEffect(true) {
         while (true) {
             delay(if (currentIndex.value == 0 || currentIndex.value == maxIndex.value) FEED_CARD_DELAY_SLOW else FEED_CARD_DELAY_FAST)
@@ -67,10 +69,14 @@ fun TrackScreenFeed() {
                     preferableCurrencyTicker = preferableCurrencyState.value.ticker,
                     addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
                 )
+
                 is IncomePlans -> IncomePlanIdeaCard(incomePlans = ideaList[index - 1] as IncomePlans)
                 is ExpenseLimits -> ExpenseLimitIdeaCard(expenseLimit = ideaList[index - 1] as ExpenseLimits)
             }
         }
         Log.d("MyLog", "MainScreenFeed: $index")
+    }
+    if (currentSavingAddingDialogState.value != null) {
+        AddToSavingDialog(addToSavingIdeaDialogViewModel)
     }
 }

@@ -21,17 +21,19 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.track.R
-import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
+import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+
 @Composable
 fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
     val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
@@ -42,7 +44,7 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
         Column(Modifier.wrapContentSize()) {
             Text(
                 text = stringResource(R.string.theme_settings_screen),
-                style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp),
+                style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onPrimary,
                 modifier = Modifier.padding(start = 4.dp)
             )

@@ -37,7 +37,7 @@ class CurrenciesRatesHandler(
     override suspend fun convertValueToBasicCurrency(value: Float, currency: Currency): Float {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         return if (preferableCurrency.rate != null && currency.rate != null) {
-            (preferableCurrency.rate.div(currency.rate) * value).toFloat()
+            (currency.rate.div(preferableCurrency.rate) * value).toFloat()
         } else {
             INCORRECT_CONVERSION_RESULT
         }
@@ -48,7 +48,7 @@ class CurrenciesRatesHandler(
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         val currency = currencyDao.getCurrencyByTicker(currencyTicker)
         return if (preferableCurrency.rate != null && currency.rate != null) {
-            (preferableCurrency.rate.div(currency.rate) * value).toFloat()
+            (currency.rate.div(preferableCurrency.rate) * value).toFloat()
         } else {
             INCORRECT_CONVERSION_RESULT
         }
@@ -85,7 +85,7 @@ class CurrenciesRatesHandler(
         if (rowCurrencyTicker == null) return INCORRECT_CONVERSION_RESULT
         val rowCurrency = currencyDao.getCurrencyByTicker(rowCurrencyTicker)
         return if (preferableCurrency.rate != null && rowCurrency.rate != null) {
-            val convertRate = preferableCurrency.rate.div(rowCurrency.rate)
+            val convertRate = rowCurrency.rate.div(preferableCurrency.rate)
             (listOfRowValues.sum() * convertRate).toFloat()
         } else {
             INCORRECT_CONVERSION_RESULT

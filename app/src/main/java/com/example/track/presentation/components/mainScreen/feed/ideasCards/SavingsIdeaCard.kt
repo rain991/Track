@@ -15,16 +15,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
-import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import com.example.track.domain.models.idea.Savings
-import java.time.LocalDate
 
 @Composable
-fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker : String, addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel) {
+fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker: String, addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel) {
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -51,30 +48,16 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker : String, addToSa
                         Text(text = "Completed for" + " ${savings.value} " + preferableCurrencyTicker)
                     }
                 }
-                Column(modifier = Modifier
-                    .weight(0.5f)
-                    .fillMaxHeight(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-                   androidx.compose.material3.Button(onClick = { /*TODO*/ }){
+                Column(
+                    modifier = Modifier
+                        .weight(0.5f)
+                        .fillMaxHeight(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    androidx.compose.material3.Button(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(savings) }) {
                         Text(text = "Add")
                     }
                 }
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun prev() {
-    SavingsIdeaCard(
-        savings = Savings(
-            goal = 500f,
-            completed = false,
-            startDate = convertLocalDateToDate(LocalDate.now()),
-            endDate = convertLocalDateToDate(LocalDate.now()),
-            includedInBudget = true,
-            label = "sfdgdfg",
-            value = 230f
-        ), preferableCurrencyTicker = "TKS"
-    )
 }

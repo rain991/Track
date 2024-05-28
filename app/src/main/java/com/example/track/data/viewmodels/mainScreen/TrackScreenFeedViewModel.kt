@@ -54,23 +54,26 @@ class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepos
 
     init {
         viewModelScope.launch {
-            ideaListRepositoryImpl.getIncomesPlansList().collect {
-                _ideaList.addAll(it)
-                _ideaList.distinct()
+            ideaListRepositoryImpl.getIncomesPlansList().collect { newIncomePlans ->
+                val currentIncomePlans = ideaList.filterIsInstance<IncomePlans>()
+                _ideaList.removeAll(currentIncomePlans)
+                _ideaList.addAll(newIncomePlans)
                 setMaxPagerIndex(ideaList.size + 1)
             }
         }
         viewModelScope.launch {
-            ideaListRepositoryImpl.getSavingsList().collect {
-                _ideaList.addAll(it)
-                _ideaList.distinct()
+            ideaListRepositoryImpl.getSavingsList().collect { newSavings ->
+                val currentSavings = ideaList.filterIsInstance<Savings>()
+                _ideaList.removeAll(currentSavings)
+                _ideaList.addAll(newSavings)
                 setMaxPagerIndex(ideaList.size + 1)
             }
         }
         viewModelScope.launch {
-            ideaListRepositoryImpl.getExpenseLimitsList().collect {
-                _ideaList.addAll(it)
-                _ideaList.distinct()
+            ideaListRepositoryImpl.getExpenseLimitsList().collect { newExpenseLimits ->
+                val currentExpenseLimits = ideaList.filterIsInstance<ExpenseLimits>()
+                _ideaList.removeAll(currentExpenseLimits)
+                _ideaList.addAll(newExpenseLimits)
                 setMaxPagerIndex(ideaList.size + 1)
             }
         }

@@ -22,6 +22,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
@@ -57,7 +58,7 @@ fun SettingsScreenComponent(
                 .wrapContentHeight()
                 .padding(8.dp)
         ) {
-            if (!isPageNameVisible) Spacer(modifier = Modifier.height(12.dp))
+            if (!isPageNameVisible) Spacer(modifier = Modifier.height(8.dp))
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -65,11 +66,11 @@ fun SettingsScreenComponent(
             ) {
                 Text(
                     text = "Account",
-                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp),
+                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             SettingsLinkedRow(text = "Personal") {
                 navHostController.navigate(Screen.PersonalSettingsScreen.route)
             }
@@ -110,7 +111,7 @@ private fun SettingsLinkedRow(text: String, onClick: () -> Unit) {
             .padding(horizontal = 12.dp, vertical = 8.dp)
             .clickable { onClick() }, horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = text, style = MaterialTheme.typography.bodyMedium)
+        Text(text = text, style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary))
         Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = text)
     }
 }

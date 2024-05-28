@@ -78,15 +78,15 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits) {
                 Text(text = "for selected categories:")
                 Row(modifier = Modifier.wrapContentWidth()) {
                     if (expenseLimit.firstRelatedCategoryId != null) CategoryChip(
-                        category = expenseCategoriesListRepositoryImpl.getCategoriesByIds(
-                            expenseLimit.firstRelatedCategoryId
+                        category = expenseCategoriesListRepositoryImpl.getCategoryById(
+                          expenseLimit.firstRelatedCategoryId
                         ), isSelected = false, onSelect = {})
                     if (expenseLimit.secondRelatedCategoryId != null) CategoryChip(
-                        category = expenseCategoriesListRepositoryImpl.getCategoriesByIds(
+                        category = expenseCategoriesListRepositoryImpl.getCategoryById(
                             expenseLimit.secondRelatedCategoryId
                         ), isSelected = false, onSelect = {})
                     if (expenseLimit.thirdRelatedCategoryId != null) CategoryChip(
-                        category = expenseCategoriesListRepositoryImpl.getCategoriesByIds(
+                        category = expenseCategoriesListRepositoryImpl.getCategoryById(
                             expenseLimit.thirdRelatedCategoryId
                         ), isSelected = false, onSelect = {})
                 }

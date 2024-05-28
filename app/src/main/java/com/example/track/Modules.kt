@@ -63,7 +63,7 @@ val settingsModule = module {
 
 val coreModule = module {
     single<CurrenciesRatesHandler> { CurrenciesRatesHandler(get(), get()) }
-    single<NotesHandler> { NotesHandler(get(), get(), get(),get()) }
+    single<NotesHandler> { NotesHandler(get(), get(), get(), get()) }
     single<ChartHandler> { ChartHandler() }
 }
 
@@ -129,5 +129,5 @@ val viewModelModule = module {
     viewModel { BudgetIdeaCardViewModel(get(), get()) }
     viewModel { StatisticsViewModel(get(), get()) }
     viewModel { TrackScreenInfoCardsViewModel(get(), get(), get()) }
-    viewModel { AddToSavingIdeaDialogViewModel() }
+    viewModel { AddToSavingIdeaDialogViewModel(get(), get(), get()) }
 }

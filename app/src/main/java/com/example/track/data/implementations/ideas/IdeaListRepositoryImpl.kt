@@ -59,7 +59,6 @@ class IdeaListRepositoryImpl(
                         expensesCoreRepositoryImpl.getSumOfExpensesByCategories(idea.startDate.time, currentTimeMillis, relatedGroups)
                     }
                 }
-
                 is IncomePlans -> {
                     incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
                         idea.startDate,
