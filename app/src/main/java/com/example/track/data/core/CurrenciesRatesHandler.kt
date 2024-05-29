@@ -63,19 +63,19 @@ class CurrenciesRatesHandler(
         }
     }
 
-    override suspend fun getSumOfValuesIndependentlyFromRate(listOfFinancialEntity: List<FinancialEntity>): Float {
+    override suspend fun getSumOfValuesIndependentlyFromRate(listOfFinancialEntities: List<FinancialEntity>): Float {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         val listOfRowValues = mutableListOf<Float>()
-        val rowCurrencyTicker = listOfFinancialEntity.firstOrNull()?.currencyTicker
-        when (listOfFinancialEntity.firstOrNull()) {
+        val rowCurrencyTicker = listOfFinancialEntities.firstOrNull()?.currencyTicker
+        when (listOfFinancialEntities.firstOrNull()) {
             is ExpenseItem -> {
                 listOfRowValues.clear()
-                listOfRowValues.addAll(listOfFinancialEntity.map { it.value })
+                listOfRowValues.addAll(listOfFinancialEntities.map { it.value })
             }
 
             is IncomeItem -> {
                 listOfRowValues.clear()
-                listOfRowValues.addAll(listOfFinancialEntity.map { it.value })
+                listOfRowValues.addAll(listOfFinancialEntities.map { it.value })
             }
 
             else -> {

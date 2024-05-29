@@ -9,6 +9,7 @@ import com.example.track.data.other.converters.getEndOfTheMonth
 import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.domain.repository.expenses.ExpensesCoreRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flow
 import java.time.LocalDate
@@ -19,7 +20,7 @@ class ExpensesCoreRepositoryImpl(
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : ExpensesCoreRepository {
-    override suspend fun getSumOfExpenses(start: Long, end: Long): Flow<Float> = flow {
+    override suspend fun getSumOfExpenses(start: Long, end: Long): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         expenseItemsDao.getExpensesInTimeSpanDateAsc(
             start = start,
@@ -35,7 +36,7 @@ class ExpensesCoreRepositoryImpl(
                         sumOfExpensesInPreferableCurrency += convertedValue
                     }
                 }
-                emit(sumOfExpensesInPreferableCurrency)
+                send(sumOfExpensesInPreferableCurrency)
         }
     }
     override suspend fun getSumOfExpensesByCategories(start: Long, end: Long, listOfCategories: List<Int>): Flow<Float> = flow {

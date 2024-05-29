@@ -1,7 +1,8 @@
 package com.example.track.domain.repository.ideas
 
-import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.abstractLayer.Idea
+import com.example.track.domain.models.currency.Currency
+import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
 import kotlinx.coroutines.Dispatchers
@@ -16,5 +17,6 @@ interface IdeaListRepository {
     suspend fun addIdea(idea: Idea, context: CoroutineContext = Dispatchers.IO)
     suspend fun editIdea(idea: Idea, context: CoroutineContext = Dispatchers.IO)
     suspend fun deleteIdea(idea: Idea, context: CoroutineContext = Dispatchers.IO)
+    suspend fun changePreferableCurrenciesOnIdeas(newPreferableCurrency : Currency, previousPreferableCurrency: Currency)
     suspend fun getCountOfIdeas() : Int
 }

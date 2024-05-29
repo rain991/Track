@@ -190,7 +190,7 @@ fun FinancialItemCardTypeSimple(
                                     }
                                 },
                                 style = MaterialTheme.typography.bodyMedium,
-                                modifier = Modifier.padding(2.dp),
+                                modifier = Modifier.padding(start = 8.dp),
                                 textAlign = TextAlign.Center
                             )
                         }

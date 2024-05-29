@@ -31,6 +31,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import kotlinx.coroutines.launch
+import java.text.DecimalFormat
 
 @Composable
 fun AddToSavingDialog(
@@ -53,13 +54,15 @@ fun AddToSavingDialog(
                 .wrapContentHeight(),
             shape = RoundedCornerShape(8.dp),
         ) {
-            Column(modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
+            ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Text(text = "Add to " + currentSaving.value?.label, style = MaterialTheme.typography.titleSmall)
                 }
-
+                Spacer(modifier = Modifier.height(8.dp))
                 AddToSavingDialogAmountInput(
                     focusRequester = focusRequester,
                     controller = softwareKeyboardController,
@@ -69,16 +72,20 @@ fun AddToSavingDialog(
                     onValueChange = { inputValue = it }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
-
-                Text(text = "Planned ${currentSaving.value?.goal} " + preferableCurrency.value.ticker)
+                Text(
+                    text = "Planned ${currentSaving.value?.goal} " + preferableCurrency.value.ticker,
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                val df = DecimalFormat("#.##")
                 Text(
                     text = "Completed for" + " ${currentSaving.value?.value} " + preferableCurrency.value.ticker + " (${
-                        currentSaving.value?.value?.div(
-                            currentSaving.value?.goal ?: 1.0f
-                        )?.times(100)
-                    }%)"
+                        df.format(
+                            currentSaving.value?.value?.div(
+                                currentSaving.value?.goal ?: 1.0f
+                            )?.times(100)
+                        )
+                    }%)", style = MaterialTheme.typography.bodyMedium
                 )
-
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     OutlinedButton(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(null) }) {
                         Text(text = "Decline")

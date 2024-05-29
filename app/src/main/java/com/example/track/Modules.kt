@@ -85,7 +85,7 @@ val appModule = module {
     single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
 
     // Ideas
-    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get(), get(), get()) }
+    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get(), get(), get(), get()) }
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
     single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
     single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get(), get(), get(), get()) }
@@ -125,7 +125,7 @@ val viewModelModule = module {
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
     viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get(), get()) }
     viewModel { TrackScreenFeedViewModel(get()) }
-    viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get()) }
+    viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
     viewModel { BudgetIdeaCardViewModel(get(), get()) }
     viewModel { StatisticsViewModel(get(), get()) }
     viewModel { TrackScreenInfoCardsViewModel(get(), get(), get()) }

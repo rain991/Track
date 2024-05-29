@@ -9,12 +9,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
@@ -40,17 +42,32 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker: String, addToSav
             }
             Spacer(Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier.weight(0.5f), verticalArrangement = Arrangement.SpaceEvenly) {
-                    Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
-                        Text(text = "Planned ${savings.goal} " + preferableCurrencyTicker)
+                Column(modifier = Modifier
+                    .weight(0.64f)
+                    .wrapContentWidth(), verticalArrangement = Arrangement.SpaceAround) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = "Planned ${savings.goal} " + preferableCurrencyTicker, style = MaterialTheme.typography.bodyMedium,  textAlign = TextAlign.Center)
                     }
-                    Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
-                        Text(text = "Completed for" + " ${savings.value} " + preferableCurrencyTicker)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth(),
+                        horizontalArrangement = Arrangement.Center,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = "Completed for" + " ${savings.value} " + preferableCurrencyTicker,
+                            style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
+                        )
                     }
                 }
                 Column(
                     modifier = Modifier
-                        .weight(0.5f)
+                        .weight(0.36f)
                         .fillMaxHeight(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     androidx.compose.material3.Button(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(savings) }) {

@@ -6,6 +6,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.track.data.core.CurrenciesRatesHandler
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
+import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.domain.models.currency.Currency
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,8 @@ class CurrenciesSettingsViewModel(
     private val dataStoreManager: DataStoreManager,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
     private val currencyListRepositoryImpl: CurrencyListRepositoryImpl,
-    private val currenciesRatesHandler: CurrenciesRatesHandler
+    private val currenciesRatesHandler: CurrenciesRatesHandler,
+    private val ideaListRepositoryImpl: IdeaListRepositoryImpl
 ) : ViewModel() {
     private val _currencyList = mutableStateListOf<Currency>()
     val currencyList: List<Currency> = _currencyList
@@ -42,21 +44,21 @@ class CurrenciesSettingsViewModel(
             }
         }
     }
-
+    // setPreferableCurrency contains logic to change preferable currency all across the app
     suspend fun setPreferableCurrency(value: Currency) {
         if (firstAdditionalCurrencyStateFlow.first() != value && secondAdditionalCurrencyStateFlow.first() != value &&
             thirdAdditionalCurrencyStateFlow.first() != value && fourthAdditionalCurrencyStateFlow.first() != value
         ) {
+            val preferableCurrency =  currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
             dataStoreManager.setBudget(
                 currenciesRatesHandler.convertValueToAnyCurrency(
                     dataStoreManager.budgetFlow.first(),
-                    currenciesPreferenceRepositoryImpl.getPreferableCurrency().first(),
+                    preferableCurrency,
                     value
                 )
             )
+            ideaListRepositoryImpl.changePreferableCurrenciesOnIdeas(value, preferableCurrency)
             currenciesPreferenceRepositoryImpl.setPreferableCurrency(value)
-
-
         } else {
             setToastMessage("${value.ticker} is already in use")
         }
