@@ -1,4 +1,4 @@
-package com.example.track.presentation.components.screenComponents
+package com.example.track.presentation.components.screenComponents.core
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable

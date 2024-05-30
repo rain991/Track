@@ -40,6 +40,7 @@ import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnVi
 import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
 import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
+import com.example.track.data.viewmodels.settingsScreen.IdeasListSettingsScreenViewModel
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
@@ -130,4 +131,5 @@ val viewModelModule = module {
     viewModel { StatisticsViewModel(get(), get()) }
     viewModel { TrackScreenInfoCardsViewModel(get(), get(), get()) }
     viewModel { AddToSavingIdeaDialogViewModel(get(), get(), get()) }
+    viewModel { IdeasListSettingsScreenViewModel(get()) }
 }

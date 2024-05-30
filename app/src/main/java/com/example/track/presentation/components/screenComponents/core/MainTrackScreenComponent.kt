@@ -1,4 +1,4 @@
-package com.example.track.presentation.components.screenComponents
+package com.example.track.presentation.components.screenComponents.core
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

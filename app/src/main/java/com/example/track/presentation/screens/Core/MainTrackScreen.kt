@@ -14,7 +14,7 @@ import com.example.track.presentation.components.bottomSheet.BottomSheet
 import com.example.track.presentation.components.common.ui.Header
 import com.example.track.presentation.components.mainScreen.dialogs.NewIdeaDialog
 import com.example.track.presentation.components.other.ExtendedButtonExample
-import com.example.track.presentation.components.screenComponents.MainTrackScreenComponent
+import com.example.track.presentation.components.screenComponents.core.MainTrackScreenComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 

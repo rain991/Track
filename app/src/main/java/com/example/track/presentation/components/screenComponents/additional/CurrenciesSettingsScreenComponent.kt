@@ -1,4 +1,4 @@
-package com.example.track.presentation.components.screenComponents
+package com.example.track.presentation.components.screenComponents.additional
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background

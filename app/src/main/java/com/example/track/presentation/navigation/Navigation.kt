@@ -48,7 +48,7 @@ fun Navigation(dataStoreManager: DataStoreManager) {
             CategoriesSettingsScreen(navController)
         }
         composable(route = Screen.IdeaListSettingsScreen.route) {
-            CategoriesSettingsScreen(navController)
+            IdeasListSettingsScreen(navController)
         }
     }
 }

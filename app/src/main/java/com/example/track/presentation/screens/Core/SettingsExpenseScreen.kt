@@ -18,7 +18,7 @@ import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewMo
 import com.example.track.presentation.components.bottomSheet.BottomSheet
 import com.example.track.presentation.components.common.ui.Header
 import com.example.track.presentation.components.other.ExtendedButtonExample
-import com.example.track.presentation.components.screenComponents.SettingsScreenComponent
+import com.example.track.presentation.components.screenComponents.core.SettingsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 

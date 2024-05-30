@@ -10,7 +10,7 @@ import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.presentation.components.common.ui.Header
 import com.example.track.presentation.components.other.ExtendedButtonExample
-import com.example.track.presentation.components.screenComponents.StatisticsScreenComponent
+import com.example.track.presentation.components.screenComponents.core.StatisticsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 /*  Statistic screen shows user achievments and useful stats for specific period of time. Also shows chart  */
