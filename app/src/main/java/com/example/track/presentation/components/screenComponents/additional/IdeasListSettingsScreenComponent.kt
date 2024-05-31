@@ -20,6 +20,10 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -49,11 +53,16 @@ fun IdeasListSettingsScreenComponent() {
         ideasListSettingsScreenViewModel.initializeValues()
     }
     Log.d("Mylog", "IdeasListSettingsScreenComponent: list size ${screenState.value.listOfSelectedIdeas.size}")
-    Column(modifier = Modifier.fillMaxSize().padding(top = 16.dp)) {
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 16.dp)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp).wrapContentHeight(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 8.dp)
+                .wrapContentHeight(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Show completed ideas", style = MaterialTheme.typography.bodyMedium)
             Switch(
@@ -64,7 +73,8 @@ fun IdeasListSettingsScreenComponent() {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp).wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
+                .padding(horizontal = 8.dp)
+                .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
         ) {
             Text(text = "Sort")
             Spacer(modifier = Modifier.width(8.dp))
@@ -90,7 +100,17 @@ fun IdeasListSettingsScreenComponent() {
                     }
 
                     is ExpenseLimits -> {
-                        ExpenseLimitIdeaCard(expenseLimit = currentIdea)
+                        var completionValue by remember { mutableFloatStateOf(0.0f) }
+                        LaunchedEffect(key1 = Unit) {
+                            ideasListSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
+                                completionValue = it
+                            }
+                        }
+                        ExpenseLimitIdeaCard(
+                            expenseLimit = currentIdea,
+                            completedValue = completionValue,
+                            preferableCurrencyTicker = preferableCurrencyState.value.ticker
+                        )
                     }
 
                     is IncomePlans -> {

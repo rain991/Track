@@ -16,3 +16,4 @@ data class Savings(
     val label : String,
     val value : Float
 ) : Idea()
+ 

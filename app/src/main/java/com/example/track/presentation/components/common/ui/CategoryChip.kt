@@ -17,13 +17,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.example.track.R
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.presentation.components.common.parser.parseColor
 
 @Composable
-fun CategoryChip(category: CategoryEntity, isSelected: Boolean, onSelect: (CategoryEntity) -> Unit, chipScale: Float = 1.0f) {
+fun CategoryChip(
+    category: CategoryEntity,
+    textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
+    isSelected: Boolean,
+    onSelect: (CategoryEntity) -> Unit,
+    chipScale: Float = 1.0f
+) {
     Button(
         modifier = Modifier
             .height(40.dp)
@@ -47,11 +55,11 @@ fun CategoryChip(category: CategoryEntity, isSelected: Boolean, onSelect: (Categ
         if (isSelected) Spacer(modifier = Modifier.width(8.dp))
         Text(
             text = category.note,
-            style = MaterialTheme.typography.bodyMedium,
+            style = textStyle,
             modifier = Modifier
                 .fillMaxHeight()
-                .fillMaxWidth(0.7f),
-            color = MaterialTheme.colorScheme.onPrimary
+                .fillMaxWidth(0.8f),
+            color = MaterialTheme.colorScheme.onPrimary, textAlign = TextAlign.Center
         )
     }
 }

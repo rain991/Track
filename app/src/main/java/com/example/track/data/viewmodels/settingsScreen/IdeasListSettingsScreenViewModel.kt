@@ -11,7 +11,10 @@ import com.example.track.domain.models.idea.Savings
 import com.example.track.presentation.states.screenRelated.IdeasListSettingsScreenState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -62,6 +65,9 @@ class IdeasListSettingsScreenViewModel(private val ideaListRepositoryImpl: IdeaL
         } else {
             sortListAscending()
         }
+    }
+    suspend fun getCompletionValue(idea: Idea): StateFlow<Float> {
+        return ideaListRepositoryImpl.getCompletionValue(idea).stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = 0.0f)
     }
 
     fun setIsShowingCompletedIdeas(value: Boolean) {

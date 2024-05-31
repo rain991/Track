@@ -74,7 +74,7 @@ fun AddToSavingDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = "Planned ${currentSaving.value?.goal} " + preferableCurrency.value.ticker,
-                    style = MaterialTheme.typography.bodyMedium
+                    style = MaterialTheme.typography.bodySmall
                 )
                 val df = DecimalFormat("#.##")
                 Text(
@@ -84,7 +84,7 @@ fun AddToSavingDialog(
                                 currentSaving.value?.goal ?: 1.0f
                             )?.times(100)
                         )
-                    }%)", style = MaterialTheme.typography.bodyMedium
+                    }%)", style = MaterialTheme.typography.bodySmall
                 )
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     OutlinedButton(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(null) }) {

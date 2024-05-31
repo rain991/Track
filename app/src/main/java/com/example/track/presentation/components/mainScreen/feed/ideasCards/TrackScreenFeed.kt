@@ -10,6 +10,10 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
@@ -36,9 +40,9 @@ import org.koin.compose.koinInject
 fun TrackScreenFeed() {
     val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
     val addToSavingIdeaDialogViewModel = koinViewModel<AddToSavingIdeaDialogViewModel>()
+    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val currentIndex = trackScreenFeedViewModel.cardIndex.collectAsState()
     val maxIndex = trackScreenFeedViewModel.maxPagerIndex.collectAsState()
-    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val ideaList = trackScreenFeedViewModel.ideaList
     val pagerState = rememberPagerState(pageCount = { maxIndex.value + 1 })
@@ -71,7 +75,19 @@ fun TrackScreenFeed() {
                 )
 
                 is IncomePlans -> IncomePlanIdeaCard(incomePlans = ideaList[index - 1] as IncomePlans)
-                is ExpenseLimits -> ExpenseLimitIdeaCard(expenseLimit = ideaList[index - 1] as ExpenseLimits)
+                is ExpenseLimits -> {
+                    var completedValue by remember { mutableFloatStateOf(0.0f) }
+                    LaunchedEffect(key1 = Unit) {
+                        trackScreenFeedViewModel.getCompletionValue(ideaList[index - 1]).collect {
+                            completedValue = it
+                        }
+                    }
+                    ExpenseLimitIdeaCard(
+                        expenseLimit = ideaList[index - 1] as ExpenseLimits,
+                        preferableCurrencyTicker = preferableCurrencyState.value.ticker,
+                        completedValue = completedValue
+                    )
+                }
             }
         }
         Log.d("MyLog", "MainScreenFeed: $index")

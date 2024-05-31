@@ -12,7 +12,6 @@ import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
 import com.example.track.presentation.states.componentRelated.IdeaSelectorTypes
 import com.example.track.presentation.states.componentRelated.NewIdeaDialogState
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -20,7 +19,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import java.time.LocalDate
 import java.util.Date
 
@@ -50,8 +48,6 @@ class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepos
     val cardIndex = _cardIndex.asStateFlow()
     private val _maxPagerIndex = MutableStateFlow(ideaList.size + 1)
     val maxPagerIndex = _maxPagerIndex.asStateFlow()
-
-
     init {
         viewModelScope.launch {
             ideaListRepositoryImpl.getIncomesPlansList().collect { newIncomePlans ->
@@ -146,9 +142,7 @@ class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepos
     }
 
     suspend fun getCompletionValue(idea: Idea): StateFlow<Float> {
-        return withContext(Dispatchers.IO) {
-            ideaListRepositoryImpl.getCompletionValue(idea).stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = 0.0f)
-        }
+        return ideaListRepositoryImpl.getCompletionValue(idea).stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = 0.0f)
     }
 
     fun setIsNewIdeaDialogVisible(value: Boolean) {

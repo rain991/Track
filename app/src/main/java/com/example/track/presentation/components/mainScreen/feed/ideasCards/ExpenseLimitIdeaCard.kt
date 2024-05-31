@@ -1,106 +1,145 @@
 package com.example.track.presentation.components.mainScreen.feed.ideasCards
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
+import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.presentation.components.common.ui.CategoryChip
-import org.koin.androidx.compose.koinViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
 
 /*  Contains Card used in expense screen feed to show expense limit entity  */
 @Composable
-fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits) {
-    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
+fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, preferableCurrencyTicker: String) {
     val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepositoryImpl>()
-    var completedAbsoluteValue by remember { mutableFloatStateOf(0.0f) }
-    var complitionRate by remember { mutableFloatStateOf(0.0f) }
-    LaunchedEffect(key1 = trackScreenFeedViewModel.ideaList) {
-        completedAbsoluteValue = trackScreenFeedViewModel.getCompletionValue(expenseLimit).value
-        trackScreenFeedViewModel.getCompletionValue(expenseLimit).collect {
-            if (it != 0.0f) {
-                complitionRate = expenseLimit.goal.div(it)
-            } else 0.0f
-        }
-    }
     Card(
         modifier = Modifier
             .height(140.dp)
-            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.primary,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimary
-        )
+            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Text(
                 text = "Expense limit",
-                style = MaterialTheme.typography.bodyMedium
+                style = MaterialTheme.typography.titleSmall
             )
         }
-        Spacer(Modifier.height(4.dp))
         Column(
             modifier = Modifier
-                .fillMaxHeight()
-                .weight(1f)
+                .fillMaxSize()
+                .padding(horizontal = 8.dp, vertical = 2.dp), verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.Start) {
-                Text(text = "Planned")
-                Spacer(Modifier.width(2.dp))
-                Text(text = "${expenseLimit.goal}")
-            }
+            Spacer(Modifier.height(8.dp))
             if (expenseLimit.isRelatedToAllCategories) {
-                Text(text = "all categories limit")
+                Text(text = "Planned ${expenseLimit.goal} $preferableCurrencyTicker")
+                Spacer(Modifier.height(8.dp))
+                Text(text = "Already spent $completedValue $preferableCurrencyTicker")
             } else {
-                Text(text = "for selected categories:")
-                Row(modifier = Modifier.wrapContentWidth()) {
-                    if (expenseLimit.firstRelatedCategoryId != null) CategoryChip(
-                        category = expenseCategoriesListRepositoryImpl.getCategoryById(
-                          expenseLimit.firstRelatedCategoryId
-                        ), isSelected = false, onSelect = {})
-                    if (expenseLimit.secondRelatedCategoryId != null) CategoryChip(
-                        category = expenseCategoriesListRepositoryImpl.getCategoryById(
-                            expenseLimit.secondRelatedCategoryId
-                        ), isSelected = false, onSelect = {})
-                    if (expenseLimit.thirdRelatedCategoryId != null) CategoryChip(
-                        category = expenseCategoriesListRepositoryImpl.getCategoryById(
-                            expenseLimit.thirdRelatedCategoryId
-                        ), isSelected = false, onSelect = {})
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
+                    Text(text = "Planned ${expenseLimit.goal} $preferableCurrencyTicker")
+                    Text(text = "Already spent $completedValue $preferableCurrencyTicker")
                 }
             }
-        }
-        Column(
-            modifier = Modifier
-                .fillMaxHeight()
-                .weight(1f)
-        ) {
-            Row(modifier = Modifier.weight(1f), horizontalArrangement = Arrangement.End) {
-                Text(text = "Completed for")
-                Spacer(Modifier.width(2.dp))
-                Text(text = completedAbsoluteValue.toString())
+            Spacer(Modifier.height(8.dp))
+
+            Row(
+                modifier = Modifier.padding(start =
+                    if (expenseLimit.isRelatedToAllCategories) {
+                        4.dp
+                    } else {
+                        24.dp
+                    }
+                )
+            ) {
+                Text(
+                    text = "Categories :" + if (expenseLimit.isRelatedToAllCategories) {
+                        " related to all categories"
+                    } else {
+                        ""
+                    }
+                )
+            }
+
+            Spacer(modifier = Modifier.height(4.dp))
+            Row(modifier = Modifier
+                .wrapContentHeight()
+                .padding(bottom = 4.dp)) {
+                if (expenseLimit.firstRelatedCategoryId != null) {
+                    var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
+                    LaunchedEffect(key1 = Unit) {
+                        withContext(Dispatchers.IO) {
+                            currentCategory = expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.firstRelatedCategoryId)
+                        }
+                    }
+                    if (currentCategory != null) {
+                        Box(modifier = Modifier.weight(0.3f)) {
+                            CategoryChip(
+                                category = currentCategory!!,
+                                isSelected = false,
+                                onSelect = {},
+                                textStyle = MaterialTheme.typography.bodySmall,
+                                chipScale = 0.9f
+                            )
+                        }
+                    }
+                }
+                if (expenseLimit.secondRelatedCategoryId != null) {
+                    var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
+                    LaunchedEffect(key1 = Unit) {
+                        withContext(Dispatchers.IO) {
+                            currentCategory = expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.secondRelatedCategoryId)
+                        }
+                    }
+                    if (currentCategory != null) {
+                        Box(modifier = Modifier.weight(0.3f)) {
+                            CategoryChip(
+                                category = currentCategory!!,
+                                textStyle = MaterialTheme.typography.bodySmall,
+                                isSelected = false,
+                                onSelect = {}, chipScale = 0.9f
+                            )
+                        }
+                    }
+                }
+                if (expenseLimit.thirdRelatedCategoryId != null) {
+                    var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
+                    LaunchedEffect(key1 = Unit) {
+                        withContext(Dispatchers.IO) {
+                            currentCategory = expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.thirdRelatedCategoryId)
+                        }
+                    }
+                    if (currentCategory != null) {
+                        Box(modifier = Modifier.weight(0.3f)) {
+                            CategoryChip(
+                                category = currentCategory!!,
+                                textStyle = MaterialTheme.typography.bodySmall,
+                                isSelected = false,
+                                onSelect = {}, chipScale = 0.9f
+                            )
+                        }
+                    }
+                }
             }
         }
     }
