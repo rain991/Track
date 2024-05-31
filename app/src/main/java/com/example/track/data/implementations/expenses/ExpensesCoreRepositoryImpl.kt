@@ -1,5 +1,6 @@
 package com.example.track.data.implementations.expenses
 
+import android.util.Log
 import com.example.track.data.core.CurrenciesRatesHandler
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
@@ -11,7 +12,6 @@ import com.example.track.domain.repository.expenses.ExpensesCoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import java.time.LocalDate
 import java.util.Date
 
@@ -36,16 +36,16 @@ class ExpensesCoreRepositoryImpl(
                         sumOfExpensesInPreferableCurrency += convertedValue
                     }
                 }
+            Log.d("Mylog", "getSumOfExpenses by categories: $sumOfExpensesInPreferableCurrency")
                 send(sumOfExpensesInPreferableCurrency)
         }
     }
-    override suspend fun getSumOfExpensesByCategories(start: Long, end: Long, listOfCategories: List<Int>): Flow<Float> = flow {
+    override suspend fun getSumOfExpensesByCategories(start: Long, end: Long, listOfCategories: List<Int>): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         expenseItemsDao.getExpensesByCategoriesIdInTimeSpan(
             start = start,
             end = end, listOfCategoriesId = listOfCategories
-        )
-            .collect { foundedExpenseItems ->
+        ).collect { foundedExpenseItems ->
                 var sumOfExpensesInPreferableCurrency = 0.0f
                 val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
                 val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
@@ -56,7 +56,8 @@ class ExpensesCoreRepositoryImpl(
                         sumOfExpensesInPreferableCurrency += convertedValue
                     }
                 }
-                emit(sumOfExpensesInPreferableCurrency)
+            Log.d("Mylog", "getSumOfExpenses: $sumOfExpensesInPreferableCurrency")
+                send(sumOfExpensesInPreferableCurrency)
             }
     }
 

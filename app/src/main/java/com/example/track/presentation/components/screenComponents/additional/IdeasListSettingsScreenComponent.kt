@@ -1,7 +1,7 @@
 package com.example.track.presentation.components.screenComponents.additional
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -52,73 +52,93 @@ fun IdeasListSettingsScreenComponent() {
     LaunchedEffect(key1 = Unit) {
         ideasListSettingsScreenViewModel.initializeValues()
     }
-    Log.d("Mylog", "IdeasListSettingsScreenComponent: list size ${screenState.value.listOfSelectedIdeas.size}")
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(top = 16.dp)
-    ) {
-        Row(
+    if(listOfAllIdeas.isEmpty()){
+      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
+        Text(text = "You have not created any idea yet")
+      }
+    }else{
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-                .wrapContentHeight(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+                .fillMaxSize()
+                .padding(top = 16.dp)
         ) {
-            Text(text = "Show completed ideas", style = MaterialTheme.typography.bodyMedium)
-            Switch(
-                checked = screenState.value.isShowingCompletedIdeas,
-                onCheckedChange = { ideasListSettingsScreenViewModel.setIsShowingCompletedIdeas(it) })
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 8.dp)
-                .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(text = "Sort")
-            Spacer(modifier = Modifier.width(8.dp))
-            TextButton(onClick = { ideasListSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) }) {
-                Text(
-                    text = if (screenState.value.isSortedDateDescending) {
-                        "Descending"
-                    } else {
-                        "Ascending"
-                    }, style = MaterialTheme.typography.bodyMedium
-                )
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .wrapContentHeight(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Show completed ideas", style = MaterialTheme.typography.bodyMedium)
+                Switch(
+                    checked = screenState.value.isShowingCompletedIdeas,
+                    onCheckedChange = { ideasListSettingsScreenViewModel.setIsShowingCompletedIdeas(it) })
             }
-        }
-        LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-            items(listOfAllIdeas.size) { index: Int ->
-                when (val currentIdea = listOfAllIdeas[index]) {
-                    is Savings -> {
-                        SavingsIdeaCard(
-                            savings = currentIdea,
-                            preferableCurrencyTicker = preferableCurrencyState.value.ticker,
-                            addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
-                        )
-                    }
-
-                    is ExpenseLimits -> {
-                        var completionValue by remember { mutableFloatStateOf(0.0f) }
-                        LaunchedEffect(key1 = Unit) {
-                            ideasListSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
-                                completionValue = it
-                            }
-                        }
-                        ExpenseLimitIdeaCard(
-                            expenseLimit = currentIdea,
-                            completedValue = completionValue,
-                            preferableCurrencyTicker = preferableCurrencyState.value.ticker
-                        )
-                    }
-
-                    is IncomePlans -> {
-                        IncomePlanIdeaCard(incomePlans = currentIdea)
-                    }
+            Spacer(modifier = Modifier.height(8.dp))
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 8.dp)
+                    .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(text = "Sorted date ")
+                Spacer(modifier = Modifier.width(8.dp))
+                TextButton(onClick = { ideasListSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) }) {
+                    Text(
+                        text = if (screenState.value.isSortedDateDescending) {
+                            "descending"
+                        } else {
+                            "ascending"
+                        }, style = MaterialTheme.typography.bodyMedium
+                    )
                 }
-                Spacer(modifier = Modifier.height(8.dp))
+            }
+            LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
+                items(listOfAllIdeas.size) { index: Int ->
+                    when (val currentIdea = listOfAllIdeas[index]) {
+                        is Savings -> {
+                            SavingsIdeaCard(
+                                savings = currentIdea,
+                                preferableCurrencyTicker = preferableCurrencyState.value.ticker,
+                                addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
+                            )
+                        }
+
+                        is ExpenseLimits -> {
+                            var completionValue by remember { mutableFloatStateOf(0.0f) }
+                            LaunchedEffect(key1 = Unit) {
+                                ideasListSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
+                                    completionValue = it
+                                }
+                            }
+                            ExpenseLimitIdeaCard(
+                                expenseLimit = currentIdea,
+                                completedValue = completionValue,
+                                preferableCurrencyTicker = preferableCurrencyState.value.ticker
+                            )
+                        }
+
+                        is IncomePlans -> {
+                            var completionValue by remember { mutableFloatStateOf(0.0f) }
+                            LaunchedEffect(key1 = Unit) {
+                                ideasListSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
+                                    completionValue = it
+                                }
+                            }
+                            IncomePlanIdeaCard(
+                                incomePlans = currentIdea,
+                                complitionValue = completionValue,
+                                preferableCurrencyTicker = preferableCurrencyState.value.ticker
+                            )
+                        }
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                }
             }
         }
     }
+
+
+
+
+
 }

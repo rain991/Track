@@ -3,7 +3,6 @@ package com.example.track.presentation.components.mainScreen.feed.ideasCards
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -40,18 +39,23 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker: String, addToSav
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(text = "Saving", style = MaterialTheme.typography.bodySmall)
             }
-            Spacer(Modifier.height(8.dp))
             Row(modifier = Modifier.fillMaxWidth()) {
-                Column(modifier = Modifier
-                    .weight(0.64f)
-                    .wrapContentWidth(), verticalArrangement = Arrangement.SpaceAround) {
+                Column(
+                    modifier = Modifier
+                        .weight(0.64f)
+                        .wrapContentWidth()
+                        .fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly
+                ) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(text = "Planned ${savings.goal} " + preferableCurrencyTicker, style = MaterialTheme.typography.bodyMedium,  textAlign = TextAlign.Center)
+                        Text(
+                            text = "Planned ${savings.goal} " + preferableCurrencyTicker,
+                            textAlign = TextAlign.Center
+                        )
                     }
                     Row(
                         modifier = Modifier
@@ -60,8 +64,7 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker: String, addToSav
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Completed for" + " ${savings.value} " + preferableCurrencyTicker,
-                            style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
+                            text = "Completed for" + " ${savings.value} " + preferableCurrencyTicker, textAlign = TextAlign.Center
                         )
                     }
                 }

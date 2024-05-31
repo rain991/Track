@@ -15,8 +15,12 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Button
 import androidx.wear.compose.material.Icon
@@ -32,15 +36,18 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             Row(modifier= Modifier.fillMaxWidth().padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically){
-                Button(onClick = { navController.navigate(Screen.MainScreen.route) }) {
+                Button(onClick = { navController.navigate(Screen.MainScreen.route) }, modifier= Modifier.scale(0.8f)) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back to settings screen")
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 Image(painter = painterResource(id = R.drawable.onlyicon), contentDescription = null, modifier = Modifier.size(36.dp))
-                Text(text = "Categories", style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onBackground)
+                Text(text = "Categories", style = TextStyle(
+                    fontWeight = FontWeight.Bold,
+                    fontSize = 20.sp
+                ), color = MaterialTheme.colorScheme.onBackground)
                 Spacer(modifier = Modifier.weight(1.2f))
             }
-        },bottomBar = { }
+        }
     ) {
         Column(
             modifier = Modifier

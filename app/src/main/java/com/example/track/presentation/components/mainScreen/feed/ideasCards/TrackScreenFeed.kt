@@ -1,6 +1,5 @@
 package com.example.track.presentation.components.mainScreen.feed.ideasCards
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -56,6 +55,9 @@ fun TrackScreenFeed() {
     LaunchedEffect(currentIndex.value) {
         pagerState.animateScrollToPage(currentIndex.value)
     }
+    if (currentSavingAddingDialogState.value != null) {
+        AddToSavingDialog(addToSavingIdeaDialogViewModel)
+    }
     HorizontalPager(
         modifier = Modifier
             .fillMaxWidth()
@@ -73,8 +75,19 @@ fun TrackScreenFeed() {
                     preferableCurrencyTicker = preferableCurrencyState.value.ticker,
                     addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
                 )
-
-                is IncomePlans -> IncomePlanIdeaCard(incomePlans = ideaList[index - 1] as IncomePlans)
+                is IncomePlans -> {
+                    var completedValue by remember { mutableFloatStateOf(0.0f) }
+                    LaunchedEffect(key1 = Unit) {
+                        trackScreenFeedViewModel.getCompletionValue(ideaList[index - 1]).collect {
+                            completedValue = it
+                        }
+                    }
+                    IncomePlanIdeaCard(
+                        incomePlans = ideaList[index - 1] as IncomePlans,
+                        complitionValue = completedValue,
+                        preferableCurrencyTicker = preferableCurrencyState.value.ticker
+                    )
+                }
                 is ExpenseLimits -> {
                     var completedValue by remember { mutableFloatStateOf(0.0f) }
                     LaunchedEffect(key1 = Unit) {
@@ -90,9 +103,5 @@ fun TrackScreenFeed() {
                 }
             }
         }
-        Log.d("MyLog", "MainScreenFeed: $index")
-    }
-    if (currentSavingAddingDialogState.value != null) {
-        AddToSavingDialog(addToSavingIdeaDialogViewModel)
     }
 }

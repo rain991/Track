@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.other.converters.convertLocalDateToDate
+import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.domain.models.abstractLayer.Idea
 import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.idea.ExpenseLimits
@@ -48,6 +49,7 @@ class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepos
     val cardIndex = _cardIndex.asStateFlow()
     private val _maxPagerIndex = MutableStateFlow(ideaList.size + 1)
     val maxPagerIndex = _maxPagerIndex.asStateFlow()
+
     init {
         viewModelScope.launch {
             ideaListRepositoryImpl.getIncomesPlansList().collect { newIncomePlans ->
@@ -118,7 +120,11 @@ class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepos
                     idea = ExpenseLimits(
                         goal = newIdeaDialogState.value.goal,
                         completed = false,
-                        startDate = convertLocalDateToDate(LocalDate.now()),
+                        startDate = if (newIdeaDialogState.value.eachMonth == true) {
+                            getStartOfMonthDate(convertLocalDateToDate(LocalDate.now()))
+                        } else {
+                            convertLocalDateToDate(LocalDate.now())
+                        },
                         endDate = newIdeaDialogState.value.endDate,
                         isEachMonth = newIdeaDialogState.value.eachMonth,
                         isRelatedToAllCategories = newIdeaDialogState.value.relatedToAllCategories!!,

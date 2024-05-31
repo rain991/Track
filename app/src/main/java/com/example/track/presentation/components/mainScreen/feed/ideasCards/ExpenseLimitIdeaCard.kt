@@ -45,12 +45,12 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                 style = MaterialTheme.typography.titleSmall
             )
         }
+        Spacer(Modifier.height(8.dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 8.dp, vertical = 2.dp), verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Spacer(Modifier.height(8.dp))
             if (expenseLimit.isRelatedToAllCategories) {
                 Text(text = "Planned ${expenseLimit.goal} $preferableCurrencyTicker")
                 Spacer(Modifier.height(8.dp))
@@ -66,7 +66,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
             Row(
                 modifier = Modifier.padding(start =
                     if (expenseLimit.isRelatedToAllCategories) {
-                        4.dp
+                        0.dp
                     } else {
                         24.dp
                     }
@@ -99,7 +99,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                                 isSelected = false,
                                 onSelect = {},
                                 textStyle = MaterialTheme.typography.bodySmall,
-                                chipScale = 0.9f
+                                chipScale = 0.8f
                             )
                         }
                     }
@@ -117,7 +117,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                                 category = currentCategory!!,
                                 textStyle = MaterialTheme.typography.bodySmall,
                                 isSelected = false,
-                                onSelect = {}, chipScale = 0.9f
+                                onSelect = {}, chipScale = 0.8f
                             )
                         }
                     }
@@ -135,7 +135,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                                 category = currentCategory!!,
                                 textStyle = MaterialTheme.typography.bodySmall,
                                 isSelected = false,
-                                onSelect = {}, chipScale = 0.9f
+                                onSelect = {}, chipScale = 0.8f
                             )
                         }
                     }

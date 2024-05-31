@@ -27,7 +27,7 @@ fun MainTrackScreen() {
     val isIdeaDialogVisible = trackScreenFeedViewModel.isNewIdeaDialogVisible.collectAsState()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            if (isPageNameVisible.value) Header(pageName = stringResource(R.string.expenses))
+            if (isPageNameVisible.value) Header(pageName = stringResource(R.string.app_name))
         }, bottomBar = { },
         floatingActionButton = {
             ExtendedButtonExample(isButtonExpanded = true, onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
