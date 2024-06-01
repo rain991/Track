@@ -1,6 +1,5 @@
 package com.example.track.data.viewmodels.mainScreen
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
@@ -36,7 +35,6 @@ class BudgetIdeaCardViewModel(
             async {
                 budgetIdeaCardRepositoryImpl.requestBudgetExpectancy().collect {
                     setBudgetExpectancy(it)
-                    Log.d("MyLog", "initializeStates: budget expectancy is $it")
                 }
             }
             async {

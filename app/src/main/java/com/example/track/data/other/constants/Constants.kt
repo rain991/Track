@@ -26,6 +26,7 @@ val IDEA_NOTE_MAX_LENGTH = 60
 // ideas feed
 const val FEED_CARD_DELAY_SLOW = 4500L
 const val FEED_CARD_DELAY_FAST = 3300L
+const val FEED_CARD_DELAY_ADDITIONAL = 2400L
 
 // Other constants (objects of class as Currency) in DataStoreManager
 const val DB_PATH = "database/expense_tracker.db"

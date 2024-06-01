@@ -1,5 +1,6 @@
 package com.example.track.presentation.components.mainScreen.feed.ideasCards
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -11,12 +12,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.FEED_CARD_DELAY_ADDITIONAL
 import com.example.track.data.other.constants.FEED_CARD_DELAY_FAST
 import com.example.track.data.other.constants.FEED_CARD_DELAY_SLOW
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
@@ -46,15 +49,33 @@ fun TrackScreenFeed() {
     val maxIndex = trackScreenFeedViewModel.maxPagerIndex.collectAsState()
     val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val ideaList = trackScreenFeedViewModel.ideaList
-    val pagerState = rememberPagerState(pageCount = { maxIndex.value + 1 })
+    val pagerState = rememberPagerState(initialPage = 0, pageCount = { maxIndex.value + 1 })
     val currentSavingAddingDialogState = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
+    var needsAdditionalDelay by remember { mutableStateOf(false) }
     LaunchedEffect(true) {
         while (true) {
-            delay(if (currentIndex.value == 0 || currentIndex.value == maxIndex.value) FEED_CARD_DELAY_SLOW else FEED_CARD_DELAY_FAST)
+            var delayTime =
+                if (currentIndex.value == 0 || currentIndex.value == maxIndex.value) FEED_CARD_DELAY_SLOW else FEED_CARD_DELAY_FAST
+            if (currentIndex.value == 0) {
+                delayTime += FEED_CARD_DELAY_ADDITIONAL
+                needsAdditionalDelay = false
+            }
+            delay(delayTime)
             trackScreenFeedViewModel.incrementCardIndex()
         }
     }
+
+    LaunchedEffect(pagerState.currentPage) {
+        Log.d("MyLog", "TrackScreenFeed : pagerState.currentPage ${pagerState.currentPage}")
+        if (pagerState.currentPage <= ideaList.size + 1 && pagerState.targetPage != 0) {
+            trackScreenFeedViewModel.setCardIndex(pagerState.currentPage)
+        } else if (pagerState.currentPage == ideaList.size + 2) {
+            trackScreenFeedViewModel.setCardIndex(0)
+        }
+    }
+
     LaunchedEffect(currentIndex.value) {
+        Log.d("MyLog", "TrackScreenFeed: ${currentIndex.value}")
         pagerState.animateScrollToPage(currentIndex.value)
     }
     LaunchedEffect(key1 = Unit) {
@@ -68,7 +89,7 @@ fun TrackScreenFeed() {
             .fillMaxWidth()
             .height(140.dp),
         state = pagerState,
-        beyondBoundsPageCount = 2,
+        beyondBoundsPageCount = 1,
         contentPadding = PaddingValues(horizontal = 2.dp)
     ) { index ->
         when (index) {

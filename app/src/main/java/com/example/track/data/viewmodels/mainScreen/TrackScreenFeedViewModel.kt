@@ -13,7 +13,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 
@@ -48,8 +47,6 @@ class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepos
 
     suspend fun checkListOfIdeasCompletitionState() {
         val ideasToUpdate = mutableListOf<Idea>()
-
-        // Filter ideas to be updated asynchronously
         _ideaList.forEach { currentIdea ->
             if (!currentIdea.completed) {
                 val completionValue = getIdeaCompletionValue(currentIdea)
@@ -75,14 +72,16 @@ class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepos
     }
 
     fun incrementCardIndex() {
-        if (_cardIndex.value < ideaList.size + 1) _cardIndex.update { _cardIndex.value + 1 } else setCardIndex(0)
+        if (_cardIndex.value < ideaList.size + 1) {
+            setCardIndex(_cardIndex.value + 1)
+        } else setCardIndex(0)
     }
 
     private fun setMaxPagerIndex(value: Int) {
         _maxPagerIndex.value = value
     }
 
-    private fun setCardIndex(index: Int) {
+    fun setCardIndex(index: Int) {
         _cardIndex.value = index
     }
 }

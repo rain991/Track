@@ -1,6 +1,5 @@
 package com.example.track.data.implementations.expenses
 
-import android.util.Log
 import com.example.track.data.core.CurrenciesRatesHandler
 import com.example.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
@@ -36,7 +35,6 @@ class ExpensesCoreRepositoryImpl(
                         sumOfExpensesInPreferableCurrency += convertedValue
                     }
                 }
-            Log.d("Mylog", "getSumOfExpenses by categories: $sumOfExpensesInPreferableCurrency")
                 send(sumOfExpensesInPreferableCurrency)
         }
     }
@@ -56,7 +54,6 @@ class ExpensesCoreRepositoryImpl(
                         sumOfExpensesInPreferableCurrency += convertedValue
                     }
                 }
-            Log.d("Mylog", "getSumOfExpenses: $sumOfExpensesInPreferableCurrency")
                 send(sumOfExpensesInPreferableCurrency)
             }
     }
