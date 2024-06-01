@@ -23,6 +23,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -37,6 +38,7 @@ import com.example.track.domain.models.idea.Savings
 import com.example.track.presentation.components.mainScreen.feed.ideasCards.ExpenseLimitIdeaCard
 import com.example.track.presentation.components.mainScreen.feed.ideasCards.IncomePlanIdeaCard
 import com.example.track.presentation.components.mainScreen.feed.ideasCards.SavingsIdeaCard
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
@@ -45,6 +47,7 @@ fun IdeasListSettingsScreenComponent() {
     val addToSavingIdeaDialogViewModel = koinViewModel<AddToSavingIdeaDialogViewModel>()
     val ideasListSettingsScreenViewModel = koinViewModel<IdeasListSettingsScreenViewModel>()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
+    val coroutineScope = rememberCoroutineScope()
     val screenState = ideasListSettingsScreenViewModel.screenState.collectAsState()
     val listOfAllIdeas = ideasListSettingsScreenViewModel.listOfAllIdeas
     val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
@@ -52,11 +55,11 @@ fun IdeasListSettingsScreenComponent() {
     LaunchedEffect(key1 = Unit) {
         ideasListSettingsScreenViewModel.initializeValues()
     }
-    if(listOfAllIdeas.isEmpty()){
-      Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center){
-        Text(text = "You have not created any idea yet")
-      }
-    }else{
+    if (listOfAllIdeas.isEmpty()) {
+        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+            Text(text = "You have not created any idea yet")
+        }
+    } else {
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -71,7 +74,11 @@ fun IdeasListSettingsScreenComponent() {
                 Text(text = "Show completed ideas", style = MaterialTheme.typography.bodyMedium)
                 Switch(
                     checked = screenState.value.isShowingCompletedIdeas,
-                    onCheckedChange = { ideasListSettingsScreenViewModel.setIsShowingCompletedIdeas(it) })
+                    onCheckedChange = {
+                        coroutineScope.launch {
+                            ideasListSettingsScreenViewModel.setIsShowingCompletedIdeas(it)
+                        }
+                    })
             }
             Spacer(modifier = Modifier.height(8.dp))
             Row(
@@ -93,8 +100,19 @@ fun IdeasListSettingsScreenComponent() {
                 }
             }
             LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-                items(listOfAllIdeas.size) { index: Int ->
-                    when (val currentIdea = listOfAllIdeas[index]) {
+                val filteredIdeas = if (screenState.value.isShowingCompletedIdeas) {
+                    listOfAllIdeas
+                } else {
+                    listOfAllIdeas.filter { !it.completed }
+                }
+
+                val sortedIdeas = if (screenState.value.isSortedDateDescending) {
+                    filteredIdeas.sortedByDescending { it.startDate }
+                } else {
+                    filteredIdeas.sortedBy { it.startDate }
+                }
+                items(sortedIdeas.size) { index: Int ->
+                    when (val currentIdea = sortedIdeas[index]) {
                         is Savings -> {
                             SavingsIdeaCard(
                                 savings = currentIdea,
@@ -136,9 +154,4 @@ fun IdeasListSettingsScreenComponent() {
             }
         }
     }
-
-
-
-
-
 }
