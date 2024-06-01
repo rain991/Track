@@ -58,7 +58,7 @@ fun TrackScreenFeed() {
         pagerState.animateScrollToPage(currentIndex.value)
     }
     LaunchedEffect(key1 = Unit) {
-        trackScreenFeedViewModel.checkListOfIdeasCompletitionState(ideaList)
+        trackScreenFeedViewModel.checkListOfIdeasCompletitionState()
     }
     if (currentSavingAddingDialogState.value != null) {
         AddToSavingDialog(addToSavingIdeaDialogViewModel)

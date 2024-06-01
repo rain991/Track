@@ -60,8 +60,7 @@ class AddToSavingIdeaDialogViewModel(
                 addingValueInPreferableCurrency =
                     currenciesRatesHandler.convertValueToBasicCurrency(addingValue, selectedCurrency.first() ?: return)
             }
-
-            if (currentSavings.value!!.value.plus(addingValue) > currentSavings.value!!.goal) {
+            if (currentSavings.value!!.value + addingValue >= currentSavings.value!!.goal) {
                 savingsDao.update(
                     currentSavings.value!!.copy(
                         completed = true,
