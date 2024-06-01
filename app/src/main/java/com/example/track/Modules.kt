@@ -37,6 +37,7 @@ import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
+import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
 import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
@@ -132,4 +133,5 @@ val viewModelModule = module {
     viewModel { TrackScreenInfoCardsViewModel(get(), get(), get()) }
     viewModel { AddToSavingIdeaDialogViewModel(get(), get(), get()) }
     viewModel { IdeasListSettingsScreenViewModel(get()) }
+    viewModel { NewIdeaDialogViewModel(get()) }
 }

@@ -19,7 +19,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.track.R
 import com.example.track.data.other.constants.IDEA_NOTE_MAX_LENGTH
-import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
+import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.presentation.components.common.ui.CustomDatePicker
 import com.example.track.presentation.components.other.GradientInputTextField
 import com.example.track.presentation.states.componentRelated.NewIdeaDialogState
@@ -29,32 +29,16 @@ import org.koin.androidx.compose.koinViewModel
 fun SavingsDialogInputs(
     newIdeaDialogState: NewIdeaDialogState
 ) {
-    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
+    val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val labelInputText = newIdeaDialogState.label
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 4.dp), horizontalArrangement = Arrangement.Start
     ) {
-        
-//        TextField(
-//            value = labelInputText ?: "",
-//            onValueChange = { trackScreenFeedViewModel.setLabel(it) },
-//            label = { "Saving for" },
-//            maxLines = 1,
-//            modifier = Modifier
-//                .padding(horizontal = 8.dp)
-//                .border(
-//                    width = 2.dp,
-//                    brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)),
-//                    shape = RoundedCornerShape(4.dp)
-//                ),
-//            colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background)
-//        )
-       // Spacer(modifier = Modifier.width(8.dp))
         GradientInputTextField(value = labelInputText ?: "", label = "Saving for", maxLines = 2) {
             if(it.length < IDEA_NOTE_MAX_LENGTH){
-                trackScreenFeedViewModel.setLabel(it)
+                newIdeaDialogViewModel.setLabel(it)
             }
         }
     }
@@ -67,7 +51,7 @@ fun SavingsDialogInputs(
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
             checked = newIdeaDialogState.includedInBudget ?: true,
-            onCheckedChange = { it -> trackScreenFeedViewModel.setIncludedInBudget(it) })
+            onCheckedChange = { it -> newIdeaDialogViewModel.setIncludedInBudget(it) })
     }
     Spacer(modifier = Modifier.height(4.dp))
     Row(
@@ -80,7 +64,7 @@ fun SavingsDialogInputs(
             Text(text = "optional", style = MaterialTheme.typography.labelSmall)
         }
         Spacer(modifier = Modifier.width(12.dp))
-        Button(onClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
+        Button(onClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(true) }) {
             Text(
                 text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else "Date",
                 style = MaterialTheme.typography.bodySmall
@@ -88,8 +72,8 @@ fun SavingsDialogInputs(
         }
         CustomDatePicker(
             isVisible = newIdeaDialogState.isDateDialogVisible,
-            onNegativeClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
-            onPositiveClick = { date -> trackScreenFeedViewModel.setEndDate(date) }
+            onNegativeClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(false) },
+            onPositiveClick = { date -> newIdeaDialogViewModel.setEndDate(date) }
         )
     }
 }

@@ -20,6 +20,7 @@ import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.constants.FEED_CARD_DELAY_FAST
 import com.example.track.data.other.constants.FEED_CARD_DELAY_SLOW
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
+import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.idea.IncomePlans
@@ -38,6 +39,7 @@ import org.koin.compose.koinInject
 @Composable
 fun TrackScreenFeed() {
     val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
+    val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val addToSavingIdeaDialogViewModel = koinViewModel<AddToSavingIdeaDialogViewModel>()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val currentIndex = trackScreenFeedViewModel.cardIndex.collectAsState()
@@ -55,6 +57,9 @@ fun TrackScreenFeed() {
     LaunchedEffect(currentIndex.value) {
         pagerState.animateScrollToPage(currentIndex.value)
     }
+    LaunchedEffect(key1 = Unit) {
+        trackScreenFeedViewModel.checkListOfIdeasCompletitionState(ideaList)
+    }
     if (currentSavingAddingDialogState.value != null) {
         AddToSavingDialog(addToSavingIdeaDialogViewModel)
     }
@@ -68,13 +73,14 @@ fun TrackScreenFeed() {
     ) { index ->
         when (index) {
             0 -> TrackMainFeedCard()
-            maxIndex.value -> NewIdeaFeedCard(trackScreenFeedViewModel = trackScreenFeedViewModel)
+            maxIndex.value -> NewIdeaFeedCard(newIdeaDialogViewModel = newIdeaDialogViewModel)
             else -> when (ideaList[index - 1]) {
                 is Savings -> SavingsIdeaCard(
                     savings = ideaList[index - 1] as Savings,
                     preferableCurrencyTicker = preferableCurrencyState.value.ticker,
                     addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
                 )
+
                 is IncomePlans -> {
                     var completedValue by remember { mutableFloatStateOf(0.0f) }
                     LaunchedEffect(key1 = Unit) {
@@ -88,6 +94,7 @@ fun TrackScreenFeed() {
                         preferableCurrencyTicker = preferableCurrencyState.value.ticker
                     )
                 }
+
                 is ExpenseLimits -> {
                     var completedValue by remember { mutableFloatStateOf(0.0f) }
                     LaunchedEffect(key1 = Unit) {

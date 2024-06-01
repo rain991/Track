@@ -18,14 +18,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.track.R
-import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
+import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 
 @Composable
-fun NewIdeaFeedCard(trackScreenFeedViewModel: TrackScreenFeedViewModel) {
+fun NewIdeaFeedCard(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
     Card(
         modifier = Modifier
             .clickable {
-                trackScreenFeedViewModel.setIsNewIdeaDialogVisible(true)
+                newIdeaDialogViewModel.setIsNewIdeaDialogVisible(true)
             }
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)

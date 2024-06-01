@@ -18,14 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.track.R
-import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
+import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.presentation.components.common.ui.CustomDatePicker
 import com.example.track.presentation.states.componentRelated.NewIdeaDialogState
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
-    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
+    val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -35,7 +35,7 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
             checked = newIdeaDialogState.eachMonth ?: true,
-            onCheckedChange = { trackScreenFeedViewModel.setEachMonth(it) })
+            onCheckedChange = { newIdeaDialogViewModel.setEachMonth(it) })
     }
     Spacer(modifier = Modifier.height(4.dp))
     if (newIdeaDialogState.eachMonth == false) {
@@ -49,7 +49,7 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
                 Text(text = "optional", style = MaterialTheme.typography.labelSmall)
             }
             Spacer(modifier = Modifier.width(12.dp))
-            Button(onClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(true) }) {
+            Button(onClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(true) }) {
                 Text(
                     text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else "Date",
                     style = MaterialTheme.typography.bodySmall
@@ -57,8 +57,8 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
             }
             CustomDatePicker(
                 isVisible = newIdeaDialogState.isDateDialogVisible,
-                onNegativeClick = { trackScreenFeedViewModel.setIsDatePickerDialogVisible(false) },
-                onPositiveClick = { date -> trackScreenFeedViewModel.setEndDate(date) }
+                onNegativeClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(false) },
+                onPositiveClick = { date -> newIdeaDialogViewModel.setEndDate(date) }
             )
         }
         Spacer(modifier = Modifier.height(4.dp))
@@ -72,7 +72,7 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
             checked = newIdeaDialogState.relatedToAllCategories ?: true,
-            onCheckedChange = { trackScreenFeedViewModel.setSelectedToAllCategories(it) })
+            onCheckedChange = { newIdeaDialogViewModel.setSelectedToAllCategories(it) })
     }
     if (newIdeaDialogState.relatedToAllCategories != true) {
         NewIdeaCategoriesGrid()

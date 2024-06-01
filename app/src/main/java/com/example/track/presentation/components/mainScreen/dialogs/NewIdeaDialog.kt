@@ -35,7 +35,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
-import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
+import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.presentation.components.mainScreen.dialogs.dialogComponents.ExpenseLimitsDialogInputs
 import com.example.track.presentation.components.mainScreen.dialogs.dialogComponents.IdeaInputField
 import com.example.track.presentation.components.mainScreen.dialogs.dialogComponents.IncomePlanDialogInputs
@@ -50,13 +50,13 @@ import org.koin.compose.koinInject
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewIdeaDialog() {
-    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
-    val newIdeaDialogState = trackScreenFeedViewModel.newIdeaDialogState.collectAsState()
+    val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
+    val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()
     val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Dialog(
-        onDismissRequest = { trackScreenFeedViewModel.setIsNewIdeaDialogVisible(false) },
+        onDismissRequest = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(false) },
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Surface(
@@ -67,7 +67,7 @@ fun NewIdeaDialog() {
         ) {
             if (newIdeaDialogState.value.warningMessage != "") {
                 Toast.makeText(LocalContext.current, newIdeaDialogState.value.warningMessage, Toast.LENGTH_SHORT).show()
-                trackScreenFeedViewModel.setWarningMessage("")
+                newIdeaDialogViewModel.setWarningMessage("")
             }
             Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
                 Row(
@@ -89,7 +89,7 @@ fun NewIdeaDialog() {
                             SegmentedButton(
                                 modifier = Modifier.safeContentPadding(),
                                 shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
-                                onClick = { trackScreenFeedViewModel.setTypeSelected(label) },
+                                onClick = { newIdeaDialogViewModel.setTypeSelected(label) },
                                 selected = newIdeaDialogState.value.typeSelected == label
                             ) {
                                 if (label == IdeaSelectorTypes.ExpenseLimit) {
@@ -141,12 +141,12 @@ fun NewIdeaDialog() {
                 ) {
                     OutlinedButton(
                         modifier = Modifier.scale(0.8f),
-                        onClick = { trackScreenFeedViewModel.setIsNewIdeaDialogVisible(false) }) {
+                        onClick = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(false) }) {
                         Text("Decline")
                     }
                     FilledTonalButton(modifier = Modifier.scale(0.9f), onClick = {
                         coroutineScope.launch {
-                            trackScreenFeedViewModel.addNewIdea()
+                            newIdeaDialogViewModel.addNewIdea()
                         }
                     }) {
                         Text("Add")

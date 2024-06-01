@@ -37,6 +37,21 @@ class IdeaListRepositoryImpl(
         }
     }
 
+    override suspend fun updateIdea(idea: Idea) {
+        when(idea){
+            is ExpenseLimits ->{
+                expenseLimitsDao.update(idea)
+            }
+            is IncomePlans ->{
+                incomePlansDao.update(idea)
+            }
+            is Savings ->{
+                savingsDao.update(idea)
+            }
+        }
+    }
+
+
     override suspend fun getExpenseLimitsList(context: CoroutineContext): Flow<List<ExpenseLimits>> {
         return withContext(context) {
             expenseLimitsDao.getAllData()

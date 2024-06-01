@@ -24,7 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
+import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.domain.models.currency.Currency
 import org.koin.androidx.compose.koinViewModel
 
@@ -33,8 +33,8 @@ import org.koin.androidx.compose.koinViewModel
     val focusManager = LocalFocusManager.current
     val controller = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
-    val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
-    val newIdeaDialogState = trackScreenFeedViewModel.newIdeaDialogState.collectAsState()
+    val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
+    val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()
     val currentInputValue = newIdeaDialogState.value.goal
     Row(
         verticalAlignment = Alignment.CenterVertically, modifier = Modifier.wrapContentHeight()
@@ -51,7 +51,7 @@ import org.koin.androidx.compose.koinViewModel
             ),
             value = currentInputValue.toString(),
             onValueChange = { newText ->
-                trackScreenFeedViewModel.setGoal(newText.toFloat())
+                newIdeaDialogViewModel.setGoal(newText.toFloat())
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(

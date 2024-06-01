@@ -11,6 +11,7 @@ import kotlin.coroutines.CoroutineContext
 
 interface IdeaListRepository {
     suspend fun getIncomesPlansList(context: CoroutineContext = Dispatchers.IO): Flow<List<IncomePlans>>
+    suspend fun updateIdea(idea: Idea)
     suspend fun getExpenseLimitsList(context: CoroutineContext = Dispatchers.IO): Flow<List<ExpenseLimits>>
     suspend fun getSavingsList(context: CoroutineContext = Dispatchers.IO): Flow<List<Savings>>
     suspend fun getCompletionValue(idea: Idea): Flow<Float>
