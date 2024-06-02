@@ -88,12 +88,12 @@ class ExpenseAndIncomeLazyColumnViewModel(
         _isExpenseLazyColumn.value = !_isExpenseLazyColumn.value
     }
 
-    suspend fun requestCountInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity) : String {
+    suspend fun requestCountInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity) : Int {
         return notesHandler.requestCountInMonthNotionForFinancialCard(financialEntity, financialCategory)
     }
 
-    suspend fun requestSumExpensesInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String{
-      return   notesHandler.requestSumExpensesInMonthNotionForFinancialCard(financialEntity, financialCategory)
+    suspend fun requestSumExpensesInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Float{
+      return   notesHandler.requestValueSummaryForMonthNotion(financialEntity, financialCategory)
     }
 
 }

@@ -15,11 +15,16 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
+import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
+import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
+import com.example.track.data.other.converters.formatDateWithoutYear
+import com.example.track.domain.models.currency.Currency
+import com.example.track.domain.models.currency.CurrencyTypes
 import com.example.track.domain.models.idea.IncomePlans
 
 /*  Contains Card used in expense screen feed to show income plan entity  */
 @Composable
-fun IncomePlanIdeaCard(incomePlans: IncomePlans, complitionValue: Float, preferableCurrencyTicker: String) {
+fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, preferableCurrency: Currency) {
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -37,10 +42,28 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, complitionValue: Float, prefera
                 .fillMaxSize()
                 .padding(horizontal = 8.dp, vertical = 2.dp), verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(text = "Planned ${incomePlans.goal} $preferableCurrencyTicker")
-            Text(text = "Completed for $complitionValue $preferableCurrencyTicker")
+            Text(
+                text = "Planned ${
+                    if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                        FIAT_DECIMAL_FORMAT.format(incomePlans.goal)
+                    } else {
+                        CRYPTO_DECIMAL_FORMAT.format(incomePlans.goal)
+                    }
+                } ${preferableCurrency.ticker}"
+            )
+            Text(
+                text = "Completed for ${
+                    if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                        FIAT_DECIMAL_FORMAT.format(completionValue)
+                    } else {
+                        CRYPTO_DECIMAL_FORMAT.format(completionValue)
+                    }
+                } ${preferableCurrency.ticker}"
+            )
             if (incomePlans.endDate != null) {
-                Text(text = "Preferable period: ${incomePlans.startDate} - ${incomePlans.endDate}")
+                Text(
+                    text = "Preferable period: ${formatDateWithoutYear(incomePlans.startDate)} - ${formatDateWithoutYear(incomePlans.endDate)}"
+                )
             }
         }
     }

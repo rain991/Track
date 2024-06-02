@@ -4,10 +4,6 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-enum class CurrencyTypes {
-    FIAT , CRYPTO , OTHER
-}
-
 @Entity (tableName = "currency")
 data class Currency (
     @PrimaryKey

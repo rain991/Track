@@ -25,8 +25,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
+import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
+import com.example.track.domain.models.currency.CurrencyTypes
 import org.koin.androidx.compose.koinViewModel
 
 /*  Contains 2 additional cards above lazy column in main screen. Those card show overall stats about expenses and income relatively.   */
@@ -67,7 +70,13 @@ fun TrackScreenInfoCards() {
                                     fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append(screenState.value.currentMonthExpensesSum.toString())
+                                append(
+                                    if (screenState.value.preferableCurrency.type == CurrencyTypes.FIAT) {
+                                        FIAT_DECIMAL_FORMAT.format(screenState.value.currentMonthExpensesSum)
+                                    } else {
+                                        CRYPTO_DECIMAL_FORMAT.format(screenState.value.currentMonthExpensesSum)
+                                    }
+                                )
                             }
                             withStyle(
                                 style = SpanStyle(
@@ -124,7 +133,13 @@ fun TrackScreenInfoCards() {
                                     fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append(screenState.value.currentMonthIncomesSum.toString())
+                                append(
+                                    if (screenState.value.preferableCurrency.type == CurrencyTypes.FIAT) {
+                                        FIAT_DECIMAL_FORMAT.format( screenState.value.currentMonthIncomesSum)
+                                    } else {
+                                        CRYPTO_DECIMAL_FORMAT.format(screenState.value.currentMonthIncomesSum)
+                                    }
+                                )
                             }
                             withStyle(
                                 style = SpanStyle(

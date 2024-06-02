@@ -21,7 +21,7 @@ class BudgetIdeaCardViewModel(
             budget = 0f,
             currentExpensesSum = 0f,
             budgetExpectancy = 0f,
-            currencyTicker = CURRENCY_FIAT.ticker
+            currency = CURRENCY_FIAT
         )
     )
     val budgetCardState = _budgetCardState.asStateFlow()
@@ -51,7 +51,7 @@ class BudgetIdeaCardViewModel(
     }
 
     private fun setCurrency(currency: Currency) {
-        _budgetCardState.value = budgetCardState.value.copy(currencyTicker = currency.ticker)
+        _budgetCardState.value = budgetCardState.value.copy(currency = currency)
     }
 
     private fun setBudget(budget: Float) {

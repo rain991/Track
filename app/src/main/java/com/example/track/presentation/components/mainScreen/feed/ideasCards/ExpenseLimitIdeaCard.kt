@@ -124,7 +124,6 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                                 category = currentCategory!!,
                                 isSelected = false,
                                 onSelect = {},
-                                textStyle = MaterialTheme.typography.bodySmall,
                                 chipScale = 0.8f
                             )
                         }

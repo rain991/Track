@@ -16,7 +16,8 @@ class NotesHandler(
     private val expenseCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
     private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl
 ) {
-    suspend fun requestCountInMonthNotionForFinancialCard(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String {
+    // used in financial cards
+    suspend fun requestCountInMonthNotionForFinancialCard(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Int {
         val startDate = getStartOfMonthDate(financialEntity.date)
         val endDate = getEndOfTheMonth(financialEntity.date)
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
@@ -25,23 +26,23 @@ class NotesHandler(
                 endDate = endDate,
                 categoriesIds = listOf(financialCategory.categoryId)
             ).first()
-            return "$result"
+            return result
         } else if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
             val result = incomeCoreRepositoryImpl.getCountOfIncomesInSpanByCategoriesIds(
                 startDate = startDate,
                 endDate = endDate,
                 categoriesIds = listOf(financialCategory.categoryId)
             ).first()
-            return "$result"
+            return result
         } else {
-            return ""
+            return 0
         }
     }
-
-    suspend fun requestSumExpensesInMonthNotionForFinancialCard(
+    // used in financial cards
+    suspend fun requestValueSummaryForMonthNotion(
         financialEntity: FinancialEntity,
         financialCategory: CategoryEntity
-    ): String {
+    ): Float {
         val startDate = getStartOfMonthDate(financialEntity.date)
         val endDate = getEndOfTheMonth(financialEntity.date)
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
@@ -51,12 +52,12 @@ class NotesHandler(
                     end = endDate.time,
                     listOfCategories = listOf(financialCategory.categoryId)
                 )
-            return result.first().toString()
+            return result.first()
         } else if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
             val result = incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(startDate, endDate)
-            return result.first().toString()
+            return result.first()
         } else {
-            return ""
+            return 0.0f
         }
     }
 }

@@ -27,7 +27,10 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.wear.compose.material.Text
+import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
+import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
+import com.example.track.domain.models.currency.CurrencyTypes
 import com.example.track.presentation.components.common.parser.getMonthResID
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
@@ -79,7 +82,13 @@ fun TrackMainFeedCard() {
                                 fontSize = 20.sp, fontWeight = FontWeight.SemiBold
                             )
                         ) {
-                            append(state.value.budget.toString())
+                            append(
+                                if (state.value.currency.type == CurrencyTypes.FIAT) {
+                                    FIAT_DECIMAL_FORMAT.format(state.value.budget)
+                                } else {
+                                    CRYPTO_DECIMAL_FORMAT.format(state.value.budget)
+                                }
+                            )
                         }
                         withStyle(
                             style = SpanStyle(
@@ -88,7 +97,7 @@ fun TrackMainFeedCard() {
                             )
                         ) {
                             append(" ")
-                            append(state.value.currencyTicker)
+                            append(state.value.currency.ticker)
                         }
                     })
 
@@ -107,7 +116,13 @@ fun TrackMainFeedCard() {
                                 fontSize = 20.sp, fontWeight = FontWeight.SemiBold
                             )
                         ) {
-                            append(state.value.currentExpensesSum.toString())
+                            append(
+                                if (state.value.currency.type == CurrencyTypes.FIAT) {
+                                    FIAT_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
+                                } else {
+                                    CRYPTO_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
+                                }
+                            )
                         }
                         withStyle(
                             style = SpanStyle(
@@ -116,7 +131,7 @@ fun TrackMainFeedCard() {
                             )
                         ) {
                             append(" ")
-                            append(state.value.currencyTicker)
+                            append(state.value.currency.ticker)
                         }
                     })
                 }

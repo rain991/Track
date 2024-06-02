@@ -92,9 +92,9 @@ fun IdeasListSettingsScreenComponent() {
                 TextButton(onClick = { ideasListSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) }) {
                     Text(
                         text = if (screenState.value.isSortedDateDescending) {
-                            "descending"
+                            "newest first"
                         } else {
-                            "ascending"
+                            "oldest first"
                         }, style = MaterialTheme.typography.bodyMedium
                     )
                 }
@@ -116,7 +116,7 @@ fun IdeasListSettingsScreenComponent() {
                         is Savings -> {
                             SavingsIdeaCard(
                                 savings = currentIdea,
-                                preferableCurrencyTicker = preferableCurrencyState.value.ticker,
+                                preferableCurrency = preferableCurrencyState.value,
                                 addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
                             )
                         }
@@ -144,8 +144,8 @@ fun IdeasListSettingsScreenComponent() {
                             }
                             IncomePlanIdeaCard(
                                 incomePlans = currentIdea,
-                                complitionValue = completionValue,
-                                preferableCurrencyTicker = preferableCurrencyState.value.ticker
+                                completionValue = completionValue,
+                                preferableCurrency = preferableCurrencyState.value
                             )
                         }
                     }

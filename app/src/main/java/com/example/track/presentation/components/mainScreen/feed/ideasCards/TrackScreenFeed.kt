@@ -98,7 +98,7 @@ fun TrackScreenFeed() {
             else -> when (ideaList[index - 1]) {
                 is Savings -> SavingsIdeaCard(
                     savings = ideaList[index - 1] as Savings,
-                    preferableCurrencyTicker = preferableCurrencyState.value.ticker,
+                    preferableCurrency = preferableCurrencyState.value,
                     addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
                 )
 
@@ -111,8 +111,8 @@ fun TrackScreenFeed() {
                     }
                     IncomePlanIdeaCard(
                         incomePlans = ideaList[index - 1] as IncomePlans,
-                        complitionValue = completedValue,
-                        preferableCurrencyTicker = preferableCurrencyState.value.ticker
+                        completionValue = completedValue,
+                        preferableCurrency = preferableCurrencyState.value
                     )
                 }
 

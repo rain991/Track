@@ -95,7 +95,7 @@ private enum class ConfirmationState {
 //                        date = convertLocalDateToDate(date.value),
 //                        value = expense.value!!,
 //                        categoryId = category.value!!.categoryId,
-//                        currencyTicker = CURRENCY_DEFAULT.ticker
+//                        currency = CURRENCY_DEFAULT.ticker
 //                    )
 //                )
 //                bottomSheetViewModel.setBottomSheetExpanded(false)

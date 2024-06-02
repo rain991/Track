@@ -201,7 +201,7 @@ fun ExpenseAndIncomeLazyColumn() {
                                         categoryEntity = currentFinancialCategory,
                                         expanded = (expandedItem.value == currentFinancialEntity),
                                         expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel,
-                                        preferableCurrencyTicker = preferableCurrency.value.ticker
+                                        preferableCurrency = preferableCurrency.value
                                     )
                                     if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
                                 }

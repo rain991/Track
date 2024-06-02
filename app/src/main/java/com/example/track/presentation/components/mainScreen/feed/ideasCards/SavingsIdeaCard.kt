@@ -18,11 +18,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
+import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
+import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
+import com.example.track.domain.models.currency.Currency
+import com.example.track.domain.models.currency.CurrencyTypes
 import com.example.track.domain.models.idea.Savings
 
 @Composable
-fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker: String, addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel) {
+fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel) {
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -53,7 +57,13 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker: String, addToSav
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Planned ${savings.goal} " + preferableCurrencyTicker,
+                            text = "Planned ${
+                                if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                                    FIAT_DECIMAL_FORMAT.format(savings.goal)
+                                } else {
+                                    CRYPTO_DECIMAL_FORMAT.format(savings.goal)
+                                }
+                            } ${preferableCurrency.ticker}",
                             textAlign = TextAlign.Center
                         )
                     }
@@ -64,7 +74,13 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrencyTicker: String, addToSav
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Completed for" + " ${savings.value} " + preferableCurrencyTicker, textAlign = TextAlign.Center
+                            text = "Completed for" + " ${
+                                if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                                    FIAT_DECIMAL_FORMAT.format(savings.value)
+                                } else {
+                                    CRYPTO_DECIMAL_FORMAT.format(savings.value)
+                                }
+                            } ${preferableCurrency.ticker}", textAlign = TextAlign.Center
                         )
                     }
                 }
