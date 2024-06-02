@@ -46,8 +46,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.track.R
-import com.example.track.data.other.converters.extractAdditionalDateInformation
-import com.example.track.data.other.converters.extractDayOfWeekFromDate
+import com.example.track.data.other.converters.formatDateWithoutYear
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.abstractLayer.FinancialEntity
@@ -111,7 +110,8 @@ fun FinancialItemCardTypeSimple(
                             }
                         }
                         val resultedNotion = if (!expanded) {
-                            extractDayOfWeekFromDate(date = financialEntity.date) + ", " + extractAdditionalDateInformation(date = financialEntity.date)
+                        //    extractDayOfWeekFromDate(date = financialEntity.date) + ", " + extractAdditionalDateInformation(date = financialEntity.date)
+                            formatDateWithoutYear(financialEntity.date)
                         } else {
                             text.value
                         }

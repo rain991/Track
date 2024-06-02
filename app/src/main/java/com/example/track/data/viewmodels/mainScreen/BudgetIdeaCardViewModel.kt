@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.CURRENCY_FIAT
 import com.example.track.domain.models.currency.Currency
 import com.example.track.presentation.states.componentRelated.BudgetIdeaCardState
 import kotlinx.coroutines.async
@@ -21,7 +21,7 @@ class BudgetIdeaCardViewModel(
             budget = 0f,
             currentExpensesSum = 0f,
             budgetExpectancy = 0f,
-            currencyTicker = CURRENCY_DEFAULT.ticker
+            currencyTicker = CURRENCY_FIAT.ticker
         )
     )
     val budgetCardState = _budgetCardState.asStateFlow()

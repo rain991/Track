@@ -23,6 +23,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.wear.compose.material.Text
 import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
+import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
+import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
+import com.example.track.domain.models.currency.Currency
+import com.example.track.domain.models.currency.CurrencyTypes
 import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.presentation.components.common.ui.CategoryChip
@@ -32,7 +36,7 @@ import org.koin.compose.koinInject
 
 /*  Contains Card used in expense screen feed to show expense limit entity  */
 @Composable
-fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, preferableCurrencyTicker: String) {
+fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, preferableCurrency: Currency) {
     val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepositoryImpl>()
     Card(
         modifier = Modifier
@@ -51,20 +55,40 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                 .fillMaxSize()
                 .padding(horizontal = 8.dp, vertical = 2.dp), verticalArrangement = Arrangement.SpaceEvenly
         ) {
+            var plannedText by remember { mutableStateOf("") }
+            var alreadySpentText by remember { mutableStateOf("") }
+            LaunchedEffect(preferableCurrency, expenseLimit.goal, completedValue) {
+                plannedText = "Planned ${
+                    if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                        FIAT_DECIMAL_FORMAT.format(expenseLimit.goal)
+                    } else {
+                        CRYPTO_DECIMAL_FORMAT.format(expenseLimit.goal)
+                    }
+                } ${preferableCurrency.ticker}"
+
+                alreadySpentText = "Already spent ${
+                    if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                        FIAT_DECIMAL_FORMAT.format(completedValue)
+                    } else {
+                        CRYPTO_DECIMAL_FORMAT.format(completedValue)
+                    }
+                } ${preferableCurrency.ticker}"
+            }
+
             if (expenseLimit.isRelatedToAllCategories) {
-                Text(text = "Planned ${expenseLimit.goal} $preferableCurrencyTicker")
+                Text(text = plannedText)
                 Spacer(Modifier.height(8.dp))
-                Text(text = "Already spent $completedValue $preferableCurrencyTicker")
+                Text(text = alreadySpentText)
             } else {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Text(text = "Planned ${expenseLimit.goal} $preferableCurrencyTicker")
-                    Text(text = "Already spent $completedValue $preferableCurrencyTicker")
+                    Text(text = plannedText)
+                    Text(text = alreadySpentText)
                 }
             }
             Spacer(Modifier.height(8.dp))
-
             Row(
-                modifier = Modifier.padding(start =
+                modifier = Modifier.padding(
+                    start =
                     if (expenseLimit.isRelatedToAllCategories) {
                         0.dp
                     } else {
@@ -82,9 +106,11 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
             }
 
             Spacer(modifier = Modifier.height(4.dp))
-            Row(modifier = Modifier
-                .wrapContentHeight()
-                .padding(bottom = 4.dp)) {
+            Row(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .padding(bottom = 4.dp)
+            ) {
                 if (expenseLimit.firstRelatedCategoryId != null) {
                     var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
                     LaunchedEffect(key1 = Unit) {

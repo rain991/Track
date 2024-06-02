@@ -7,7 +7,7 @@ import com.example.track.data.implementations.currencies.CurrenciesPreferenceRep
 import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeItemRepositoryImpl
 import com.example.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.CURRENCY_FIAT
 import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.currency.Currency
@@ -47,7 +47,7 @@ class BottomSheetViewModel(
     val incomeCategoryList = _incomeCategoryList
 
     private val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = CURRENCY_DEFAULT)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = CURRENCY_FIAT)
     private val firstAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFirstAdditionalCurrency()
         .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
     private val secondAdditionalCurrency = currenciesPreferenceRepositoryImpl.getSecondAdditionalCurrency()

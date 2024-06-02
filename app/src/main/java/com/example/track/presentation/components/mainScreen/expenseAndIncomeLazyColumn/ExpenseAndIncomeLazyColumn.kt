@@ -45,7 +45,7 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.track.R
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.CURRENCY_FIAT
 import com.example.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
 import com.example.track.data.other.converters.areDatesSame
 import com.example.track.data.other.converters.areYearsSame
@@ -74,7 +74,7 @@ fun ExpenseAndIncomeLazyColumn() {
     var isScrollingUp by remember { mutableStateOf(false) }
     val isScrolledBelowState = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
-    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_FIAT)
     Box {
         Box(
             modifier = Modifier

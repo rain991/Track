@@ -28,10 +28,13 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
+import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
+import com.example.track.data.other.constants.PERCENTAGE_DECIMAL_FORMAT
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
+import com.example.track.domain.models.currency.CurrencyTypes
 import kotlinx.coroutines.launch
-import java.text.DecimalFormat
 
 @Composable
 fun AddToSavingDialog(
@@ -42,7 +45,7 @@ fun AddToSavingDialog(
     val softwareKeyboardController = LocalSoftwareKeyboardController.current
     val currentSaving = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
     val preferableCurrency = addToSavingIdeaDialogViewModel.preferableCurrency.collectAsState()
-    val selectedCurrency = addToSavingIdeaDialogViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
+    val selectedCurrency = addToSavingIdeaDialogViewModel.selectedCurrency.collectAsState(initial = CURRENCY_FIAT)
     var inputValue by remember { mutableFloatStateOf(0.0f) }
     Dialog(
         onDismissRequest = { addToSavingIdeaDialogViewModel.setCurrentSaving(null) },
@@ -66,20 +69,31 @@ fun AddToSavingDialog(
                 AddToSavingDialogAmountInput(
                     focusRequester = focusRequester,
                     controller = softwareKeyboardController,
-                    currentCurrency = selectedCurrency.value ?: CURRENCY_DEFAULT,
+                    currentCurrency = selectedCurrency.value ?: CURRENCY_FIAT,
                     currentValue = inputValue,
                     onCurrencyChange = { addToSavingIdeaDialogViewModel.changeSelectedCurrency() },
                     onValueChange = { inputValue = it }
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Planned ${currentSaving.value?.goal} " + preferableCurrency.value.ticker,
+                    text = "Planned ${
+                        if (preferableCurrency.value.type == CurrencyTypes.FIAT) {
+                            FIAT_DECIMAL_FORMAT.format(currentSaving.value?.goal)
+                        } else {
+                            CRYPTO_DECIMAL_FORMAT.format(currentSaving.value?.goal)
+                        }
+                    } " + preferableCurrency.value.ticker,
                     style = MaterialTheme.typography.bodySmall
                 )
-                val df = DecimalFormat("#.##")
                 Text(
-                    text = "Completed for" + " ${currentSaving.value?.value} " + preferableCurrency.value.ticker + " (${
-                        df.format(
+                    text = "Completed for" + " ${
+                        if (preferableCurrency.value.type == CurrencyTypes.FIAT) {
+                            FIAT_DECIMAL_FORMAT.format(currentSaving.value?.value)
+                        } else {
+                            CRYPTO_DECIMAL_FORMAT.format(currentSaving.value?.value)
+                        }
+                    } " + preferableCurrency.value.ticker + " (${
+                        PERCENTAGE_DECIMAL_FORMAT.format(
                             currentSaving.value?.value?.div(
                                 currentSaving.value?.goal ?: 1.0f
                             )?.times(100)

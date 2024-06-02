@@ -28,7 +28,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.track.R
-import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.CURRENCY_FIAT
 import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
 import com.example.track.presentation.components.common.ui.CurrencyDropDownMenu
 import kotlinx.coroutines.launch
@@ -39,7 +39,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
     val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
-    val preferableCurrency = currenciesSettingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT)
+    val preferableCurrency = currenciesSettingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_FIAT)
     val firstAdditionalCurrency = currenciesSettingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = null)
     val secondAdditionalCurrency = currenciesSettingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = null)
     val thirdAdditionalCurrency = currenciesSettingsViewModel.thirdAdditionalCurrencyStateFlow.collectAsState(initial = null)
@@ -95,7 +95,7 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
                         currencyList = currenciesSettingsViewModel.currencyList,
-                        selectedOption = firstAdditionalCurrency.value ?: CURRENCY_DEFAULT,
+                        selectedOption = firstAdditionalCurrency.value ?: CURRENCY_FIAT,
                         onSelect = {
                             coroutineScope.launch {
                                 currenciesSettingsViewModel.setFirstAdditionalCurrency(it)
@@ -121,7 +121,7 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
                         currencyList = currenciesSettingsViewModel.currencyList,
-                        selectedOption = secondAdditionalCurrency.value ?: CURRENCY_DEFAULT,
+                        selectedOption = secondAdditionalCurrency.value ?: CURRENCY_FIAT,
                         onSelect = {
                             coroutineScope.launch {
                                 currenciesSettingsViewModel.setSecondAdditionalCurrency(it)
@@ -147,7 +147,7 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
                         currencyList = currenciesSettingsViewModel.currencyList,
-                        selectedOption = thirdAdditionalCurrency.value ?: CURRENCY_DEFAULT,
+                        selectedOption = thirdAdditionalCurrency.value ?: CURRENCY_FIAT,
                         onSelect = {
                             coroutineScope.launch {
                                 currenciesSettingsViewModel.setThirdAdditionalCurrency(it)
@@ -173,7 +173,7 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 Box(Modifier.width(140.dp)) {
                     CurrencyDropDownMenu(
                         currencyList = currenciesSettingsViewModel.currencyList,
-                        selectedOption = fourthAdditionalCurrency.value ?: CURRENCY_DEFAULT,
+                        selectedOption = fourthAdditionalCurrency.value ?: CURRENCY_FIAT,
                         onSelect = {
                             coroutineScope.launch {
                                 currenciesSettingsViewModel.setFourthAdditionalCurrency(it)

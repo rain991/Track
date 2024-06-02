@@ -18,7 +18,7 @@ class Converters {
     @TypeConverter
     fun fromCurrencyType(value: String): CurrencyTypes {
         return when (value) {
-            "default" -> CurrencyTypes.DEFAULT
+            "default" -> CurrencyTypes.FIAT
             "crypto" -> CurrencyTypes.CRYPTO
             "other" -> CurrencyTypes.OTHER
             else -> throw IllegalArgumentException("Unknown currency type: $value")

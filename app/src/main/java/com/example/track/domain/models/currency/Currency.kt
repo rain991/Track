@@ -5,7 +5,7 @@ import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 enum class CurrencyTypes {
-    DEFAULT , CRYPTO , OTHER
+    FIAT , CRYPTO , OTHER
 }
 
 @Entity (tableName = "currency")

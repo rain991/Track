@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.example.track.data.other.constants.BUDGET_DEFAULT
-import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.CURRENCY_FIAT
 import com.example.track.data.other.constants.NAME_DEFAULT
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.domain.models.currency.Currency
@@ -30,7 +30,7 @@ class LoginViewModel(
           currencyList = currencyListRepositoryImpl.getCurrencyList().first()
         }
     }
-    private var _currencyStateFlow = MutableStateFlow(CURRENCY_DEFAULT)
+    private var _currencyStateFlow = MutableStateFlow(CURRENCY_FIAT)
     val currencyStateFlow = _currencyStateFlow.asStateFlow()
 
     private var _firstNameStateFlow = MutableStateFlow(NAME_DEFAULT)

@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.data.other.constants.CURRENCY_FIAT
 import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.presentation.components.mainScreen.dialogs.dialogComponents.ExpenseLimitsDialogInputs
 import com.example.track.presentation.components.mainScreen.dialogs.dialogComponents.IdeaInputField
@@ -54,7 +54,7 @@ fun NewIdeaDialog() {
     val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()
-    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_FIAT)
     Dialog(
         onDismissRequest = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(false) },
         properties = DialogProperties(usePlatformDefaultWidth = false)
