@@ -120,15 +120,7 @@ class CurrenciesSettingsViewModel(
         }
     }
 
-    val showPagesNameFlow = dataStoreManager.isShowPageName
-    suspend fun setShowPagesNameFlow(value: Boolean) {
-        dataStoreManager.setShowPageName(value)
-    }
 
-    val useSystemTheme = dataStoreManager.useSystemTheme
-    suspend fun setUseSystemTheme(value: Boolean) {
-        dataStoreManager.setUseSystemTheme(value)
-    }
 
     suspend fun setLatestCurrencyAsNull() {
         if (fourthAdditionalCurrencyStateFlow.first() != null) {

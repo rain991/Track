@@ -62,7 +62,6 @@ fun areDatesSame(date1: LocalDate, date2: LocalDate): Boolean { // year, month a
     return (date1.isEqual(date2))
 }
 
-
 fun areDatesSame(date1: Date, date2: Date): Boolean {
     val cal1 = Calendar.getInstance()
     val cal2 = Calendar.getInstance()

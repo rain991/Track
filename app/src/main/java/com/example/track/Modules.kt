@@ -42,6 +42,7 @@ import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
 import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
 import com.example.track.data.viewmodels.settingsScreen.IdeasListSettingsScreenViewModel
+import com.example.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
@@ -65,7 +66,7 @@ val settingsModule = module {
 
 val coreModule = module {
     single<CurrenciesRatesHandler> { CurrenciesRatesHandler(get(), get()) }
-    single<NotesHandler> { NotesHandler(get(), get(), get(), get()) }
+    single<NotesHandler> { NotesHandler(get(), get()) }
     single<ChartHandler> { ChartHandler() }
 }
 
@@ -134,4 +135,5 @@ val viewModelModule = module {
     viewModel { AddToSavingIdeaDialogViewModel(get(), get(), get()) }
     viewModel { IdeasListSettingsScreenViewModel(get()) }
     viewModel { NewIdeaDialogViewModel(get()) }
+    viewModel { ThemePreferenceSettingsViewModel(get()) }
 }

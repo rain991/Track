@@ -25,44 +25,41 @@ class ExpensesCoreRepositoryImpl(
             start = start,
             end = end
         ).collect { foundedExpenseItems ->
-                var sumOfExpensesInPreferableCurrency = 0.0f
-                val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
-                val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
-                listOfExpensesInPreferableCurrency.forEach { it -> sumOfExpensesInPreferableCurrency += it.value }
-                listOfExpensesNotInPreferableCurrency.forEach { it ->
-                    val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
-                    if (convertedValue != INCORRECT_CONVERSION_RESULT) {
-                        sumOfExpensesInPreferableCurrency += convertedValue
-                    }
+            var sumOfExpensesInPreferableCurrency = 0.0f
+            val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
+            val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
+            listOfExpensesInPreferableCurrency.forEach { it -> sumOfExpensesInPreferableCurrency += it.value }
+            listOfExpensesNotInPreferableCurrency.forEach { it ->
+                val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
+                if (convertedValue != INCORRECT_CONVERSION_RESULT) {
+                    sumOfExpensesInPreferableCurrency += convertedValue
                 }
-                send(sumOfExpensesInPreferableCurrency)
+            }
+            send(sumOfExpensesInPreferableCurrency)
         }
     }
+
     override suspend fun getSumOfExpensesByCategories(start: Long, end: Long, listOfCategories: List<Int>): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         expenseItemsDao.getExpensesByCategoriesIdInTimeSpan(
             start = start,
             end = end, listOfCategoriesId = listOfCategories
         ).collect { foundedExpenseItems ->
-                var sumOfExpensesInPreferableCurrency = 0.0f
-                val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
-                val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
-                listOfExpensesInPreferableCurrency.forEach { it -> sumOfExpensesInPreferableCurrency += it.value }
-                listOfExpensesNotInPreferableCurrency.forEach { it ->
-                    val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
-                    if (convertedValue != INCORRECT_CONVERSION_RESULT) {
-                        sumOfExpensesInPreferableCurrency += convertedValue
-                    }
+            var sumOfExpensesInPreferableCurrency = 0.0f
+            val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
+            val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
+            listOfExpensesInPreferableCurrency.forEach { it -> sumOfExpensesInPreferableCurrency += it.value }
+            listOfExpensesNotInPreferableCurrency.forEach { it ->
+                val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
+                if (convertedValue != INCORRECT_CONVERSION_RESULT) {
+                    sumOfExpensesInPreferableCurrency += convertedValue
                 }
-                send(sumOfExpensesInPreferableCurrency)
             }
+            send(sumOfExpensesInPreferableCurrency)
+        }
     }
 
-    override suspend fun getCountOfExpensesInSpan(startDate: Date, endDate: Date): Flow<Int> {
-        return expenseItemsDao.getCountOfExpensesInTimeSpan(start = startDate.time, end = endDate.time)
-    }
-
-    override suspend fun getCurrentMonthSumOfExpense(): Flow<Float>  {
+    override suspend fun getCurrentMonthSumOfExpense(): Flow<Float> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return getSumOfExpenses(start = getStartOfMonthDate(todayDate).time, end = getEndOfTheMonth(todayDate).time)
     }
@@ -72,6 +69,15 @@ class ExpensesCoreRepositoryImpl(
         return getSumOfExpensesByCategories(
             start = getStartOfMonthDate(todayDate).time,
             end = getEndOfTheMonth(todayDate).time,
-            listOfCategories = listOfCategoriesId)
+            listOfCategories = listOfCategoriesId
+        )
+    }
+
+    override suspend fun getCountOfExpensesInSpan(startDate: Date, endDate: Date): Flow<Int> {
+        return expenseItemsDao.getCountOfExpensesInTimeSpan(start = startDate.time, end = endDate.time)
+    }
+
+    override suspend fun getCountOfExpensesInSpanByCategoriesIds(startDate: Date, endDate: Date, categoriesIds: List<Int>): Flow<Int> {
+        return expenseItemsDao.getCountOfExpensesInTimeSpanByCategoriesIds(startDate.time, endDate.time, categoriesIds)
     }
 }

@@ -1,9 +1,7 @@
 package com.example.track.data.core
 
 import com.example.track.data.implementations.expenses.ExpensesCoreRepositoryImpl
-import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeCoreRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.other.converters.getEndOfTheMonth
 import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.domain.models.abstractLayer.CategoryEntity
@@ -15,28 +13,26 @@ import com.example.track.domain.models.incomes.IncomeItem
 import kotlinx.coroutines.flow.first
 
 class NotesHandler(
-    private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
     private val expenseCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
-    private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
     private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl
 ) {
     suspend fun requestCountInMonthNotionForFinancialCard(financialEntity: FinancialEntity, financialCategory: CategoryEntity): String {
         val startDate = getStartOfMonthDate(financialEntity.date)
         val endDate = getEndOfTheMonth(financialEntity.date)
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
-            val result = expensesListRepositoryImpl.getExpensesByCategoryInTimeSpan(
-                startOfSpan = startDate,
-                endOfSpan = endDate,
-                category = financialCategory
-            )
-            return "${result.size}"
+            val result = expenseCoreRepositoryImpl.getCountOfExpensesInSpanByCategoriesIds(
+                startDate = startDate,
+                endDate = endDate,
+                categoriesIds = listOf(financialCategory.categoryId)
+            ).first()
+            return "$result"
         } else if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
-            val result = incomeListRepositoryImpl.getIncomesByCategoryInTimeSpan(
-                startOfSpan = startDate,
-                endOfSpan = endDate,
-                category = financialCategory
-            )
-            return "${result.size}"
+            val result = incomeCoreRepositoryImpl.getCountOfIncomesInSpanByCategoriesIds(
+                startDate = startDate,
+                endDate = endDate,
+                categoriesIds = listOf(financialCategory.categoryId)
+            ).first()
+            return "$result"
         } else {
             return ""
         }
@@ -50,7 +46,11 @@ class NotesHandler(
         val endDate = getEndOfTheMonth(financialEntity.date)
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
             val result =
-                expenseCoreRepositoryImpl.getCurrentMonthSumOfExpensesByCategoriesId(listOf(financialCategory).map { it.categoryId })
+                expenseCoreRepositoryImpl.getSumOfExpensesByCategories(
+                    start = startDate.time,
+                    end = endDate.time,
+                    listOfCategories = listOf(financialCategory.categoryId)
+                )
             return result.first().toString()
         } else if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
             val result = incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(startDate, endDate)

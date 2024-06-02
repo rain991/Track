@@ -9,6 +9,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.example.track.data.other.constants.BUDGET_DEFAULT
 import com.example.track.data.other.constants.LOGIN_COUNT_DEFAULT
 import com.example.track.data.other.constants.NAME_DEFAULT
+import com.example.track.data.other.constants.PREFERABLE_THEME_DEFAULT
 import com.example.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
 import kotlinx.coroutines.CoroutineDispatcher
@@ -26,7 +27,7 @@ class DataStoreManager(private val context: Context) {
 
         //THEME
         private val USE_SYSTEM_THEME = booleanPreferencesKey("use_system_theme")
-        private val PREFERABLE_THEME = stringPreferencesKey("Yellow")
+        private val PREFERABLE_THEME = stringPreferencesKey("preferable_theme")
         private val SHOW_PAGE_NAME = booleanPreferencesKey("show_page_name")
     }
     val loginCountFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: LOGIN_COUNT_DEFAULT }
@@ -69,6 +70,17 @@ class DataStoreManager(private val context: Context) {
         withContext(dispatcher) {
             context.dataStore.edit {
                 it[USE_SYSTEM_THEME] = value
+            }
+        }
+    }
+
+    val preferableTheme: Flow<String> = context.dataStore.data.map { preferences ->
+        preferences[PREFERABLE_THEME] ?: PREFERABLE_THEME_DEFAULT.name
+    }
+    suspend fun setPreferableTheme(value: String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+        withContext(dispatcher) {
+            context.dataStore.edit {
+                it[PREFERABLE_THEME] = value
             }
         }
     }

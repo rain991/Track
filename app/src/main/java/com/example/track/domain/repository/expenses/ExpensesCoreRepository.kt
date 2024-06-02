@@ -9,4 +9,5 @@ interface ExpensesCoreRepository {
     suspend fun getCurrentMonthSumOfExpense() : Flow<Float>
     suspend fun getCurrentMonthSumOfExpensesByCategoriesId(listOfCategoriesId : List<Int>) : Flow<Float>
     suspend fun getCountOfExpensesInSpan(startDate: Date, endDate: Date): Flow<Int>
+    suspend fun getCountOfExpensesInSpanByCategoriesIds(startDate: Date, endDate: Date,categoriesIds : List<Int>): Flow<Int>
 }

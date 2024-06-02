@@ -26,20 +26,22 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.track.R
+import com.example.track.data.other.constants.PREFERABLE_THEME_DEFAULT
 import com.example.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.example.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
 import com.example.track.data.other.dataStore.DataStoreManager
-import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
+import com.example.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
-    val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
     val coroutineScope = rememberCoroutineScope()
-    val showPageNameChecked = currenciesSettingsViewModel.showPagesNameFlow.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
-    val useDeviceTheme = currenciesSettingsViewModel.useSystemTheme.collectAsState(initial = USE_SYSTEM_THEME_DEFAULT)
+    val themePreferenceSettingsViewModel = koinViewModel<ThemePreferenceSettingsViewModel>()
+    val showPageNameChecked = themePreferenceSettingsViewModel.showPagesNameFlow.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
+    val useDeviceTheme = themePreferenceSettingsViewModel.useSystemTheme.collectAsState(initial = USE_SYSTEM_THEME_DEFAULT)
+    val preferableTheme = themePreferenceSettingsViewModel.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT)
     Box(modifier = modifier) {
         Column(Modifier.wrapContentSize()) {
             Text(
@@ -63,7 +65,7 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
                         modifier = Modifier.padding(start = 4.dp), textAlign = TextAlign.Start
                     )
                     SettingsSwitch(checked = useDeviceTheme.value, onCheckedChange = {
-                        coroutineScope.launch { currenciesSettingsViewModel.setUseSystemTheme(it) }
+                        coroutineScope.launch { themePreferenceSettingsViewModel.setUseSystemTheme(it) }
                     })
                 }
                 Row(
@@ -81,7 +83,6 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
                                 .fillMaxHeight()
                                 .padding(start = 4.dp), textAlign = TextAlign.Start
                         )
-
                     }
                 }
             }
@@ -100,7 +101,7 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
                 )
                 SettingsSwitch(checked = showPageNameChecked.value, onCheckedChange = {
                     coroutineScope.launch {
-                        currenciesSettingsViewModel.setShowPagesNameFlow(it)
+                        themePreferenceSettingsViewModel.setShowPagesNameFlow(it)
                     }
                 })
             }
