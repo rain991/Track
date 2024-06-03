@@ -42,15 +42,14 @@ import com.example.track.presentation.components.mainScreen.dialogs.dialogCompon
 import com.example.track.presentation.components.mainScreen.dialogs.dialogComponents.SavingsDialogInputs
 import com.example.track.presentation.states.componentRelated.IdeaSelectorTypes
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 /*  Contains components related to creating a new idea dialog: SavingsDialogInputs, ExpenseLimitsDialogInputs, IncomePlanDialogInputs,
     IdeaInputField, NewIdeaCategoriesGrid  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun NewIdeaDialog() {
-    val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
+fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
+   // val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()

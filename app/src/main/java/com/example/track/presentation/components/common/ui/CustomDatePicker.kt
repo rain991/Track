@@ -25,9 +25,14 @@ fun CustomDatePicker(
             onNegativeClick = { onNegativeClick() },
             onPositiveClick = { localDate ->
                 val date = convertLocalDateToDate(localDate)
-                onPositiveClick(date)
+                if (date.time <= System.currentTimeMillis()) {
+                    onPositiveClick(date)
+                }
             }),
         properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
-        config = DateTimeConfig(minYear = MIN_SUPPORTED_YEAR, maxYear = LocalDate.now().year)
+        config = DateTimeConfig(
+            minYear = MIN_SUPPORTED_YEAR,
+            maxYear = LocalDate.now().year - 1
+        ) // Date time config adds additional year to options
     )
 }

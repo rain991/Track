@@ -35,6 +35,7 @@ import com.example.track.data.viewmodels.settingsScreen.IdeasListSettingsScreenV
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
+import com.example.track.presentation.components.mainScreen.feed.dialogs.AddToSavingDialog
 import com.example.track.presentation.components.mainScreen.feed.ideasCards.ExpenseLimitIdeaCard
 import com.example.track.presentation.components.mainScreen.feed.ideasCards.IncomePlanIdeaCard
 import com.example.track.presentation.components.mainScreen.feed.ideasCards.SavingsIdeaCard
@@ -49,12 +50,17 @@ fun IdeasListSettingsScreenComponent() {
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()
     val screenState = ideasListSettingsScreenViewModel.screenState.collectAsState()
+    val addToSavingIdeaDialogSavings = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
     val listOfAllIdeas = ideasListSettingsScreenViewModel.listOfAllIdeas
     val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_FIAT)
     val listState = rememberLazyListState()
     LaunchedEffect(key1 = Unit) {
         ideasListSettingsScreenViewModel.initializeValues()
     }
+    if (addToSavingIdeaDialogSavings.value != null) {
+        AddToSavingDialog(addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel)
+    }
+
     if (listOfAllIdeas.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(text = "You have not created any idea yet")

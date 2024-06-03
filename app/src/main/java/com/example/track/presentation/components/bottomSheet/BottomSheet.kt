@@ -57,19 +57,15 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.DialogProperties
 import com.example.track.R
 import com.example.track.data.other.constants.CURRENCY_FIAT
-import com.example.track.data.other.constants.MIN_SUPPORTED_YEAR
+import com.example.track.data.other.converters.convertDateToLocalDate
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.presentation.components.bottomSheet.composables.AmountInput
 import com.example.track.presentation.components.common.ui.CategoryChip
-import com.maxkeppeker.sheets.core.models.base.UseCaseState
-import com.maxkeppeler.sheets.date_time.DateTimeDialog
-import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
-import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
+import com.example.track.presentation.components.common.ui.CustomDatePicker
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -184,12 +180,11 @@ fun BottomSheet(dataStoreManager: DataStoreManager) {
         }
     }
 }
+
 @Composable
 private fun DatePicker() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
-    val datePickerStateFlow = bottomSheetViewState.value.timePickerState
-    val datePickerState = UseCaseState(visible = datePickerStateFlow)
     var text by remember { mutableStateOf(bottomSheetViewState.value.datePicked.toString()) }
     text = if (!bottomSheetViewModel.isDateInOtherSpan(bottomSheetViewState.value.datePicked)) {
         stringResource(R.string.date)
@@ -212,19 +207,16 @@ private fun DatePicker() {
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
             Text(text = text, style = MaterialTheme.typography.bodyMedium)
         }
-        DateTimeDialog(
-            state = datePickerState,
-            selection = DateTimeSelection.Date(selectedDate = bottomSheetViewState.value.datePicked,
-                onNegativeClick = { bottomSheetViewModel.togglePickerState() },
-                onPositiveClick = { date ->
-                    bottomSheetViewModel.setDatePicked(date)
-                    bottomSheetViewModel.togglePickerState()
-                }),
-            properties = DialogProperties(dismissOnBackPress = true, dismissOnClickOutside = true),
-            config = DateTimeConfig(minYear = MIN_SUPPORTED_YEAR, maxYear = LocalDate.now().year - 1) // WARNING about -1
-        )
+        CustomDatePicker(
+            isVisible = bottomSheetViewState.value.timePickerState,
+            onNegativeClick = { bottomSheetViewModel.togglePickerState() },
+            onPositiveClick = { date ->
+                bottomSheetViewModel.setDatePicked(convertDateToLocalDate(date))
+                bottomSheetViewModel.togglePickerState()
+            })
     }
 }
+
 @Composable
 private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
@@ -277,7 +269,7 @@ private fun OutlinedTextField(label: String) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val text = bottomSheetViewState.value.note
-   TextField(
+    TextField(
         value = text,
         onValueChange = { bottomSheetViewModel.setNote(it) },
         label = { Text(label) },
@@ -289,11 +281,10 @@ private fun OutlinedTextField(label: String) {
                 brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)),
                 shape = RoundedCornerShape(4.dp)
             ),
-       colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background)
+        colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background)
     )
 
 }
-
 
 
 @Composable

@@ -47,7 +47,8 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
     val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = Modifier
-            .padding(paddingValues).padding(8.dp),
+            .padding(paddingValues)
+            .padding(8.dp),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Spacer(modifier = Modifier.height(8.dp))
@@ -185,12 +186,12 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
         if (fourthAdditionalCurrency.value != null) {
             Spacer(modifier = Modifier.height(8.dp))
         }
-        AnimatedVisibility(visible = (firstAdditionalCurrency.value == null || secondAdditionalCurrency.value == null || thirdAdditionalCurrency.value == null || fourthAdditionalCurrency.value == null)) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.weight(1f))
+        Row(
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Spacer(modifier = Modifier.weight(1f))
+            AnimatedVisibility(visible = (firstAdditionalCurrency.value == null || secondAdditionalCurrency.value == null || thirdAdditionalCurrency.value == null || fourthAdditionalCurrency.value == null)) {
                 CurrenciesPlusTextButton {
                     if (firstAdditionalCurrency.value == null) {
                         coroutineScope.launch {
@@ -210,12 +211,12 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                         }
                     }
                 }
-                Spacer(modifier = Modifier.weight(1f))
-                AnimatedVisibility(visible = firstAdditionalCurrency.value != null || secondAdditionalCurrency.value != null || thirdAdditionalCurrency.value != null || fourthAdditionalCurrency.value != null) {
-                    CurrenciesMinusTextButton {
-                        coroutineScope.launch {
-                            currenciesSettingsViewModel.setLatestCurrencyAsNull()
-                        }
+            }
+            Spacer(modifier = Modifier.weight(1f))
+            AnimatedVisibility(visible = firstAdditionalCurrency.value != null || secondAdditionalCurrency.value != null || thirdAdditionalCurrency.value != null || fourthAdditionalCurrency.value != null) {
+                CurrenciesMinusTextButton {
+                    coroutineScope.launch {
+                        currenciesSettingsViewModel.setLatestCurrencyAsNull()
                     }
                 }
             }
