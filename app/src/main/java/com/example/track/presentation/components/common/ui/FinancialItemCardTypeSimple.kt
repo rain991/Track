@@ -122,7 +122,7 @@ fun FinancialItemCardTypeSimple(
                         val sumOfExpenses = remember { mutableFloatStateOf(0.0f) }
                         LaunchedEffect(key1 = Unit) {
                             withContext(Dispatchers.IO) {
-                                sumOfExpenses.value = expenseAndIncomeLazyColumnViewModel.requestSumExpensesInMonthNotion(
+                                sumOfExpenses.floatValue = expenseAndIncomeLazyColumnViewModel.requestSumExpensesInMonthNotion(
                                     financialEntity = financialEntity,
                                     financialCategory = categoryEntity
                                 )
@@ -132,9 +132,9 @@ fun FinancialItemCardTypeSimple(
                             formatDateWithoutYear(financialEntity.date)
                         } else {
                             if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                                FIAT_DECIMAL_FORMAT.format(sumOfExpenses.value)
+                                FIAT_DECIMAL_FORMAT.format(sumOfExpenses.floatValue)
                             } else {
-                                CRYPTO_DECIMAL_FORMAT.format(sumOfExpenses.value)
+                                CRYPTO_DECIMAL_FORMAT.format(sumOfExpenses.floatValue)
                             }
                         }
                         AnimatedContent(targetState = resultedNotion, label = "horizontalTextChange", transitionSpec = {
@@ -196,7 +196,7 @@ fun FinancialItemCardTypeSimple(
                             val countOfFinancialEntities = remember { mutableIntStateOf(0) }
                             LaunchedEffect(key1 = Unit) {
                                 withContext(Dispatchers.IO) {
-                                    countOfFinancialEntities.value = expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
+                                    countOfFinancialEntities.intValue = expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
                                         financialEntity = financialEntity,
                                         financialCategory = categoryEntity
                                     )
@@ -213,7 +213,7 @@ fun FinancialItemCardTypeSimple(
                                             fontWeight = FontWeight.SemiBold
                                         )
                                     ) {
-                                        append(countOfFinancialEntities.value.toString())
+                                        append(countOfFinancialEntities.intValue.toString())
                                     }
                                 },
                                 style = MaterialTheme.typography.bodyMedium,

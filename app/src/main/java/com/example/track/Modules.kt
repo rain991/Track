@@ -40,6 +40,7 @@ import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnVi
 import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
+import com.example.track.data.viewmodels.settingsScreen.CategoriesSettingsScreenViewModel
 import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
 import com.example.track.data.viewmodels.settingsScreen.IdeasListSettingsScreenViewModel
 import com.example.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
@@ -136,4 +137,5 @@ val viewModelModule = module {
     viewModel { IdeasListSettingsScreenViewModel(get()) }
     viewModel { NewIdeaDialogViewModel(get()) }
     viewModel { ThemePreferenceSettingsViewModel(get()) }
+    viewModel { CategoriesSettingsScreenViewModel(get(), get()) }
 }

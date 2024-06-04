@@ -144,7 +144,7 @@ private fun LoginHeader() {
                 Spacer(modifier = Modifier.width(12.dp))
                 Column {
                     Text(
-                        text = stringResource(id = R.string.app_name_optimal),
+                        text = stringResource(id = R.string.app_name),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
