@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.track.data.models.Expenses.ExpenseCategory
+import com.example.track.domain.models.expenses.ExpenseCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,7 +24,13 @@ interface ExpenseCategoryDao {
     fun getAllCategories(): Flow<List<ExpenseCategory>>
 
     @Query("SELECT * FROM expense_categories WHERE categoryId = :id")
-    fun getCategoryById(id : Int) : ExpenseCategory
+    fun getCategoryById(id: Int): ExpenseCategory
+
+    @Query("SELECT * FROM expense_categories WHERE categoryId in (:listOfIds)")
+    fun getCategoriesByIds(listOfIds: List<Int>): List<ExpenseCategory>
+
+    @Query("SELECT Count(value) FROM expenses WHERE categoryId = :categoryId AND date BETWEEN :start AND :end")
+    fun countExpensesByCategoryInTimeSpan(start: Long, end: Long, categoryId: Int): Flow<Int>
 
     @Query("DELETE FROM expense_categories")
     suspend fun deleteAllData()

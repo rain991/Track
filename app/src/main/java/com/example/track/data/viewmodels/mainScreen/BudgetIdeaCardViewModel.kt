@@ -2,11 +2,12 @@ package com.example.track.data.viewmodels.mainScreen
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.constants.CURRENCY_DEFAULT
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
-import com.example.track.data.models.currency.Currency
-import com.example.track.presentation.states.BudgetIdeaCardState
+import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.domain.models.currency.Currency
+import com.example.track.presentation.states.componentRelated.BudgetIdeaCardState
+import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -20,31 +21,37 @@ class BudgetIdeaCardViewModel(
             budget = 0f,
             currentExpensesSum = 0f,
             budgetExpectancy = 0f,
-            currencyTicker = CURRENCY_DEFAULT.ticker
+            currency = CURRENCY_FIAT
         )
     )
     val budgetCardState = _budgetCardState.asStateFlow()
-
-    init {
+    suspend fun initializeStates() {
         viewModelScope.launch {
-            budgetIdeaCardRepositoryImpl.requestMonthBudget().collect{
-                setBudget(it.toFloat())
+            async {
+                budgetIdeaCardRepositoryImpl.requestCurrentMonthExpenses().collect {
+                    setCurrentExpenseSum(it)
+                }
             }
-            budgetIdeaCardRepositoryImpl.requestCurrentMonthExpenses().collect {
-                setCurrentExpenseSum(it)
+            async {
+                budgetIdeaCardRepositoryImpl.requestBudgetExpectancy().collect {
+                    setBudgetExpectancy(it)
+                }
             }
-            budgetIdeaCardRepositoryImpl.requestBudgetExpectancy().collect {
-                setBudgetExpectancy(it)
+            async {
+                budgetIdeaCardRepositoryImpl.requestMonthBudget().collect {
+                    setBudget(it)
+                }
             }
-            currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect {
-                setCurrency(it)
+            async {
+                currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect {
+                    setCurrency(it)
+                }
             }
-
         }
     }
 
     private fun setCurrency(currency: Currency) {
-        _budgetCardState.value = budgetCardState.value.copy(currencyTicker = currency.ticker)
+        _budgetCardState.value = budgetCardState.value.copy(currency = currency)
     }
 
     private fun setBudget(budget: Float) {

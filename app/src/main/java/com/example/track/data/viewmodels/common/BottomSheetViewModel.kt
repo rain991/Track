@@ -3,20 +3,20 @@ package com.example.track.data.viewmodels.common
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.constants.CURRENCY_DEFAULT
-import com.example.track.data.converters.convertLocalDateToDate
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.implementations.expenses.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomesCategoriesListRepositoryImpl
-import com.example.track.data.models.Expenses.ExpenseCategory
-import com.example.track.data.models.Expenses.ExpenseItem
-import com.example.track.data.models.currency.Currency
-import com.example.track.data.models.incomes.IncomeCategory
-import com.example.track.data.models.incomes.IncomeItem
-import com.example.track.data.models.other.CategoryEntity
+import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
+import com.example.track.data.implementations.incomes.IncomeItemRepositoryImpl
+import com.example.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
+import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.converters.convertLocalDateToDate
+import com.example.track.domain.models.abstractLayer.CategoryEntity
+import com.example.track.domain.models.currency.Currency
+import com.example.track.domain.models.expenses.ExpenseCategory
+import com.example.track.domain.models.expenses.ExpenseItem
+import com.example.track.domain.models.incomes.IncomeCategory
+import com.example.track.domain.models.incomes.IncomeItem
 import com.example.track.domain.usecases.expensesRelated.expenseusecases.AddExpensesItemUseCase
-import com.example.track.presentation.states.BottomSheetViewState
+import com.example.track.presentation.states.componentRelated.BottomSheetViewState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,7 +36,7 @@ import java.time.LocalDate
 
 class BottomSheetViewModel(
     private val addExpensesItemUseCase: AddExpensesItemUseCase,
-    private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
+    private val incomeItemRepositoryImpl: IncomeItemRepositoryImpl,
     private val categoryListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
@@ -47,7 +47,7 @@ class BottomSheetViewModel(
     val incomeCategoryList = _incomeCategoryList
 
     private val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = CURRENCY_DEFAULT)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = CURRENCY_FIAT)
     private val firstAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFirstAdditionalCurrency()
         .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
     private val secondAdditionalCurrency = currenciesPreferenceRepositoryImpl.getSecondAdditionalCurrency()
@@ -117,7 +117,7 @@ class BottomSheetViewModel(
                 value = expenseViewState.value.inputExpense!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
-            addExpensesItemUseCase.addExpensesItem(currentExpenseItem)
+            addExpensesItemUseCase(currentExpenseItem)
             setCategoryPicked(DEFAULT_CATEGORY)
             setInputExpense(DEFAULT_EXPENSE)
             setDatePicked(DEFAULT_DATE)
@@ -135,7 +135,7 @@ class BottomSheetViewModel(
                 value = expenseViewState.value.inputExpense!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
-            incomeListRepositoryImpl.addIncomeItem(currentIncomeItem)
+            incomeItemRepositoryImpl.addIncomeItem(currentIncomeItem)
             setCategoryPicked(DEFAULT_CATEGORY)
             setInputExpense(DEFAULT_EXPENSE)
             setDatePicked(DEFAULT_DATE)

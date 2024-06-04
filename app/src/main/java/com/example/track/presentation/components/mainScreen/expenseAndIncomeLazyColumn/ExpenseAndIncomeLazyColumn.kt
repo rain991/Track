@@ -44,19 +44,24 @@ import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.track.R
-import com.example.track.data.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
-import com.example.track.data.converters.areDatesSame
-import com.example.track.data.converters.areYearsSame
-import com.example.track.data.converters.convertDateToLocalDate
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
+import com.example.track.data.other.converters.areDatesSame
+import com.example.track.data.other.converters.areYearsSame
+import com.example.track.data.other.converters.convertDateToLocalDate
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
-import com.example.track.presentation.common.ui.FinancialItemCardTypeSimple
-import com.example.track.presentation.components.mainScreen.additionalInfoCards.MainScreenInfoComposable
+import com.example.track.presentation.components.common.parser.getMonthResID
+import com.example.track.presentation.components.common.ui.FinancialItemCardTypeSimple
+import com.example.track.presentation.components.mainScreen.TrackScreenInfoCards.TrackScreenInfoCards
 import org.koin.androidx.compose.koinViewModel
+import org.koin.compose.koinInject
 import java.time.LocalDate
 
-
+/*  Contains lazy column used in expense screen. Also contains such private composable functions:
+    Transactions (ui to switch between expeneses and incomes), EmptyLazyColumnPlacement, ExpenseDayHeader, ExpenseMonthHeader, ExpenseYearHeader   */
 @Composable
-fun ExpensesLazyColumn() {
+fun ExpenseAndIncomeLazyColumn() {
     val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
     val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     val expensesList = expenseAndIncomeLazyColumnViewModel.expensesList
@@ -68,6 +73,8 @@ fun ExpensesLazyColumn() {
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE } }
     var isScrollingUp by remember { mutableStateOf(false) }
     val isScrolledBelowState = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
+    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
+    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_FIAT)
     Box {
         Box(
             modifier = Modifier
@@ -88,7 +95,7 @@ fun ExpensesLazyColumn() {
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
-                    Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = null)
+                    Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = "scroll up")
                 }
             }
         }
@@ -100,7 +107,7 @@ fun ExpensesLazyColumn() {
             }
         }
         Column {
-            MainScreenInfoComposable()
+            TrackScreenInfoCards()
             Box(
                 modifier = Modifier
                     .wrapContentWidth()
@@ -193,7 +200,8 @@ fun ExpensesLazyColumn() {
                                         financialEntity = currentFinancialEntity,
                                         categoryEntity = currentFinancialCategory,
                                         expanded = (expandedItem.value == currentFinancialEntity),
-                                        expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel
+                                        expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel,
+                                        preferableCurrency = preferableCurrency.value
                                     )
                                     if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
                                 }
@@ -318,23 +326,3 @@ private fun ExpenseYearHeader(localDate: LocalDate) {
         )
     }
 }
-
-fun getMonthResID(localDate: LocalDate): Int {
-    val monthResId = when (localDate.monthValue) {
-        1 -> R.string.january
-        2 -> R.string.february
-        3 -> R.string.march
-        4 -> R.string.april
-        5 -> R.string.may
-        6 -> R.string.june
-        7 -> R.string.july
-        8 -> R.string.august
-        9 -> R.string.september
-        10 -> R.string.october
-        11 -> R.string.november
-        12 -> R.string.december
-        else -> R.string.unknown_month
-    }
-    return monthResId
-}
-

@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.track.data.models.idea.Savings
+import com.example.track.domain.models.idea.Savings
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -25,4 +25,7 @@ interface SavingsDao {
 
     @Query("SELECT * FROM savings WHERE startDate>:startDate")
     fun getSavingsFromDate(startDate : Long) : Flow<Savings>
+
+    @Query("SELECT Count(id) FROM savings")
+    suspend fun getCountOfSavings(): Int
 }

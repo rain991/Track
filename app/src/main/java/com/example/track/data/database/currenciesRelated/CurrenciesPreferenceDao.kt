@@ -6,9 +6,9 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.track.data.constants.CURRENCIES_PREFERENCE_ID
-import com.example.track.data.models.currency.CurrenciesPreference
-import com.example.track.data.models.currency.Currency
+import com.example.track.data.other.constants.CURRENCIES_PREFERENCE_ID
+import com.example.track.domain.models.currency.CurrenciesPreference
+import com.example.track.domain.models.currency.Currency
 import kotlinx.coroutines.flow.Flow
 
 @Dao

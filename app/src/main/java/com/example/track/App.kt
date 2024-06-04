@@ -15,7 +15,7 @@ class App : Application(), KoinComponent {
             androidLogger(Level.DEBUG)
             androidContext(this@App)
             workManagerFactory()
-            modules(listOf(settingsModule, appModule, domainModule, viewModelModule, workerFactoryModule))
+            modules(listOf(settingsModule, appModule, databaseModule, coreModule, domainModule, viewModelModule, workerFactoryModule))
         }
     }
 }

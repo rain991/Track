@@ -6,7 +6,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
-import com.example.track.data.models.incomes.IncomeCategory
+import com.example.track.domain.models.incomes.IncomeCategory
 import kotlinx.coroutines.flow.Flow
 
 @Dao
@@ -24,5 +24,8 @@ interface IncomeCategoryDao {
     fun getAllIncomeCategories(): Flow<List<IncomeCategory>>
 
     @Query("SELECT categoryId FROM income_categories WHERE note = 'Other'")
-    fun getCategoryOtherId() : Int
+    suspend fun getCategoryOtherId() : Int
+
+    @Query("SELECT Count(value) FROM incomes WHERE categoryId = :categoryId AND date BETWEEN :start AND :end")
+    fun countIncomesByCategoryInTimeSpan(start: Long, end: Long, categoryId : Int): Flow<Int>
 }

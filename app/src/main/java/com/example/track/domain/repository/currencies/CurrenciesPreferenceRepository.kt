@@ -1,7 +1,7 @@
 package com.example.track.domain.repository.currencies
 
-import com.example.track.data.models.currency.CurrenciesPreference
-import com.example.track.data.models.currency.Currency
+import com.example.track.domain.models.currency.CurrenciesPreference
+import com.example.track.domain.models.currency.Currency
 import kotlinx.coroutines.flow.Flow
 
 interface CurrenciesPreferenceRepository {
