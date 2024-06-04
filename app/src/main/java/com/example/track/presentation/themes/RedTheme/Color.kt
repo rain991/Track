@@ -1,8 +1,8 @@
 package com.example.track.presentation.themes.RedTheme
 import androidx.compose.ui.graphics.Color
 
-val md_theme_light_primary = Color(0xFFAD302E)
-val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val red_light_theme_primary = Color(0xFFAD302E)
+val red_light_theme_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFFFDAD6)
 val md_theme_light_onPrimaryContainer = Color(0xFF410003)
 val md_theme_light_secondary = Color(0xFF9C4141)
@@ -32,8 +32,8 @@ val md_theme_light_surfaceTint = Color(0xFFAD302E)
 val md_theme_light_outlineVariant = Color(0xFFD8C2BF)
 val md_theme_light_scrim = Color(0xFF000000)
 
-val md_theme_dark_primary = Color(0xFFFFB3AD)
-val md_theme_dark_onPrimary = Color(0xFF680009)
+val red_dark_theme_primary = Color(0xFFFFB3AD)
+val red_dark_theme_onPrimary = Color(0xFF680009)
 val md_theme_dark_primaryContainer = Color(0xFF8C171A)
 val md_theme_dark_onPrimaryContainer = Color(0xFFFFDAD6)
 val md_theme_dark_secondary = Color(0xFFFFB3B0)

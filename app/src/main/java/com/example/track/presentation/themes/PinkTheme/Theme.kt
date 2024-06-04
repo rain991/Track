@@ -38,8 +38,8 @@ fun PinkTheme(
     )
 }
 private val pinkTheme_lightColors = lightColorScheme(
-    primary = md_theme_light_primary,
-    onPrimary = md_theme_light_onPrimary,
+    primary = pink_light_theme_primary,
+    onPrimary = pink_light_theme_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
     onPrimaryContainer = md_theme_light_onPrimaryContainer,
     secondary = md_theme_light_secondary,
@@ -69,8 +69,8 @@ private val pinkTheme_lightColors = lightColorScheme(
     scrim = md_theme_light_scrim,
 )
 private val pinkTheme_darkColors = darkColorScheme(
-    primary = md_theme_dark_primary,
-    onPrimary = md_theme_dark_onPrimary,
+    primary = pink_dark_theme_primary,
+    onPrimary = pink_dark_theme_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
     onPrimaryContainer = md_theme_dark_onPrimaryContainer,
     secondary = md_theme_dark_secondary,

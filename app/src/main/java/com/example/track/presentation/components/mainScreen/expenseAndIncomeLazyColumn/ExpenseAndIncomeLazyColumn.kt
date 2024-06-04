@@ -95,7 +95,7 @@ fun ExpenseAndIncomeLazyColumn() {
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
-                    Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = null)
+                    Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = "scroll up")
                 }
             }
         }

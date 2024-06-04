@@ -15,7 +15,7 @@ import com.example.track.ui.theme.appTypography
 @Composable
 fun BlueTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),
-    content: @Composable() () -> Unit
+    content: @Composable () -> Unit
 ) {
     val colors = if (!useDarkTheme) {
         blueTheme_LightColors
@@ -38,8 +38,8 @@ fun BlueTheme(
     )
 }
 private val blueTheme_LightColors = lightColorScheme(
-    primary = md_theme_light_primary,
-    onPrimary = md_theme_light_onPrimary,
+    primary = blue_light_theme_color_primary,
+    onPrimary = blue_light_theme_color_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
     onPrimaryContainer = md_theme_light_onPrimaryContainer,
     secondary = md_theme_light_secondary,
@@ -69,8 +69,8 @@ private val blueTheme_LightColors = lightColorScheme(
     scrim = md_theme_light_scrim,
 )
 private val blueTheme_darkColors = darkColorScheme(
-    primary = md_theme_dark_primary,
-    onPrimary = md_theme_dark_onPrimary,
+    primary = blue_dark_theme_color_primary,
+    onPrimary = blue_dark_theme_color_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
     onPrimaryContainer = md_theme_dark_onPrimaryContainer,
     secondary = md_theme_dark_secondary,

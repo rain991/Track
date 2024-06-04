@@ -165,7 +165,8 @@ fun FinancialItemCardTypeSimple(
                                         withStyle(
                                             style = SpanStyle(
                                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                                                fontSize = MaterialTheme.typography.bodySmall.fontSize,//18.sp
+                                                fontWeight = FontWeight.SemiBold
                                             )
                                         ) {
                                             append(" ")
@@ -260,8 +261,7 @@ private fun ExpenseValueCard(financialEntity: FinancialEntity, currentCurrencyNa
                     FIAT_DECIMAL_FORMAT.format(financialEntity.value)
                 } else {
                     CRYPTO_DECIMAL_FORMAT.format(financialEntity.value)
-                }
-                , style = MaterialTheme.typography.bodyLarge.copy(
+                }, style = MaterialTheme.typography.bodyLarge.copy(
                     color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 24.sp
                 )
             )

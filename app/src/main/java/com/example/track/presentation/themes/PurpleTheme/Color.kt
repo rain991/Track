@@ -1,8 +1,8 @@
 package com.example.track.presentation.themes.PurpleTheme
 import androidx.compose.ui.graphics.Color
 
-val md_theme_light_primary = Color(0xFF5A54A8)
-val md_theme_light_onPrimary = Color(0xFFFFFFFF)
+val purple_light_theme_primary = Color(0xFF5A54A8)
+val purple_light_theme_onPrimary = Color(0xFFFFFFFF)
 val md_theme_light_primaryContainer = Color(0xFFE3DFFF)
 val md_theme_light_onPrimaryContainer = Color(0xFF140463)
 val md_theme_light_secondary = Color(0xFF5A53A8)
@@ -32,8 +32,8 @@ val md_theme_light_surfaceTint = Color(0xFF5A54A8)
 val md_theme_light_outlineVariant = Color(0xFFC8C5D0)
 val md_theme_light_scrim = Color(0xFF000000)
 
-val md_theme_dark_primary = Color(0xFFC5C0FF)
-val md_theme_dark_onPrimary = Color(0xFF2B2277)
+val purple_dark_theme_primary = Color(0xFFC5C0FF)
+val purple_dark_theme_onPrimary = Color(0xFF2B2277)
 val md_theme_dark_primaryContainer = Color(0xFF423B8E)
 val md_theme_dark_onPrimaryContainer = Color(0xFFE3DFFF)
 val md_theme_dark_secondary = Color(0xFFC5C0FF)
