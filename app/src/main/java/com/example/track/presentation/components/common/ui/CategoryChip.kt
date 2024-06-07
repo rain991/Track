@@ -7,8 +7,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
@@ -40,7 +40,7 @@ fun CategoryChip(
 ) {
     Button(
         modifier = Modifier
-            .height(40.dp)
+            .wrapContentHeight()
             .scale(chipScale),
         onClick = { onSelect(category) },
         colors = ButtonColors(

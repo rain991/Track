@@ -77,7 +77,7 @@ fun IdeasListSettingsScreenComponent() {
                     .padding(horizontal = 8.dp)
                     .wrapContentHeight(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Show completed ideas", style = MaterialTheme.typography.bodyMedium)
+                Text(text = "Show completed ideas")
                 Switch(
                     checked = screenState.value.isShowingCompletedIdeas,
                     onCheckedChange = {

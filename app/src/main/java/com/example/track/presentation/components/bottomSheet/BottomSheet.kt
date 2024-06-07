@@ -54,6 +54,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -120,7 +121,7 @@ fun BottomSheet(dataStoreManager: DataStoreManager) {
                         ) {
                             Text(
                                 text = stringResource(R.string.add),
-                                style = MaterialTheme.typography.titleMedium,
+                                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
                                 textAlign = TextAlign.Center
                             )
                             AnimatedContent(
@@ -134,7 +135,7 @@ fun BottomSheet(dataStoreManager: DataStoreManager) {
                                 ) {
                                     Text(
                                         text = it,
-                                        style = MaterialTheme.typography.titleMedium
+                                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold)
                                     )
                                 }
                             }

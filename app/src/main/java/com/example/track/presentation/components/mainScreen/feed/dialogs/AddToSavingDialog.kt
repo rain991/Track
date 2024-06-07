@@ -63,7 +63,7 @@ fun AddToSavingDialog(
                     .padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    Text(text = "Add to " + currentSaving.value?.label, style = MaterialTheme.typography.titleSmall)
+                    Text(text = "Add to " + currentSaving.value?.label, style = MaterialTheme.typography.titleMedium)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 AddToSavingDialogAmountInput(

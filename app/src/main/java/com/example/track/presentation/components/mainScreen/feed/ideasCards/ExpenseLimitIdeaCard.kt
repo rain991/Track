@@ -29,7 +29,7 @@ import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.currency.CurrencyTypes
 import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.idea.ExpenseLimits
-import com.example.track.presentation.components.common.ui.CategoryChip
+import com.example.track.presentation.components.screenComponents.additional.CategorySettingsChip
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
@@ -46,7 +46,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Text(
                 text = "Expense limit",
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.headlineSmall
             )
         }
         Spacer(Modifier.height(8.dp))
@@ -120,12 +120,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                            CategoryChip(
-                                category = currentCategory!!,
-                                isSelected = false,
-                                onSelect = {},
-                                chipScale = 0.8f
-                            )
+                            CategorySettingsChip(category = currentCategory!!) { }
                         }
                     }
                 }
@@ -138,12 +133,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                            CategoryChip(
-                                category = currentCategory!!,
-                                textStyle = MaterialTheme.typography.bodySmall,
-                                isSelected = false,
-                                onSelect = {}, chipScale = 0.8f
-                            )
+                         CategorySettingsChip(category = currentCategory!!) { }
                         }
                     }
                 }
@@ -156,12 +146,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                            CategoryChip(
-                                category = currentCategory!!,
-                                textStyle = MaterialTheme.typography.bodySmall,
-                                isSelected = false,
-                                onSelect = {}, chipScale = 0.8f
-                            )
+                            CategorySettingsChip(category = currentCategory!!) { }
                         }
                     }
                 }

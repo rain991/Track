@@ -56,15 +56,15 @@ fun CategoriesSettingsScreenComponent() {
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = "Create, delete and find your categories", style = MaterialTheme.typography.bodySmall)
+        Text(text = "Create, delete and find your categories", style = MaterialTheme.typography.bodyMedium)
         Spacer(modifier = Modifier.height(8.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(text = "Expense categories", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+            Text(text = "Expense categories", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
         }
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             listOfExpensesCategories.forEach { currentExpenseCategory ->
                 CategorySettingsChip(category = currentExpenseCategory) {
@@ -73,10 +73,10 @@ fun CategoriesSettingsScreenComponent() {
                 }
                 if (currentSelectedCategory == currentExpenseCategory) {
                     Box{
-                        DropdownMenu(expanded = isContextMenuVisible, onDismissRequest = { isContextMenuVisible = false }) {
+                        DropdownMenu(expanded = isContextMenuVisible, onDismissRequest = { isContextMenuVisible = false }, modifier = Modifier.padding(4.dp)) {
                             Text(
                                 text = "delete",
-                                modifier = Modifier.pointerInput(key1 = true) { /*viewModel.deleteCategory(currentExpenseCategory)*/ })
+                                modifier = Modifier.pointerInput(key1 = true) { viewModel.deleteCategory(currentExpenseCategory) })
                         }
                     }
                 }
@@ -84,12 +84,12 @@ fun CategoriesSettingsScreenComponent() {
         }
         Spacer(modifier = Modifier.height(16.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(text = "Income categories", style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold))
+            Text(text = "Income categories", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
         }
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalArrangement = Arrangement.spacedBy(8.dp)
+            horizontalArrangement = Arrangement.SpaceAround,
+            verticalArrangement = Arrangement.spacedBy(4.dp)
         ) {
             listOfIncomeCategories.forEach { currentIncomeCategory ->
                 CategorySettingsChip(category = currentIncomeCategory) {
@@ -98,10 +98,10 @@ fun CategoriesSettingsScreenComponent() {
                 }
                 if (currentSelectedCategory == currentIncomeCategory) {
                     Box {
-                        DropdownMenu(expanded = isContextMenuVisible, onDismissRequest = { isContextMenuVisible = false }) {
+                        DropdownMenu(expanded = isContextMenuVisible, onDismissRequest = { isContextMenuVisible = false }, modifier = Modifier.padding(4.dp)) {
                             Text(
                                 text = "delete",
-                                modifier = Modifier.pointerInput(key1 = true) { /*viewModel.deleteCategory(currentIncomeCategory)*/ })
+                                modifier = Modifier.pointerInput(key1 = true) { viewModel.deleteCategory(currentIncomeCategory) })
                         }
                     }
                 }
@@ -113,7 +113,7 @@ fun CategoriesSettingsScreenComponent() {
 
 
 @Composable
-private fun CategorySettingsChip(
+fun CategorySettingsChip(
     category: CategoryEntity,
     onSelect: (CategoryEntity) -> Unit
 ) {

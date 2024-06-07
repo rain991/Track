@@ -69,7 +69,7 @@ fun AmountInput(
             maxLines = 1,
         )
         TextButton(onClick = { bottomSheetViewModel.changeSelectedCurrency() }, modifier = Modifier.wrapContentWidth()) {
-            Text(text = currentCurrency.ticker, style = MaterialTheme.typography.titleSmall)
+            Text(text = currentCurrency.ticker, style = MaterialTheme.typography.titleMedium)
         }
     }
 }

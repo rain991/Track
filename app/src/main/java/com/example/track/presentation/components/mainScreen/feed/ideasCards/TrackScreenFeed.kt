@@ -1,6 +1,5 @@
 package com.example.track.presentation.components.mainScreen.feed.ideasCards
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -64,18 +63,14 @@ fun TrackScreenFeed() {
             trackScreenFeedViewModel.incrementCardIndex()
         }
     }
-
     LaunchedEffect(pagerState.currentPage) {
-        Log.d("MyLog", "TrackScreenFeed : pagerState.currentPage ${pagerState.currentPage}")
         if (pagerState.currentPage <= ideaList.size + 1 && pagerState.targetPage != 0) {
             trackScreenFeedViewModel.setCardIndex(pagerState.currentPage)
         } else if (pagerState.currentPage == ideaList.size + 2) {
             trackScreenFeedViewModel.setCardIndex(0)
         }
     }
-
     LaunchedEffect(currentIndex.value) {
-        Log.d("MyLog", "TrackScreenFeed: ${currentIndex.value}")
         pagerState.animateScrollToPage(currentIndex.value)
     }
     LaunchedEffect(key1 = Unit) {

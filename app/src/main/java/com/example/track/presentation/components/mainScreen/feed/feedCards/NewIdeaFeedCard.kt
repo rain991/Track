@@ -34,7 +34,7 @@ fun NewIdeaFeedCard(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
             TextButton(onClick = {}) {
                 Text(
                     stringResource(R.string.new_idea_main_screen_feed),
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.headlineSmall
                 )
             }
         }

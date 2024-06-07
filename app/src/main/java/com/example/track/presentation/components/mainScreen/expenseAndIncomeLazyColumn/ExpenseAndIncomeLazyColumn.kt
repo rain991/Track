@@ -37,9 +37,9 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
@@ -235,13 +235,13 @@ private fun Transactions() {
             label = "verticalTextChange",
             transitionSpec = {
                 slideInVertically { it } togetherWith slideOutVertically { -it }
-            }) {
+            }) { text ->
             TextButton(
                 onClick = { expenseAndIncomeLazyColumnViewModel.toggleIsExpenseLazyColumn() }
             ) {
                 Text(
-                    text = it,
-                    style = MaterialTheme.typography.titleMedium,
+                    text = text,
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
                     color = MaterialTheme.colorScheme.primary
                 )
             }
@@ -285,20 +285,20 @@ private fun ExpenseDayHeader(localDate: LocalDate, isPastSmallMarkupNeeded: Bool
     Row(verticalAlignment = Alignment.Bottom) {
         Text(
             text = "${localDate.dayOfMonth}",
-            style = MaterialTheme.typography.titleSmall.copy(
+            style = MaterialTheme.typography.titleMedium.copy(
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         )
         if (isPastSmallMarkupNeeded) {
             Text(
                 text = ".",
-                style = MaterialTheme.typography.titleSmall.copy(
+                style = MaterialTheme.typography.titleLarge.copy(
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
             Text(
                 text = "${localDate.month.value}",
-                style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
             )
         }
     }
@@ -311,7 +311,7 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
     Box {
         Text(
             text = month,
-            style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 28.sp)
+            style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
         )
     }
 }
@@ -322,7 +322,7 @@ private fun ExpenseYearHeader(localDate: LocalDate) {
     Box {
         Text(
             text = year,
-            style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+            style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
         )
     }
 }

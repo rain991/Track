@@ -33,7 +33,7 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Text(
                 text = "Income plan",
-                style = MaterialTheme.typography.titleSmall
+                style = MaterialTheme.typography.headlineSmall
             )
         }
         Spacer(Modifier.height(8.dp))

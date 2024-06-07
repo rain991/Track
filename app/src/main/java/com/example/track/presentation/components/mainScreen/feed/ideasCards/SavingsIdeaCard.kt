@@ -38,10 +38,10 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                 .padding(horizontal = 8.dp)
         ) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = savings.label, style = MaterialTheme.typography.titleSmall)
+                Text(text = savings.label, style = MaterialTheme.typography.headlineSmall)
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = "Saving", style = MaterialTheme.typography.bodySmall)
+                Text(text = "Saving", style = MaterialTheme.typography.titleMedium)
             }
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(

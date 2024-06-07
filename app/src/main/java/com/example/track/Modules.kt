@@ -33,6 +33,7 @@ import com.example.track.data.implementations.notes.NotesRepositoryImpl
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.other.workers.CurrenciesRatesWorker
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
+import com.example.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
@@ -138,4 +139,5 @@ val viewModelModule = module {
     viewModel { NewIdeaDialogViewModel(get()) }
     viewModel { ThemePreferenceSettingsViewModel(get()) }
     viewModel { CategoriesSettingsScreenViewModel(get(), get()) }
+    viewModel { TrackScreenManagerViewModel() }
 }
