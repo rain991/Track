@@ -10,7 +10,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.example.track.ui.theme.appTypography
 
 @Composable
 fun PurpleTheme(
@@ -32,7 +31,7 @@ fun PurpleTheme(
     }
     MaterialTheme(
         colorScheme = colors,
-        typography = appTypography,
+      //  typography = appTypography,
 //shapes = appShapes,
         content = content
     )

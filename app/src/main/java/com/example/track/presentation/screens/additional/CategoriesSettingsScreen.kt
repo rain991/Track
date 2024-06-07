@@ -27,6 +27,7 @@ import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.track.R
 import com.example.track.data.other.dataStore.DataStoreManager
+import com.example.track.presentation.components.screenComponents.additional.CategoriesSettingsScreenComponent
 import com.example.track.presentation.navigation.Screen
 import org.koin.compose.koinInject
 
@@ -35,7 +36,9 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
     val settingsData = koinInject<DataStoreManager>()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            Row(modifier= Modifier.fillMaxWidth().padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically){
+            Row(modifier= Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically){
                 Button(onClick = { navController.navigate(Screen.MainScreen.route) }, modifier= Modifier.scale(0.8f)) {
                     Icon(imageVector = Icons.Default.ArrowBack, contentDescription = "back to settings screen")
                 }
@@ -54,7 +57,7 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
                 .padding(it),
             verticalArrangement = Arrangement.spacedBy(8.dp))
         {
-
+            CategoriesSettingsScreenComponent()
         }
     }
 }
