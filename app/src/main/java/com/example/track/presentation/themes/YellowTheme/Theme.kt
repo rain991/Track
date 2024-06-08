@@ -31,8 +31,6 @@ fun YellowTheme(
     }
     MaterialTheme(
         colorScheme = colors,
-      //  typography = appTypography,
-      //  shapes = appShapes,
         content = content
     )
 }

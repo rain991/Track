@@ -29,7 +29,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import com.example.track.data.viewmodels.settingsScreen.IdeasListSettingsScreenViewModel
 import com.example.track.domain.models.idea.ExpenseLimits
@@ -52,7 +52,7 @@ fun IdeasListSettingsScreenComponent() {
     val screenState = ideasListSettingsScreenViewModel.screenState.collectAsState()
     val addToSavingIdeaDialogSavings = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
     val listOfAllIdeas = ideasListSettingsScreenViewModel.listOfAllIdeas
-    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_FIAT)
+    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val listState = rememberLazyListState()
     LaunchedEffect(key1 = Unit) {
         ideasListSettingsScreenViewModel.initializeValues()

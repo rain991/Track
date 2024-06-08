@@ -1,6 +1,7 @@
 package com.example.track.presentation.components.login
 
 
+import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Box
@@ -15,88 +16,97 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.Color.Companion.Black
 import androidx.compose.ui.graphics.ColorFilter
+import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import androidx.wear.compose.material.Text
 import com.example.track.R
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.presentation.components.common.ui.CurrencyDropDownMenu
+import com.example.track.presentation.components.other.GradientInputTextField
 import com.example.track.presentation.navigation.Screen
-import com.example.track.ui.theme.focusedTextFieldText
 import com.example.track.ui.theme.md_theme_light_primary
-import com.example.track.ui.theme.unfocusedTextFieldText
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-
-const val FIRSTNAME_INPUT_ID = 102
-const val INCOME_INPUT_ID = 703
 
 @Composable
 fun LoginScreen(navController: NavController) {
     val loginViewModel = koinViewModel<LoginViewModel>()
-    val coroutineScope = rememberCoroutineScope()
     Surface(modifier = Modifier.fillMaxSize()) {
-        Column(modifier = Modifier.fillMaxSize()) {
+        val useDarkTheme = isSystemInDarkTheme()
+        val view = LocalView.current
+        val color = MaterialTheme.colorScheme.primary.toArgb()
+        if (!view.isInEditMode) {
+            SideEffect {
+                val window = (view.context as Activity).window
+                window.statusBarColor = color
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = useDarkTheme
+            }
+        }
+        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
             LoginHeader()
             Spacer(modifier = Modifier.height(32.dp))
-            LoginContent(loginViewModel, navController, coroutineScope)
+            LoginContent(loginViewModel, navController)
         }
     }
 }
 
 @Composable
-private fun LoginContent(loginViewModel: LoginViewModel, navController: NavController, coroutineScope: CoroutineScope) {
-    Column(modifier = Modifier.padding(horizontal = 22.dp)) {
-        LoginTextField(
+private fun LoginContent(loginViewModel: LoginViewModel, navController: NavController) {
+    val coroutineScope = rememberCoroutineScope()
+    val screenState = loginViewModel.loginScreenState.collectAsState()
+    Column(
+        modifier = Modifier
+            .fillMaxWidth(0.8f)
+            .padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        GradientInputTextField(
             label = stringResource(R.string.loginnametextfield),
-            modifier = Modifier.fillMaxWidth(),
-            INPUT_ID = FIRSTNAME_INPUT_ID,
-            loginViewModel = loginViewModel
-        )
-        Spacer(modifier = Modifier.height(20.dp))
-        LoginTextField(
-            label = stringResource(R.string.your_income),
-            modifier = Modifier.fillMaxWidth(),
-            INPUT_ID = INCOME_INPUT_ID,
-            loginViewModel = loginViewModel
-        )
+            value = screenState.value.name
+        ) {
+            loginViewModel.setFirstNameStateFlow(it)
+        }
+        Spacer(modifier = Modifier.height(24.dp))
+        GradientInputTextField(
+            label = stringResource(R.string.aprox_month_income_login_screen, screenState.value.currency.ticker),
+            keyboardType = KeyboardType.Decimal,
+            value = screenState.value.budget.toString()
+        ) {
+            loginViewModel.setIncomeStateFlow(it.toFloat())
+        }
         Spacer(modifier = Modifier.height(16.dp))
-        val currencySelectedState = loginViewModel.currencyStateFlow.collectAsState()
-        CurrencyDropDownMenu(
-            currencyList = loginViewModel.currencyList,
-            selectedOption = currencySelectedState.value,
-            onSelect = {
-                loginViewModel.setCurrencyStateFlow(it)
-            })
+        Row(modifier = Modifier.fillMaxWidth(0.5f)) {
+            CurrencyDropDownMenu(
+                currencyList = loginViewModel.currencyList,
+                selectedOption = screenState.value.currency,
+                onSelect = {
+                    loginViewModel.setCurrencyStateFlow(it)
+                })
+        }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
             modifier = Modifier
-                .fillMaxWidth()
+                .wrapContentWidth()
                 .height(40.dp),
             onClick = {
                 coroutineScope.launch {
@@ -157,47 +167,3 @@ private fun LoginHeader() {
         }
     }
 }
-
-@Composable
-private fun LoginTextField(
-    modifier: Modifier = Modifier,
-    label: String,
-    INPUT_ID: Int,
-    loginViewModel: LoginViewModel //guides in which way should LoginTextField work
-) {
-    var textValue by remember { mutableStateOf("") }
-    var firstNameData by remember { mutableStateOf("") }
-    var incomeData by remember { mutableStateOf("") }
-    val maxCharacters = 26
-    val uiColor = if (isSystemInDarkTheme()) Color.White else Black
-    TextField(
-        modifier = modifier,
-        value = textValue,
-        onValueChange = {
-            if (it.length <= maxCharacters) {
-                textValue = it
-                if (INPUT_ID == INCOME_INPUT_ID) {
-                    incomeData = it
-                    loginViewModel.setIncomeStateFlow(it.toFloat())
-                } else {
-                    firstNameData = it
-                    loginViewModel.setFirstNameStateFlow(it)
-                }
-            }
-        },
-        label = {
-            Text(text = label, style = MaterialTheme.typography.bodyMedium, color = uiColor)
-        },
-        colors = TextFieldDefaults.colors(
-            unfocusedPlaceholderColor = MaterialTheme.colorScheme.unfocusedTextFieldText,
-            focusedPlaceholderColor = MaterialTheme.colorScheme.focusedTextFieldText
-        ),
-        singleLine = true,
-        keyboardOptions = if (INPUT_ID == INCOME_INPUT_ID) {
-            KeyboardOptions(keyboardType = KeyboardType.Number)
-        } else {
-            KeyboardOptions(keyboardType = KeyboardType.Text)
-        }
-    )
-}
-

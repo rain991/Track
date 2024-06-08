@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.track.data.core.CurrenciesRatesHandler
 import com.example.track.data.database.ideaRelated.SavingsDao
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.idea.Savings
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -28,7 +28,7 @@ class AddToSavingIdeaDialogViewModel(
     val currentSavings = _currentSavings.asStateFlow()
 
     val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = CURRENCY_FIAT)
+        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = CURRENCY_DEFAULT)
     private val firstAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFirstAdditionalCurrency()
         .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
     private val secondAdditionalCurrency = currenciesPreferenceRepositoryImpl.getSecondAdditionalCurrency()

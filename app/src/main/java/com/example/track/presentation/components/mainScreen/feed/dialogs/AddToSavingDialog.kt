@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.example.track.data.other.constants.PERCENTAGE_DECIMAL_FORMAT
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
@@ -45,7 +45,7 @@ fun AddToSavingDialog(
     val softwareKeyboardController = LocalSoftwareKeyboardController.current
     val currentSaving = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
     val preferableCurrency = addToSavingIdeaDialogViewModel.preferableCurrency.collectAsState()
-    val selectedCurrency = addToSavingIdeaDialogViewModel.selectedCurrency.collectAsState(initial = CURRENCY_FIAT)
+    val selectedCurrency = addToSavingIdeaDialogViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
     var inputValue by remember { mutableFloatStateOf(0.0f) }
     Dialog(
         onDismissRequest = { addToSavingIdeaDialogViewModel.setCurrentSaving(null) },
@@ -69,7 +69,7 @@ fun AddToSavingDialog(
                 AddToSavingDialogAmountInput(
                     focusRequester = focusRequester,
                     controller = softwareKeyboardController,
-                    currentCurrency = selectedCurrency.value ?: CURRENCY_FIAT,
+                    currentCurrency = selectedCurrency.value ?: CURRENCY_DEFAULT,
                     currentValue = inputValue,
                     onCurrencyChange = { addToSavingIdeaDialogViewModel.changeSelectedCurrency() },
                     onValueChange = { inputValue = it }

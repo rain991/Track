@@ -4,9 +4,8 @@
     <string name="app_logo">Application Logo</string>
     <string name="logo_app_description">Convenient and easy-to-use expense tracker</string>
     <string name="currency">Currency</string>
-    <string name="loginnametextfield">Your First Name</string>
+    <string name="loginnametextfield">First Name</string>
     <string name="lets_start">Lets start!</string>
-    <string name="your_income">Your monthly income</string>
 
     <string name="january">January</string>
     <string name="february">February</string>
@@ -70,4 +69,5 @@
     <string name="new_idea_main_screen_feed">New idea</string>
     <string name="add_new_idea">add new idea</string>
     <string name="cd_add_new_category">add new category</string>
+    <string name="aprox_month_income_login_screen">Aprox. month income in %1$s</string>
 </resources>

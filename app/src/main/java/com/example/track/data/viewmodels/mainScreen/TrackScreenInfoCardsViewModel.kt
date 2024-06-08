@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesCoreRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeCoreRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.data.other.converters.getEndOfTheMonth
 import com.example.track.data.other.converters.getStartOfMonthDate
@@ -26,7 +26,7 @@ class TrackScreenInfoCardsViewModel(
 ) : ViewModel() {
     private val _cardsState = MutableStateFlow(
         TrackInfoCardsState(
-            preferableCurrency = CURRENCY_FIAT,
+            preferableCurrency = CURRENCY_DEFAULT,
             currentMonthExpensesCount = 0,
             currentMonthExpensesSum = 0.0f,
             currentMonthIncomesSum = 0.0f,

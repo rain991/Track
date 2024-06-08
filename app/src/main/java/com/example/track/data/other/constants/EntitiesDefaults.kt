@@ -14,7 +14,7 @@ const val USE_SYSTEM_THEME_DEFAULT: Boolean = true
 val PREFERABLE_THEME_DEFAULT: Themes = Themes.BlueTheme
 
 // Entities defaults
-val CURRENCY_FIAT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)
+val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)
 
 // Categories
 const val CATEGORIES_NAME_MAX_LENGTH = 40

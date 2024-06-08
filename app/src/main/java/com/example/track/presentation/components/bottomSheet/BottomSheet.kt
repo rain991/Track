@@ -59,7 +59,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.track.R
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.converters.convertDateToLocalDate
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
@@ -81,7 +81,7 @@ fun BottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
-    val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_FIAT)
+    val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
     val isAddingExpense = bottomSheetViewState.value.isAddingExpense
     val categoryList = if (isAddingExpense) {
         bottomSheetViewModel.expenseCategoryList

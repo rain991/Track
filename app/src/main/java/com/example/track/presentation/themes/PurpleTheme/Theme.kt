@@ -31,8 +31,6 @@ fun PurpleTheme(
     }
     MaterialTheme(
         colorScheme = colors,
-      //  typography = appTypography,
-//shapes = appShapes,
         content = content
     )
 }

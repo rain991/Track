@@ -17,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.constants.FEED_CARD_DELAY_ADDITIONAL
 import com.example.track.data.other.constants.FEED_CARD_DELAY_FAST
 import com.example.track.data.other.constants.FEED_CARD_DELAY_SLOW
@@ -46,7 +46,7 @@ fun TrackScreenFeed() {
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val currentIndex = trackScreenFeedViewModel.cardIndex.collectAsState()
     val maxIndex = trackScreenFeedViewModel.maxPagerIndex.collectAsState()
-    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_FIAT)
+    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val ideaList = trackScreenFeedViewModel.ideaList
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { maxIndex.value + 1 })
     val currentSavingAddingDialogState = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
