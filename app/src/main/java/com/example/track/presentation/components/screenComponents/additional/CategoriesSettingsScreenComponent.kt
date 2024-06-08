@@ -36,12 +36,10 @@ import androidx.compose.ui.unit.dp
 import com.example.track.data.viewmodels.settingsScreen.CategoriesSettingsScreenViewModel
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.presentation.components.common.parser.parseColor
-import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun CategoriesSettingsScreenComponent() {
-    val viewModel = koinViewModel<CategoriesSettingsScreenViewModel>()
+fun CategoriesSettingsScreenComponent(viewModel : CategoriesSettingsScreenViewModel) {
     val listOfIncomeCategories = viewModel.listOfIncomesCategories
     val listOfExpensesCategories = viewModel.listOfExpensesCategories
     var isContextMenuVisible by rememberSaveable {

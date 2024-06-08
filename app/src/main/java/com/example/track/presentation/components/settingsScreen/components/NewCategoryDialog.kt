@@ -44,6 +44,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCategoryDialog(
+    categoryAlreadyExistError: Boolean = false,
     onDismissRequest: () -> Unit,
     onAccept: (categoryName: String, categoryType: CategoriesTypes, rawCategoryColor: String) -> Unit
 ) {
@@ -64,7 +65,7 @@ fun NewCategoryDialog(
             Column(
                 Modifier
                     .wrapContentHeight()
-                    .padding(8.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(vertical = 8.dp, horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Text(text = "Create new category", style = MaterialTheme.typography.headlineSmall)
@@ -98,6 +99,9 @@ fun NewCategoryDialog(
                         GradientInputTextField(value = newCategoryName, label = "Category name") {
                             if (it.length < CATEGORIES_NAME_MAX_LENGTH) newCategoryName = it
                         }
+                        if (categoryAlreadyExistError) {
+                            Text(text = "This category already exist", style = MaterialTheme.typography.labelSmall)
+                        }
                     }
                     Spacer(modifier = Modifier.width(16.dp))
                     Column(
@@ -130,13 +134,11 @@ fun NewCategoryDialog(
                     FilledTonalButton(modifier = Modifier.scale(0.9f), onClick = {
                         coroutineScope.launch {
                             onAccept(newCategoryName, newCategoryType, newRawCategoryColor)
-
                         }
                     }) {
                         Text("Add")
                     }
                 }
-
             }
         }
     }

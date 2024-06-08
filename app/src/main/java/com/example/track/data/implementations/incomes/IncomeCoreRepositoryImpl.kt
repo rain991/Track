@@ -6,8 +6,8 @@ import com.example.track.data.implementations.currencies.CurrenciesPreferenceRep
 import com.example.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.example.track.domain.repository.incomes.IncomeCoreRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
 import java.util.Date
 
 class IncomeCoreRepositoryImpl(
@@ -17,7 +17,7 @@ class IncomeCoreRepositoryImpl(
 ) : IncomeCoreRepository {
 
     // Sum of incomes
-    override suspend fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float> = flow {
+    override suspend fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         incomeDao.getIncomesInTimeSpanDateDecs(
             start = startOfSpan.time,
@@ -33,7 +33,7 @@ class IncomeCoreRepositoryImpl(
                     sumOfIncomesInPreferableCurrency += convertedValue
                 }
             }
-            emit(sumOfIncomesInPreferableCurrency)
+            send(sumOfIncomesInPreferableCurrency)
         }
     }
 
@@ -41,7 +41,7 @@ class IncomeCoreRepositoryImpl(
         startOfSpan: Date,
         endOfSpan: Date,
         categoriesIds: List<Int>
-    ): Flow<Float> = flow {
+    ): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         incomeDao.findIncomesInTimeSpanByCategoriesIds(
             start = startOfSpan.time,
@@ -50,14 +50,14 @@ class IncomeCoreRepositoryImpl(
             var sumOfIncomesInPreferableCurrency = 0.0f
             val listOfIncomesInPreferableCurrency = foundedIncomeItems.filter { it.currencyTicker == preferableCurrency.ticker }
             val listOfIncomesNotInPreferableCurrency = foundedIncomeItems.filter { it.currencyTicker != preferableCurrency.ticker }
-            listOfIncomesInPreferableCurrency.forEach { it -> sumOfIncomesInPreferableCurrency += it.value }
-            listOfIncomesNotInPreferableCurrency.forEach { it ->
+            listOfIncomesInPreferableCurrency.forEach { sumOfIncomesInPreferableCurrency += it.value }
+            listOfIncomesNotInPreferableCurrency.forEach {
                 val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
                 if (convertedValue != INCORRECT_CONVERSION_RESULT) {
                     sumOfIncomesInPreferableCurrency += convertedValue
                 }
             }
-            emit(sumOfIncomesInPreferableCurrency)
+            send(sumOfIncomesInPreferableCurrency)
         }
     }
 

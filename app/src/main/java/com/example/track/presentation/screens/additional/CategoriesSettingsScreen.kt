@@ -20,7 +20,9 @@ import androidx.navigation.NavHostController
 import androidx.wear.compose.material.Icon
 import androidx.wear.compose.material.Text
 import com.example.track.R
+import com.example.track.data.viewmodels.settingsScreen.CategoriesSettingsScreenViewModel
 import com.example.track.data.viewmodels.settingsScreen.NewCategoryViewModel
+import com.example.track.domain.models.abstractLayer.CategoriesTypes
 import com.example.track.presentation.components.screenComponents.additional.CategoriesSettingsScreenComponent
 import com.example.track.presentation.components.settingsScreen.components.NewCategoryDialog
 import com.example.track.presentation.components.settingsScreen.components.SettingsSpecifiedScreenHeader
@@ -30,8 +32,12 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CategoriesSettingsScreen(navController: NavHostController) {
+    val viewModel = koinViewModel<CategoriesSettingsScreenViewModel>()
+    val listOfIncomeCategories = viewModel.listOfIncomesCategories
+    val listOfExpensesCategories = viewModel.listOfExpensesCategories
     val newCategoryViewModel = koinViewModel<NewCategoryViewModel>()
     var isAddingNewCategoryDialogVisible by remember { mutableStateOf(false) }
+    var categoryAlreadyExistDialogError by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -44,26 +50,41 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
                 expanded = false,
                 onClick = { isAddingNewCategoryDialogVisible = true },
                 icon = { Icon(Icons.Filled.Add, stringResource(R.string.cd_add_new_category)) },
-                text = { Text(text = stringResource(R.string.cd_add_new_category)) }, modifier = Modifier.padding(end = 16.dp, bottom = 16.dp))
+                text = { Text(text = stringResource(R.string.cd_add_new_category)) },
+                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
+            )
         }
-    ) {
-        if(isAddingNewCategoryDialogVisible){
-            NewCategoryDialog(onDismissRequest = { isAddingNewCategoryDialogVisible = false }) {
-                categoryName, categoryType, rawCategoryColor ->
+    ) { paddingValues ->
+        if (isAddingNewCategoryDialogVisible) {
+            NewCategoryDialog(
+                onDismissRequest = { isAddingNewCategoryDialogVisible = false },
+                categoryAlreadyExistError = categoryAlreadyExistDialogError
+            ) { categoryName, categoryType, rawCategoryColor ->
                 val processedCategoryColor = rawCategoryColor.substring(4)
-                coroutineScope.launch {
-                    newCategoryViewModel.addNewFinancialCategory(name= categoryName, categoryType = categoryType, processedColor = processedCategoryColor)
+                if ((categoryType is CategoriesTypes.ExpenseCategory && !listOfExpensesCategories.map { it.note }
+                        .contains(categoryName)) || (categoryType is CategoriesTypes.IncomeCategory && !listOfIncomeCategories.map { it.note }
+                        .contains(categoryName))) {
+                    categoryAlreadyExistDialogError = false
+                    coroutineScope.launch {
+                        newCategoryViewModel.addNewFinancialCategory(
+                            name = categoryName,
+                            categoryType = categoryType,
+                            processedColor = processedCategoryColor
+                        )
+                    }
+                    isAddingNewCategoryDialogVisible = false
+                } else {
+                    categoryAlreadyExistDialogError = true
                 }
-                isAddingNewCategoryDialogVisible = false
             }
         }
         Column(
             modifier = Modifier
-                .padding(it),
+                .padding(paddingValues),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         )
         {
-            CategoriesSettingsScreenComponent()
+            CategoriesSettingsScreenComponent(viewModel)
         }
     }
 }

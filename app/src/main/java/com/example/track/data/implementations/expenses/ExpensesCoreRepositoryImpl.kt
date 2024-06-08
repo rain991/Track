@@ -48,8 +48,8 @@ class ExpensesCoreRepositoryImpl(
             var sumOfExpensesInPreferableCurrency = 0.0f
             val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
             val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
-            listOfExpensesInPreferableCurrency.forEach { it -> sumOfExpensesInPreferableCurrency += it.value }
-            listOfExpensesNotInPreferableCurrency.forEach { it ->
+            listOfExpensesInPreferableCurrency.forEach { sumOfExpensesInPreferableCurrency += it.value }
+            listOfExpensesNotInPreferableCurrency.forEach {
                 val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
                 if (convertedValue != INCORRECT_CONVERSION_RESULT) {
                     sumOfExpensesInPreferableCurrency += convertedValue

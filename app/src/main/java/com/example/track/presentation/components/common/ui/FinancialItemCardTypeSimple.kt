@@ -70,6 +70,7 @@ import java.util.Locale
 fun FinancialItemCardTypeSimple(
     financialEntity: FinancialEntity,
     expanded: Boolean,
+    isExpenseLazyColumn : Boolean,
     categoryEntity: CategoryEntity,
     preferableCurrency: Currency,
     expenseAndIncomeLazyColumnViewModel: ExpenseAndIncomeLazyColumnViewModel
@@ -120,22 +121,24 @@ fun FinancialItemCardTypeSimple(
                             Arrangement.Start
                         }
                     ) {
-                        val sumOfExpenses = remember { mutableFloatStateOf(0.0f) }
-                        LaunchedEffect(key1 = Unit) {
+                        val financialEntityMonthSummary = remember { mutableFloatStateOf(0.0f) }
+                        LaunchedEffect(key1 = Unit, key2 = isExpenseLazyColumn) {
                             withContext(Dispatchers.IO) {
-                                sumOfExpenses.floatValue = expenseAndIncomeLazyColumnViewModel.requestSumExpensesInMonthNotion(
+                                expenseAndIncomeLazyColumnViewModel.requestSummaryInMonthNotion(
                                     financialEntity = financialEntity,
                                     financialCategory = categoryEntity
-                                )
+                                ).collect {
+                                    financialEntityMonthSummary.floatValue = it
+                                }
                             }
                         }
                         val resultedNotion = if (!expanded) {
                             formatDateWithoutYear(financialEntity.date)
                         } else {
                             if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                                FIAT_DECIMAL_FORMAT.format(sumOfExpenses.floatValue)
+                                FIAT_DECIMAL_FORMAT.format(financialEntityMonthSummary.floatValue)
                             } else {
-                                CRYPTO_DECIMAL_FORMAT.format(sumOfExpenses.floatValue)
+                                CRYPTO_DECIMAL_FORMAT.format(financialEntityMonthSummary.floatValue)
                             }
                         }
                         AnimatedContent(targetState = resultedNotion, label = "horizontalTextChange", transitionSpec = {
@@ -197,20 +200,23 @@ fun FinancialItemCardTypeSimple(
                             val countOfFinancialEntities = remember { mutableIntStateOf(0) }
                             LaunchedEffect(key1 = Unit) {
                                 withContext(Dispatchers.IO) {
-                                    countOfFinancialEntities.intValue = expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
+                                    expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
                                         financialEntity = financialEntity,
                                         financialCategory = categoryEntity
-                                    )
+                                    ).collect {
+                                        countOfFinancialEntities.intValue = it
+                                    }
                                 }
                             }
                             Text(
                                 text = buildAnnotatedString {
                                     withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
-                                        append(if(categoryEntity is ExpenseCategory){
-                                            "${categoryEntity.note} expenses: "
-                                        }else{
-                                            "${categoryEntity.note} incomes: "
-                                        }
+                                        append(
+                                            if (categoryEntity is ExpenseCategory) {
+                                                "${categoryEntity.note} expenses: "
+                                            } else {
+                                                "${categoryEntity.note} incomes: "
+                                            }
 
                                         )
                                     }

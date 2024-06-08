@@ -2,7 +2,7 @@ package com.example.track
 
 import com.example.track.data.core.ChartHandler
 import com.example.track.data.core.CurrenciesRatesHandler
-import com.example.track.data.core.NotesHandler
+import com.example.track.data.core.FinancialCardNotesProvider
 import com.example.track.data.database.currenciesRelated.CurrenciesPreferenceDao
 import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.database.db.ExpensesDB
@@ -69,7 +69,7 @@ val settingsModule = module {
 
 val coreModule = module {
     single<CurrenciesRatesHandler> { CurrenciesRatesHandler(get(), get()) }
-    single<NotesHandler> { NotesHandler(get(), get()) }
+    single<FinancialCardNotesProvider> { FinancialCardNotesProvider(get(), get()) }
     single<ChartHandler> { ChartHandler() }
 }
 

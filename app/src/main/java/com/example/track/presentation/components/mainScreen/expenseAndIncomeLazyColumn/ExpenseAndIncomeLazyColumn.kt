@@ -199,6 +199,7 @@ fun ExpenseAndIncomeLazyColumn() {
                                     FinancialItemCardTypeSimple(
                                         financialEntity = currentFinancialEntity,
                                         categoryEntity = currentFinancialCategory,
+                                        isExpenseLazyColumn = isExpenseLazyColumn.value,
                                         expanded = (expandedItem.value == currentFinancialEntity),
                                         expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel,
                                         preferableCurrency = preferableCurrency.value
