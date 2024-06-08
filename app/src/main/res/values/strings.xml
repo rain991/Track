@@ -69,4 +69,5 @@
     <string name="related_to_all_categories_ideas">Related to all categories</string>
     <string name="new_idea_main_screen_feed">New idea</string>
     <string name="add_new_idea">add new idea</string>
+    <string name="cd_add_new_category">add new category</string>
 </resources>

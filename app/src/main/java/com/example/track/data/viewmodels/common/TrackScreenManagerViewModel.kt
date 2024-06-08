@@ -1,10 +1,14 @@
 package com.example.track.data.viewmodels.common
 
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
 
 class TrackScreenManagerViewModel : ViewModel() {
-    var pagerState by mutableIntStateOf(1)
+    private val _pagerState = MutableStateFlow(1)
+    val pagerState = _pagerState.asStateFlow()
+
+    fun setPagerState(value : Int){
+        _pagerState.value = value
+    }
 }

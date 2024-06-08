@@ -47,7 +47,7 @@ class CategoriesSettingsScreenViewModel(
         }
     }
 
-    suspend fun addCategory(category: CategoryEntity) {
+    suspend fun addCategory(note : String, colorId : String) {
 
     }
 

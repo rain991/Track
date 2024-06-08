@@ -49,7 +49,6 @@ import org.koin.compose.koinInject
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
-   // val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()
@@ -155,8 +154,3 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
         }
     }
 }
-
-
-
-
-

@@ -44,6 +44,7 @@ import com.example.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewMode
 import com.example.track.data.viewmodels.settingsScreen.CategoriesSettingsScreenViewModel
 import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
 import com.example.track.data.viewmodels.settingsScreen.IdeasListSettingsScreenViewModel
+import com.example.track.data.viewmodels.settingsScreen.NewCategoryViewModel
 import com.example.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
@@ -140,4 +141,5 @@ val viewModelModule = module {
     viewModel { ThemePreferenceSettingsViewModel(get()) }
     viewModel { CategoriesSettingsScreenViewModel(get(), get()) }
     viewModel { TrackScreenManagerViewModel() }
+    viewModel { NewCategoryViewModel(get(), get()) }
 }

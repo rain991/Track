@@ -6,8 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.snapshotFlow
+import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.track.data.viewmodels.common.TrackScreenManagerViewModel
@@ -20,12 +19,8 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun TrackScreenManager(navHostController: NavHostController) {
     val viewModel = koinViewModel<TrackScreenManagerViewModel>()
-    val pagerState = rememberPagerState(initialPage = viewModel.pagerState) { 3 }
-    LaunchedEffect(pagerState) {
-        snapshotFlow { pagerState.currentPage }.collect { page ->
-            viewModel.pagerState = page
-        }
-    }
+    val pagerValue = viewModel.pagerState.collectAsState()
+    val pagerState = rememberPagerState(initialPage = pagerValue.value) { 3 }
     Column(
         modifier = Modifier.fillMaxSize()
     ) {

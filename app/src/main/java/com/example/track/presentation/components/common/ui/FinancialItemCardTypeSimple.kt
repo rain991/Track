@@ -55,6 +55,7 @@ import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.abstractLayer.FinancialEntity
 import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.currency.CurrencyTypes
+import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.presentation.components.common.parser.parseColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -205,7 +206,13 @@ fun FinancialItemCardTypeSimple(
                             Text(
                                 text = buildAnnotatedString {
                                     withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
-                                        append("${categoryEntity.note} expenses: ")
+                                        append(if(categoryEntity is ExpenseCategory){
+                                            "${categoryEntity.note} expenses: "
+                                        }else{
+                                            "${categoryEntity.note} incomes: "
+                                        }
+
+                                        )
                                     }
                                     withStyle(
                                         style = SpanStyle(
