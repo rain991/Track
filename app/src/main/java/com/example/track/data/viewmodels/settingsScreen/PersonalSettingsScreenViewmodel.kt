@@ -30,11 +30,12 @@ class PersonalSettingsScreenViewmodel(
             }
         }
     }
+
     suspend fun setNewPersonalValues(newName: String, newBudget: Float) {
-        if (newName != userName.value) {
+        if (newName != userName.value && newName.length > 1) {
             dataStoreManager.setName(newName)
         }
-        if (newBudget != budget.value) {
+        if (newBudget != budget.value && newBudget > 0) {
             dataStoreManager.setBudget(newBudget)
         }
     }

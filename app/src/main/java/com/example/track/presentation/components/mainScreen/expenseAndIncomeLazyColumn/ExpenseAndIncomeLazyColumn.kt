@@ -116,7 +116,7 @@ fun ExpenseAndIncomeLazyColumn() {
                 Transactions()
             }
             Spacer(modifier = Modifier.height(4.dp))
-            if (expensesList.isEmpty()) {
+            if ((isExpenseLazyColumn.value && expensesList.isEmpty()) || (!isExpenseLazyColumn.value && incomeList.isEmpty())) {
                 EmptyLazyColumnPlacement(isExpenseLazyColumn = isExpenseLazyColumn.value)
             } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
