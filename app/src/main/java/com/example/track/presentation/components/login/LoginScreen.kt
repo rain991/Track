@@ -21,6 +21,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
@@ -39,8 +40,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
-import androidx.wear.compose.material.Text
+
 import com.example.track.R
+import com.example.track.data.other.constants.NAME_MAX_LENGTH
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.presentation.components.common.ui.CurrencyDropDownMenu
 import com.example.track.presentation.components.other.GradientInputTextField
@@ -84,7 +86,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             label = stringResource(R.string.loginnametextfield),
             value = screenState.value.name
         ) {
-            loginViewModel.setFirstNameStateFlow(it)
+            if (it.length < NAME_MAX_LENGTH) loginViewModel.setFirstNameStateFlow(it)
         }
         Spacer(modifier = Modifier.height(24.dp))
         GradientInputTextField(

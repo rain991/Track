@@ -46,11 +46,6 @@ class CategoriesSettingsScreenViewModel(
             incomesCategoriesListRepositoryImpl.deleteCategory(category)
         }
     }
-
-    suspend fun addCategory(note : String, colorId : String) {
-
-    }
-
     private fun setListOfExpensesCategories(list: List<ExpenseCategory>) {
         _listOfExpensesCategories.clear()
         _listOfExpensesCategories.addAll(list)
