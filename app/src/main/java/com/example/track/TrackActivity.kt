@@ -28,7 +28,6 @@ class TrackActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val dataStore: DataStoreManager by inject()
-
         CoroutineScope(Dispatchers.IO).launch {
             val actualLoginCount = dataStore.loginCountFlow.first()
             if (actualLoginCount > 0) dataStore.incrementLoginCount()

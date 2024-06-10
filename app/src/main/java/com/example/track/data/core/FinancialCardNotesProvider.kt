@@ -10,14 +10,15 @@ import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.expenses.ExpenseItem
 import com.example.track.domain.models.incomes.IncomeCategory
 import com.example.track.domain.models.incomes.IncomeItem
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.emptyFlow
 
-class NotesHandler(
+class FinancialCardNotesProvider(
     private val expenseCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
     private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl
 ) {
     // used in financial cards
-    suspend fun requestCountInMonthNotionForFinancialCard(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Int {
+    suspend fun requestCountInMonthNotionForFinancialCard(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Flow<Int> {
         val startDate = getStartOfMonthDate(financialEntity.date)
         val endDate = getEndOfTheMonth(financialEntity.date)
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
@@ -25,24 +26,25 @@ class NotesHandler(
                 startDate = startDate,
                 endDate = endDate,
                 categoriesIds = listOf(financialCategory.categoryId)
-            ).first()
+            )
             return result
         } else if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
             val result = incomeCoreRepositoryImpl.getCountOfIncomesInSpanByCategoriesIds(
                 startDate = startDate,
                 endDate = endDate,
                 categoriesIds = listOf(financialCategory.categoryId)
-            ).first()
+            )
             return result
         } else {
-            return 0
+            return emptyFlow()
         }
     }
+
     // used in financial cards
     suspend fun requestValueSummaryForMonthNotion(
         financialEntity: FinancialEntity,
         financialCategory: CategoryEntity
-    ): Float {
+    ): Flow<Float> {
         val startDate = getStartOfMonthDate(financialEntity.date)
         val endDate = getEndOfTheMonth(financialEntity.date)
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
@@ -52,12 +54,13 @@ class NotesHandler(
                     end = endDate.time,
                     listOfCategories = listOf(financialCategory.categoryId)
                 )
-            return result.first()
-        } else if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
-            val result = incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(startDate, endDate)
-            return result.first()
-        } else {
-            return 0.0f
+            return result
         }
+        if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
+            val result =
+                incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpanByCategoriesIds(startDate, endDate, listOf(financialCategory.categoryId))
+            return result
+        }
+        return emptyFlow()
     }
 }

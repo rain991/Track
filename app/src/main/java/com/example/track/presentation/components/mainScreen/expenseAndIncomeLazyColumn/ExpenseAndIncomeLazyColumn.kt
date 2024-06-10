@@ -23,7 +23,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -37,15 +39,13 @@ import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.compose.ui.zIndex
-import androidx.wear.compose.material.Icon
-import androidx.wear.compose.material.Text
 import com.example.track.R
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
 import com.example.track.data.other.converters.areDatesSame
 import com.example.track.data.other.converters.areYearsSame
@@ -74,7 +74,7 @@ fun ExpenseAndIncomeLazyColumn() {
     var isScrollingUp by remember { mutableStateOf(false) }
     val isScrolledBelowState = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
-    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_FIAT)
+    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Box {
         Box(
             modifier = Modifier
@@ -116,7 +116,7 @@ fun ExpenseAndIncomeLazyColumn() {
                 Transactions()
             }
             Spacer(modifier = Modifier.height(4.dp))
-            if (expensesList.isEmpty()) {
+            if ((isExpenseLazyColumn.value && expensesList.isEmpty()) || (!isExpenseLazyColumn.value && incomeList.isEmpty())) {
                 EmptyLazyColumnPlacement(isExpenseLazyColumn = isExpenseLazyColumn.value)
             } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
@@ -199,6 +199,7 @@ fun ExpenseAndIncomeLazyColumn() {
                                     FinancialItemCardTypeSimple(
                                         financialEntity = currentFinancialEntity,
                                         categoryEntity = currentFinancialCategory,
+                                        isExpenseLazyColumn = isExpenseLazyColumn.value,
                                         expanded = (expandedItem.value == currentFinancialEntity),
                                         expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel,
                                         preferableCurrency = preferableCurrency.value
@@ -235,13 +236,13 @@ private fun Transactions() {
             label = "verticalTextChange",
             transitionSpec = {
                 slideInVertically { it } togetherWith slideOutVertically { -it }
-            }) {
+            }) { text ->
             TextButton(
                 onClick = { expenseAndIncomeLazyColumnViewModel.toggleIsExpenseLazyColumn() }
             ) {
                 Text(
-                    text = it,
-                    style = MaterialTheme.typography.titleMedium,
+                    text = text,
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
                     color = MaterialTheme.colorScheme.primary
                 )
             }
@@ -285,20 +286,20 @@ private fun ExpenseDayHeader(localDate: LocalDate, isPastSmallMarkupNeeded: Bool
     Row(verticalAlignment = Alignment.Bottom) {
         Text(
             text = "${localDate.dayOfMonth}",
-            style = MaterialTheme.typography.titleSmall.copy(
+            style = MaterialTheme.typography.titleMedium.copy(
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             )
         )
         if (isPastSmallMarkupNeeded) {
             Text(
                 text = ".",
-                style = MaterialTheme.typography.titleSmall.copy(
+                style = MaterialTheme.typography.titleLarge.copy(
                     color = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
             Text(
                 text = "${localDate.month.value}",
-                style = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
             )
         }
     }
@@ -311,7 +312,7 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
     Box {
         Text(
             text = month,
-            style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 28.sp)
+            style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
         )
     }
 }
@@ -322,7 +323,7 @@ private fun ExpenseYearHeader(localDate: LocalDate) {
     Box {
         Text(
             text = year,
-            style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+            style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
         )
     }
 }

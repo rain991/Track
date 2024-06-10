@@ -10,11 +10,18 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun GradientInputTextField(value : String, label : String, keyboardType: KeyboardType = KeyboardType.Text, maxLines : Int = 1, onValueChange: (String) -> Unit) {
+fun GradientInputTextField(
+    value: String,
+    label: String,
+    keyboardType: KeyboardType = KeyboardType.Text,
+    maxLines: Int = 1,
+    onValueChange: (String) -> Unit
+) {
     TextField(
         value = value,
         onValueChange = { onValueChange(it) },
@@ -27,6 +34,6 @@ fun GradientInputTextField(value : String, label : String, keyboardType: Keyboar
                 shape = RoundedCornerShape(4.dp)
             ),
         colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background),
-        keyboardOptions = KeyboardOptions(keyboardType = keyboardType)
+        keyboardOptions = KeyboardOptions(keyboardType = keyboardType, imeAction = ImeAction.Done)
     )
 }

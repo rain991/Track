@@ -10,7 +10,6 @@ import androidx.compose.runtime.SideEffect
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
-import com.example.track.ui.theme.appTypography
 
 @Composable
 fun BlueTheme(
@@ -26,14 +25,12 @@ fun BlueTheme(
     if (!view.isInEditMode) {
         SideEffect {
             val window = (view.context as Activity).window
-            window.statusBarColor = colors.background.toArgb()
+            window.statusBarColor = colors.primary.toArgb()
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = useDarkTheme
         }
     }
     MaterialTheme(
         colorScheme = colors,
-        typography = appTypography,
-      //  shapes = appShapes,
         content = content
     )
 }

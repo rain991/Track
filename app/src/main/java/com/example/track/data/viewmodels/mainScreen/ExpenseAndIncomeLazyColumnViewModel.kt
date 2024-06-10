@@ -3,7 +3,7 @@ package com.example.track.data.viewmodels.mainScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.example.track.data.core.NotesHandler
+import com.example.track.data.core.FinancialCardNotesProvider
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
@@ -15,6 +15,7 @@ import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.expenses.ExpenseItem
 import com.example.track.domain.models.incomes.IncomeCategory
 import com.example.track.domain.models.incomes.IncomeItem
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -26,7 +27,7 @@ class ExpenseAndIncomeLazyColumnViewModel(
     private val categoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
-    private val notesHandler: NotesHandler
+    private val financialCardNotesProvider: FinancialCardNotesProvider
 ) : ViewModel() {
     private val _expensesList = mutableStateListOf<ExpenseItem>()
     val expensesList: List<ExpenseItem> = _expensesList
@@ -88,13 +89,12 @@ class ExpenseAndIncomeLazyColumnViewModel(
         _isExpenseLazyColumn.value = !_isExpenseLazyColumn.value
     }
 
-    suspend fun requestCountInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity) : Int {
-        return notesHandler.requestCountInMonthNotionForFinancialCard(financialEntity, financialCategory)
+    suspend fun requestCountInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity) : Flow<Int> {
+        return financialCardNotesProvider.requestCountInMonthNotionForFinancialCard(financialEntity, financialCategory)
     }
 
-    suspend fun requestSumExpensesInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Float{
-      return   notesHandler.requestValueSummaryForMonthNotion(financialEntity, financialCategory)
+    suspend fun requestSummaryInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity) : Flow<Float> {
+      return   financialCardNotesProvider.requestValueSummaryForMonthNotion(financialEntity, financialCategory)
     }
-
 }
 

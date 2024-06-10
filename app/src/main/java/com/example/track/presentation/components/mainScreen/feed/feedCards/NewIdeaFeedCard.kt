@@ -11,12 +11,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.wear.compose.material.Text
 import com.example.track.R
 import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 
@@ -34,7 +34,7 @@ fun NewIdeaFeedCard(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
             TextButton(onClick = {}) {
                 Text(
                     stringResource(R.string.new_idea_main_screen_feed),
-                    style = MaterialTheme.typography.titleSmall
+                    style = MaterialTheme.typography.headlineSmall
                 )
             }
         }

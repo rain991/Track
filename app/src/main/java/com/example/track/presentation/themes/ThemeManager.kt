@@ -21,21 +21,25 @@ fun ThemeManager(isUsingDynamicColors: Boolean, preferableTheme: Themes, content
                     content()
                 }
             }
+
             Themes.PinkTheme -> {
                 PinkTheme {
                     content()
                 }
             }
+
             Themes.PurpleTheme -> {
                 PurpleTheme {
                     content()
                 }
             }
+
             Themes.RedTheme -> {
                 RedTheme {
                     content()
                 }
             }
+
             Themes.YellowTheme -> {
                 YellowTheme {
                     content()

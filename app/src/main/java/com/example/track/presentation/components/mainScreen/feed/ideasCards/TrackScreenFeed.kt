@@ -1,6 +1,5 @@
 package com.example.track.presentation.components.mainScreen.feed.ideasCards
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -18,7 +17,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.constants.FEED_CARD_DELAY_ADDITIONAL
 import com.example.track.data.other.constants.FEED_CARD_DELAY_FAST
 import com.example.track.data.other.constants.FEED_CARD_DELAY_SLOW
@@ -47,7 +46,7 @@ fun TrackScreenFeed() {
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val currentIndex = trackScreenFeedViewModel.cardIndex.collectAsState()
     val maxIndex = trackScreenFeedViewModel.maxPagerIndex.collectAsState()
-    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_FIAT)
+    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val ideaList = trackScreenFeedViewModel.ideaList
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { maxIndex.value + 1 })
     val currentSavingAddingDialogState = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
@@ -64,18 +63,14 @@ fun TrackScreenFeed() {
             trackScreenFeedViewModel.incrementCardIndex()
         }
     }
-
     LaunchedEffect(pagerState.currentPage) {
-        Log.d("MyLog", "TrackScreenFeed : pagerState.currentPage ${pagerState.currentPage}")
         if (pagerState.currentPage <= ideaList.size + 1 && pagerState.targetPage != 0) {
             trackScreenFeedViewModel.setCardIndex(pagerState.currentPage)
         } else if (pagerState.currentPage == ideaList.size + 2) {
             trackScreenFeedViewModel.setCardIndex(0)
         }
     }
-
     LaunchedEffect(currentIndex.value) {
-        Log.d("MyLog", "TrackScreenFeed: ${currentIndex.value}")
         pagerState.animateScrollToPage(currentIndex.value)
     }
     LaunchedEffect(key1 = Unit) {

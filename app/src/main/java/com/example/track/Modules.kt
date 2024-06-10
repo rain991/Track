@@ -2,7 +2,8 @@ package com.example.track
 
 import com.example.track.data.core.ChartHandler
 import com.example.track.data.core.CurrenciesRatesHandler
-import com.example.track.data.core.NotesHandler
+import com.example.track.data.core.FinancialCardNotesProvider
+import com.example.track.data.core.PersonalStatsProvider
 import com.example.track.data.database.currenciesRelated.CurrenciesPreferenceDao
 import com.example.track.data.database.currenciesRelated.CurrencyDao
 import com.example.track.data.database.db.ExpensesDB
@@ -33,6 +34,7 @@ import com.example.track.data.implementations.notes.NotesRepositoryImpl
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.other.workers.CurrenciesRatesWorker
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
+import com.example.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
@@ -40,8 +42,12 @@ import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnVi
 import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.example.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
+import com.example.track.data.viewmodels.settingsScreen.CategoriesSettingsScreenViewModel
 import com.example.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
 import com.example.track.data.viewmodels.settingsScreen.IdeasListSettingsScreenViewModel
+import com.example.track.data.viewmodels.settingsScreen.NewCategoryViewModel
+import com.example.track.data.viewmodels.settingsScreen.PersonalSettingsScreenViewmodel
+import com.example.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
 import com.example.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
@@ -66,8 +72,9 @@ val settingsModule = module {
 
 val coreModule = module {
     single<CurrenciesRatesHandler> { CurrenciesRatesHandler(get(), get()) }
-    single<NotesHandler> { NotesHandler(get(), get()) }
+    single<FinancialCardNotesProvider> { FinancialCardNotesProvider(get(), get()) }
     single<ChartHandler> { ChartHandler() }
+    single<PersonalStatsProvider> { PersonalStatsProvider(get(), get(), get()) }
 }
 
 val appModule = module {
@@ -136,4 +143,9 @@ val viewModelModule = module {
     viewModel { IdeasListSettingsScreenViewModel(get()) }
     viewModel { NewIdeaDialogViewModel(get()) }
     viewModel { ThemePreferenceSettingsViewModel(get()) }
+    viewModel { CategoriesSettingsScreenViewModel(get(), get()) }
+    viewModel { TrackScreenManagerViewModel() }
+    viewModel { NewCategoryViewModel(get(), get()) }
+    viewModel { PersonalSettingsScreenViewmodel(get(), get()) }
+    viewModel { PersonalStatsViewModel(get(),get()) }
 }

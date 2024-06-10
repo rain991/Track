@@ -60,7 +60,7 @@ fun TrackScreenInfoCards() {
                         .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                        Text(text = "Expenses", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold))
+                        Text(text = "Expenses", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
                     }
                     if (screenState.value.currentMonthExpensesSum > 0) {
                         Text(text = buildAnnotatedString {
@@ -123,7 +123,7 @@ fun TrackScreenInfoCards() {
                         .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                        Text(text = "Incomes", style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.SemiBold))
+                        Text(text = "Incomes", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
                     }
                     if (screenState.value.currentMonthIncomesSum > 0) {
                         Text(text = buildAnnotatedString {

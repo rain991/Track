@@ -55,6 +55,7 @@ import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.abstractLayer.FinancialEntity
 import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.currency.CurrencyTypes
+import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.presentation.components.common.parser.parseColor
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
@@ -69,6 +70,7 @@ import java.util.Locale
 fun FinancialItemCardTypeSimple(
     financialEntity: FinancialEntity,
     expanded: Boolean,
+    isExpenseLazyColumn : Boolean,
     categoryEntity: CategoryEntity,
     preferableCurrency: Currency,
     expenseAndIncomeLazyColumnViewModel: ExpenseAndIncomeLazyColumnViewModel
@@ -119,22 +121,24 @@ fun FinancialItemCardTypeSimple(
                             Arrangement.Start
                         }
                     ) {
-                        val sumOfExpenses = remember { mutableFloatStateOf(0.0f) }
-                        LaunchedEffect(key1 = Unit) {
+                        val financialEntityMonthSummary = remember { mutableFloatStateOf(0.0f) }
+                        LaunchedEffect(key1 = Unit, key2 = isExpenseLazyColumn) {
                             withContext(Dispatchers.IO) {
-                                sumOfExpenses.value = expenseAndIncomeLazyColumnViewModel.requestSumExpensesInMonthNotion(
+                                expenseAndIncomeLazyColumnViewModel.requestSummaryInMonthNotion(
                                     financialEntity = financialEntity,
                                     financialCategory = categoryEntity
-                                )
+                                ).collect {
+                                    financialEntityMonthSummary.floatValue = it
+                                }
                             }
                         }
                         val resultedNotion = if (!expanded) {
                             formatDateWithoutYear(financialEntity.date)
                         } else {
                             if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                                FIAT_DECIMAL_FORMAT.format(sumOfExpenses.value)
+                                FIAT_DECIMAL_FORMAT.format(financialEntityMonthSummary.floatValue)
                             } else {
-                                CRYPTO_DECIMAL_FORMAT.format(sumOfExpenses.value)
+                                CRYPTO_DECIMAL_FORMAT.format(financialEntityMonthSummary.floatValue)
                             }
                         }
                         AnimatedContent(targetState = resultedNotion, label = "horizontalTextChange", transitionSpec = {
@@ -196,16 +200,25 @@ fun FinancialItemCardTypeSimple(
                             val countOfFinancialEntities = remember { mutableIntStateOf(0) }
                             LaunchedEffect(key1 = Unit) {
                                 withContext(Dispatchers.IO) {
-                                    countOfFinancialEntities.value = expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
+                                    expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
                                         financialEntity = financialEntity,
                                         financialCategory = categoryEntity
-                                    )
+                                    ).collect {
+                                        countOfFinancialEntities.intValue = it
+                                    }
                                 }
                             }
                             Text(
                                 text = buildAnnotatedString {
                                     withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
-                                        append("${categoryEntity.note} expenses: ")
+                                        append(
+                                            if (categoryEntity is ExpenseCategory) {
+                                                "${categoryEntity.note} expenses: "
+                                            } else {
+                                                "${categoryEntity.note} incomes: "
+                                            }
+
+                                        )
                                     }
                                     withStyle(
                                         style = SpanStyle(
@@ -213,7 +226,7 @@ fun FinancialItemCardTypeSimple(
                                             fontWeight = FontWeight.SemiBold
                                         )
                                     ) {
-                                        append(countOfFinancialEntities.value.toString())
+                                        append(countOfFinancialEntities.intValue.toString())
                                     }
                                 },
                                 style = MaterialTheme.typography.bodyMedium,

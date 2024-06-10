@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.example.track.presentation.components.mainScreen.dialogs.dialogComponents.ExpenseLimitsDialogInputs
 import com.example.track.presentation.components.mainScreen.dialogs.dialogComponents.IdeaInputField
@@ -49,11 +49,10 @@ import org.koin.compose.koinInject
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
-   // val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()
-    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_FIAT)
+    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Dialog(
         onDismissRequest = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(false) },
         properties = DialogProperties(usePlatformDefaultWidth = false)
@@ -155,8 +154,3 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
         }
     }
 }
-
-
-
-
-

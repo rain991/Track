@@ -2,7 +2,6 @@ package com.example.track.presentation.components.mainScreen.feed.feedCards
 
 
 import android.graphics.Paint
-import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -45,10 +44,6 @@ fun CustomCircularProgressIndicator(
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
-    Log.d("MyLog", "CustomCircularProgressIndicator: $initialValue")
-//    val positionValue by remember {
-//        mutableIntStateOf(initialValue)
-//    }
     Box(
         modifier = modifier
     ) {

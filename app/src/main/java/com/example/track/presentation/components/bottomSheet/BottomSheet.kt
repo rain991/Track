@@ -54,11 +54,12 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.track.R
-import com.example.track.data.other.constants.CURRENCY_FIAT
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.converters.convertDateToLocalDate
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
@@ -80,7 +81,7 @@ fun BottomSheet(dataStoreManager: DataStoreManager) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
-    val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_FIAT)
+    val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
     val isAddingExpense = bottomSheetViewState.value.isAddingExpense
     val categoryList = if (isAddingExpense) {
         bottomSheetViewModel.expenseCategoryList
@@ -120,7 +121,7 @@ fun BottomSheet(dataStoreManager: DataStoreManager) {
                         ) {
                             Text(
                                 text = stringResource(R.string.add),
-                                style = MaterialTheme.typography.titleMedium,
+                                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
                                 textAlign = TextAlign.Center
                             )
                             AnimatedContent(
@@ -134,7 +135,7 @@ fun BottomSheet(dataStoreManager: DataStoreManager) {
                                 ) {
                                     Text(
                                         text = it,
-                                        style = MaterialTheme.typography.titleMedium
+                                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold)
                                     )
                                 }
                             }
