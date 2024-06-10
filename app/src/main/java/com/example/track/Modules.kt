@@ -147,5 +147,5 @@ val viewModelModule = module {
     viewModel { TrackScreenManagerViewModel() }
     viewModel { NewCategoryViewModel(get(), get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get()) }
-    viewModel { PersonalStatsViewModel(get()) }
+    viewModel { PersonalStatsViewModel(get(),get()) }
 }

@@ -3,6 +3,9 @@ package com.example.track.data.viewmodels.settingsScreen
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.core.PersonalStatsProvider
+import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
+import com.example.track.data.other.constants.CURRENCY_DEFAULT
+import com.example.track.domain.models.currency.Currency
 import com.example.track.presentation.states.componentRelated.PersonalStatsState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -10,14 +13,18 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class PersonalStatsViewModel(private val personalStatsProvider: PersonalStatsProvider) : ViewModel() {
+class PersonalStatsViewModel(
+    private val personalStatsProvider: PersonalStatsProvider,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+) : ViewModel() {
     private val _personalStatsState = MutableStateFlow(
         PersonalStatsState(
             allTimeExpensesCount = 0,
             allTimeIncomesCount = 0,
             allTimeIncomesSum = 0.0f,
             allTimeExpensesSum = 0.0f,
-            loginCount = 0
+            loginCount = 0,
+            preferableCurrency = CURRENCY_DEFAULT
         )
     )
     val personalStatsState = _personalStatsState.asStateFlow()
@@ -38,6 +45,9 @@ class PersonalStatsViewModel(private val personalStatsProvider: PersonalStatsPro
             }
             async {
                 personalStatsProvider.provideAllTimeExpensesCount().collect { setExpensesCount(it) }
+            }
+            async {
+                currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect { setPreferableCurrency(it) }
             }
         }
     }
@@ -60,5 +70,9 @@ class PersonalStatsViewModel(private val personalStatsProvider: PersonalStatsPro
 
     private fun setLoginCount(value: Int) {
         _personalStatsState.update { _personalStatsState.value.copy(loginCount = value) }
+    }
+
+    private fun setPreferableCurrency(value: Currency) {
+        _personalStatsState.update { _personalStatsState.value.copy(preferableCurrency = value) }
     }
 }

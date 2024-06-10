@@ -14,6 +14,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Create
 import androidx.compose.material3.Card
 import androidx.compose.material3.FilledTonalButton
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.example.track.data.other.constants.NAME_MAX_LENGTH
 import com.example.track.data.viewmodels.settingsScreen.PersonalSettingsScreenViewmodel
+import com.example.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
 import com.example.track.presentation.components.other.GradientInputTextField
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
@@ -41,9 +43,11 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun PersonalSettingsScreenComponent() {
     val personalSettingsScreenViewmodel = koinViewModel<PersonalSettingsScreenViewmodel>()
+    val personalStatsViewmodel = koinViewModel<PersonalStatsViewModel>()
     Column(modifier = Modifier.fillMaxSize()) {
         PersonalSettingsContent(personalSettingsScreenViewmodel)
-        StatsSettingsContent(personalSettingsScreenViewmodel)
+        Spacer(Modifier.height(16.dp))
+        PersonalStatsSettingsContent(personalStatsViewmodel)
     }
 }
 
@@ -121,7 +125,8 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
 }
 
 @Composable
-private fun StatsSettingsContent(viewModel: PersonalSettingsScreenViewmodel) {
+private fun PersonalStatsSettingsContent(viewModel: PersonalStatsViewModel) {
+    val statsState = viewModel.personalStatsState.collectAsState()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -130,15 +135,24 @@ private fun StatsSettingsContent(viewModel: PersonalSettingsScreenViewmodel) {
         Column(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(vertical = 8.dp, horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
+                .padding(vertical = 8.dp, horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = "Your stats", style=  MaterialTheme.typography.titleMedium)
+                Text(text = "Your stats", style = MaterialTheme.typography.titleMedium)
             }
-            Text(text = )
-
+            if (statsState.value.allTimeExpensesCount == 0) {
+                Text(text = "You haven't added any expenses yet")
+            } else {
+                Text(text = "You have already added ${statsState.value.allTimeExpensesCount} expenses, worth of ${statsState.value.allTimeExpensesSum} ${statsState.value.preferableCurrency.ticker}")
+            }
+            if (statsState.value.allTimeIncomesCount == 0) {
+                Text(text = "You haven't added any incomes yet")
+            } else {
+                Text(text = "You have already added ${statsState.value.allTimeIncomesCount} expenses, worth of ${statsState.value.allTimeIncomesSum} ${statsState.value.preferableCurrency.ticker}")
+            }
+            HorizontalDivider(modifier = Modifier.fillMaxWidth(0.9f))
+            Text(text = "You have entered Track ${statsState.value.loginCount} times")
+            Spacer(modifier = Modifier.height(8.dp))
         }
-
     }
-
 }
