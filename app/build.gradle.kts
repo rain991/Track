@@ -67,7 +67,7 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     //third-party libraries
-    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.12")
+    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.21")
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:$maxkeppelerSheetComposeVersion")
     implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:$maxkeppelerSheetComposeVersion")
 

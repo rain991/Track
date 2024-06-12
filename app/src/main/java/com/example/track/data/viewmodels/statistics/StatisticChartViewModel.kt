@@ -4,14 +4,15 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
+import com.example.track.data.other.converters.convertDateToLocalDate
 import com.example.track.presentation.states.componentRelated.StatisticChartState
 import com.example.track.presentation.states.componentRelated.StatisticChartTimePeriod
-import com.patrykandpatrick.vico.core.model.CartesianChartModelProducer
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
+import java.time.LocalDate
 
 class StatisticChartViewModel(
     private val incomesListRepositoryImpl: IncomeListRepositoryImpl,
@@ -26,7 +27,7 @@ class StatisticChartViewModel(
     init {
         viewModelScope.launch {
             expensesListRepositoryImpl.getExpensesList().collect { listOfExpenses ->
-                val resultMap = listOfExpenses.associate { it.date to it.value }
+                val resultMap = listOfExpenses.associate { convertDateToLocalDate( it.date) to it.value }
                 setDataSet(resultMap)
             }
         }
@@ -40,7 +41,7 @@ class StatisticChartViewModel(
         _statisticChartState.update { _statisticChartState.value.copy(timePeriod = value) }
     }
 
-    private fun setDataSet(data: Map<Date, Float>) {
+    private fun setDataSet(data: Map<LocalDate, Float>) {
         _statisticChartState.update { _statisticChartState.value.copy(chartData = data) }
     }
 }

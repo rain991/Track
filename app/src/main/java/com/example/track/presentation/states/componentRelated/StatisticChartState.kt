@@ -1,6 +1,6 @@
 package com.example.track.presentation.states.componentRelated
 
-import java.util.Date
+import java.time.LocalDate
 
 sealed class StatisticChartTimePeriod(val name : String){
     class Week : StatisticChartTimePeriod("Week")
@@ -8,7 +8,7 @@ sealed class StatisticChartTimePeriod(val name : String){
     class Year : StatisticChartTimePeriod("Year")
 }
 data class StatisticChartState (
-    val chartData : Map<Date, Float> = mapOf(),
+    val chartData : Map<LocalDate, Float> = mapOf(),
     val isExpenseChart : Boolean,
     val timePeriod: StatisticChartTimePeriod
 )
