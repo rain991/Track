@@ -7,9 +7,9 @@ import java.util.Date
 
 interface IncomesListRepository {
     fun getIncomesList(): Flow<List<IncomeItem>>
-
     fun getSortedIncomesListDateAsc(): Flow<List<IncomeItem>>
     fun getSortedIncomesListDateDesc(): Flow<List<IncomeItem>>
     suspend fun getIncomesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: IncomeCategory): Flow<List<IncomeItem>>
+    suspend fun getIncomesInTimeSpanDateDesc(startOfSpan: Date, endOfSpan: Date): Flow<List<IncomeItem>>
 
 }

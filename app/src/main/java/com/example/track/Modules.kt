@@ -1,6 +1,6 @@
 package com.example.track
 
-import com.example.track.data.core.ChartHandler
+import com.example.track.data.core.ChartDataProvider
 import com.example.track.data.core.CurrenciesRatesHandler
 import com.example.track.data.core.FinancialCardNotesProvider
 import com.example.track.data.core.PersonalStatsProvider
@@ -74,7 +74,7 @@ val settingsModule = module {
 val coreModule = module {
     single<CurrenciesRatesHandler> { CurrenciesRatesHandler(get(), get()) }
     single<FinancialCardNotesProvider> { FinancialCardNotesProvider(get(), get()) }
-    single<ChartHandler> { ChartHandler() }
+    single<ChartDataProvider> { ChartDataProvider(get(), get(), get(),get()) }
     single<PersonalStatsProvider> { PersonalStatsProvider(get(), get(), get()) }
 }
 
@@ -156,7 +156,7 @@ val viewModelModule = module {
 
     // Statistics related
     viewModel { StatisticsViewModel(get(), get()) }
-    viewModel { StatisticChartViewModel(get(), get(),get()) }
+    viewModel { StatisticChartViewModel(get(), get(), get()) }
 
     // Bottom sheets
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }

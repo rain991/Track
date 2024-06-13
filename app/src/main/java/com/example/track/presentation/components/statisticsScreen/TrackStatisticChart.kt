@@ -66,7 +66,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier) {
         val formatter = CartesianValueFormatter { x, chartValues, _ ->
                Log.d("Mylog", "TrackStatisticChart: x : $x chartvalues : $chartValues")
                val xToDateMap = chartValues.model.extraStore[xToDateMapKey]
-               val date = xToDateMap.get(x) ?: LocalDate.ofEpochDay(x.toLong())
+               val date = xToDateMap[x] ?: LocalDate.ofEpochDay(x.toLong())
                date.format(dateTimeFormatter)
         }
 
