@@ -18,7 +18,7 @@ import java.time.LocalDate
 import java.util.Date
 
 // Transforms data to understandable for chart format
-class  ChartDataProvider(
+class ChartDataProvider(
     private val incomesListRepositoryImpl: IncomeListRepositoryImpl,
     private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
     private val currenciesRatesHandler: CurrenciesRatesHandler,
@@ -53,8 +53,12 @@ class  ChartDataProvider(
                         send(summarizeFinancialValuesByDays(listOfIncomes))
                     }
                 }
-            }
 
+                is StatisticChartTimePeriod.Other -> {
+
+
+                }
+            }
         }
 
         if (financialEntities is FinancialEntities.ExpenseFinancialEntity) {
@@ -81,6 +85,10 @@ class  ChartDataProvider(
                     expensesListRepositoryImpl.getExpensesListInTimeSpan(startOfSpan, currentDate).collect { listOfIncomes ->
                         send(summarizeFinancialValuesByDays(listOfIncomes))
                     }
+                }
+
+                is StatisticChartTimePeriod.Other -> {
+
                 }
             }
         }

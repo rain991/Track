@@ -70,6 +70,7 @@ dependencies {
     implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.21")
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:$maxkeppelerSheetComposeVersion")
     implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:$maxkeppelerSheetComposeVersion")
+    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:$maxkeppelerSheetComposeVersion")
 
     //koin DI
     implementation("io.insert-koin:koin-core:$koinVersion")

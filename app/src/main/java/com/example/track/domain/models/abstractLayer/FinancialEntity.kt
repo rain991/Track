@@ -15,4 +15,5 @@ abstract class FinancialEntity {
 sealed class FinancialEntities(val name: String) {
     class ExpenseFinancialEntity : FinancialEntities(name = "Expense")
     class IncomeFinancialEntity : FinancialEntities(name = "Income")
+    class Both : FinancialEntities(name = "Both")
 }

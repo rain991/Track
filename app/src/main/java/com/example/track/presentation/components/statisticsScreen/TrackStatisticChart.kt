@@ -1,33 +1,21 @@
 package com.example.track.presentation.components.statisticsScreen
 
 import android.graphics.Typeface
-import android.util.Log
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.SegmentedButton
-import androidx.compose.material3.SegmentedButtonDefaults
-import androidx.compose.material3.SingleChoiceSegmentedButtonRow
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
-import com.example.track.domain.models.abstractLayer.FinancialEntities
 import com.example.track.presentation.states.componentRelated.StatisticChartTimePeriod
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottomAxis
@@ -44,20 +32,18 @@ import com.patrykandpatrick.vico.core.cartesian.axis.AxisItemPlacer
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.common.Dimensions
-import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
 
 @Composable
-fun TrackStatisticChart(modifier: Modifier = Modifier) {
-    Card(modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 14.dp, focusedElevation = 20.dp)) {
+fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: StatisticChartViewModel) {
+    Card(modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(8.dp)
         ) {
-            val chartViewModel = koinViewModel<StatisticChartViewModel>()
             val chartState = chartViewModel.statisticChartState.collectAsState()
             val modelProducer = chartViewModel.modelProducer
             val xToDateMapKey = chartViewModel.xToDateMapKey
@@ -98,7 +84,15 @@ fun TrackStatisticChart(modifier: Modifier = Modifier) {
 
                     is StatisticChartTimePeriod.Year -> {
                         val maxDaysDiff = chartViewModel.maxDaysDifference(chartData.map { it.key })
-                        Log.d("MyLog", "TrackStatisticChart: maxDaysDiff : $maxDaysDiff")
+                        if (maxDaysDiff > 10) {
+                            maxDaysDiff.div(15)
+                        } else {
+                            2
+                        }
+                    }
+
+                    is StatisticChartTimePeriod.Other -> {
+                        val maxDaysDiff = chartViewModel.maxDaysDifference(chartData.map { it.key })
                         if (maxDaysDiff > 10) {
                             maxDaysDiff.div(15)
                         } else {
@@ -143,7 +137,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier) {
                                 } else if (chartState.value.timePeriod is StatisticChartTimePeriod.Month) {
                                     5
                                 } else {
-                                    2
+                                    1
                                 }
                             )
                         )
@@ -151,54 +145,6 @@ fun TrackStatisticChart(modifier: Modifier = Modifier) {
                     modelProducer = modelProducer, zoomState = rememberVicoZoomState(zoomEnabled = false, initialZoom = Zoom.Content),
                     modifier = Modifier.fillMaxSize()
                 )
-            }
-        }
-    }
-}
-
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) {
-    Row(modifier = Modifier.fillMaxWidth()) {
-        val chartState = chartViewModel.statisticChartState.collectAsState()
-        val financialTypeSelectorItems = listOf(FinancialEntities.IncomeFinancialEntity(), FinancialEntities.ExpenseFinancialEntity())
-        SingleChoiceSegmentedButtonRow {
-            financialTypeSelectorItems.forEachIndexed { index, financialEntityType ->
-                SegmentedButton(
-                    modifier = Modifier.safeContentPadding(),
-                    shape = SegmentedButtonDefaults.itemShape(index = index, count = financialTypeSelectorItems.size),
-                    onClick = {
-                        chartViewModel.setFinancialEntity(financialEntityType)
-                    },
-                    selected = financialEntityType.name == chartState.value.financialEntities.name
-                ) {
-                    Text(
-                        text = financialEntityType.name,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.labelMedium,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
-            }
-        }
-        Spacer(modifier = Modifier.weight(1f))
-        val timeSpanSelectionItems =
-            listOf(StatisticChartTimePeriod.Week(), StatisticChartTimePeriod.Month(), StatisticChartTimePeriod.Year())
-        SingleChoiceSegmentedButtonRow(modifier = Modifier.scale(0.9f)) {
-            timeSpanSelectionItems.forEachIndexed { index, timeSpan ->
-                SegmentedButton(
-                    modifier = Modifier.safeContentPadding(),
-                    shape = SegmentedButtonDefaults.itemShape(index = index, count = timeSpanSelectionItems.size),
-                    onClick = { chartViewModel.setTimePeriod(timeSpan) },
-                    selected = timeSpan.name == chartState.value.timePeriod.name
-                ) {
-                    Text(
-                        text = timeSpan.name,
-                        maxLines = 1,
-                        style = MaterialTheme.typography.labelMedium,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                }
             }
         }
     }

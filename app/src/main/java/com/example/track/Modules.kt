@@ -50,7 +50,6 @@ import com.example.track.data.viewmodels.settingsScreen.PersonalSettingsScreenVi
 import com.example.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
 import com.example.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
-import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.EditCategoryUseCase
@@ -155,7 +154,6 @@ val viewModelModule = module {
     viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get(), get()) }
 
     // Statistics related
-    viewModel { StatisticsViewModel(get(), get()) }
     viewModel { StatisticChartViewModel(get(), get()) }
 
     // Bottom sheets
