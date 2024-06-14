@@ -1,18 +1,19 @@
 package com.example.track.presentation.components.statisticsScreen
 
 import android.graphics.Typeface
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
@@ -67,84 +68,56 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                     )
                 }
             }
-            val horizontalSpacing = remember {
-                when (chartState.value.timePeriod) {
-                    is StatisticChartTimePeriod.Week -> {
-                        2
-                    }
-
-                    is StatisticChartTimePeriod.Month -> {
-                        val maxDaysDiff = chartViewModel.maxDaysDifference(chartData.map { it.key })
-                        if (maxDaysDiff in 0..15) {
-                            3
-                        } else {
-                            4
-                        }
-                    }
-
-                    is StatisticChartTimePeriod.Year -> {
-                        val maxDaysDiff = chartViewModel.maxDaysDifference(chartData.map { it.key })
-                        if (maxDaysDiff > 10) {
-                            maxDaysDiff.div(15)
-                        } else {
-                            2
-                        }
-                    }
-
-                    is StatisticChartTimePeriod.Other -> {
-                        val maxDaysDiff = chartViewModel.maxDaysDifference(chartData.map { it.key })
-                        if (maxDaysDiff > 10) {
-                            maxDaysDiff.div(15)
-                        } else {
-                            2
-                        }
-                    }
+            if (chartData.isEmpty()) {
+                Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+                    Text(text = "We have not found data for specified filters", style = MaterialTheme.typography.titleSmall)
                 }
-            }
-            TrackStatisticChartOptionsSelector(chartViewModel = chartViewModel)
-            Spacer(modifier = Modifier.height(8.dp))
-            ProvideVicoTheme(theme = rememberM3VicoTheme()) {
-                CartesianChartHost(
-                    chart =
-                    rememberCartesianChart(
-                        rememberLineCartesianLayer(),
-                        startAxis = rememberStartAxis(
-                            guideline = null, horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
-                            titleComponent =
-                            rememberTextComponent(
-                                color = MaterialTheme.colorScheme.primary,
-                                padding = Dimensions.of(horizontal = 8.dp, vertical = 2.dp),
-                                margins = Dimensions.of(end = 4.dp),
-                                typeface = Typeface.MONOSPACE,
-                            ), title = chartState.value.preferableCurrency.ticker,
-                            itemPlacer = AxisItemPlacer.Vertical.count({ _ ->
-                                if (chartData.size < 4) {
-                                    chartData.size
-                                } else if (chartData.size in 4..10) {
-                                    5
-                                } else {
-                                    6
-                                }
-                            })
-                        ),
-                        bottomAxis = rememberBottomAxis(
-                            guideline = null,
-                            valueFormatter = formatter,
-                            itemPlacer = AxisItemPlacer.Horizontal.default(
-                                spacing =
-                                if (chartState.value.timePeriod is StatisticChartTimePeriod.Year) {
-                                    15
-                                } else if (chartState.value.timePeriod is StatisticChartTimePeriod.Month) {
-                                    5
-                                } else {
-                                    1
-                                }
+            } else {
+                ProvideVicoTheme(theme = rememberM3VicoTheme()) {
+                    CartesianChartHost(
+                        chart =
+                        rememberCartesianChart(
+                            rememberLineCartesianLayer(),
+                            startAxis = rememberStartAxis(
+                                guideline = null, horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
+                                titleComponent =
+                                rememberTextComponent(
+                                    color = MaterialTheme.colorScheme.primary,
+                                    padding = Dimensions.of(horizontal = 8.dp, vertical = 2.dp),
+                                    margins = Dimensions.of(end = 4.dp),
+                                    typeface = Typeface.MONOSPACE,
+                                ), title = chartState.value.preferableCurrency.ticker,
+                                itemPlacer = AxisItemPlacer.Vertical.count({ _ ->
+                                    if (chartData.size < 4) {
+                                        chartData.size
+                                    } else if (chartData.size in 4..10) {
+                                        5
+                                    } else {
+                                        6
+                                    }
+                                })
+                            ),
+                            bottomAxis = rememberBottomAxis(
+                                guideline = null,
+                                valueFormatter = formatter,
+                                itemPlacer = AxisItemPlacer.Horizontal.default(
+                                    spacing =
+                                    if (chartState.value.timePeriod is StatisticChartTimePeriod.Year) {
+                                        15
+                                    } else if (chartState.value.timePeriod is StatisticChartTimePeriod.Month) {
+                                        5
+                                    } else {
+                                        1
+                                    },
+                                    offset = 4,
+                                    addExtremeLabelPadding = true
+                                ), tick = null
                             )
-                        )
-                    ),
-                    modelProducer = modelProducer, zoomState = rememberVicoZoomState(zoomEnabled = false, initialZoom = Zoom.Content),
-                    modifier = Modifier.fillMaxSize()
-                )
+                        ),
+                        modelProducer = modelProducer, zoomState = rememberVicoZoomState(zoomEnabled = false, initialZoom = Zoom.Content),
+                        modifier = Modifier.fillMaxSize()
+                    )
+                }
             }
         }
     }

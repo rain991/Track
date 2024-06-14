@@ -25,7 +25,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(innerPadding)
+            .padding(innerPadding).padding(horizontal = 8.dp)
     ) {
         BottomSheet(dataStoreManager = settingsData)
         TrackStatisticChart(
