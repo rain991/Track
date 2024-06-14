@@ -7,6 +7,7 @@ import com.example.track.data.other.converters.areDatesSame
 import com.example.track.data.other.converters.convertDateToLocalDate
 import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.data.other.converters.getStartOfWeekDate
+import com.example.track.data.other.converters.getStartOfYearDate
 import com.example.track.domain.models.abstractLayer.FinancialEntities
 import com.example.track.domain.models.abstractLayer.FinancialEntity
 import com.example.track.presentation.states.componentRelated.StatisticChartTimePeriod
@@ -17,7 +18,7 @@ import java.time.LocalDate
 import java.util.Date
 
 // Transforms data to understandable for chart format
-class ChartDataProvider(
+class  ChartDataProvider(
     private val incomesListRepositoryImpl: IncomeListRepositoryImpl,
     private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
     private val currenciesRatesHandler: CurrenciesRatesHandler,
@@ -27,7 +28,7 @@ class ChartDataProvider(
         financialEntities: FinancialEntities,
         statisticChartTimePeriod: StatisticChartTimePeriod
     ): Flow<Map<LocalDate, Float>> = channelFlow {
-        if (financialEntities is FinancialEntities.ExpenseFinancialEntity) {
+        if (financialEntities is FinancialEntities.IncomeFinancialEntity) {
             when (statisticChartTimePeriod) {
                 is StatisticChartTimePeriod.Week -> {
                     val currentDate = Date(System.currentTimeMillis())
@@ -47,7 +48,7 @@ class ChartDataProvider(
 
                 is StatisticChartTimePeriod.Year -> {
                     val currentDate = Date(System.currentTimeMillis())
-                    val startOfSpan = getStartOfMonthDate(currentDate)
+                    val startOfSpan = getStartOfYearDate(currentDate)
                     incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(startOfSpan, currentDate).collect { listOfIncomes ->
                         send(summarizeFinancialValuesByDays(listOfIncomes))
                     }
@@ -56,7 +57,7 @@ class ChartDataProvider(
 
         }
 
-        if (financialEntities is FinancialEntities.IncomeFinancialEntity) {
+        if (financialEntities is FinancialEntities.ExpenseFinancialEntity) {
             when (statisticChartTimePeriod) {
                 is StatisticChartTimePeriod.Week -> {
                     val currentDate = Date(System.currentTimeMillis())
@@ -76,7 +77,7 @@ class ChartDataProvider(
 
                 is StatisticChartTimePeriod.Year -> {
                     val currentDate = Date(System.currentTimeMillis())
-                    val startOfSpan = getStartOfMonthDate(currentDate)
+                    val startOfSpan = getStartOfYearDate(currentDate)
                     expensesListRepositoryImpl.getExpensesListInTimeSpan(startOfSpan, currentDate).collect { listOfIncomes ->
                         send(summarizeFinancialValuesByDays(listOfIncomes))
                     }
@@ -87,10 +88,10 @@ class ChartDataProvider(
 
     private suspend fun summarizeFinancialValuesByDays(listOfFinancialEntity: List<FinancialEntity>): Map<LocalDate, Float> {
         val resultMap = mutableMapOf<LocalDate, Float>()
+        val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         listOfFinancialEntity.forEach { currentFinancialEntity ->
             val currentFinEntityDate = convertDateToLocalDate(currentFinancialEntity.date)
             if (!resultMap.containsKey(currentFinEntityDate)) {
-                val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
                 var daySummary = if (currentFinancialEntity.currencyTicker == preferableCurrency.ticker) {
                     currentFinancialEntity.value
                 } else {

@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.dp
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.statistics.StatisticsViewModel
 import com.example.track.presentation.components.bottomSheet.BottomSheet
@@ -28,8 +29,10 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             .padding(innerPadding)
     ) {
         BottomSheet(dataStoreManager = settingsData)
-        TrackStatisticChart(modifier = Modifier.fillMaxWidth().weight(0.5f))
-        TrackStatisticFinder(modifier = Modifier.fillMaxWidth().weight(0.5f))
+        TrackStatisticChart(modifier = Modifier.fillMaxWidth().padding(8.dp).weight(0.5f))
+        TrackStatisticFinder(modifier = Modifier
+            .fillMaxWidth()
+            .weight(0.5f))
     }
 
 }

@@ -156,7 +156,7 @@ val viewModelModule = module {
 
     // Statistics related
     viewModel { StatisticsViewModel(get(), get()) }
-    viewModel { StatisticChartViewModel(get(), get(), get()) }
+    viewModel { StatisticChartViewModel(get(), get()) }
 
     // Bottom sheets
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
