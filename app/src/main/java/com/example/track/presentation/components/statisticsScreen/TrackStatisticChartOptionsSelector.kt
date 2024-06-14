@@ -1,8 +1,8 @@
 package com.example.track.presentation.components.statisticsScreen
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -15,6 +15,7 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,7 +26,7 @@ import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.example.track.domain.models.abstractLayer.FinancialEntities
 import com.example.track.presentation.states.componentRelated.StatisticChartTimePeriod
 
-@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) {
     val chartState = chartViewModel.statisticChartState.collectAsState()
@@ -38,6 +39,9 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
             StatisticChartTimePeriod.Year(),
             StatisticChartTimePeriod.Other()
         )
+    LaunchedEffect(key1 = chartState) {
+        Log.d("MyLog", "TrackStatisticChartOptionsSelector: chart state : ${chartState.value}")
+    }
     Card(elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp), modifier = Modifier.padding(8.dp)) {
         Row(modifier = Modifier.fillMaxWidth()) {
             Column(modifier = Modifier.weight(0.8f), horizontalAlignment = Alignment.CenterHorizontally) {
@@ -65,7 +69,6 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                         }
                     }
                 }
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.Start,
@@ -75,7 +78,14 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                         timeSpanSelectionItems.forEachIndexed { index, timeSpan ->
                             SegmentedButton(
                                 shape = SegmentedButtonDefaults.itemShape(index = index, count = timeSpanSelectionItems.size),
-                                onClick = { chartViewModel.setTimePeriod(timeSpan) },
+                                onClick = {
+                                    if (timeSpan !is StatisticChartTimePeriod.Other) {
+                                        chartViewModel.setTimePeriod(timeSpan)
+                                    }
+                                    if (timeSpan is StatisticChartTimePeriod.Other) {
+                                        chartViewModel.setTimePeriodDialogVisibility(true)
+                                    }
+                                },
                                 selected = timeSpan.name == chartState.value.timePeriod.name
                             ) {
                                 Text(

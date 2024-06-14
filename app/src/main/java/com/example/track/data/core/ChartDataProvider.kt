@@ -1,10 +1,12 @@
 package com.example.track.data.core
 
+import android.util.Range
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.other.converters.areDatesSame
 import com.example.track.data.other.converters.convertDateToLocalDate
+import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.data.other.converters.getStartOfWeekDate
 import com.example.track.data.other.converters.getStartOfYearDate
@@ -26,7 +28,8 @@ class ChartDataProvider(
 ) {
     suspend fun requestDataForChart(
         financialEntities: FinancialEntities,
-        statisticChartTimePeriod: StatisticChartTimePeriod
+        statisticChartTimePeriod: StatisticChartTimePeriod,
+        otherTimeSpan: Range<LocalDate>? = null
     ): Flow<Map<LocalDate, Float>> = channelFlow {
         if (financialEntities is FinancialEntities.IncomeFinancialEntity) {
             when (statisticChartTimePeriod) {
@@ -55,8 +58,13 @@ class ChartDataProvider(
                 }
 
                 is StatisticChartTimePeriod.Other -> {
-
-
+                    if (otherTimeSpan != null) {
+                        val startOfSpan = convertLocalDateToDate(otherTimeSpan.lower)
+                        val endOfSpan = convertLocalDateToDate(otherTimeSpan.upper)
+                        incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(startOfSpan, endOfSpan).collect { listOfIncomes ->
+                            send(summarizeFinancialValuesByDays(listOfIncomes))
+                        }
+                    }
                 }
             }
         }
@@ -88,7 +96,13 @@ class ChartDataProvider(
                 }
 
                 is StatisticChartTimePeriod.Other -> {
-
+                    if (otherTimeSpan != null) {
+                        val startOfSpan = convertLocalDateToDate(otherTimeSpan.lower)
+                        val endOfSpan = convertLocalDateToDate(otherTimeSpan.upper)
+                        expensesListRepositoryImpl.getExpensesListInTimeSpan(startOfSpan, endOfSpan).collect { listOfIncomes ->
+                            send(summarizeFinancialValuesByDays(listOfIncomes))
+                        }
+                    }
                 }
             }
         }

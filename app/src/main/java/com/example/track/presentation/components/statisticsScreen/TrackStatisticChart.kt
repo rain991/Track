@@ -15,6 +15,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.example.track.presentation.states.componentRelated.StatisticChartTimePeriod
@@ -22,17 +23,20 @@ import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStartAxis
 import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineCartesianLayer
+import com.patrykandpatrick.vico.compose.cartesian.layer.rememberLineSpec
 import com.patrykandpatrick.vico.compose.cartesian.rememberCartesianChart
 import com.patrykandpatrick.vico.compose.cartesian.rememberVicoZoomState
 import com.patrykandpatrick.vico.compose.common.ProvideVicoTheme
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
 import com.patrykandpatrick.vico.compose.common.of
+import com.patrykandpatrick.vico.compose.common.shader.color
 import com.patrykandpatrick.vico.compose.m3.common.rememberM3VicoTheme
 import com.patrykandpatrick.vico.core.cartesian.Zoom
 import com.patrykandpatrick.vico.core.cartesian.axis.AxisItemPlacer
 import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.common.Dimensions
+import com.patrykandpatrick.vico.core.common.shader.DynamicShader
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -68,6 +72,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                     )
                 }
             }
+            val chartColors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)
             if (chartData.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(text = "We have not found data for specified filters", style = MaterialTheme.typography.titleSmall)
@@ -77,7 +82,13 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                     CartesianChartHost(
                         chart =
                         rememberCartesianChart(
-                            rememberLineCartesianLayer(),
+                            rememberLineCartesianLayer(lines = chartColors.map { color: Color ->
+                                rememberLineSpec(
+                                    shader = DynamicShader.color(
+                                        color
+                                    ), backgroundShader = null
+                                )
+                            }),
                             startAxis = rememberStartAxis(
                                 guideline = null, horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
                                 titleComponent =
@@ -102,12 +113,22 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                                 valueFormatter = formatter,
                                 itemPlacer = AxisItemPlacer.Horizontal.default(
                                     spacing =
-                                    if (chartState.value.timePeriod is StatisticChartTimePeriod.Year) {
-                                        15
-                                    } else if (chartState.value.timePeriod is StatisticChartTimePeriod.Month) {
-                                        5
-                                    } else {
-                                        1
+                                    when (chartState.value.timePeriod) {
+                                        is StatisticChartTimePeriod.Year -> {
+                                            15
+                                        }
+
+                                        is StatisticChartTimePeriod.Month -> {
+                                            5
+                                        }
+
+                                        is StatisticChartTimePeriod.Week -> {
+                                            1
+                                        }
+
+                                        else -> {
+                                            5
+                                        }
                                     },
                                     offset = 4,
                                     addExtremeLabelPadding = true

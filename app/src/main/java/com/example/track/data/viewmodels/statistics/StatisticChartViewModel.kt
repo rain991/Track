@@ -1,6 +1,7 @@
 package com.example.track.data.viewmodels.statistics
 
 import android.util.Log
+import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.core.ChartDataProvider
@@ -16,10 +17,10 @@ import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.temporal.ChronoUnit
 
 class StatisticChartViewModel(
     private val chartDataProvider: ChartDataProvider,
@@ -33,7 +34,9 @@ class StatisticChartViewModel(
             StatisticChartState(
                 financialEntities = FinancialEntities.ExpenseFinancialEntity(),
                 timePeriod = StatisticChartTimePeriod.Month(),
-                preferableCurrency = CURRENCY_DEFAULT
+                preferableCurrency = CURRENCY_DEFAULT,
+                specifiedTimePeriod = null,
+                isTimePeriodDialogVisible = false
             )
         )
     val statisticChartState = _statisticChartState.asStateFlow()
@@ -50,9 +53,15 @@ class StatisticChartViewModel(
             }
         }
     }
-    suspend fun initializeValues(){
-        chartDataProvider.requestDataForChart(_statisticChartState.value.financialEntities, _statisticChartState.value.timePeriod)
-            .collect { chartData ->
+
+    suspend fun initializeValues() {
+        if (_statisticChartState.value.financialEntities !is FinancialEntities.Both) {
+            setAdditionalData(null)
+            chartDataProvider.requestDataForChart(
+                financialEntities = _statisticChartState.value.financialEntities,
+                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+            ).collect { chartData ->
                 Log.d("MyLog", "chartDataProvider:  chartData size : ${chartData.size}")
                 setDataSet(chartData)
                 val xToDates = chartData.keys.associateBy { it.toEpochDay().toFloat() }
@@ -66,8 +75,43 @@ class StatisticChartViewModel(
                     }
                 }
             }
-    }
+        } else {
+            val expenseFlow = chartDataProvider.requestDataForChart(
+                financialEntities = FinancialEntities.ExpenseFinancialEntity(),
+                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+            )
+            val incomeFlow = chartDataProvider.requestDataForChart(
+                financialEntities = FinancialEntities.IncomeFinancialEntity(),
+                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+            )
+            viewModelScope.launch {
+                val expenseChartData = expenseFlow.first()
+                val incomeChartData = incomeFlow.first()
 
+                setDataSet(expenseChartData)
+                setAdditionalData(incomeChartData)
+
+                val expenseXToDates = expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
+                val incomeXToDates = incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
+
+                modelProducer.tryRunTransaction {
+                    val expenseListOfValues = expenseChartData.map { it.value }
+                    val incomeListOfValues = incomeChartData.map { it.value }
+
+                    if (expenseListOfValues.isNotEmpty() && incomeListOfValues.isNotEmpty()) {
+                        lineSeries {
+                            series(expenseXToDates.keys, expenseChartData.map { it.value })
+                            updateExtras { it[xToDateMapKey] = expenseXToDates }
+                            series(incomeXToDates.keys, incomeChartData.map { it.value })
+                            updateExtras { it[xToDateMapKey] = incomeXToDates }
+                        }
+                    }
+                }
+            }
+        }
+    }
 
     fun setFinancialEntity(value: FinancialEntities) {
         _statisticChartState.value = _statisticChartState.value.copy(financialEntities = value)
@@ -77,15 +121,20 @@ class StatisticChartViewModel(
         _statisticChartState.value = _statisticChartState.value.copy(timePeriod = value)
     }
 
-    fun maxDaysDifference(dates: List<LocalDate>): Int {
-        if (dates.isEmpty()) return 0
-        val minDate = dates.minOrNull() ?: return 0
-        val maxDate = dates.maxOrNull() ?: return 0
-        return ChronoUnit.DAYS.between(minDate, maxDate).toInt()
+    fun setSpecifiedTimePeriod(value: Range<LocalDate>?) {
+        _statisticChartState.value = _statisticChartState.value.copy(specifiedTimePeriod = value)
+    }
+
+    fun setTimePeriodDialogVisibility(value: Boolean) {
+        _statisticChartState.value = _statisticChartState.value.copy(isTimePeriodDialogVisible = value)
     }
 
     private fun setDataSet(data: Map<LocalDate, Float>) {
         _statisticChartState.update { _statisticChartState.value.copy(chartData = data) }
+    }
+
+    private fun setAdditionalData(data: Map<LocalDate, Float>?) {
+        _statisticChartState.update { _statisticChartState.value.copy(additionalChartData = data) }
     }
 
     private fun setPreferableCurrency(value: Currency) {
