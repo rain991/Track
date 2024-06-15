@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
@@ -69,7 +70,7 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
                 }
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround,
+                    horizontalArrangement = Arrangement.Center,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     listOfExpensesCategories.forEach { currentExpenseCategory ->
@@ -90,13 +91,13 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
                                 }
                             }
                         }
+                        Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
             }
         }
-        // Spacer(modifier = Modifier.height(8.dp))
         Card(
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
+           elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
@@ -105,7 +106,7 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
                 }
                 FlowRow(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceAround,
+                    horizontalArrangement = Arrangement.Center,
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     listOfIncomeCategories.forEach { currentIncomeCategory ->
@@ -126,7 +127,7 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
                                 }
                             }
                         }
-
+                        Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
             }

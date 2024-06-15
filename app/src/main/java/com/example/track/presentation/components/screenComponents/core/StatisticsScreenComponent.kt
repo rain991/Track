@@ -51,10 +51,12 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
         modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
-            .padding(horizontal = 8.dp).animateContentSize()
+            .padding(horizontal = 8.dp)
+            .animateContentSize()
     ) {
         BottomSheet(dataStoreManager = settingsData)
-        AnimatedVisibility(visible = state.value.isChartVisible, modifier = Modifier.weight(2f),
+        AnimatedVisibility(
+            visible = state.value.isChartVisible, modifier = Modifier.weight(2f),
             enter = slideInVertically(initialOffsetY = { fullHeight -> -fullHeight }) + fadeIn(),
             exit = slideOutVertically(targetOffsetY = { fullHeight -> -fullHeight }) + fadeOut()
         ) {
@@ -69,6 +71,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(3f)
+                .padding(8.dp), chartViewModel = chartViewModel
         )
     }
 }

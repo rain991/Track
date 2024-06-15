@@ -61,7 +61,7 @@ import java.time.LocalDate
 /*  Contains lazy column used in expense screen. Also contains such private composable functions:
     Transactions (ui to switch between expeneses and incomes), EmptyLazyColumnPlacement, ExpenseDayHeader, ExpenseMonthHeader, ExpenseYearHeader   */
 @Composable
-fun ExpenseAndIncomeLazyColumn() {
+fun MainScreenLazyColumn() {
     val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
     val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     val expensesList = expenseAndIncomeLazyColumnViewModel.expensesList

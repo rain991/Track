@@ -9,7 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn.ExpenseAndIncomeLazyColumn
+import com.example.track.presentation.components.mainScreen.expenseAndIncomeLazyColumn.MainScreenLazyColumn
 import com.example.track.presentation.components.mainScreen.feed.ideasCards.TrackScreenFeed
 
 @Composable
@@ -22,6 +22,6 @@ fun MainTrackScreenComponent(paddingValues: PaddingValues, isPageNameVisible : B
     {
         if (!isPageNameVisible) Spacer(modifier = Modifier.height(12.dp))
         TrackScreenFeed()
-        ExpenseAndIncomeLazyColumn()
+        MainScreenLazyColumn()
     }
 }

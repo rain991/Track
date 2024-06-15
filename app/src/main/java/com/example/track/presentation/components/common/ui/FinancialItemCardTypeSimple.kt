@@ -69,9 +69,9 @@ import java.util.Locale
 @Composable
 fun FinancialItemCardTypeSimple(
     financialEntity: FinancialEntity,
+    categoryEntity: CategoryEntity,
     expanded: Boolean,
     isExpenseLazyColumn : Boolean,
-    categoryEntity: CategoryEntity,
     preferableCurrency: Currency,
     expenseAndIncomeLazyColumnViewModel: ExpenseAndIncomeLazyColumnViewModel
 ) {
