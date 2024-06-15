@@ -32,6 +32,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -54,6 +56,9 @@ import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnVi
 import com.example.track.presentation.components.common.parser.getMonthResID
 import com.example.track.presentation.components.common.ui.FinancialItemCardTypeSimple
 import com.example.track.presentation.components.mainScreen.TrackScreenInfoCards.TrackScreenInfoCards
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
+import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 import java.time.LocalDate
@@ -117,7 +122,7 @@ fun MainScreenLazyColumn() {
             }
             Spacer(modifier = Modifier.height(4.dp))
             if ((isExpenseLazyColumn.value && expensesList.isEmpty()) || (!isExpenseLazyColumn.value && incomeList.isEmpty())) {
-                EmptyLazyColumnPlacement(isExpenseLazyColumn = isExpenseLazyColumn.value)
+                EmptyMainLazyColumnPlacement(isExpenseLazyColumn = isExpenseLazyColumn.value)
             } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
                     items(
@@ -196,14 +201,46 @@ fun MainScreenLazyColumn() {
                                         }
                                         Spacer(modifier = Modifier.height(4.dp))
                                     }
+                                    var financialEntityMonthSummary by remember { mutableFloatStateOf(0.0f) }
+                                    var countOfFinancialEntities by remember { mutableIntStateOf(0) }
+                                    LaunchedEffect(key1 = Unit, key2 = isExpenseLazyColumn.value) {
+                                        async {
+                                            withContext(Dispatchers.IO) {
+                                                expenseAndIncomeLazyColumnViewModel.requestSummaryInMonthNotion(
+                                                    financialEntity = currentFinancialEntity,
+                                                    financialCategory = currentFinancialCategory
+                                                ).collect {
+                                                    financialEntityMonthSummary = it
+                                                }
+                                            }
+                                        }
+                                        async {
+                                            withContext(Dispatchers.IO) {
+                                                expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
+                                                    financialEntity = currentFinancialEntity,
+                                                    financialCategory = currentFinancialCategory
+                                                ).collect {
+                                                    countOfFinancialEntities = it
+                                                }
+                                            }
+                                        }
+                                    }
                                     FinancialItemCardTypeSimple(
                                         financialEntity = currentFinancialEntity,
                                         categoryEntity = currentFinancialCategory,
-                                        isExpenseLazyColumn = isExpenseLazyColumn.value,
                                         expanded = (expandedItem.value == currentFinancialEntity),
-                                        expenseAndIncomeLazyColumnViewModel = expenseAndIncomeLazyColumnViewModel,
-                                        preferableCurrency = preferableCurrency.value
-                                    )
+                                        preferableCurrency = preferableCurrency.value,
+                                        financialEntityMonthSummary = financialEntityMonthSummary,
+                                        countOfFinancialEntities = countOfFinancialEntities
+                                    ) {
+                                        expenseAndIncomeLazyColumnViewModel.setExpandedExpenseCard(
+                                            if (expandedItem.value != currentFinancialEntity) {
+                                                currentFinancialEntity
+                                            } else {
+                                                null
+                                            }
+                                        )
+                                    }
                                     if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
                                 }
                             }
@@ -251,7 +288,7 @@ private fun Transactions() {
 }
 
 @Composable
-private fun EmptyLazyColumnPlacement(isExpenseLazyColumn: Boolean) {
+private fun EmptyMainLazyColumnPlacement(isExpenseLazyColumn: Boolean) {
     Box(
         modifier = Modifier
             .fillMaxSize()

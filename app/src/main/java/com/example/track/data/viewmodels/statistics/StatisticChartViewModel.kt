@@ -63,7 +63,6 @@ class StatisticChartViewModel(
                 statisticChartTimePeriod = _statisticChartState.value.timePeriod,
                 otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
             ).collect { chartData ->
-                Log.d("MyLog", "chartDataProvider:  chartData size : ${chartData.size}")
                 setDataSet(chartData)
                 val xToDates = chartData.keys.associateBy { it.toEpochDay().toFloat() }
                 modelProducer.tryRunTransaction {

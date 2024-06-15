@@ -50,6 +50,7 @@ import com.example.track.data.viewmodels.settingsScreen.PersonalSettingsScreenVi
 import com.example.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
 import com.example.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
+import com.example.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.EditCategoryUseCase
@@ -73,7 +74,7 @@ val settingsModule = module {
 val coreModule = module {
     single<CurrenciesRatesHandler> { CurrenciesRatesHandler(get(), get()) }
     single<FinancialCardNotesProvider> { FinancialCardNotesProvider(get(), get()) }
-    single<ChartDataProvider> { ChartDataProvider(get(), get(), get(),get()) }
+    single<ChartDataProvider> { ChartDataProvider(get(), get(), get(), get()) }
     single<PersonalStatsProvider> { PersonalStatsProvider(get(), get(), get()) }
 }
 
@@ -155,6 +156,7 @@ val viewModelModule = module {
 
     // Statistics related
     viewModel { StatisticChartViewModel(get(), get()) }
+    viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get()) }
 
     // Bottom sheets
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }

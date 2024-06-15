@@ -14,7 +14,7 @@ class ExpensesListRepositoryImpl(
         return expenseItemsDao.getAll()
     }
 
-    override fun getExpensesListInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<List<ExpenseItem>> {
+    override fun getExpensesListInTimeSpanDateDesc(startOfSpan: Date, endOfSpan: Date): Flow<List<ExpenseItem>> {
         return expenseItemsDao.getExpensesInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time)
     }
 

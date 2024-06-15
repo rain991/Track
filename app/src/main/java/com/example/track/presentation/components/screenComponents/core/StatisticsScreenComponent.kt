@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
+import com.example.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.example.track.presentation.components.bottomSheet.BottomSheet
 import com.example.track.presentation.components.statisticsScreen.TrackStatisticChart
 import com.example.track.presentation.components.statisticsScreen.TrackStatisticChartOptionsSelector
@@ -37,6 +38,7 @@ import java.time.LocalDate
 @Composable
 fun StatisticsScreenComponent(innerPadding: PaddingValues) {
     val chartViewModel = koinViewModel<StatisticChartViewModel>()
+    val statisticLazyColumnViewModel = koinViewModel<StatisticLazyColumnViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val state = chartViewModel.statisticChartState.collectAsState()
     if (state.value.isTimePeriodDialogVisible) {
@@ -71,7 +73,9 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             modifier = Modifier
                 .fillMaxWidth()
                 .weight(3f)
-                .padding(8.dp), chartViewModel = chartViewModel
+                .padding(8.dp),
+            chartViewModel = chartViewModel,
+            statisticLazyColumnViewModel = statisticLazyColumnViewModel
         )
     }
 }
