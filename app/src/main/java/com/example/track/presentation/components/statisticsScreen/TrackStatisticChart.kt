@@ -43,36 +43,34 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: StatisticChartViewModel) {
+    val chartState = chartViewModel.statisticChartState.collectAsState()
+    val modelProducer = chartViewModel.modelProducer
+    val xToDateMapKey = chartViewModel.xToDateMapKey
+    val chartData = chartState.value.chartData
+    val dateTimeFormatter = remember { DateTimeFormatter.ofPattern("d MMM") }
+    val monthFormatter = remember { DateTimeFormatter.ofPattern("MMM") }
+    val formatter = remember {
+        CartesianValueFormatter { x, chartValues, _ ->
+            val xToDateMap = chartValues.model.extraStore[xToDateMapKey]
+            val date = xToDateMap[x] ?: LocalDate.ofEpochDay(x.toLong())
+            date.format(
+                if (chartState.value.timePeriod is StatisticChartTimePeriod.Year) {
+                    monthFormatter
+                } else {
+                    dateTimeFormatter
+                }
+            )
+        }
+    }
+    LaunchedEffect(key1 = chartState.value.timePeriod, key2 = chartState.value.financialEntities)
+    {
+        chartViewModel.initializeValues()
+    }
     Card(modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)) {
         Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(8.dp)
+            modifier = Modifier.padding(8.dp)
         ) {
-            val chartState = chartViewModel.statisticChartState.collectAsState()
-            val modelProducer = chartViewModel.modelProducer
-            val xToDateMapKey = chartViewModel.xToDateMapKey
-            val chartData = chartState.value.chartData
-            LaunchedEffect(key1 = chartState.value.timePeriod, key2 = chartState.value.financialEntities)
-            {
-                chartViewModel.initializeValues()
-            }
-            val dateTimeFormatter = remember { DateTimeFormatter.ofPattern("d MMM") }
-            val monthFormatter = remember { DateTimeFormatter.ofPattern("MMM") }
-            val formatter = remember {
-                CartesianValueFormatter { x, chartValues, _ ->
-                    val xToDateMap = chartValues.model.extraStore[xToDateMapKey]
-                    val date = xToDateMap[x] ?: LocalDate.ofEpochDay(x.toLong())
-                    date.format(
-                        if (chartState.value.timePeriod is StatisticChartTimePeriod.Year) {
-                            monthFormatter
-                        } else {
-                            dateTimeFormatter
-                        }
-                    )
-                }
-            }
-            val chartColors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)
+            val chartColors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary)
             if (chartData.isEmpty()) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(text = "We have not found data for specified filters", style = MaterialTheme.typography.titleSmall)
@@ -80,8 +78,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
             } else {
                 ProvideVicoTheme(theme = rememberM3VicoTheme()) {
                     CartesianChartHost(
-                        chart =
-                        rememberCartesianChart(
+                        chart = rememberCartesianChart(
                             rememberLineCartesianLayer(lines = chartColors.map { color: Color ->
                                 rememberLineSpec(
                                     shader = DynamicShader.color(
@@ -135,7 +132,8 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                                 ), tick = null
                             )
                         ),
-                        modelProducer = modelProducer, zoomState = rememberVicoZoomState(zoomEnabled = false, initialZoom = Zoom.Content),
+                        modelProducer = modelProducer,
+                        zoomState = rememberVicoZoomState(zoomEnabled = false, initialZoom = Zoom.Content),
                         modifier = Modifier.fillMaxSize()
                     )
                 }

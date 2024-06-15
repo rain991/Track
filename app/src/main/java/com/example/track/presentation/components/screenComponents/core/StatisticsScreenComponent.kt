@@ -1,6 +1,12 @@
 package com.example.track.presentation.components.screenComponents.core
 
 import android.util.Range
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.animateContentSize
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutVertically
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,7 +22,7 @@ import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.example.track.presentation.components.bottomSheet.BottomSheet
 import com.example.track.presentation.components.statisticsScreen.TrackStatisticChart
 import com.example.track.presentation.components.statisticsScreen.TrackStatisticChartOptionsSelector
-import com.example.track.presentation.components.statisticsScreen.TrackStatisticFinder
+import com.example.track.presentation.components.statisticsScreen.TrackStatisticLazyColumn
 import com.example.track.presentation.states.componentRelated.StatisticChartTimePeriod
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
@@ -33,26 +39,6 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
     val chartViewModel = koinViewModel<StatisticChartViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val state = chartViewModel.statisticChartState.collectAsState()
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(innerPadding)
-            .padding(horizontal = 8.dp)
-    ) {
-        BottomSheet(dataStoreManager = settingsData)
-        TrackStatisticChart(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp)
-                .weight(0.5f), chartViewModel = chartViewModel
-        )
-        TrackStatisticChartOptionsSelector(chartViewModel = chartViewModel)
-        TrackStatisticFinder(
-            modifier = Modifier
-                .fillMaxWidth()
-                .weight(0.5f)
-        )
-    }
     if (state.value.isTimePeriodDialogVisible) {
         CustomDateRangePicker(
             dateRange = state.value.specifiedTimePeriod,
@@ -60,6 +46,30 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             chartViewModel.setTimePeriod(StatisticChartTimePeriod.Other())
             chartViewModel.setSpecifiedTimePeriod(it)
         }
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(innerPadding)
+            .padding(horizontal = 8.dp).animateContentSize()
+    ) {
+        BottomSheet(dataStoreManager = settingsData)
+        AnimatedVisibility(visible = state.value.isChartVisible, modifier = Modifier.weight(2f),
+            enter = slideInVertically(initialOffsetY = { fullHeight -> -fullHeight }) + fadeIn(),
+            exit = slideOutVertically(targetOffsetY = { fullHeight -> -fullHeight }) + fadeOut()
+        ) {
+            TrackStatisticChart(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(8.dp), chartViewModel = chartViewModel
+            )
+        }
+        TrackStatisticChartOptionsSelector(chartViewModel = chartViewModel)
+        TrackStatisticLazyColumn(
+            modifier = Modifier
+                .fillMaxWidth()
+                .weight(3f)
+        )
     }
 }
 

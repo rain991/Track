@@ -88,7 +88,6 @@ fun NewCategoryDialog(
                                     ) {
                                         Text(
                                             text = categoryType.name,
-                                            maxLines = 1,
                                             style = MaterialTheme.typography.labelMedium,
                                             overflow = TextOverflow.Ellipsis
                                         )

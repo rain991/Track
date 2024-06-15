@@ -148,7 +148,7 @@ private fun PersonalStatsSettingsContent(viewModel: PersonalStatsViewModel) {
             if (statsState.value.allTimeIncomesCount == 0) {
                 Text(text = "You haven't added any incomes yet")
             } else {
-                Text(text = "You have already added ${statsState.value.allTimeIncomesCount} expenses, worth of ${statsState.value.allTimeIncomesSum} ${statsState.value.preferableCurrency.ticker}")
+                Text(text = "You have already added ${statsState.value.allTimeIncomesCount} incomes, worth of ${statsState.value.allTimeIncomesSum} ${statsState.value.preferableCurrency.ticker}")
             }
             HorizontalDivider(modifier = Modifier.fillMaxWidth(0.9f))
             Text(text = "You have entered Track ${statsState.value.loginCount} times")

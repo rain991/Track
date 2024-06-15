@@ -19,5 +19,6 @@ data class StatisticChartState(
     val financialEntities: FinancialEntities,
     val timePeriod: StatisticChartTimePeriod,
     val specifiedTimePeriod: Range<LocalDate>?,
-    val isTimePeriodDialogVisible: Boolean
+    val isTimePeriodDialogVisible: Boolean,
+    val isChartVisible: Boolean
 )

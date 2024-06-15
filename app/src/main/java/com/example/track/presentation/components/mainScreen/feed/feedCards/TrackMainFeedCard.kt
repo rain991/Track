@@ -20,13 +20,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.SpanStyle
-import androidx.compose.ui.text.buildAnnotatedString
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
@@ -62,87 +57,45 @@ fun TrackMainFeedCard() {
                     .padding(horizontal = 8.dp, vertical = 4.dp),
                 textAlign = TextAlign.Center
             )
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(0.84f)) {
-                Column(modifier = Modifier
-                    .weight(0.6f)
-                    .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly) {
-                    Text(buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        ) {
-                            append("Planned  ")
-                        }
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 20.sp, fontWeight = FontWeight.SemiBold
-                            )
-                        ) {
-                            append(
-                                if (state.value.currency.type == CurrencyTypes.FIAT) {
-                                    FIAT_DECIMAL_FORMAT.format(state.value.budget)
-                                } else {
-                                    CRYPTO_DECIMAL_FORMAT.format(state.value.budget)
-                                }
-                            )
-                        }
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        ) {
-                            append(" ")
-                            append(state.value.currency.ticker)
-                        }
-                    })
-
-                    Text(buildAnnotatedString {
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        ) {
-                            append("Spent  ")
-                        }
-                        withStyle(
-                            style = SpanStyle(
-
-                                fontSize = 20.sp, fontWeight = FontWeight.SemiBold
-                            )
-                        ) {
-                            append(
-                                if (state.value.currency.type == CurrencyTypes.FIAT) {
-                                    FIAT_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
-                                } else {
-                                    CRYPTO_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
-                                }
-                            )
-                        }
-                        withStyle(
-                            style = SpanStyle(
-                                fontSize = 16.sp,
-                                fontWeight = FontWeight.Medium
-                            )
-                        ) {
-                            append(" ")
-                            append(state.value.currency.ticker)
-                        }
-                    })
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.84f)
+            ) {
+                Column(
+                    modifier = Modifier
+                        .weight(0.6f)
+                        .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly
+                ) {
+                    Text(
+                        text = "Planned ${
+                            if (state.value.currency.type == CurrencyTypes.FIAT) {
+                                FIAT_DECIMAL_FORMAT.format(state.value.budget)
+                            } else {
+                                CRYPTO_DECIMAL_FORMAT.format(state.value.budget)
+                            }
+                        } ${state.value.currency.ticker}"
+                    )
+                    Text(
+                        text = "Spent ${
+                            if (state.value.currency.type == CurrencyTypes.FIAT) {
+                                FIAT_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
+                            } else {
+                                CRYPTO_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
+                            }
+                        } ${state.value.currency.ticker}"
+                    )
                 }
-                Column(modifier = Modifier
-                    .weight(0.4f)
-                    .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally) {
+                Column(
+                    modifier = Modifier
+                        .weight(0.4f)
+                        .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally
+                ) {
                     CustomCircularProgressIndicator(
                         modifier = Modifier
                             .size(96.dp)
                             .background(MaterialTheme.colorScheme.surfaceVariant),
-                        initialValue =  (state.value.budgetExpectancy * 100).toInt(),
+                        initialValue = (state.value.budgetExpectancy * 100).toInt(),
                         primaryColor = MaterialTheme.colorScheme.primary,
                         secondaryColor = MaterialTheme.colorScheme.secondary,
                         circleRadius = 90f

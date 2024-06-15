@@ -17,7 +17,7 @@ import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -36,7 +36,8 @@ class StatisticChartViewModel(
                 timePeriod = StatisticChartTimePeriod.Month(),
                 preferableCurrency = CURRENCY_DEFAULT,
                 specifiedTimePeriod = null,
-                isTimePeriodDialogVisible = false
+                isTimePeriodDialogVisible = false,
+                isChartVisible = true
             )
         )
     val statisticChartState = _statisticChartState.asStateFlow()
@@ -86,30 +87,29 @@ class StatisticChartViewModel(
                 statisticChartTimePeriod = _statisticChartState.value.timePeriod,
                 otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
             )
-            viewModelScope.launch {
-                val expenseChartData = expenseFlow.first()
-                val incomeChartData = incomeFlow.first()
+            expenseFlow.combine(incomeFlow) { expenseChartData, incomeChartData -> Pair(expenseChartData, incomeChartData) }
+                .collect { pairOfChartData ->
+                    val expenseChartData = pairOfChartData.first
+                    val incomeChartData = pairOfChartData.second
+                    Log.d("Mylog", "initializeValues: ${expenseChartData.values.size}  incomeChartData : ${incomeChartData.values.size}")
+                    setDataSet(expenseChartData)
+                    setAdditionalData(incomeChartData)
+                    val expenseXToDates = expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
+                    val incomeXToDates = incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
+                    modelProducer.tryRunTransaction {
+                        val expenseListOfValues = expenseChartData.map { it.value }
+                        val incomeListOfValues = incomeChartData.map { it.value }
 
-                setDataSet(expenseChartData)
-                setAdditionalData(incomeChartData)
-
-                val expenseXToDates = expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
-                val incomeXToDates = incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
-
-                modelProducer.tryRunTransaction {
-                    val expenseListOfValues = expenseChartData.map { it.value }
-                    val incomeListOfValues = incomeChartData.map { it.value }
-
-                    if (expenseListOfValues.isNotEmpty() && incomeListOfValues.isNotEmpty()) {
-                        lineSeries {
-                            series(expenseXToDates.keys, expenseChartData.map { it.value })
-                            updateExtras { it[xToDateMapKey] = expenseXToDates }
-                            series(incomeXToDates.keys, incomeChartData.map { it.value })
-                            updateExtras { it[xToDateMapKey] = incomeXToDates }
+                        if (expenseListOfValues.isNotEmpty() && incomeListOfValues.isNotEmpty()) {
+                            lineSeries {
+                                series(expenseXToDates.keys, expenseChartData.map { it.value })
+                                updateExtras { it[xToDateMapKey] = expenseXToDates }
+                                series(incomeXToDates.keys, incomeChartData.map { it.value })
+                                updateExtras { it[xToDateMapKey] = incomeXToDates }
+                            }
                         }
                     }
                 }
-            }
         }
     }
 
@@ -127,6 +127,10 @@ class StatisticChartViewModel(
 
     fun setTimePeriodDialogVisibility(value: Boolean) {
         _statisticChartState.value = _statisticChartState.value.copy(isTimePeriodDialogVisible = value)
+    }
+
+    fun setChartVisibility(value : Boolean){
+        _statisticChartState.value = _statisticChartState.value.copy(isChartVisible = value)
     }
 
     private fun setDataSet(data: Map<LocalDate, Float>) {

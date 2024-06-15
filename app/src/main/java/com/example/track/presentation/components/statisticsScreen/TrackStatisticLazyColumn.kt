@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
 @Composable
-fun TrackStatisticFinder(modifier: Modifier = Modifier) {
+fun TrackStatisticLazyColumn(modifier: Modifier = Modifier) {
     Column(modifier = modifier) {
 
     }
