@@ -37,47 +37,53 @@ class StatisticLazyColumnViewModel(
     val incomeCategoriesList: List<IncomeCategory> = _incomeCategoriesList
 
     suspend fun innitializeListOfEntities(timePeriod: Range<Date>, financialEntities: FinancialEntities) {
-       viewModelScope.launch{
-           async{
-               when (financialEntities) {
-                   is FinancialEntities.IncomeFinancialEntity -> {
-                       incomeListRepositoryImpl.getIncomesInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper).collect {
-                           _listOfFilteredFinancialEntities.clear()
-                           _listOfFilteredFinancialEntities.addAll(it)
-                       }
-                   }
+        viewModelScope.launch {
+            async {
+                when (financialEntities) {
+                    is FinancialEntities.IncomeFinancialEntity -> {
+                        incomeListRepositoryImpl.getIncomesInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper).collect {
+                            _listOfFilteredFinancialEntities.clear()
+                            _listOfFilteredFinancialEntities.addAll(it)
+                        }
+                    }
 
-                   is FinancialEntities.ExpenseFinancialEntity -> {
-                       expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper).collect {
-                           _listOfFilteredFinancialEntities.clear()
-                           _listOfFilteredFinancialEntities.addAll(it)
-                       }
-                   }
+                    is FinancialEntities.ExpenseFinancialEntity -> {
+                        expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper).collect {
+                            _listOfFilteredFinancialEntities.clear()
+                            _listOfFilteredFinancialEntities.addAll(it)
 
-                   is FinancialEntities.Both -> {
-                       val expenseItemsFlow = expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper)
-                       val incomeItemsFlow = incomeListRepositoryImpl.getIncomesInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper)
-                       combine(expenseItemsFlow, incomeItemsFlow) { expenseItems, incomeItems ->
-                           _listOfFilteredFinancialEntities.clear()
-                           _listOfFilteredFinancialEntities.addAll(expenseItems)
-                           _listOfFilteredFinancialEntities.addAll(incomeItems)
-                       }
-                   }
-               }
-           }
-           async{
-               incomesCategoriesListRepositoryImpl.getCategoriesList().collect {
-                   _incomeCategoriesList.clear()
-                   _incomeCategoriesList.addAll(it)
-               }
-           }
-           async{
-               expensesCategoriesListRepository.getCategoriesList().collect {
-                   _expenseCategoriesList.clear()
-                   _expenseCategoriesList.addAll(it)
-               }
-           }
-       }
+                        }
+                    }
+
+                    is FinancialEntities.Both -> {
+                        val expenseItemsFlow =
+                            expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper)
+                        val incomeItemsFlow = incomeListRepositoryImpl.getIncomesInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper)
+                        combine(expenseItemsFlow, incomeItemsFlow) { expenseItems, incomeItems ->
+                            val list = mutableListOf<FinancialEntity>()
+                            list.addAll(expenseItems)
+                            list.addAll(incomeItems)
+                            list
+                        }.collect { listOfFinancialEntities ->
+                            _listOfFilteredFinancialEntities.clear()
+                            _listOfFilteredFinancialEntities.addAll(listOfFinancialEntities.sortedByDescending { it.date.time })
+                        }
+                    }
+                }
+            }
+            async {
+                incomesCategoriesListRepositoryImpl.getCategoriesList().collect {
+                    _incomeCategoriesList.clear()
+                    _incomeCategoriesList.addAll(it)
+                }
+            }
+            async {
+                expensesCategoriesListRepository.getCategoriesList().collect {
+                    _expenseCategoriesList.clear()
+                    _expenseCategoriesList.addAll(it)
+                }
+            }
+        }
     }
 
     suspend fun requestCountInDateRangeNotion(

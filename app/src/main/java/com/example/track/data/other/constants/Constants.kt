@@ -29,3 +29,4 @@ val PERCENTAGE_DECIMAL_FORMAT = DecimalFormat("#.##")
 
 // Other constants
 const val CURRENCIES_PREFERENCE_ID = 1
+const val TAG = "MyLog"

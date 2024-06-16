@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
@@ -19,6 +20,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
@@ -33,6 +35,7 @@ import com.example.track.data.other.converters.toDateRange
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.example.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.example.track.domain.models.abstractLayer.FinancialEntities
+import com.example.track.domain.models.abstractLayer.FinancialEntity
 import com.example.track.domain.models.expenses.ExpenseItem
 import com.example.track.presentation.components.common.ui.FinancialItemCardTypeSimple
 import com.example.track.presentation.states.componentRelated.StatisticChartTimePeriod
@@ -68,7 +71,9 @@ fun TrackStatisticLazyColumn(
             }
         }
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, top = 8.dp),
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -86,7 +91,7 @@ fun TrackStatisticLazyColumn(
             }
         }
         val dateRange by remember {
-            mutableStateOf(
+            derivedStateOf {
                 when (state.value.timePeriod) {
                     is StatisticChartTimePeriod.Week -> {
                         StatisticChartTimePeriod.Week().provideDateRange()
@@ -101,69 +106,75 @@ fun TrackStatisticLazyColumn(
                     }
 
                     is StatisticChartTimePeriod.Other -> {
-                        state.value.specifiedTimePeriod?.toDateRange() ?: StatisticChartTimePeriod.Year()
-                            .provideDateRange() // warning
+                        state.value.specifiedTimePeriod?.toDateRange() ?: StatisticChartTimePeriod.Year().provideDateRange()
                     }
                 }
-            )
+            }
         }
-        LaunchedEffect(key1 = Unit, key2 = state.value) {
+        LaunchedEffect(key1 = Unit, key2 = state.value, key3 = dateRange) {
             statisticLazyColumnViewModel.innitializeListOfEntities(
                 timePeriod = dateRange,
                 financialEntities = state.value.financialEntities
             )
         }
-        LazyColumn(modifier = Modifier.fillMaxWidth(), state = listState) {
-            items(
-                listOfFinancialEntities.size
-            ) { index: Int ->
-                val currentFinancialEntity = listOfFinancialEntities[index]
-                val currentFinancialCategory = if (currentFinancialEntity is ExpenseItem) {
-                    listOfExpenseCategories.find { it.categoryId == currentFinancialEntity.categoryId }
-                } else {
-                    listOfIncomesCategories.find { it.categoryId == currentFinancialEntity.categoryId }
-                }
-                var financialEntityMonthSummary by remember { mutableFloatStateOf(0.0f) }
-                var countOfFinancialEntities by remember { mutableIntStateOf(0) }
-                if (currentFinancialCategory != null) {
-                    LaunchedEffect(key1 = Unit, key2 = state) {
-                        async {
-                            withContext(Dispatchers.IO) {
-                                statisticLazyColumnViewModel.requestSummaryInDateRangeNotion(
-                                    financialEntity = currentFinancialEntity,
-                                    financialCategory = currentFinancialCategory, dateRange = dateRange
-                                ).collect {
-                                    financialEntityMonthSummary = it
+        var selectedFinancialEntity by remember { mutableStateOf<FinancialEntity?>(null) }
+        if (listOfFinancialEntities.isEmpty()) {
+            EmptyStatisticLazyColumnPlacement()
+        } else {
+            LazyColumn(modifier = Modifier.fillMaxWidth(), state = listState) {
+                items(
+                    listOfFinancialEntities.size
+                ) { index: Int ->
+                    val currentFinancialEntity = listOfFinancialEntities[index]
+                    val currentFinancialCategory = if (currentFinancialEntity is ExpenseItem) {
+                        listOfExpenseCategories.find { it.categoryId == currentFinancialEntity.categoryId }
+                    } else {
+                        listOfIncomesCategories.find { it.categoryId == currentFinancialEntity.categoryId }
+                    }
+                    var financialEntityMonthSummary by remember { mutableFloatStateOf(0.0f) }
+                    var countOfFinancialEntities by remember { mutableIntStateOf(0) }
+                    if (currentFinancialCategory != null) {
+                        LaunchedEffect(key1 = Unit, key2 = state) {
+                            async {
+                                withContext(Dispatchers.IO) {
+                                    statisticLazyColumnViewModel.requestSummaryInDateRangeNotion(
+                                        financialEntity = currentFinancialEntity,
+                                        financialCategory = currentFinancialCategory, dateRange = dateRange
+                                    ).collect {
+                                        financialEntityMonthSummary = it
+                                    }
+                                }
+                            }
+                            async {
+                                withContext(Dispatchers.IO) {
+                                    statisticLazyColumnViewModel.requestCountInDateRangeNotion(
+                                        financialEntity = currentFinancialEntity,
+                                        financialCategory = currentFinancialCategory,
+                                        dateRange = dateRange
+                                    ).collect {
+                                        countOfFinancialEntities = it
+                                    }
                                 }
                             }
                         }
-                        async {
-                            withContext(Dispatchers.IO) {
-                                statisticLazyColumnViewModel.requestCountInDateRangeNotion(
-                                    financialEntity = currentFinancialEntity,
-                                    financialCategory = currentFinancialCategory,
-                                    dateRange = dateRange
-                                ).collect {
-                                    countOfFinancialEntities = it
-                                }
+                        FinancialItemCardTypeSimple(
+                            financialEntity = currentFinancialEntity,
+                            categoryEntity = currentFinancialCategory,
+                            expanded = false,
+                            preferableCurrency = state.value.preferableCurrency,
+                            financialEntityMonthSummary = financialEntityMonthSummary,
+                            countOfFinancialEntities = countOfFinancialEntities
+                        ) {
+                            selectedFinancialEntity = if (currentFinancialEntity == selectedFinancialEntity) {
+                                null
+                            } else {
+                                currentFinancialEntity
                             }
                         }
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
-
-                    FinancialItemCardTypeSimple(
-                        financialEntity = currentFinancialEntity,
-                        categoryEntity = currentFinancialCategory,
-                        expanded = false,
-                        preferableCurrency = state.value.preferableCurrency,
-                        financialEntityMonthSummary = financialEntityMonthSummary,
-                        countOfFinancialEntities = countOfFinancialEntities
-                    ) {
-
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
-
         }
     }
 }

@@ -72,8 +72,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
         TrackStatisticLazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(3f)
-                .padding(8.dp),
+                .weight(3f),
             chartViewModel = chartViewModel,
             statisticLazyColumnViewModel = statisticLazyColumnViewModel
         )
