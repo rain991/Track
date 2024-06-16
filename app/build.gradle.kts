@@ -1,10 +1,13 @@
- plugins {
+import java.util.Properties
+
+plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
 }
 
 android {
+    android.buildFeatures.buildConfig = true
     namespace = "com.example.track"
     compileSdk = 34
 
@@ -19,6 +22,11 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+
+        val properties = Properties()
+        properties.load(project.rootProject.file("local.properties").inputStream())
+        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
+
     }
     buildTypes {
         release {
@@ -75,12 +83,12 @@ dependencies {
     //koin DI
     implementation("io.insert-koin:koin-core:$koinVersion")
     implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation ("io.insert-koin:koin-androidx-compose:$koinVersion")
-    implementation ("io.insert-koin:koin-androidx-workmanager:$koinVersion")
+    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
+    implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
 
     //retrofit
-    implementation ("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation ("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
 
     //compose
 

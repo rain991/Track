@@ -12,7 +12,6 @@ data class Savings(
     override val completed: Boolean,
     override val startDate: Date,
     override val endDate: Date?,
-    val includedInBudget : Boolean,
     val label : String,
     val value : Float
 ) : Idea()

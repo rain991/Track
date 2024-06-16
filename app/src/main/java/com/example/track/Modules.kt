@@ -25,7 +25,6 @@ import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
 import com.example.track.data.implementations.ideas.ExpenseLimitsCardRepositoryImpl
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.implementations.ideas.IncomePlanCardRepositoryImpl
-import com.example.track.data.implementations.ideas.SavingsCardRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeCoreRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeItemRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
@@ -100,7 +99,6 @@ val appModule = module {
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
     single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
     single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get(), get(), get(), get()) }
-    single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get()) }
 
     // Statistic related
     single<ChartsRepositoryImpl> { ChartsRepositoryImpl(get(), get(), get(), get()) }

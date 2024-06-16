@@ -45,7 +45,6 @@ class NewIdeaDialogViewModel(private val ideaListRepositoryImpl: IdeaListReposit
                         completed = false,
                         startDate = convertLocalDateToDate(LocalDate.now()),
                         endDate = newIdeaDialogState.value.endDate,
-                        includedInBudget = newIdeaDialogState.value.includedInBudget!!,
                         label = newIdeaDialogState.value.label ?: "",
                         value = 0f
                     )
@@ -110,7 +109,6 @@ class NewIdeaDialogViewModel(private val ideaListRepositoryImpl: IdeaListReposit
         _isNewIdeaDialogVisible.value = value
         if (value) {
             setTypeSelected(IdeaSelectorTypes.Savings)
-            setIncludedInBudget(true)
             setEndDate(null)
         }
     }
@@ -183,10 +181,6 @@ class NewIdeaDialogViewModel(private val ideaListRepositoryImpl: IdeaListReposit
 
     fun setWarningMessage(value: String) {
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(warningMessage = value)
-    }
-
-    fun setIncludedInBudget(value: Boolean) {
-        _newIdeaDialogState.value = newIdeaDialogState.value.copy(includedInBudget = value)
     }
 
     fun setLabel(label: String) {

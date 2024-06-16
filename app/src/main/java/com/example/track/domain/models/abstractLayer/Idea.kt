@@ -35,7 +35,6 @@ fun Idea.createCompletedInstance(): Idea {
             goal = this.goal,
             startDate = this.startDate,
             endDate = this.endDate,
-            includedInBudget = this.includedInBudget,
             label = this.label,
             value = this.value
         )

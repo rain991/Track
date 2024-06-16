@@ -3,7 +3,6 @@ package com.example.track.data.other.constants
 import java.text.DecimalFormat
 
 // Retrofit
-const val API_KEY = "88441b2e585647a7842c35c23251558f"
 const val CURRENCY_CALL_URL_DEFAULT = "https://api.currencyfreaks.com"
 
 // Track defaults
