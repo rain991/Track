@@ -37,6 +37,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
@@ -143,26 +144,25 @@ private fun LoginHeader() {
             contentScale = ContentScale.FillBounds,
             colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary)
         )
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.offset(5.dp, (-75).dp)) {
-            Row(
-                modifier = Modifier.padding(top = 5.dp),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
+        Box(contentAlignment = Alignment.Center, modifier = Modifier.offset(0.dp, (-75).dp)) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
-                    modifier = Modifier.size(68.dp),
+                    modifier = Modifier.size(64.dp),
                     painter = painterResource(id = R.drawable.onlyicon),
                     contentDescription = stringResource(id = R.string.app_logo)
                 )
-                Spacer(modifier = Modifier.width(12.dp))
-                Column {
+                Spacer(modifier = Modifier.width(16.dp))
+                Column(modifier = Modifier
+                    .padding(vertical = 8.dp)
+                    .wrapContentWidth()) {
                     Text(
                         text = stringResource(id = R.string.app_name),
                         style = MaterialTheme.typography.titleMedium
                     )
                     Text(
                         text = stringResource(id = R.string.logo_app_description),
-                        style = MaterialTheme.typography.bodyMedium,
-                        minLines = 2
+                        style = MaterialTheme.typography.titleSmall,
+                        textAlign = TextAlign.Center
                     )
                 }
             }

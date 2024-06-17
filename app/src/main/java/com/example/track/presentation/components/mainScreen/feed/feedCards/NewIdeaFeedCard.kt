@@ -31,7 +31,7 @@ fun NewIdeaFeedCard(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            TextButton(onClick = {}) {
+            TextButton(onClick = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(true)}) {
                 Text(
                     stringResource(R.string.new_idea_main_screen_feed),
                     style = MaterialTheme.typography.headlineSmall

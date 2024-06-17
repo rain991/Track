@@ -1,9 +1,8 @@
 package com.example.track.data.core
 
+import android.util.Range
 import com.example.track.data.implementations.expenses.ExpensesCoreRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeCoreRepositoryImpl
-import com.example.track.data.other.converters.getEndOfTheMonth
-import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.abstractLayer.FinancialEntity
 import com.example.track.domain.models.expenses.ExpenseCategory
@@ -12,15 +11,19 @@ import com.example.track.domain.models.incomes.IncomeCategory
 import com.example.track.domain.models.incomes.IncomeItem
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
+import java.util.Date
 
 class FinancialCardNotesProvider(
     private val expenseCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
     private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl
 ) {
-    // used in financial cards
-    suspend fun requestCountInMonthNotionForFinancialCard(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Flow<Int> {
-        val startDate = getStartOfMonthDate(financialEntity.date)
-        val endDate = getEndOfTheMonth(financialEntity.date)
+    suspend fun requestCountNotionForFinancialCard(
+        financialEntity: FinancialEntity,
+        financialCategory: CategoryEntity,
+        timeSpan: Range<Date>
+    ): Flow<Int> {
+        val startDate = timeSpan.lower
+        val endDate = timeSpan.upper
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
             val result = expenseCoreRepositoryImpl.getCountOfExpensesInSpanByCategoriesIds(
                 startDate = startDate,
@@ -39,14 +42,13 @@ class FinancialCardNotesProvider(
             return emptyFlow()
         }
     }
-
-    // used in financial cards
-    suspend fun requestValueSummaryForMonthNotion(
+    suspend fun requestValueSummaryNotionForFinancialCard(
         financialEntity: FinancialEntity,
-        financialCategory: CategoryEntity
+        financialCategory: CategoryEntity,
+        timeSpan: Range<Date>
     ): Flow<Float> {
-        val startDate = getStartOfMonthDate(financialEntity.date)
-        val endDate = getEndOfTheMonth(financialEntity.date)
+        val startDate = timeSpan.lower
+        val endDate = timeSpan.upper
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
             val result =
                 expenseCoreRepositoryImpl.getSumOfExpensesByCategories(

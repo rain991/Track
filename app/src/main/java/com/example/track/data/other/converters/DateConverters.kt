@@ -1,5 +1,6 @@
 package com.example.track.data.other.converters
 
+import android.util.Range
 import java.time.LocalDate
 import java.time.ZoneId
 import java.util.Date
@@ -13,4 +14,14 @@ fun convertLocalDateToDate(localDate: LocalDate): Date {
     val zoneId: ZoneId = ZoneId.systemDefault()
     val instant = localDate.atStartOfDay().atZone(zoneId).toInstant()
     return Date.from(instant)
+}
+
+fun LocalDate.toDate(): Date {
+    return Date.from(this.atStartOfDay(ZoneId.systemDefault()).toInstant())
+}
+
+fun Range<LocalDate>.toDateRange(): Range<Date> {
+    val lowerDate = this.lower.toDate()
+    val upperDate = this.upper.toDate()
+    return Range(lowerDate, upperDate)
 }

@@ -7,6 +7,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -26,7 +27,7 @@ import org.koin.androidx.compose.koinViewModel
 fun IdeasListSettingsScreen(navController: NavHostController) {
     val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val isNewIdeaDialogVisible = newIdeaDialogViewModel.isNewIdeaDialogVisible.collectAsState()
-    androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
+    Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             SettingsSpecifiedScreenHeader("Ideas"){
                 navController.navigate(Screen.MainScreen.route)

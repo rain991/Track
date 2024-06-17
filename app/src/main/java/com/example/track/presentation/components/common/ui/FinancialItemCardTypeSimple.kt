@@ -30,9 +30,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableFloatStateOf
-import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -50,16 +47,13 @@ import com.example.track.data.implementations.currencies.CurrencyListRepositoryI
 import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.example.track.data.other.converters.formatDateWithoutYear
-import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.abstractLayer.FinancialEntity
 import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.currency.CurrencyTypes
 import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.presentation.components.common.parser.parseColor
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
 import java.util.Calendar
 import java.util.Locale
@@ -69,11 +63,12 @@ import java.util.Locale
 @Composable
 fun FinancialItemCardTypeSimple(
     financialEntity: FinancialEntity,
-    expanded: Boolean,
-    isExpenseLazyColumn : Boolean,
     categoryEntity: CategoryEntity,
+    expanded: Boolean,
+    financialEntityMonthSummary: Float,
+    countOfFinancialEntities: Int,
     preferableCurrency: Currency,
-    expenseAndIncomeLazyColumnViewModel: ExpenseAndIncomeLazyColumnViewModel
+    onClick: () -> Unit
 ) {
     val locale = Locale.getDefault()
     val density = LocalDensity.current
@@ -84,7 +79,7 @@ fun FinancialItemCardTypeSimple(
             .animateContentSize()
             .height(if (expanded) 150.dp else 100.dp)
             .padding(vertical = 8.dp)
-            .clickable { expenseAndIncomeLazyColumnViewModel.setExpandedExpenseCard(if (expanded) null else financialEntity) },
+            .clickable { onClick()   /*expenseAndIncomeLazyColumnViewModel.setExpandedExpenseCard(if (expanded) null else financialEntity) */ },
         shape = MaterialTheme.shapes.medium
     ) {
         Column(
@@ -121,24 +116,13 @@ fun FinancialItemCardTypeSimple(
                             Arrangement.Start
                         }
                     ) {
-                        val financialEntityMonthSummary = remember { mutableFloatStateOf(0.0f) }
-                        LaunchedEffect(key1 = Unit, key2 = isExpenseLazyColumn) {
-                            withContext(Dispatchers.IO) {
-                                expenseAndIncomeLazyColumnViewModel.requestSummaryInMonthNotion(
-                                    financialEntity = financialEntity,
-                                    financialCategory = categoryEntity
-                                ).collect {
-                                    financialEntityMonthSummary.floatValue = it
-                                }
-                            }
-                        }
                         val resultedNotion = if (!expanded) {
                             formatDateWithoutYear(financialEntity.date)
                         } else {
                             if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                                FIAT_DECIMAL_FORMAT.format(financialEntityMonthSummary.floatValue)
+                                FIAT_DECIMAL_FORMAT.format(financialEntityMonthSummary)
                             } else {
-                                CRYPTO_DECIMAL_FORMAT.format(financialEntityMonthSummary.floatValue)
+                                CRYPTO_DECIMAL_FORMAT.format(financialEntityMonthSummary)
                             }
                         }
                         AnimatedContent(targetState = resultedNotion, label = "horizontalTextChange", transitionSpec = {
@@ -197,17 +181,6 @@ fun FinancialItemCardTypeSimple(
                         ) + fadeIn(
                             initialAlpha = 0.3f
                         ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
-                            val countOfFinancialEntities = remember { mutableIntStateOf(0) }
-                            LaunchedEffect(key1 = Unit) {
-                                withContext(Dispatchers.IO) {
-                                    expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
-                                        financialEntity = financialEntity,
-                                        financialCategory = categoryEntity
-                                    ).collect {
-                                        countOfFinancialEntities.intValue = it
-                                    }
-                                }
-                            }
                             Text(
                                 text = buildAnnotatedString {
                                     withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
@@ -226,7 +199,7 @@ fun FinancialItemCardTypeSimple(
                                             fontWeight = FontWeight.SemiBold
                                         )
                                     ) {
-                                        append(countOfFinancialEntities.intValue.toString())
+                                        append(countOfFinancialEntities.toString())
                                     }
                                 },
                                 style = MaterialTheme.typography.bodyMedium,

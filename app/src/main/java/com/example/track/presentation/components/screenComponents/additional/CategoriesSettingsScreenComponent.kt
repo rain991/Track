@@ -11,12 +11,15 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -39,7 +42,7 @@ import com.example.track.presentation.components.common.parser.parseColor
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun CategoriesSettingsScreenComponent(viewModel : CategoriesSettingsScreenViewModel) {
+fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewModel) {
     val listOfIncomeCategories = viewModel.listOfIncomesCategories
     val listOfExpensesCategories = viewModel.listOfExpensesCategories
     var isContextMenuVisible by rememberSaveable {
@@ -50,60 +53,83 @@ fun CategoriesSettingsScreenComponent(viewModel : CategoriesSettingsScreenViewMo
     }
     Column(
         modifier = Modifier
-            .fillMaxSize().padding(8.dp)
+            .fillMaxSize()
+            .padding(8.dp)
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(8.dp))
         Text(text = "Create, delete and find your categories", style = MaterialTheme.typography.bodyMedium)
         Spacer(modifier = Modifier.height(8.dp))
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(text = "Expense categories", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
-        }
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+        Card(
+            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
-            listOfExpensesCategories.forEach { currentExpenseCategory ->
-                CategorySettingsChip(category = currentExpenseCategory) {
-                    isContextMenuVisible = true
-                    currentSelectedCategory = currentExpenseCategory
+            Column(modifier = Modifier.padding(8.dp)) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    Text(text = "Expense categories", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
                 }
-                if (currentSelectedCategory == currentExpenseCategory) {
-                    Box{
-                        DropdownMenu(expanded = isContextMenuVisible, onDismissRequest = { isContextMenuVisible = false }, modifier = Modifier.padding(4.dp)) {
-                            Text(
-                                text = "delete",
-                                modifier = Modifier.pointerInput(key1 = true) { viewModel.deleteCategory(currentExpenseCategory) })
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    listOfExpensesCategories.forEach { currentExpenseCategory ->
+                        CategorySettingsChip(category = currentExpenseCategory) {
+                            isContextMenuVisible = true
+                            currentSelectedCategory = currentExpenseCategory
                         }
+                        if (currentSelectedCategory == currentExpenseCategory) {
+                            Box {
+                                DropdownMenu(
+                                    expanded = isContextMenuVisible,
+                                    onDismissRequest = { isContextMenuVisible = false },
+                                    modifier = Modifier.padding(4.dp)
+                                ) {
+                                    Text(
+                                        text = "delete",
+                                        modifier = Modifier.pointerInput(key1 = true) { viewModel.deleteCategory(currentExpenseCategory) })
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            Text(text = "Income categories", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
-        }
-        FlowRow(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceAround,
-            verticalArrangement = Arrangement.spacedBy(4.dp)
+        Card(
+           elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
+            modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
-            listOfIncomeCategories.forEach { currentIncomeCategory ->
-                CategorySettingsChip(category = currentIncomeCategory) {
-                    isContextMenuVisible = true
-                    currentSelectedCategory = currentIncomeCategory
+            Column(modifier = Modifier.padding(8.dp)) {
+                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                    Text(text = "Income categories", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
                 }
-                if (currentSelectedCategory == currentIncomeCategory) {
-                    Box {
-                        DropdownMenu(expanded = isContextMenuVisible, onDismissRequest = { isContextMenuVisible = false }, modifier = Modifier.padding(4.dp)) {
-                            Text(
-                                text = "delete",
-                                modifier = Modifier.pointerInput(key1 = true) { viewModel.deleteCategory(currentIncomeCategory) })
+                FlowRow(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
+                    listOfIncomeCategories.forEach { currentIncomeCategory ->
+                        CategorySettingsChip(category = currentIncomeCategory) {
+                            isContextMenuVisible = true
+                            currentSelectedCategory = currentIncomeCategory
                         }
+                        if (currentSelectedCategory == currentIncomeCategory) {
+                            Box {
+                                DropdownMenu(
+                                    expanded = isContextMenuVisible,
+                                    onDismissRequest = { isContextMenuVisible = false },
+                                    modifier = Modifier.padding(4.dp)
+                                ) {
+                                    Text(
+                                        text = "delete",
+                                        modifier = Modifier.pointerInput(key1 = true) { viewModel.deleteCategory(currentIncomeCategory) })
+                                }
+                            }
+                        }
+                        Spacer(modifier = Modifier.width(8.dp))
                     }
                 }
-
             }
         }
     }

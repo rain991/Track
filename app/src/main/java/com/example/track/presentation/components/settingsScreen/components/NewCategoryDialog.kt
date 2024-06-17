@@ -72,7 +72,7 @@ fun NewCategoryDialog(
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    Column(modifier = Modifier.weight(0.64f), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                    Column(modifier = Modifier.weight(0.64f), verticalArrangement = Arrangement.spacedBy(16.dp)) {
                         val options = listOf(CategoriesTypes.ExpenseCategory, CategoriesTypes.IncomeCategory)
                         Row {
                             SingleChoiceSegmentedButtonRow(
@@ -88,7 +88,6 @@ fun NewCategoryDialog(
                                     ) {
                                         Text(
                                             text = categoryType.name,
-                                            maxLines = 1,
                                             style = MaterialTheme.typography.labelMedium,
                                             overflow = TextOverflow.Ellipsis
                                         )

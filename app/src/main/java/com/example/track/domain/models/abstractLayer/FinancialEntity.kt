@@ -11,3 +11,9 @@ abstract class FinancialEntity {
     abstract val disabled: Boolean
     abstract val categoryId: Int
 }
+
+sealed class FinancialEntities(val name: String) {
+    class ExpenseFinancialEntity : FinancialEntities(name = "Expense")
+    class IncomeFinancialEntity : FinancialEntities(name = "Income")
+    class Both : FinancialEntities(name = "Both")
+}

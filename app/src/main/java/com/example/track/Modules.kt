@@ -1,6 +1,6 @@
 package com.example.track
 
-import com.example.track.data.core.ChartHandler
+import com.example.track.data.core.ChartDataProvider
 import com.example.track.data.core.CurrenciesRatesHandler
 import com.example.track.data.core.FinancialCardNotesProvider
 import com.example.track.data.core.PersonalStatsProvider
@@ -25,7 +25,6 @@ import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
 import com.example.track.data.implementations.ideas.ExpenseLimitsCardRepositoryImpl
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.implementations.ideas.IncomePlanCardRepositoryImpl
-import com.example.track.data.implementations.ideas.SavingsCardRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeCoreRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeItemRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
@@ -49,7 +48,8 @@ import com.example.track.data.viewmodels.settingsScreen.NewCategoryViewModel
 import com.example.track.data.viewmodels.settingsScreen.PersonalSettingsScreenViewmodel
 import com.example.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
 import com.example.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
-import com.example.track.data.viewmodels.statistics.StatisticsViewModel
+import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
+import com.example.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
 import com.example.track.domain.usecases.expensesRelated.categoriesusecases.EditCategoryUseCase
@@ -73,7 +73,7 @@ val settingsModule = module {
 val coreModule = module {
     single<CurrenciesRatesHandler> { CurrenciesRatesHandler(get(), get()) }
     single<FinancialCardNotesProvider> { FinancialCardNotesProvider(get(), get()) }
-    single<ChartHandler> { ChartHandler() }
+    single<ChartDataProvider> { ChartDataProvider(get(), get(), get(), get()) }
     single<PersonalStatsProvider> { PersonalStatsProvider(get(), get(), get()) }
 }
 
@@ -99,7 +99,6 @@ val appModule = module {
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
     single<ExpenseLimitsCardRepositoryImpl> { ExpenseLimitsCardRepositoryImpl(get()) }
     single<IncomePlanCardRepositoryImpl> { IncomePlanCardRepositoryImpl(get(), get(), get(), get()) }
-    single<SavingsCardRepositoryImpl> { SavingsCardRepositoryImpl(get(), get()) }
 
     // Statistic related
     single<ChartsRepositoryImpl> { ChartsRepositoryImpl(get(), get(), get(), get()) }
@@ -107,19 +106,26 @@ val appModule = module {
 }
 
 val databaseModule = module {
-    // Dao objects
-    single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
+    // Income related
+    single<IncomeDao> { ExpensesDB.getInstance(androidContext()).incomeDao }
+    single<IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao }
     single<IncomeCategoryDao> { ExpensesDB.getInstance(androidContext()).incomeCategoryDao }
+
+    // Expense related
     single<ExpenseItemsDAO> { ExpensesDB.getInstance(androidContext()).expenseItemsDao }
     single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
-    single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
-    single<SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao }
-    single<IncomeDao> { ExpensesDB.getInstance(androidContext()).incomeDao }
     single<ExpenseLimitsDao> { ExpensesDB.getInstance(androidContext()).expenseLimitsDao }
-    single<IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao }
+
+    // Currencies
+    single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
+    single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
+
+    // Savings idea
+    single<SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao }
 }
 
 val domainModule = module {
+    /* Use cases will be reworked soon */
     factory<AddExpensesItemUseCase> { AddExpensesItemUseCase(get()) }
     factory<DeleteExpenseItemUseCase> { DeleteExpenseItemUseCase(get()) }
     factory<EditExpenseItemUseCase> { EditExpenseItemUseCase(get()) }
@@ -131,21 +137,39 @@ val domainModule = module {
 }
 
 val viewModelModule = module {
+    // Login related
     viewModel { LoginViewModel(get(), get(), get()) }
-    viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
-    viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get(), get()) }
-    viewModel { TrackScreenFeedViewModel(get()) }
+
+    // Settings related
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
-    viewModel { BudgetIdeaCardViewModel(get(), get()) }
-    viewModel { StatisticsViewModel(get(), get()) }
-    viewModel { TrackScreenInfoCardsViewModel(get(), get(), get()) }
-    viewModel { AddToSavingIdeaDialogViewModel(get(), get(), get()) }
     viewModel { IdeasListSettingsScreenViewModel(get()) }
-    viewModel { NewIdeaDialogViewModel(get()) }
     viewModel { ThemePreferenceSettingsViewModel(get()) }
     viewModel { CategoriesSettingsScreenViewModel(get(), get()) }
-    viewModel { TrackScreenManagerViewModel() }
     viewModel { NewCategoryViewModel(get(), get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get()) }
-    viewModel { PersonalStatsViewModel(get(),get()) }
+    viewModel { PersonalStatsViewModel(get(), get()) }
+
+    // Track main screen related
+    viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get(), get()) }
+
+    // Statistics related
+    viewModel { StatisticChartViewModel(get(), get()) }
+    viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get()) }
+
+    // Bottom sheets
+    viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
+
+    // Feed related
+    viewModel { TrackScreenFeedViewModel(get()) }
+    viewModel { TrackScreenInfoCardsViewModel(get(), get(), get()) }
+
+    // Ideas related
+    viewModel { BudgetIdeaCardViewModel(get(), get()) }
+
+    // Dialogs related
+    viewModel { AddToSavingIdeaDialogViewModel(get(), get(), get()) }
+    viewModel { NewIdeaDialogViewModel(get()) }
+
+    // Other
+    viewModel { TrackScreenManagerViewModel() }
 }

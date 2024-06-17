@@ -10,20 +10,27 @@ import java.util.Date
 class ExpensesListRepositoryImpl(
     private val expenseItemsDao: ExpenseItemsDAO
 ) : ExpensesListRepository {
-    override fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: ExpenseCategory): List<ExpenseItem> {
-        return expenseItemsDao.findExpensesInTimeSpan(start = startOfSpan.time, end = endOfSpan.time, categoryId = category.categoryId)
-    }
     override fun getExpensesList(): Flow<List<ExpenseItem>> {
         return expenseItemsDao.getAll()
     }
+
+    override fun getExpensesListInTimeSpanDateDesc(startOfSpan: Date, endOfSpan: Date): Flow<List<ExpenseItem>> {
+        return expenseItemsDao.getExpensesInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time)
+    }
+
     override fun getExpensesByIds(listOfIds: List<Int>): List<ExpenseItem> {
         return expenseItemsDao.getExpensesByIds(listOfIds)
     }
+
     override fun getSortedExpensesListDateAsc(): Flow<List<ExpenseItem>> {
         return expenseItemsDao.getAllWithDateAsc()
     }
 
     override fun getSortedExpensesListDateDesc(): Flow<List<ExpenseItem>> {
         return expenseItemsDao.getAllWithDateDesc()
+    }
+
+    override fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: ExpenseCategory): List<ExpenseItem> {
+        return expenseItemsDao.findExpensesInTimeSpan(start = startOfSpan.time, end = endOfSpan.time, categoryId = category.categoryId)
     }
 }

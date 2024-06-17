@@ -12,7 +12,7 @@ import androidx.navigation.NavHostController
 import com.example.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.example.track.presentation.screens.Core.MainTrackScreen
 import com.example.track.presentation.screens.Core.SettingsExpenseScreen
-import com.example.track.presentation.screens.Core.StatisticScreenPlaceholder
+import com.example.track.presentation.screens.Core.StatisticsScreen
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -31,7 +31,7 @@ fun TrackScreenManager(navHostController: NavHostController) {
             when (page) {
                 0 -> SettingsExpenseScreen(navHostController)
                 1 -> MainTrackScreen()
-                2 -> StatisticScreenPlaceholder()
+                2 -> StatisticsScreen()
             }
         }
     }

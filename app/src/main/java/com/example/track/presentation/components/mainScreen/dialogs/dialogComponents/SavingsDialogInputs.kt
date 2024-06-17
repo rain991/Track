@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.Button
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -41,17 +40,6 @@ fun SavingsDialogInputs(
                 newIdeaDialogViewModel.setLabel(it)
             }
         }
-    }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(text = "Included in budget")
-        Spacer(modifier = Modifier.width(8.dp))
-        Switch(
-            checked = newIdeaDialogState.includedInBudget ?: true,
-            onCheckedChange = { it -> newIdeaDialogViewModel.setIncludedInBudget(it) })
     }
     Spacer(modifier = Modifier.height(4.dp))
     Row(
