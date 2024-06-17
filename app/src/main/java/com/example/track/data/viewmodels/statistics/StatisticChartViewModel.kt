@@ -90,7 +90,6 @@ class StatisticChartViewModel(
                 .collect { pairOfChartData ->
                     val expenseChartData = pairOfChartData.first
                     val incomeChartData = pairOfChartData.second
-                    Log.d("Mylog", "initializeValues: ${expenseChartData.values.size}  incomeChartData : ${incomeChartData.values.size}")
                     setDataSet(expenseChartData)
                     setAdditionalData(incomeChartData)
                     val expenseXToDates = expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }

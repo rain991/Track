@@ -53,9 +53,6 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
             StatisticChartTimePeriod.Year(),
             StatisticChartTimePeriod.Other()
         )
-    LaunchedEffect(key1 = chartState) {
-        Log.d("MyLog", "TrackStatisticChartOptionsSelector: chart state : ${chartState.value}")
-    }
     Card(elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp), modifier = Modifier.padding(8.dp)) {
         Row(
             modifier = Modifier

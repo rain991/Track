@@ -71,9 +71,9 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
             modifier = Modifier.padding(8.dp)
         ) {
             val chartColors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary)
-            if (chartData.isEmpty()) {
+            if (chartData.size <= 1) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "We have not found data for specified filters", style = MaterialTheme.typography.titleSmall)
+                    Text(text = "We have not enough data to build a chart", style = MaterialTheme.typography.titleSmall)
                 }
             } else {
                 ProvideVicoTheme(theme = rememberM3VicoTheme()) {

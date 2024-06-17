@@ -1,6 +1,5 @@
 package com.example.track.data.implementations.ideas
 
-import android.util.Log
 import com.example.track.data.core.CurrenciesRatesHandler
 import com.example.track.data.database.ideaRelated.ExpenseLimitsDao
 import com.example.track.data.database.ideaRelated.IncomePlansDao
@@ -38,14 +37,16 @@ class IdeaListRepositoryImpl(
     }
 
     override suspend fun updateIdea(idea: Idea) {
-        when(idea){
-            is ExpenseLimits ->{
+        when (idea) {
+            is ExpenseLimits -> {
                 expenseLimitsDao.update(idea)
             }
-            is IncomePlans ->{
+
+            is IncomePlans -> {
                 incomePlansDao.update(idea)
             }
-            is Savings ->{
+
+            is Savings -> {
                 savingsDao.update(idea)
             }
         }
@@ -76,15 +77,12 @@ class IdeaListRepositoryImpl(
                     } else {
                         val relatedGroups =
                             listOfNotNull(idea.firstRelatedCategoryId, idea.secondRelatedCategoryId, idea.thirdRelatedCategoryId)
-                        Log.d("MyLog", "getCompletionValue: related groups ${relatedGroups.size}")
                         expensesCoreRepositoryImpl.getSumOfExpensesByCategories(idea.startDate.time, currentTimeMillis, relatedGroups)
                             .collect {
-                                Log.d("MyLog", "getCompletionValue: getSumOfExpensesByCategories $it")
                                 send(it)
                             }
                     }
                 }
-
                 is IncomePlans -> {
                     incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
                         idea.startDate,

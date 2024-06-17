@@ -183,6 +183,6 @@ fun TrackStatisticLazyColumn(
 @Composable
 private fun EmptyStatisticLazyColumnPlacement() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "We have not found any financial operations", style = MaterialTheme.typography.titleSmall)
+        Text(text = "We have not found financial operations for specified filters", style = MaterialTheme.typography.titleSmall)
     }
 }

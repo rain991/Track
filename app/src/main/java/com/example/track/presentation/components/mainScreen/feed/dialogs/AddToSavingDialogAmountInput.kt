@@ -53,7 +53,13 @@ fun AddToSavingDialogAmountInput(
             ),
             value = currentValue.toString(),
             onValueChange = { newText: String ->
-                onValueChange(newText.toFloat())
+                onValueChange(
+                    try {
+                        newText.toFloat()
+                    } catch (e: NumberFormatException) {
+                        currentValue
+                    }
+                )
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(

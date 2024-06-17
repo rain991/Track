@@ -97,7 +97,11 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
                     keyboardType = KeyboardType.Decimal,
                     label = "New budget in ${preferableCurrency.value.ticker}"
                 ) {
-                    editableBudget = it.toFloat()
+                    editableBudget = try {
+                        it.toFloat()
+                    } catch (e: NumberFormatException) {
+                        budget.value
+                    }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(

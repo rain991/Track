@@ -6,7 +6,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -37,8 +36,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
-import androidx.compose.material3.TextField
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -50,7 +47,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
@@ -67,6 +63,7 @@ import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.presentation.components.bottomSheet.composables.AmountInput
 import com.example.track.presentation.components.common.ui.CategoryChip
 import com.example.track.presentation.components.common.ui.CustomDatePicker
+import com.example.track.presentation.components.other.GradientInputTextField
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -270,21 +267,11 @@ private fun OutlinedTextField(label: String) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val text = bottomSheetViewState.value.note
-    TextField(
-        value = text,
-        onValueChange = { bottomSheetViewModel.setNote(it) },
-        label = { Text(label) },
-        maxLines = 1,
-        modifier = Modifier
-            .padding(horizontal = 8.dp)
-            .border(
-                width = 2.dp,
-                brush = Brush.horizontalGradient(listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.secondary)),
-                shape = RoundedCornerShape(4.dp)
-            ),
-        colors = TextFieldDefaults.colors().copy(unfocusedContainerColor = MaterialTheme.colorScheme.background)
-    )
-
+    Box(modifier = Modifier.padding(start = 8.dp)){
+        GradientInputTextField(value = text, label = label) {
+            bottomSheetViewModel.setNote(it)
+        }
+    }
 }
 
 

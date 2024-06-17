@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -90,7 +91,7 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                         .weight(0.36f)
                         .fillMaxHeight(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    androidx.compose.material3.Button(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(savings) }) {
+                    Button(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(savings) }) {
                         Text(text = "Add")
                     }
                 }

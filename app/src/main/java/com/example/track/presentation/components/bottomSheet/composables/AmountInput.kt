@@ -39,7 +39,7 @@ fun AmountInput(
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
-    val currentExpense = bottomSheetViewState.value.inputExpense
+    val currentInputValue = bottomSheetViewState.value.inputExpense
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -55,9 +55,15 @@ fun AmountInput(
                 letterSpacing = 1.3.sp,
                 color = MaterialTheme.colorScheme.onPrimaryContainer
             ),
-            value = currentExpense.toString(),
+            value = currentInputValue.toString(),
             onValueChange = { newText ->
-                bottomSheetViewModel.setInputExpense(newText.toFloat())
+                bottomSheetViewModel.setInputExpense(
+                    try {
+                        newText.toFloat()
+                    } catch (e: NumberFormatException) {
+                        currentInputValue ?: 0.0f
+                    }
+                )
             },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(
