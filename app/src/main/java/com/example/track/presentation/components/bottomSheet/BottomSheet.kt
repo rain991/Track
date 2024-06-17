@@ -57,7 +57,6 @@ import androidx.compose.ui.unit.sp
 import com.example.track.R
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.converters.convertDateToLocalDate
-import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.common.BottomSheetViewModel
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.presentation.components.bottomSheet.composables.AmountInput
@@ -72,7 +71,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(dataStoreManager: DataStoreManager) {
+fun BottomSheet() {
     val context = LocalContext.current
     val warningMessage = stringResource(id = R.string.warning_bottom_sheet_exp)
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()

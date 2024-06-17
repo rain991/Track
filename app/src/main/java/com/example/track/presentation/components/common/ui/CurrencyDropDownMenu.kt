@@ -1,6 +1,8 @@
 package com.example.track.presentation.components.common.ui
 
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.IntrinsicSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -44,6 +46,7 @@ fun CurrencyDropDownMenu(currencyList: List<Currency>, selectedOption: Currency,
             modifier = Modifier.menuAnchor()
         )
         ExposedDropdownMenu(
+            modifier = Modifier.width(IntrinsicSize.Min),
             expanded = isExpanded,
             onDismissRequest = {
                 isExpanded = false

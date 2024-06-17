@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.example.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.example.track.presentation.components.bottomSheet.BottomSheet
@@ -31,7 +30,6 @@ import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import java.time.LocalDate
 
 
@@ -39,7 +37,6 @@ import java.time.LocalDate
 fun StatisticsScreenComponent(innerPadding: PaddingValues) {
     val chartViewModel = koinViewModel<StatisticChartViewModel>()
     val statisticLazyColumnViewModel = koinViewModel<StatisticLazyColumnViewModel>()
-    val settingsData = koinInject<DataStoreManager>()
     val state = chartViewModel.statisticChartState.collectAsState()
     if (state.value.isTimePeriodDialogVisible) {
         CustomDateRangePicker(
@@ -56,7 +53,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             .padding(horizontal = 8.dp)
             .animateContentSize()
     ) {
-        BottomSheet(dataStoreManager = settingsData)
+        BottomSheet()
         AnimatedVisibility(
             visible = state.value.isChartVisible, modifier = Modifier.weight(2f),
             enter = slideInVertically(initialOffsetY = { fullHeight -> -fullHeight }) + fadeIn(),

@@ -15,7 +15,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 /*  Statistic screen shows user achievments and useful stats for specific period of time. Also shows chart  */
 @Composable
-fun StatisticsScreen() {
+fun StatisticsTrackScreen() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)

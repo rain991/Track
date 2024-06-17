@@ -4,8 +4,10 @@ package com.example.track.presentation.components.login
 import android.app.Activity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.isSystemInDarkTheme
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -17,6 +19,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.text.BasicTextField
+import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -25,28 +30,32 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
-
 import com.example.track.R
 import com.example.track.data.other.constants.NAME_MAX_LENGTH
 import com.example.track.data.viewmodels.login.LoginViewModel
 import com.example.track.presentation.components.common.ui.CurrencyDropDownMenu
-import com.example.track.presentation.components.other.GradientInputTextField
 import com.example.track.presentation.navigation.Screen
 import com.example.track.ui.theme.md_theme_light_primary
 import kotlinx.coroutines.launch
@@ -76,35 +85,95 @@ fun LoginScreen(navController: NavController) {
 
 @Composable
 private fun LoginContent(loginViewModel: LoginViewModel, navController: NavController) {
+    val focusManager = LocalFocusManager.current
+    val controller = LocalSoftwareKeyboardController.current
+    val focusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
     val screenState = loginViewModel.loginScreenState.collectAsState()
     Column(
         modifier = Modifier
-            .fillMaxWidth(0.8f)
+            .fillMaxWidth()
             .padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        GradientInputTextField(
-            label = stringResource(R.string.loginnametextfield),
-            value = screenState.value.name
+        Row(
+            modifier = Modifier.wrapContentWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            if (it.length < NAME_MAX_LENGTH) loginViewModel.setFirstNameStateFlow(it)
+            Text(text = "Name", style = MaterialTheme.typography.titleSmall)
+            BasicTextField(
+                modifier = Modifier
+                    .focusRequester(focusRequester)
+                    .width(IntrinsicSize.Min)
+                    .padding(start = 12.dp),
+                textStyle = MaterialTheme.typography.displaySmall.copy(
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                value = screenState.value.name,
+                onValueChange = { newText ->
+                    if (newText.length < NAME_MAX_LENGTH) {
+                        loginViewModel.setFirstNameStateFlow(newText)
+                    }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        controller?.hide()
+                        focusManager.clearFocus()
+                    }
+                ),
+                maxLines = 1
+            )
         }
         Spacer(modifier = Modifier.height(24.dp))
-        GradientInputTextField(
-            label = stringResource(R.string.aprox_month_income_login_screen, screenState.value.currency.ticker),
-            keyboardType = KeyboardType.Decimal,
-            value = screenState.value.budget.toString()
+        Row(
+            modifier = Modifier.wrapContentWidth(),
+            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            loginViewModel.setIncomeStateFlow(it.toFloat())
+            Text(
+                text = stringResource(id = R.string.aprox_month_income_login_screen, screenState.value.currency.ticker),
+                style = MaterialTheme.typography.titleSmall
+            )
+            BasicTextField(
+                modifier = Modifier
+                    .focusRequester(focusRequester)
+                    .width(IntrinsicSize.Min)
+                    .padding(start = 12.dp),
+                textStyle = MaterialTheme.typography.displaySmall.copy(
+                    color = MaterialTheme.colorScheme.primary
+                ),
+                value = screenState.value.budget.toString(),
+                onValueChange = { newText ->
+                    if (newText.length < NAME_MAX_LENGTH) {
+                        loginViewModel.setIncomeStateFlow(
+                            try {
+                                newText.toFloat()
+                            } catch (e: NumberFormatException) {
+                                screenState.value.budget
+                            }
+                        )
+                    }
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        controller?.hide()
+                        focusManager.clearFocus()
+                    }
+                ),
+                maxLines = 1,
+            )
         }
+
         Spacer(modifier = Modifier.height(16.dp))
         Row(modifier = Modifier.fillMaxWidth(0.5f)) {
-            CurrencyDropDownMenu(
-                currencyList = loginViewModel.currencyList,
-                selectedOption = screenState.value.currency,
-                onSelect = {
-                    loginViewModel.setCurrencyStateFlow(it)
-                })
+                CurrencyDropDownMenu(
+                    currencyList = loginViewModel.currencyList,
+                    selectedOption = screenState.value.currency,
+                    onSelect = {
+                        loginViewModel.setCurrencyStateFlow(it)
+                    })
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
@@ -152,17 +221,21 @@ private fun LoginHeader() {
                     contentDescription = stringResource(id = R.string.app_logo)
                 )
                 Spacer(modifier = Modifier.width(16.dp))
-                Column(modifier = Modifier
-                    .padding(vertical = 8.dp)
-                    .wrapContentWidth()) {
+                Column(
+                    modifier = Modifier
+                        .padding(vertical = 8.dp)
+                        .wrapContentWidth()
+                ) {
                     Text(
                         text = stringResource(id = R.string.app_name),
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                     Text(
                         text = stringResource(id = R.string.logo_app_description),
                         style = MaterialTheme.typography.titleSmall,
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
             }

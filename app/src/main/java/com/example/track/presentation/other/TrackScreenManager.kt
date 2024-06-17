@@ -11,27 +11,28 @@ import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.example.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.example.track.presentation.screens.Core.MainTrackScreen
-import com.example.track.presentation.screens.Core.SettingsExpenseScreen
-import com.example.track.presentation.screens.Core.StatisticsScreen
+import com.example.track.presentation.screens.Core.SettingsTrackScreen
+import com.example.track.presentation.screens.Core.StatisticsTrackScreen
 import org.koin.androidx.compose.koinViewModel
 
 @OptIn(ExperimentalFoundationApi::class)
-@Composable
-fun TrackScreenManager(navHostController: NavHostController) {
-    val viewModel = koinViewModel<TrackScreenManagerViewModel>()
-    val pagerValue = viewModel.pagerState.collectAsState()
-    val pagerState = rememberPagerState(initialPage = pagerValue.value) { 3 }
-    Column(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        HorizontalPager(
-            state = pagerState,
-            modifier = Modifier.weight(1f)
-        ) { page ->
+    @Composable
+    fun TrackScreenManager(navHostController: NavHostController) {
+        val viewModel = koinViewModel<TrackScreenManagerViewModel>()
+        val pagerValue = viewModel.pagerStateValue.collectAsState()
+        val pagerState = rememberPagerState(initialPage = pagerValue.value) { 3 }
+
+        Column(
+            modifier = Modifier.fillMaxSize()
+        ) {
+            HorizontalPager(
+                state = pagerState,
+                modifier = Modifier.weight(1f)
+            ) { page ->
             when (page) {
-                0 -> SettingsExpenseScreen(navHostController)
+                0 -> SettingsTrackScreen(navHostController)
                 1 -> MainTrackScreen()
-                2 -> StatisticsScreen()
+                2 -> StatisticsTrackScreen()
             }
         }
     }

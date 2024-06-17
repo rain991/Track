@@ -23,7 +23,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
-fun SettingsExpenseScreen(navHostController: NavHostController) {
+fun SettingsTrackScreen(navHostController: NavHostController) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
     val settingsData = koinInject<DataStoreManager>()
@@ -39,7 +39,7 @@ fun SettingsExpenseScreen(navHostController: NavHostController) {
                 onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
         }
     ) {
-        BottomSheet(dataStoreManager = settingsData)
+        BottomSheet()
         if (toastState.value.length > 1) {
             Toast.makeText(LocalContext.current, toastState.value, Toast.LENGTH_SHORT).show()
             currenciesSettingsViewModel.clearToastMessage()

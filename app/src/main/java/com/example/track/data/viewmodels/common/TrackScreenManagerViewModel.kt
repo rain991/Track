@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.asStateFlow
 
 class TrackScreenManagerViewModel : ViewModel() {
     private val _pagerState = MutableStateFlow(1)
-    val pagerState = _pagerState.asStateFlow()
+    val pagerStateValue = _pagerState.asStateFlow()
 
     fun setPagerState(value : Int){
         _pagerState.value = value

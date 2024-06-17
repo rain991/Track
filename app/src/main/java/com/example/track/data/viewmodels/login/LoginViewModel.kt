@@ -25,15 +25,14 @@ class LoginViewModel(
 ) : ViewModel() {
     var currencyList = listOf<Currency>()
 
+    private val _loginScreenState = MutableStateFlow(LoginScreenState(name = "User", budget = 1000.0f, currency = CURRENCY_DEFAULT))
+
+    val loginScreenState = _loginScreenState.asStateFlow()
     init {
         viewModelScope.launch {
             currencyList = currencyListRepositoryImpl.getCurrencyList().first()
         }
     }
-
-    private val _loginScreenState = MutableStateFlow(LoginScreenState(name = "", budget = 0.0f, currency = CURRENCY_DEFAULT))
-    val loginScreenState = _loginScreenState.asStateFlow()
-
     suspend fun addToDataStore(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         if (_loginScreenState.value.budget != BUDGET_DEFAULT && _loginScreenState.value.name.isNotEmpty()) {
             withContext(dispatcher) {

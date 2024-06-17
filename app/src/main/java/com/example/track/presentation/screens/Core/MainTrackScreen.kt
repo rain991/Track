@@ -34,7 +34,7 @@ fun MainTrackScreen() {
         }
     ) {
         MainTrackScreenComponent(paddingValues = it, isPageNameVisible = isPageNameVisible.value)
-        BottomSheet(dataStoreManager = settingsData)
+        BottomSheet()
         if (isIdeaDialogVisible.value) NewIdeaDialog(newIdeaDialogViewModel)
     }
 }

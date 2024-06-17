@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">Track</string>
-    <string name="Lorem">Contrary to popular 000 yearprofessor atitnorum et Malorum\" (The Extremes of Good and Evil)  by Cicero, written in 45 BC. This book is a treatise on the theory of ethics, very popular during the Renaissance. The first line of Lorem Ipsum, \"Lorem ipsum dolor sit amet..\", comes from a line in section 1.10.32.</string>
     <string name="app_logo">Application Logo</string>
     <string name="logo_app_description">Convenient and easy-to-use expense tracker</string>
     <string name="currency">Currency</string>
@@ -33,7 +32,7 @@
     <string name="expenses">Expenses</string>
     <string name="statistic">Statistic</string>
     <string name="add_it_button">Add it</string>
-    <string name="your_note_adding_exp">Note..</string>
+    <string name="your_note_adding_exp">Note</string>
     <string name="checked_category_add_exp">checked category</string>
     <string name="today_add_exp">Today</string>
     <string name="yesterday_add_exp">Yesterday</string>
