@@ -56,7 +56,7 @@ fun CategoryChip(
             AnimatedVisibility(visible = isSelected) {
                 Icon(
                     imageVector = Icons.Filled.Check,
-                    contentDescription = stringResource(R.string.checked_category_add_exp),
+                    contentDescription = stringResource(R.string.checked_category_add_exp_CD),
                     modifier = Modifier.fillMaxHeight(),
                     tint = MaterialTheme.colorScheme.onPrimary
                 )

@@ -194,11 +194,11 @@ private fun DatePicker() {
             .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
         OutlinedDateButton(
-            text = stringResource(R.string.today_add_exp),
+            text = stringResource(R.string.today),
             isSelected = (bottomSheetViewState.value.todayButtonActiveState)
         ) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
         OutlinedDateButton(
-            text = stringResource(R.string.yesterday_add_exp),
+            text = stringResource(R.string.yesterday),
             isSelected = (bottomSheetViewState.value.yesterdayButtonActiveState)
         ) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {

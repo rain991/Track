@@ -6,7 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.example.track.R
 import com.example.track.presentation.components.screenComponents.additional.PersonalSettingsScreenComponent
 import com.example.track.presentation.components.settingsScreen.components.SettingsSpecifiedScreenHeader
 import com.example.track.presentation.navigation.Screen
@@ -15,7 +17,7 @@ import com.example.track.presentation.navigation.Screen
 fun PersonalSettingsScreen(navController: NavHostController) {
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            SettingsSpecifiedScreenHeader("Personal"){
+            SettingsSpecifiedScreenHeader(stringResource(id = R.string.personal)) {
                 navController.navigate(Screen.MainScreen.route)
             }
         }

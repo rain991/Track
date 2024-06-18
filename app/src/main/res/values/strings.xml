@@ -1,8 +1,8 @@
 <resources>
 
     <!-- App information -->
-    <string name="app_name">Track</string>
-    <string name="app_logo">Application Logo</string>
+    <string name="app_name" translatable="false">Track</string>
+    <string name="app_logo" translatable="false">Application Logo</string>
     <string name="logo_app_description">Convenient and easy-to-use expense tracker</string>
 
     <!-- General -->
@@ -38,12 +38,10 @@
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="selected_date_add_exp">Selected date</string>
-    <string name="today_add_exp">Today</string>
-    <string name="yesterday_add_exp">Yesterday</string>
 
     <!-- Notes and warnings -->
     <string name="your_note_adding_exp">Note</string>
-    <string name="checked_category_add_exp">Checked category</string>
+    <string name="checked_category_add_exp_CD" translatable="false">Checked category</string>
     <string name="note_exp_list">Note: %1$s</string>
     <string name="warning_bottom_sheet_exp">Select category or type correct value</string>
 
@@ -61,7 +59,6 @@
     <!-- Settings -->
     <string name="settings">Preferences</string>
     <string name="greetings_settings_screen">Hello, %1$s</string>
-    <string name="your_preferences_settings_screen">Preferences</string>
     <string name="theme_settings_screen">Theme</string>
     <string name="preferable_currency_settings_screen">Preferable currency</string>
     <string name="use_device_theme_settings_screen">Use device color scheme</string>
@@ -88,7 +85,7 @@
     <string name="not_added_any_incomes_yet_personal_settings_screen">You haven\'t added any incomes yet</string>
     <string name="you_have_already_added_incomes_worth_of">You have already added %1$s incomes, worth of %2$s %3$s</string>
     <string name="login_message_personal_settings_screen">You have entered Track %1$s times</string>
-    <string name="message_categories_settings_screen">Create, delete and find your categories</string>
+    <string name="message_categories_settings_screen">Create, delete and find your categories. Predefined categories can\'t be deleted</string>
     <string name="expense_categories_categories_settings_screen">Expense categories</string>
     <string name="delete">Delete</string>
     <string name="income_categories">Income categories</string>
@@ -101,7 +98,7 @@
     <string name="warning_message_track_stats_lazycolumn">We have not found financial operations for specified filters</string>
 
     <!-- Ideas -->
-    <string name="first_notion_new_idea_card">Ideas is the way declare financial goals</string>
+    <string name="first_notion_new_idea_card">Ideas is the way you declare financial goals</string>
     <string name="second_notion_new_idea_card">Available Idea types: savings, expense limits and income plans</string>
     <string name="third_notion_new_idea_card">Ideas will notify about your goals in app</string>
     <string name="goal">Goal</string>
@@ -147,7 +144,7 @@
     <!-- Savings -->
     <string name="saving">Saving</string>
     <string name="planned_savings_idea_card">Planned %1$s %2$s</string>
-    <string name="completed_for_savings_idea_card">Complete`d for</string>
+    <string name="completed_for_savings_idea_card">Completed for</string>
 
     <!-- Income plan -->
     <string name="income_plan">Income plan</string>
@@ -183,5 +180,9 @@
     <string name="add_it_button">Add it</string>
     <string name="financial">Financial</string>
     <string name="cd_add_new_category">Create new category</string>
+    <string name="both">Both</string>
+    <string name="week">Week</string>
+    <string name="month">Month</string>
+    <string name="year">Year</string>
 
 </resources>

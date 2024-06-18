@@ -1,5 +1,6 @@
 package com.example.track.domain.models.abstractLayer
 
+import com.example.track.R
 import java.util.Date
 
 abstract class FinancialEntity {
@@ -12,8 +13,8 @@ abstract class FinancialEntity {
     abstract val categoryId: Int
 }
 
-sealed class FinancialEntities(val name: String) {
-    class ExpenseFinancialEntity : FinancialEntities(name = "Expense")
-    class IncomeFinancialEntity : FinancialEntities(name = "Income")
-    class Both : FinancialEntities(name = "Both")
+sealed class FinancialEntities(val nameId: Int) {
+    class ExpenseFinancialEntity : FinancialEntities(nameId = R.string.expense)
+    class IncomeFinancialEntity : FinancialEntities(nameId =  R.string.income)
+    class Both : FinancialEntities(nameId = R.string.both)
 }

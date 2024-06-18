@@ -29,7 +29,7 @@ fun IdeasListSettingsScreen(navController: NavHostController) {
     val isNewIdeaDialogVisible = newIdeaDialogViewModel.isNewIdeaDialogVisible.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            SettingsSpecifiedScreenHeader("Ideas"){
+            SettingsSpecifiedScreenHeader(stringResource(id = R.string.ideas)){
                 navController.navigate(Screen.MainScreen.route)
             }
         },

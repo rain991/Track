@@ -65,11 +65,11 @@ fun TrackStatisticLazyColumn(
             }
 
             is FinancialEntities.ExpenseFinancialEntity -> {
-                stringResource(R.string.expense)
+                stringResource(R.string.expenses)
             }
 
             is FinancialEntities.IncomeFinancialEntity -> {
-                stringResource(R.string.income)
+                stringResource(R.string.incomes)
             }
         }
         Row(

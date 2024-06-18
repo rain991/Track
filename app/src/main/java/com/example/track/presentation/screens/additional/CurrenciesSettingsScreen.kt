@@ -3,7 +3,9 @@ package com.example.track.presentation.screens.additional
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
+import com.example.track.R
 import com.example.track.presentation.components.screenComponents.additional.CurrenciesSettingsScreenComponent
 import com.example.track.presentation.components.settingsScreen.components.SettingsSpecifiedScreenHeader
 import com.example.track.presentation.navigation.Screen
@@ -12,7 +14,7 @@ import com.example.track.presentation.navigation.Screen
 fun CurrenciesSettingsScreen(navController: NavHostController) {
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            SettingsSpecifiedScreenHeader("Currencies"){
+            SettingsSpecifiedScreenHeader(stringResource(id = R.string.currencies)) {
                 navController.navigate(Screen.MainScreen.route)
             }
         }

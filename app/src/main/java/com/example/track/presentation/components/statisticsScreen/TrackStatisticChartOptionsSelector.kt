@@ -72,10 +72,10 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                                 onClick = {
                                     chartViewModel.setFinancialEntity(financialEntityType)
                                 },
-                                selected = financialEntityType.name == chartState.value.financialEntities.name
+                                selected = financialEntityType.nameId == chartState.value.financialEntities.nameId
                             ) {
                                 Text(
-                                    text = financialEntityType.name,
+                                    text = stringResource(id = financialEntityType.nameId),
                                     maxLines = 1,
                                     style = MaterialTheme.typography.labelMedium,
                                     overflow = TextOverflow.Ellipsis
@@ -101,10 +101,10 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                                         chartViewModel.setTimePeriodDialogVisibility(true)
                                     }
                                 },
-                                selected = timeSpan.name == chartState.value.timePeriod.name
+                                selected = timeSpan.nameId == chartState.value.timePeriod.nameId
                             ) {
                                 Text(
-                                    text = timeSpan.name,
+                                    text = stringResource(id = timeSpan.nameId),
                                     maxLines = 1,
                                     style = MaterialTheme.typography.labelMedium,
                                     overflow = TextOverflow.Ellipsis
@@ -148,9 +148,11 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                 }
             }
         }
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+        ) {
             val startOfPeriod = when (chartState.value.timePeriod) {
                 is StatisticChartTimePeriod.Month -> {
                     getStartOfMonthDate(Date(System.currentTimeMillis()))

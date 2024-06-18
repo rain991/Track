@@ -1,16 +1,17 @@
 package com.example.track.presentation.states.componentRelated
 
 import android.util.Range
+import com.example.track.R
 import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.data.other.converters.getStartOfWeekDate
 import com.example.track.data.other.converters.getStartOfYearDate
 import java.util.Date
 
-sealed class StatisticChartTimePeriod(val name: String) {
-    class Week : StatisticChartTimePeriod("Week")
-    class Month : StatisticChartTimePeriod("Month")
-    class Year : StatisticChartTimePeriod("Year")
-    class Other : StatisticChartTimePeriod("Other")
+sealed class StatisticChartTimePeriod(val nameId: Int) {
+    class Week : StatisticChartTimePeriod(R.string.week)
+    class Month : StatisticChartTimePeriod(R.string.month)
+    class Year : StatisticChartTimePeriod(R.string.year)
+    class Other : StatisticChartTimePeriod(R.string.other)
 }
 
 fun StatisticChartTimePeriod.Week.provideDateRange(): Range<Date> {

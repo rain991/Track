@@ -42,7 +42,7 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()
     androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            SettingsSpecifiedScreenHeader("Categories") {
+            SettingsSpecifiedScreenHeader(stringResource(id = R.string.categories)) {
                 navController.navigate(Screen.MainScreen.route)
             }
         },
