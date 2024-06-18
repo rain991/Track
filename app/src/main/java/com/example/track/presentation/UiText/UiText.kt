@@ -5,6 +5,8 @@ import androidx.annotation.StringRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 
+// UiText is used to provide string resources right inside from ViewModels and other non-context components
+
 class UiText(
     @StringRes val resId: Int,
     vararg val args: Any

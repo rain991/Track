@@ -3,8 +3,9 @@
     <string name="app_logo">Application Logo</string>
     <string name="logo_app_description">Convenient and easy-to-use expense tracker</string>
     <string name="currency">Currency</string>
-    <string name="loginnametextfield">First Name</string>
     <string name="lets_start">Lets start!</string>
+    <string name="error">Error</string>
+    <string name="unknown">Unknown</string>
 
     <string name="january">January</string>
     <string name="february">February</string>
@@ -69,4 +70,27 @@
     <string name="add_new_idea">add new idea</string>
     <string name="cd_add_new_category">add new category</string>
     <string name="aprox_month_income_login_screen">Aprox. month income in %1$s</string>
+
+    <string name="expense_categories_groceries">Groceries</string>
+    <string name="expense_categories_Utilities">Utilities</string>
+    <string name="expense_categories_Household">Household</string>
+    <string name="expense_categories_Transportation">Transportation</string>
+    <string name="expense_categories_DiningOut">Dining Out</string>
+    <string name="expense_categories_Entertainment">Entertainment</string>
+    <string name="expense_categories_Gifts">Gifts</string>
+    <string name="expense_categories_ClothingAndAccessories">Clothing and Accessories</string>
+    <string name="expense_categories_PersonalCare">Personal Care</string>
+    <string name="expense_categories_TechnologyAndElectronics">Technology and Electronics</string>
+    <string name="expense_categories_Investments">Investments</string>
+    <string name="expense_categories_Unique">Unique</string>
+    <string name="expense_categories_Other">Other</string>
+
+    <string name="income_categories_Salary">Salary</string>
+    <string name="income_categories_Freelance">Freelance</string>
+    <string name="income_categories_Investment">Investment</string>
+    <string name="income_categories_RentalIncome">Rental Income</string>
+    <string name="income_categories_BusinessIncome">Business Income</string>
+    <string name="income_categories_Dividends">Dividends</string>
+    <string name="income_categories_Grants">Grants</string>
+    <string name="income_categories_Royalties">Royalties</string>
 </resources>
