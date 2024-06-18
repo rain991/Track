@@ -23,10 +23,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
+import com.example.track.R
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.presentation.components.settingsScreen.common.ThemePreferences
 import com.example.track.presentation.navigation.Screen
@@ -65,32 +67,32 @@ fun SettingsScreenComponent(
                     .padding(start = 8.dp)
             ) {
                 Text(
-                    text = "Account",
+                    text = stringResource(R.string.account),
                     style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
             Spacer(modifier = Modifier.height(8.dp))
-            SettingsLinkedRow(text = "Personal") {
+            SettingsLinkedRow(text = stringResource(R.string.personal)) {
                 navHostController.navigate(Screen.PersonalSettingsScreen.route)
             }
             Spacer(modifier = Modifier.height(8.dp))
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             Spacer(modifier = Modifier.height(8.dp))
-            SettingsLinkedRow(text = "Ideas") {
+            SettingsLinkedRow(text = stringResource(R.string.ideas)) {
                 navHostController.navigate(Screen.IdeaListSettingsScreen.route)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             Spacer(modifier = Modifier.height(8.dp))
-            SettingsLinkedRow(text = "Currencies") {
+            SettingsLinkedRow(text = stringResource(R.string.currencies)) {
                 navHostController.navigate(Screen.CurrenciesSettingsScreen.route)
             }
             Spacer(modifier = Modifier.height(8.dp))
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             Spacer(modifier = Modifier.height(8.dp))
-            SettingsLinkedRow(text = "Categories") {
+            SettingsLinkedRow(text = stringResource(R.string.categories)) {
                 navHostController.navigate(Screen.CategoriesSettingsScreen.route)
             }
 

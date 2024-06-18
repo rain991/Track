@@ -31,8 +31,10 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import com.example.track.R
 import com.example.track.data.other.constants.NAME_MAX_LENGTH
 import com.example.track.data.viewmodels.settingsScreen.PersonalSettingsScreenViewmodel
 import com.example.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
@@ -76,26 +78,26 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Text(text = "Name : ${name.value}")
+                    Text(text = stringResource(R.string.name_personal_settings_screen, name.value))
                     IconButton(onClick = { isInEditingMode = true }) {
                         Icon(imageVector = Icons.Default.Create, contentDescription = "edit personal info")
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = "Budget : ${budget.value} ${preferableCurrency.value.ticker}")
+                Text(text = stringResource(R.string.budget_personal_settings_screen, budget.value, preferableCurrency.value.ticker))
             }
             Spacer(modifier = Modifier.height(8.dp))
             if (isInEditingMode) {
                 var editableName by remember { mutableStateOf(name.value) }
                 var editableBudget by remember { mutableFloatStateOf(budget.value) }
-                GradientInputTextField(value = editableName, label = "New name") {
+                GradientInputTextField(value = editableName, label = stringResource(R.string.new_name_personal_settings_screen)) {
                     if (it.length < NAME_MAX_LENGTH) editableName = it
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 GradientInputTextField(
                     value = editableBudget.toString(),
                     keyboardType = KeyboardType.Decimal,
-                    label = "New budget in ${preferableCurrency.value.ticker}"
+                    label = stringResource(R.string.new_budget_personal_settings_screen, preferableCurrency.value.ticker)
                 ) {
                     editableBudget = try {
                         it.toFloat()
@@ -112,7 +114,7 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
                     OutlinedButton(
                         modifier = Modifier.scale(0.8f),
                         onClick = { isInEditingMode = false }) {
-                        Text("Decline")
+                        Text(stringResource(R.string.decline))
                     }
                     FilledTonalButton(modifier = Modifier.scale(0.9f), onClick = {
                         coroutineScope.launch {
@@ -120,7 +122,7 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
                             isInEditingMode = false
                         }
                     }) {
-                        Text("Save")
+                        Text(stringResource(R.string.save))
                     }
                 }
             }
@@ -142,20 +144,30 @@ private fun PersonalStatsSettingsContent(viewModel: PersonalStatsViewModel) {
                 .padding(vertical = 8.dp, horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = "Your stats", style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(R.string.your_stats_personal_settings_screen), style = MaterialTheme.typography.titleMedium)
             }
             if (statsState.value.allTimeExpensesCount == 0) {
-                Text(text = "You haven't added any expenses yet")
+                Text(text = stringResource(R.string.not_added_any_expenses_yet_personal_settings_screen))
             } else {
-                Text(text = "You have already added ${statsState.value.allTimeExpensesCount} expenses, worth of ${statsState.value.allTimeExpensesSum} ${statsState.value.preferableCurrency.ticker}")
+                Text(text = stringResource(
+                    R.string.you_have_already_added_expenses_worth_of,
+                    statsState.value.allTimeExpensesCount,
+                    statsState.value.allTimeExpensesSum,
+                    statsState.value.preferableCurrency.ticker
+                ))
             }
             if (statsState.value.allTimeIncomesCount == 0) {
-                Text(text = "You haven't added any incomes yet")
+                Text(text = stringResource(R.string.not_added_any_incomes_yet_personal_settings_screen))
             } else {
-                Text(text = "You have already added ${statsState.value.allTimeIncomesCount} incomes, worth of ${statsState.value.allTimeIncomesSum} ${statsState.value.preferableCurrency.ticker}")
+                Text(text = stringResource(
+                    R.string.you_have_already_added_incomes_worth_of,
+                    statsState.value.allTimeIncomesCount,
+                    statsState.value.allTimeIncomesSum,
+                    statsState.value.preferableCurrency.ticker
+                ))
             }
             HorizontalDivider(modifier = Modifier.fillMaxWidth(0.9f))
-            Text(text = "You have entered Track ${statsState.value.loginCount} times")
+            Text(text = stringResource(R.string.login_message_personal_settings_screen, statsState.value.loginCount))
             Spacer(modifier = Modifier.height(8.dp))
         }
     }

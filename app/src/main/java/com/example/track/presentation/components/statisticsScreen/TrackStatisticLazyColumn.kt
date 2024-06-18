@@ -29,8 +29,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import com.example.track.R
 import com.example.track.data.other.converters.toDateRange
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.example.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
@@ -59,15 +61,15 @@ fun TrackStatisticLazyColumn(
         var text by remember { mutableStateOf("") }
         text = when (state.value.financialEntities) {
             is FinancialEntities.Both -> {
-                "Financial"
+                stringResource(R.string.financial)
             }
 
             is FinancialEntities.ExpenseFinancialEntity -> {
-                "Expense"
+                stringResource(R.string.expense)
             }
 
             is FinancialEntities.IncomeFinancialEntity -> {
-                "Income"
+                stringResource(R.string.income)
             }
         }
         Row(
@@ -84,7 +86,7 @@ fun TrackStatisticLazyColumn(
                     slideInVertically { it } togetherWith slideOutVertically { -it }
                 }) { text ->
                 Text(
-                    text = "$text operations",
+                    text = stringResource(R.string.operations_track_stats_lazycolumn, text),
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -183,6 +185,6 @@ fun TrackStatisticLazyColumn(
 @Composable
 private fun EmptyStatisticLazyColumnPlacement() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = "We have not found financial operations for specified filters", style = MaterialTheme.typography.titleSmall)
+        Text(text = stringResource(R.string.warning_message_track_stats_lazycolumn), style = MaterialTheme.typography.titleSmall)
     }
 }

@@ -14,7 +14,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.track.R
 
 import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
@@ -33,7 +35,7 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Text(
-                text = "Income plan",
+                text = stringResource(R.string.income_plan),
                 style = MaterialTheme.typography.headlineSmall
             )
         }
@@ -44,26 +46,30 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
                 .padding(horizontal = 8.dp, vertical = 2.dp), verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Text(
-                text = "Planned ${
-                    if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                text = stringResource(
+                    R.string.planned_income_plan_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
                         FIAT_DECIMAL_FORMAT.format(incomePlans.goal)
                     } else {
                         CRYPTO_DECIMAL_FORMAT.format(incomePlans.goal)
-                    }
-                } ${preferableCurrency.ticker}"
+                    }, preferableCurrency.ticker
+                )
             )
             Text(
-                text = "Completed for ${
-                    if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                text = stringResource(
+                    R.string.completed_for_income_plan_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
                         FIAT_DECIMAL_FORMAT.format(completionValue)
                     } else {
                         CRYPTO_DECIMAL_FORMAT.format(completionValue)
-                    }
-                } ${preferableCurrency.ticker}"
+                    }, preferableCurrency.ticker
+                )
             )
             if (incomePlans.endDate != null) {
                 Text(
-                    text = "Preferable period: ${formatDateWithoutYear(incomePlans.startDate)} - ${formatDateWithoutYear(incomePlans.endDate)}"
+                    text = stringResource(
+                        R.string.preferable_period_income_plan_card,
+                        formatDateWithoutYear(incomePlans.startDate),
+                        formatDateWithoutYear(incomePlans.endDate)
+                    )
                 )
             }
         }

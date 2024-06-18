@@ -18,6 +18,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -25,6 +26,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.track.R
 import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.example.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
@@ -60,7 +62,10 @@ fun TrackScreenInfoCards() {
                         .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                        Text(text = "Expenses", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
+                        Text(
+                            text = stringResource(id = R.string.expense),
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+                        )
                     }
                     if (screenState.value.currentMonthExpensesSum > 0) {
                         Text(text = buildAnnotatedString {
@@ -101,12 +106,20 @@ fun TrackScreenInfoCards() {
                                     fontSize = 14.sp, fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append(" operations")
+                                append(stringResource(R.string.operations_screen_info_cards))
                             }
                         })
                     } else {
-                        Box(modifier = Modifier.fillMaxWidth().fillMaxHeight(), contentAlignment = Alignment.Center) {
-                            Text("0 operations this month", style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium), textAlign = TextAlign.Center)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(), contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                stringResource(R.string.warning_message_info_cards),
+                                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
+                                textAlign = TextAlign.Center
+                            )
                         }
                     }
                 }
@@ -123,7 +136,10 @@ fun TrackScreenInfoCards() {
                         .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                        Text(text = "Incomes", style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold))
+                        Text(
+                            text = stringResource(R.string.incomes),
+                            style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
+                        )
                     }
                     if (screenState.value.currentMonthIncomesSum > 0) {
                         Text(text = buildAnnotatedString {
@@ -135,7 +151,7 @@ fun TrackScreenInfoCards() {
                             ) {
                                 append(
                                     if (screenState.value.preferableCurrency.type == CurrencyTypes.FIAT) {
-                                        FIAT_DECIMAL_FORMAT.format( screenState.value.currentMonthIncomesSum)
+                                        FIAT_DECIMAL_FORMAT.format(screenState.value.currentMonthIncomesSum)
                                     } else {
                                         CRYPTO_DECIMAL_FORMAT.format(screenState.value.currentMonthIncomesSum)
                                     }
@@ -164,12 +180,20 @@ fun TrackScreenInfoCards() {
                                     fontSize = 14.sp, fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append(" operations")
+                                append(stringResource(R.string.operations_screen_info_cards))
                             }
                         })
                     } else {
-                        Box(modifier = Modifier.fillMaxWidth().fillMaxHeight(), contentAlignment = Alignment.Center) {
-                            Text("0 operations this month", style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium), textAlign = TextAlign.Center)
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .fillMaxHeight(), contentAlignment = Alignment.Center
+                        ) {
+                            Text(
+                                stringResource(R.string.warning_message_info_cards),
+                                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.Medium),
+                                textAlign = TextAlign.Center
+                            )
                         }
                     }
                 }

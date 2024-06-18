@@ -54,7 +54,7 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
         Spacer(modifier = Modifier.height(8.dp))
         Row {
             Text(
-                text = "You can switch currencies by touching their ticker in cards. Your preferable currency is used as basic in most parts of the Track. ",
+                text = stringResource(R.string.message_currencies_settings_screen),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.bodySmall
             )
@@ -187,7 +187,9 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
             Spacer(modifier = Modifier.height(8.dp))
         }
         Row(
-            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(modifier = Modifier.weight(1f))

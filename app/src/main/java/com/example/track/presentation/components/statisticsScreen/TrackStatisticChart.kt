@@ -16,7 +16,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.track.R
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.example.track.presentation.states.componentRelated.StatisticChartTimePeriod
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
@@ -73,7 +75,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
             val chartColors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary)
             if (chartData.size <= 1) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = "We have not enough data to build a chart", style = MaterialTheme.typography.titleSmall)
+                    Text(text = stringResource(R.string.warning_track_statistic_chart), style = MaterialTheme.typography.titleSmall)
                 }
             } else {
                 ProvideVicoTheme(theme = rememberM3VicoTheme()) {

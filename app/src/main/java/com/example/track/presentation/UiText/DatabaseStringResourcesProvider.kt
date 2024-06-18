@@ -99,7 +99,7 @@ class DatabaseStringResourcesProvider {
                 }
 
                 9 -> {
-                    R.string.other
+                   R.string.other
                 }
 
                 else -> {

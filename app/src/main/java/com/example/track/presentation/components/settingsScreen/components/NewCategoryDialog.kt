@@ -31,10 +31,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.track.R
 import com.example.track.data.other.constants.CATEGORIES_NAME_MAX_LENGTH
 import com.example.track.domain.models.abstractLayer.CategoriesTypes
 import com.example.track.presentation.components.other.GradientInputTextField
@@ -68,7 +70,7 @@ fun NewCategoryDialog(
                     .padding(vertical = 8.dp, horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    Text(text = "Create new category", style = MaterialTheme.typography.headlineSmall)
+                    Text(text = stringResource(R.string.create_new_category), style = MaterialTheme.typography.headlineSmall)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth()) {
@@ -99,7 +101,7 @@ fun NewCategoryDialog(
                             if (it.length < CATEGORIES_NAME_MAX_LENGTH) newCategoryName = it
                         }
                         if (categoryAlreadyExistError) {
-                            Text(text = "This category already exist", style = MaterialTheme.typography.labelSmall)
+                            Text(text = stringResource(R.string.category_exist_warning_new_category_dialog), style = MaterialTheme.typography.labelSmall)
                         }
                     }
                     Spacer(modifier = Modifier.width(16.dp))
@@ -128,14 +130,14 @@ fun NewCategoryDialog(
                     OutlinedButton(
                         modifier = Modifier.scale(0.8f),
                         onClick = { onDismissRequest() }) {
-                        Text("Decline")
+                        Text(stringResource(id = R.string.decline))
                     }
                     FilledTonalButton(modifier = Modifier.scale(0.9f), onClick = {
                         coroutineScope.launch {
                             onAccept(newCategoryName, newCategoryType, newRawCategoryColor)
                         }
                     }) {
-                        Text("Add")
+                        Text(stringResource(id = R.string.add))
                     }
                 }
             }

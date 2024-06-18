@@ -1,12 +1,20 @@
 <resources>
+
+    <!-- App information -->
     <string name="app_name">Track</string>
     <string name="app_logo">Application Logo</string>
     <string name="logo_app_description">Convenient and easy-to-use expense tracker</string>
+
+    <!-- General -->
     <string name="currency">Currency</string>
-    <string name="lets_start">Lets start!</string>
     <string name="error">Error</string>
     <string name="unknown">Unknown</string>
+    <string name="lets_start">Let\'s start!</string>
+    <string name="name">Name</string>
+    <string name="expenses">Expenses</string>
+    <string name="incomes">Incomes</string>
 
+    <!-- Months -->
     <string name="january">January</string>
     <string name="february">February</string>
     <string name="march">March</string>
@@ -20,28 +28,38 @@
     <string name="november">November</string>
     <string name="december">December</string>
     <string name="unknown_month">Unknown month</string>
-    <string name="expense">expense</string>
+
+    <!-- Expense-related -->
+    <string name="expense">Expense</string>
     <string name="add_new_category">Add New Category</string>
     <string name="other_adding">Other</string>
 
+    <!-- Dates -->
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
-    <string name="other">Other</string>
-    <string name="add_new_expense">Add New Expense</string>
-    <string name="add_expense">Add Expenses</string>
-    <string name="settings">Preferences</string>
-    <string name="expenses">Expenses</string>
-    <string name="statistic">Statistic</string>
-    <string name="add_it_button">Add it</string>
-    <string name="your_note_adding_exp">Note</string>
-    <string name="checked_category_add_exp">checked category</string>
+    <string name="selected_date_add_exp">Selected date</string>
     <string name="today_add_exp">Today</string>
     <string name="yesterday_add_exp">Yesterday</string>
-    <string name="selected_date_add_exp">Selected date</string>
+
+    <!-- Notes and warnings -->
+    <string name="your_note_adding_exp">Note</string>
+    <string name="checked_category_add_exp">Checked category</string>
     <string name="note_exp_list">Note: %1$s</string>
     <string name="warning_bottom_sheet_exp">Select category or type correct value</string>
+
+    <!-- Empty states -->
     <string name="empty_exp_lazyColumn_title">You haven\'t added expenses yet</string>
     <string name="empty_exp_lazyColumn_additional1">Try it out using button in right bottom corner, it is available in every app screen</string>
+
+    <!-- Settings headers -->
+    <string name="account">Account</string>
+    <string name="personal">Personal</string>
+    <string name="ideas">Ideas</string>
+    <string name="currencies">Currencies</string>
+    <string name="categories">Categories</string>
+
+    <!-- Settings -->
+    <string name="settings">Preferences</string>
     <string name="greetings_settings_screen">Hello, %1$s</string>
     <string name="your_preferences_settings_screen">Preferences</string>
     <string name="theme_settings_screen">Theme</string>
@@ -51,13 +69,38 @@
     <string name="preferable_theme_settings_screen">Preferable theme</string>
     <string name="extra_currency_settings_screen">Extra currency</string>
     <string name="currencies_settings_screen">Currencies</string>
-    <string name="delete_latest_currency_settings_screen">delete latest currency</string>
-    <string name="add_income_bottom_sheet">income</string>
-    <string name="add">Add</string>
-    <string name="you_havent_added_incomes_yet_lazy_column">You haven\'t added incomes yet</string>
+    <string name="delete_latest_currency_settings_screen">Delete latest currency</string>
+    <string name="warning_message_idea_settings_screen">You have not created any idea yet</string>
+    <string name="show_completed_ideas_idea_settings_screen">Show completed ideas</string>
+    <string name="sorted_date_idea_settings_screen">Sorted date</string>
+    <string name="newest_first_idea_settings_screen">Newest first</string>
+    <string name="oldest_first_idea_settings_screen">Oldest first</string>
+    <string name="message_currencies_settings_screen">You can switch currencies by touching their ticker in cards. Your preferable currency is used as basic in most parts of the Track.</string>
+    <string name="name_personal_settings_screen">Name : %1$s</string>
+    <string name="budget_personal_settings_screen">Budget : %1$s %2$s</string>
+    <string name="new_budget_personal_settings_screen">New budget in %1$s</string>
+    <string name="new_name_personal_settings_screen">New name</string>
+    <string name="decline">Decline</string>
+    <string name="save">Save</string>
+    <string name="your_stats_personal_settings_screen">Your stats</string>
+    <string name="not_added_any_expenses_yet_personal_settings_screen">You haven\'t added any expenses yet</string>
+    <string name="you_have_already_added_expenses_worth_of">You have already added %1$s expenses, worth of %2$s %3$s</string>
+    <string name="not_added_any_incomes_yet_personal_settings_screen">You haven\'t added any incomes yet</string>
+    <string name="you_have_already_added_incomes_worth_of">You have already added %1$s incomes, worth of %2$s %3$s</string>
+    <string name="login_message_personal_settings_screen">You have entered Track %1$s times</string>
+    <string name="message_categories_settings_screen">Create, delete and find your categories</string>
+    <string name="expense_categories_categories_settings_screen">Expense categories</string>
+    <string name="delete">Delete</string>
+    <string name="income_categories">Income categories</string>
+
+    <!-- Lazy columns -->
     <string name="recent_lazy_column">Recent</string>
     <string name="expenses_lazy_column">Expenses</string>
     <string name="incomes_lazy_column">Incomes</string>
+    <string name="operations_track_stats_lazycolumn">%1$s operations</string>
+    <string name="warning_message_track_stats_lazycolumn">We have not found financial operations for specified filters</string>
+
+    <!-- Ideas -->
     <string name="first_notion_new_idea_card">Ideas is the way declare financial goals</string>
     <string name="second_notion_new_idea_card">Available Idea types: savings, expense limits and income plans</string>
     <string name="third_notion_new_idea_card">Ideas will notify about your goals in app</string>
@@ -67,10 +110,9 @@
     <string name="plan_end_date_ideas">Planned end date</string>
     <string name="related_to_all_categories_ideas">Related to all categories</string>
     <string name="new_idea_main_screen_feed">New idea</string>
-    <string name="add_new_idea">add new idea</string>
-    <string name="cd_add_new_category">add new category</string>
-    <string name="aprox_month_income_login_screen">Aprox. month income in %1$s</string>
+    <string name="add_new_idea">Add new idea</string>
 
+    <!-- Expense categories -->
     <string name="expense_categories_groceries">Groceries</string>
     <string name="expense_categories_Utilities">Utilities</string>
     <string name="expense_categories_Household">Household</string>
@@ -85,6 +127,7 @@
     <string name="expense_categories_Unique">Unique</string>
     <string name="expense_categories_Other">Other</string>
 
+    <!-- Income categories -->
     <string name="income_categories_Salary">Salary</string>
     <string name="income_categories_Freelance">Freelance</string>
     <string name="income_categories_Investment">Investment</string>
@@ -93,4 +136,52 @@
     <string name="income_categories_Dividends">Dividends</string>
     <string name="income_categories_Grants">Grants</string>
     <string name="income_categories_Royalties">Royalties</string>
+
+    <!-- Expense limit -->
+    <string name="expense_limit">Expense limit</string>
+    <string name="planned_value_expense_limit_card">Planned %1$s %2$s</string>
+    <string name="already_spent_expense_limit_card">Already spent %1$s %2$s</string>
+    <string name="categories_message_expense_limit_card">Categories:</string>
+    <string name="related_to_all_categories_expense_limit_card">Related to all categories</string>
+
+    <!-- Savings -->
+    <string name="saving">Saving</string>
+    <string name="planned_savings_idea_card">Planned %1$s %2$s</string>
+    <string name="completed_for_savings_idea_card">Complete`d for</string>
+
+    <!-- Income plan -->
+    <string name="income_plan">Income plan</string>
+    <string name="planned_income_plan_card">Planned %1$s %2$s</string>
+    <string name="completed_for_income_plan_card">Completed for %1$s %2$s</string>
+    <string name="preferable_period_income_plan_card">Preferable period: %</string>
+    <string name="other">Other</string>
+    <string name="income">Income</string>
+
+    <!-- Chart -->
+    <string name="warning_track_statistic_chart">We have not enough data to build a chart</string>
+    <string name="hide_chart">Hide chart</string>
+    <string name="show_chart">Show chart</string>
+    <string name="selected_time_period_track_stats_options">Selected time period : %1$s - %2$s</string>
+
+    <!-- Financial Cards -->
+    <string name="expenses_fin_item_card">"%1$s expenses: "</string>
+    <string name="incomes_fin_item_card">"%1$s incomes: "</string>
+    <string name="operations_screen_info_cards">" operations"</string>
+    <string name="warning_message_info_cards">0 operations this month</string>
+
+    <!-- Other -->
+    <string name="add">Add</string>
+    <string name="add_it">Add it</string>
+    <string name="aprox_month_income_login_screen">Aprox. month income in %1$s</string>
+    <string name="you_havent_added_incomes_yet_lazy_column">You haven\'t added incomes yet</string>
+    <string name="add_expense">Add Expenses</string>
+    <string name="add_new_expense">Add New Expense</string>
+    <string name="create_new_category">Create new category</string>
+    <string name="category_exist_warning_new_category_dialog">This category already exist</string>
+    <string name="back_to_settings_screen_CD">back to settings screen</string>
+    <string name="statistic">Statistic</string>
+    <string name="add_it_button">Add it</string>
+    <string name="financial">Financial</string>
+    <string name="cd_add_new_category">Create new category</string>
+
 </resources>

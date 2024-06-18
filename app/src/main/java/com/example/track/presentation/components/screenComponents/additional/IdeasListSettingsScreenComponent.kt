@@ -27,7 +27,9 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.track.R
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
@@ -63,7 +65,7 @@ fun IdeasListSettingsScreenComponent() {
 
     if (listOfAllIdeas.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = "You have not created any idea yet")
+            Text(text = stringResource(R.string.warning_message_idea_settings_screen))
         }
     } else {
         Column(
@@ -77,7 +79,7 @@ fun IdeasListSettingsScreenComponent() {
                     .padding(horizontal = 8.dp)
                     .wrapContentHeight(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Show completed ideas")
+                Text(text = stringResource(R.string.show_completed_ideas_idea_settings_screen))
                 Switch(
                     checked = screenState.value.isShowingCompletedIdeas,
                     onCheckedChange = {
@@ -93,14 +95,14 @@ fun IdeasListSettingsScreenComponent() {
                     .padding(horizontal = 8.dp)
                     .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
             ) {
-                Text(text = "Sorted date ")
+                Text(text = stringResource(R.string.sorted_date_idea_settings_screen))
                 Spacer(modifier = Modifier.width(8.dp))
                 TextButton(onClick = { ideasListSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) }) {
                     Text(
                         text = if (screenState.value.isSortedDateDescending) {
-                            "newest first"
+                            stringResource(R.string.newest_first_idea_settings_screen)
                         } else {
-                            "oldest first"
+                            stringResource(R.string.oldest_first_idea_settings_screen)
                         }, style = MaterialTheme.typography.bodyMedium
                     )
                 }

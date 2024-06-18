@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.example.track.R
 import com.example.track.domain.models.abstractLayer.CategoryEntity
+import com.example.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.example.track.presentation.components.common.parser.parseColor
 
 @Composable
@@ -38,6 +39,7 @@ fun CategoryChip(
     onSelect: (CategoryEntity) -> Unit,
     chipScale: Float = 1.0f
 ) {
+    val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
     Button(
         modifier = Modifier
             .wrapContentHeight()
@@ -61,7 +63,7 @@ fun CategoryChip(
             }
             if (isSelected) Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = category.note,
+                text = stringResource(id = databaseStringResourcesProvider.provideStringResource(category)),
                 style = if (category.note.length < 12) {
                     textStyle
                 } else {

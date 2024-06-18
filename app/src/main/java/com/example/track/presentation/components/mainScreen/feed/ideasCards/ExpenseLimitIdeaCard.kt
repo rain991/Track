@@ -21,7 +21,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.track.R
 import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
@@ -38,6 +41,7 @@ import org.koin.compose.koinInject
 @Composable
 fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, preferableCurrency: Currency) {
     val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepositoryImpl>()
+    val localContext = LocalContext.current
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -45,7 +49,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             Text(
-                text = "Expense limit",
+                text = stringResource(R.string.expense_limit),
                 style = MaterialTheme.typography.headlineSmall
             )
         }
@@ -58,21 +62,21 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
             var plannedText by remember { mutableStateOf("") }
             var alreadySpentText by remember { mutableStateOf("") }
             LaunchedEffect(preferableCurrency, expenseLimit.goal, completedValue) {
-                plannedText = "Planned ${
-                    if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                plannedText = localContext.getString(
+                    R.string.planned_value_expense_limit_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
                         FIAT_DECIMAL_FORMAT.format(expenseLimit.goal)
                     } else {
                         CRYPTO_DECIMAL_FORMAT.format(expenseLimit.goal)
-                    }
-                } ${preferableCurrency.ticker}"
+                    }, preferableCurrency.ticker
+                )
 
-                alreadySpentText = "Already spent ${
-                    if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                alreadySpentText = localContext.getString(
+                    R.string.already_spent_expense_limit_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
                         FIAT_DECIMAL_FORMAT.format(completedValue)
                     } else {
                         CRYPTO_DECIMAL_FORMAT.format(completedValue)
-                    }
-                } ${preferableCurrency.ticker}"
+                    }, preferableCurrency.ticker
+                )
             }
 
             if (expenseLimit.isRelatedToAllCategories) {
@@ -97,8 +101,8 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                 )
             ) {
                 Text(
-                    text = "Categories :" + if (expenseLimit.isRelatedToAllCategories) {
-                        " related to all categories"
+                    text = stringResource(R.string.categories_message_expense_limit_card) + if (expenseLimit.isRelatedToAllCategories) {
+                        stringResource(R.string.related_to_all_categories_expense_limit_card)
                     } else {
                         ""
                     }
@@ -133,7 +137,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                         CategorySettingsChip(category = currentCategory!!) { }
+                            CategorySettingsChip(category = currentCategory!!) { }
                         }
                     }
                 }

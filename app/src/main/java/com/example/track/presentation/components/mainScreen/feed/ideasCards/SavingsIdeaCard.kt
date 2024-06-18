@@ -17,8 +17,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.track.R
 
 import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
@@ -29,6 +32,7 @@ import com.example.track.domain.models.idea.Savings
 
 @Composable
 fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel) {
+    val localContext = LocalContext.current
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -43,7 +47,7 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                 Text(text = savings.label, style = MaterialTheme.typography.headlineSmall)
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = "Saving", style = MaterialTheme.typography.titleMedium)
+                Text(text = stringResource(R.string.saving), style = MaterialTheme.typography.titleMedium)
             }
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(
@@ -59,13 +63,13 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Planned ${
-                                if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                            text = stringResource(
+                                R.string.planned_savings_idea_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
                                     FIAT_DECIMAL_FORMAT.format(savings.goal)
                                 } else {
                                     CRYPTO_DECIMAL_FORMAT.format(savings.goal)
-                                }
-                            } ${preferableCurrency.ticker}",
+                                }, preferableCurrency.ticker
+                            ),
                             textAlign = TextAlign.Center
                         )
                     }
@@ -76,7 +80,7 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = "Completed for" + " ${
+                            text = stringResource(R.string.completed_for_savings_idea_card) + " ${
                                 if (preferableCurrency.type == CurrencyTypes.FIAT) {
                                     FIAT_DECIMAL_FORMAT.format(savings.value)
                                 } else {
@@ -92,7 +96,7 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                         .fillMaxHeight(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Button(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(savings) }) {
-                        Text(text = "Add")
+                        Text(text = stringResource(id = R.string.add))
                     }
                 }
             }

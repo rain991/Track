@@ -1,4 +1,4 @@
-package com.example.taskmaster.presentation.UiText
+package com.example.track.presentation.UiText
 
 import android.content.Context
 import androidx.annotation.StringRes

@@ -100,7 +100,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             horizontalArrangement = Arrangement.spacedBy(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = "Name", style = MaterialTheme.typography.titleSmall)
+            Text(text = stringResource(R.string.name), style = MaterialTheme.typography.titleSmall)
             BasicTextField(
                 modifier = Modifier
                     .focusRequester(focusRequester)

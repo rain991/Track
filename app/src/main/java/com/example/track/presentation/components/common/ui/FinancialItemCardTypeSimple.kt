@@ -52,6 +52,7 @@ import com.example.track.domain.models.abstractLayer.FinancialEntity
 import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.currency.CurrencyTypes
 import com.example.track.domain.models.expenses.ExpenseCategory
+import com.example.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.example.track.presentation.components.common.parser.parseColor
 import kotlinx.coroutines.flow.first
 import org.koin.compose.koinInject
@@ -186,9 +187,9 @@ fun FinancialItemCardTypeSimple(
                                     withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
                                         append(
                                             if (categoryEntity is ExpenseCategory) {
-                                                "${categoryEntity.note} expenses: "
+                                                stringResource(R.string.expenses_fin_item_card, categoryEntity.note)
                                             } else {
-                                                "${categoryEntity.note} incomes: "
+                                                stringResource(R.string.incomes_fin_item_card, categoryEntity.note)
                                             }
 
                                         )
@@ -258,6 +259,7 @@ private fun ExpenseValueCard(financialEntity: FinancialEntity, currentCurrencyNa
 
 @Composable
 private fun CategoryCard(category: CategoryEntity, containerColor: Color) {
+    val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
         modifier = Modifier.wrapContentSize(),
@@ -270,7 +272,7 @@ private fun CategoryCard(category: CategoryEntity, containerColor: Color) {
     ) {
         Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)) {
             Text(
-                text = category.note,
+                text = stringResource(id = databaseStringResourcesProvider.provideStringResource(category)),
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp),
                 textAlign = TextAlign.Center
             )

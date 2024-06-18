@@ -55,7 +55,6 @@ import com.example.track.domain.usecases.expensesRelated.expenseusecases.AddExpe
 import com.example.track.domain.usecases.expensesRelated.expenseusecases.DeleteExpenseItemUseCase
 import com.example.track.domain.usecases.expensesRelated.expenseusecases.EditExpenseItemUseCase
 import com.example.track.domain.usecases.expensesRelated.expenseusecases.GetExpensesListUseCase
-import com.example.track.presentation.UiText.DatabaseStringResourcesProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -100,9 +99,6 @@ val appModule = module {
     // Statistic related
     single<ChartsRepositoryImpl> { ChartsRepositoryImpl(get(), get(), get(), get()) }
     single<NotesRepositoryImpl> { NotesRepositoryImpl(get(), get(), get(), get(), get(), get()) }
-
-    // Categories related
-    single<DatabaseStringResourcesProvider> { DatabaseStringResourcesProvider() }
 }
 
 val databaseModule = module {

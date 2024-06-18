@@ -1,6 +1,5 @@
 package com.example.track.presentation.components.statisticsScreen
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
@@ -22,14 +21,15 @@ import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
+import com.example.track.R
 import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.data.other.converters.formatDateWithYear
 import com.example.track.data.other.converters.getStartOfMonthDate
@@ -139,9 +139,9 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                         Text(
                             text = if (chartState.value.isChartVisible
                             ) {
-                                "Hide chart"
+                                stringResource(R.string.hide_chart)
                             } else {
-                                "Show chart"
+                                stringResource(R.string.show_chart)
                             }, textAlign = TextAlign.Center
                         )
                     }
@@ -186,7 +186,11 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                 }
             }
             Text(
-                text = "Selected time period : ${formatDateWithYear(startOfPeriod)} - ${formatDateWithYear(endOfPeriod)}",
+                text = stringResource(
+                    R.string.selected_time_period_track_stats_options,
+                    formatDateWithYear(startOfPeriod),
+                    formatDateWithYear(endOfPeriod)
+                ),
                 style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center
             )
         }
