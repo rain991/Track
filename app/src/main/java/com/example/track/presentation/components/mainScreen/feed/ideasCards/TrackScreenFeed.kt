@@ -53,8 +53,11 @@ fun TrackScreenFeed() {
     var needsAdditionalDelay by remember { mutableStateOf(false) }
     LaunchedEffect(true) {
         while (true) {
-            var delayTime =
-                if (currentIndex.value == 0 || currentIndex.value == maxIndex.value) FEED_CARD_DELAY_SLOW else FEED_CARD_DELAY_FAST
+            var delayTime = if (currentIndex.value == 0 || currentIndex.value == maxIndex.value) {
+                FEED_CARD_DELAY_SLOW
+            } else {
+                FEED_CARD_DELAY_FAST
+            }
             if (currentIndex.value == 0) {
                 delayTime += FEED_CARD_DELAY_ADDITIONAL
                 needsAdditionalDelay = false

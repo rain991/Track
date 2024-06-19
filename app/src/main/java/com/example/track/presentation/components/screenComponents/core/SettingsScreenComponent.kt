@@ -80,7 +80,7 @@ fun SettingsScreenComponent(
             HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
             Spacer(modifier = Modifier.height(8.dp))
             SettingsLinkedRow(text = stringResource(R.string.ideas)) {
-                navHostController.navigate(Screen.IdeaListSettingsScreen.route)
+                navHostController.navigate(Screen.IdeasListSettingsScreen.route)
             }
 
             Spacer(modifier = Modifier.height(8.dp))
@@ -95,13 +95,11 @@ fun SettingsScreenComponent(
             SettingsLinkedRow(text = stringResource(R.string.categories)) {
                 navHostController.navigate(Screen.CategoriesSettingsScreen.route)
             }
-
             Spacer(modifier = Modifier.height(12.dp))
             ThemePreferences(
                 modifier = Modifier, dataStoreManager = settingsData
             )
         }
-
     }
 }
 

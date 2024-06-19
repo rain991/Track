@@ -2,6 +2,12 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
     <uses-permission android:name="android.permission.INTERNET"/>
+    <supports-screens
+        android:smallScreens="true"
+        android:normalScreens="true"
+        android:largeScreens="false"
+        android:xlargeScreens="false"
+        android:largestWidthLimitDp="840"/>
     <application
         android:name=".App"
         android:screenOrientation="portrait"
@@ -34,4 +40,5 @@
                 tools:node="remove" />
         </provider>
     </application>
+
 </manifest>

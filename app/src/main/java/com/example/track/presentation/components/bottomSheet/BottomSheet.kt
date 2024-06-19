@@ -17,6 +17,7 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -73,6 +74,7 @@ import java.time.LocalDate
 @Composable
 fun BottomSheet() {
     val context = LocalContext.current
+    val coroutineScope = rememberCoroutineScope()
     val warningMessage = stringResource(id = R.string.warning_bottom_sheet_exp)
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
@@ -109,7 +111,7 @@ fun BottomSheet() {
                         .fillMaxSize()
                         .windowInsetsPadding(WindowInsets.navigationBars)
                 ) {
-                    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(18.dp)) {
+                    Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
                             modifier = Modifier.fillMaxWidth(),
                             horizontalArrangement = Arrangement.Center,
@@ -137,12 +139,13 @@ fun BottomSheet() {
                             }
                         }
                         AmountInput(focusRequester, controller, currentCurrency.value!!)
-                        Spacer(Modifier.height(12.dp))
-                        OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
-                        DatePicker()
-                        CategoriesGrid(categoryList)
                         Spacer(Modifier.weight(1f))
-                        val coroutineScope = rememberCoroutineScope()
+                        OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
+                        Spacer(Modifier.height(16.dp))
+                        DatePicker()
+                        Spacer(Modifier.height(16.dp))
+                        CategoriesGrid(categoryList)
+                        Spacer(Modifier.height(24.dp))
                         AcceptButton {
                             if (bottomSheetViewState.value.categoryPicked != null && bottomSheetViewState.value.datePicked.isBefore(
                                     LocalDate.now().plusDays(1)
@@ -221,11 +224,11 @@ private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val selected = bottomSheetViewState.value.categoryPicked // warning
     LazyHorizontalStaggeredGrid(
-        modifier = Modifier.height(84.dp),
-        rows = StaggeredGridCells.Fixed(2),
+        modifier = Modifier.heightIn(min = 40.dp, max = 132.dp),
+        rows = StaggeredGridCells.FixedSize(32.dp),
         state = lazyHorizontalState,
         verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 12.dp)
+        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 8.dp)
     ) {
         items(count = categoryList.size) { index ->
             val item = categoryList[index]
@@ -266,7 +269,7 @@ private fun OutlinedTextField(label: String) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val text = bottomSheetViewState.value.note
-    Box(modifier = Modifier.padding(start = 8.dp)){
+    Box(modifier = Modifier.padding(start = 8.dp)) {
         GradientInputTextField(value = text, label = label) {
             bottomSheetViewModel.setNote(it)
         }
