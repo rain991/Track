@@ -109,7 +109,7 @@
     <string name="planned_value_expense_limit_card">Запланировано %1$s %2$s</string>
     <string name="already_spent_expense_limit_card">Уже потрачено %1$s %2$s</string>
     <string name="categories_message_expense_limit_card">Категории:</string>
-    <string name="related_to_all_categories_expense_limit_card">Относится ко всем категориям</string>
+    <string name="related_to_all_categories_expense_limit_card">" Относится ко всем категориям"</string>
     <string name="saving">Сбережения</string>
     <string name="planned_savings_idea_card">Запланировано %1$s %2$s</string>
     <string name="completed_for_savings_idea_card">Выполнено на</string>

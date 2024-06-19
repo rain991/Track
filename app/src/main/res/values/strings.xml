@@ -139,7 +139,7 @@
     <string name="planned_value_expense_limit_card">Planned %1$s %2$s</string>
     <string name="already_spent_expense_limit_card">Already spent %1$s %2$s</string>
     <string name="categories_message_expense_limit_card">Categories:</string>
-    <string name="related_to_all_categories_expense_limit_card">Related to all categories</string>
+    <string name="related_to_all_categories_expense_limit_card">" Related to all categories"</string>
 
     <!-- Savings -->
     <string name="saving">Saving</string>

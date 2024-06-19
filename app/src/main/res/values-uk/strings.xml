@@ -109,7 +109,7 @@
     <string name="planned_value_expense_limit_card">Заплановано %1$s %2$s</string>
     <string name="already_spent_expense_limit_card">Вже витрачено %1$s %2$s</string>
     <string name="categories_message_expense_limit_card">Категорії:</string>
-    <string name="related_to_all_categories_expense_limit_card">Відноситься до всіх категорій</string>
+    <string name="related_to_all_categories_expense_limit_card">" Відноситься до всіх категорій"</string>
     <string name="saving">Заощадження</string>
     <string name="planned_savings_idea_card">Заплановано %1$s %2$s</string>
     <string name="completed_for_savings_idea_card">Виконано на</string>
