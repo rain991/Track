@@ -13,7 +13,7 @@ import com.example.track.domain.models.currency.Currency
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
-import com.example.track.domain.repository.ideas.IdeaListRepository
+import com.example.track.domain.repository.ideas.objectsRepository.IdeaListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -35,23 +35,6 @@ class IdeaListRepositoryImpl(
             incomePlansDao.getAllData()
         }
     }
-
-    override suspend fun updateIdea(idea: Idea) {
-        when (idea) {
-            is ExpenseLimits -> {
-                expenseLimitsDao.update(idea)
-            }
-
-            is IncomePlans -> {
-                incomePlansDao.update(idea)
-            }
-
-            is Savings -> {
-                savingsDao.update(idea)
-            }
-        }
-    }
-
 
     override suspend fun getExpenseLimitsList(context: CoroutineContext): Flow<List<ExpenseLimits>> {
         return withContext(context) {
@@ -94,30 +77,6 @@ class IdeaListRepositoryImpl(
 
                 is Savings -> send(idea.value)
             }
-        }
-    }
-
-    override suspend fun addIdea(idea: Idea, context: CoroutineContext) {
-        when (idea) {
-            is ExpenseLimits -> expenseLimitsDao.insert(idea)
-            is IncomePlans -> incomePlansDao.insert(idea)
-            is Savings -> savingsDao.insert(idea)
-        }
-    }
-
-    override suspend fun editIdea(idea: Idea, context: CoroutineContext) {
-        when (idea) {
-            is ExpenseLimits -> expenseLimitsDao.update(idea)
-            is IncomePlans -> incomePlansDao.update(idea)
-            is Savings -> savingsDao.update(idea)
-        }
-    }
-
-    override suspend fun deleteIdea(idea: Idea, context: CoroutineContext) {
-        when (idea) {
-            is ExpenseLimits -> expenseLimitsDao.delete(idea)
-            is IncomePlans -> incomePlansDao.delete(idea)
-            is Savings -> savingsDao.delete(idea)
         }
     }
 

@@ -2,7 +2,7 @@ package com.example.track.data.implementations.ideas
 
 import com.example.track.data.implementations.expenses.ExpensesCoreRepositoryImpl
 import com.example.track.data.other.dataStore.DataStoreManager
-import com.example.track.domain.repository.ideas.BudgetIdeaCardRepository
+import com.example.track.domain.repository.ideas.uiProviders.BudgetIdeaCardRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 

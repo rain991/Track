@@ -3,6 +3,7 @@ package com.example.track.data.viewmodels.mainScreen
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.track.data.implementations.ideas.IdeaItemRepositoryImpl
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.domain.models.abstractLayer.Idea
 import com.example.track.domain.models.abstractLayer.createCompletedInstance
@@ -16,7 +17,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
-class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepositoryImpl) : ViewModel() {
+class TrackScreenFeedViewModel(
+    private val ideaListRepositoryImpl: IdeaListRepositoryImpl,
+    private val ideaItemRepositoryImpl: IdeaItemRepositoryImpl
+) : ViewModel() {
     private val _ideaList = mutableStateListOf<Idea>()
     val ideaList: List<Idea> = _ideaList
     private val _cardIndex = MutableStateFlow(0)
@@ -58,7 +62,7 @@ class TrackScreenFeedViewModel(private val ideaListRepositoryImpl: IdeaListRepos
 
         _ideaList.removeAll(ideasToUpdate)
         ideasToUpdate.forEach { idea ->
-            ideaListRepositoryImpl.updateIdea(idea.createCompletedInstance())
+            ideaItemRepositoryImpl.updateIdea(idea.createCompletedInstance())
         }
     }
 

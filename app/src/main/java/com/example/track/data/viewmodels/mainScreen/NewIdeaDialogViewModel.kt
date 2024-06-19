@@ -1,7 +1,6 @@
 package com.example.track.data.viewmodels.mainScreen
 
 import androidx.lifecycle.ViewModel
-import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.other.converters.convertLocalDateToDate
 import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.domain.models.abstractLayer.Idea
@@ -9,6 +8,7 @@ import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.idea.ExpenseLimits
 import com.example.track.domain.models.idea.IncomePlans
 import com.example.track.domain.models.idea.Savings
+import com.example.track.domain.usecases.ideasRelated.CreateIdeaUseCase
 import com.example.track.presentation.states.componentRelated.IdeaSelectorTypes
 import com.example.track.presentation.states.componentRelated.NewIdeaDialogState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
 import java.util.Date
 
-class NewIdeaDialogViewModel(private val ideaListRepositoryImpl: IdeaListRepositoryImpl) : ViewModel() {
+class NewIdeaDialogViewModel(
+    private val createIdeaUseCase: CreateIdeaUseCase
+) : ViewModel() {
     private val _isNewIdeaDialogVisible = MutableStateFlow(false)
     val isNewIdeaDialogVisible = _isNewIdeaDialogVisible.asStateFlow()
     private val _newIdeaDialogState = MutableStateFlow(
@@ -99,7 +101,7 @@ class NewIdeaDialogViewModel(private val ideaListRepositoryImpl: IdeaListReposit
                 }
             }
         }
-        ideaListRepositoryImpl.addIdea(idea)
+        createIdeaUseCase(idea)
         setIsNewIdeaDialogVisible(false)
         setGoal(0.0f)
     }

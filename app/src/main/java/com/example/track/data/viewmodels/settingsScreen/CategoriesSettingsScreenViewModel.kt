@@ -10,12 +10,14 @@ import com.example.track.data.other.constants.LIST_OF_DEFAULT_INCOMES_CATEGORIES
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.incomes.IncomeCategory
+import com.example.track.domain.usecases.categoriesRelated.DeleteCategoryUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CategoriesSettingsScreenViewModel(
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
-    private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl
+    private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
+    private val deleteCategoryUseCase: DeleteCategoryUseCase
 ) : ViewModel() {
     private val _listOfExpensesCategories = mutableStateListOf<ExpenseCategory>()
     val listOfExpensesCategories: List<ExpenseCategory> = _listOfExpensesCategories
@@ -40,12 +42,13 @@ class CategoriesSettingsScreenViewModel(
 
     suspend fun deleteCategory(category: CategoryEntity) {
         if (category is ExpenseCategory && !LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS.contains(category.categoryId)) {
-            expensesCategoriesListRepositoryImpl.deleteCategory(category)
+            deleteCategoryUseCase(category)
         }
         if (category is IncomeCategory && !LIST_OF_DEFAULT_INCOMES_CATEGORIES_IDS.contains(category.categoryId)) {
-            incomesCategoriesListRepositoryImpl.deleteCategory(category)
+            deleteCategoryUseCase(category)
         }
     }
+
     private fun setListOfExpensesCategories(list: List<ExpenseCategory>) {
         _listOfExpensesCategories.clear()
         _listOfExpensesCategories.addAll(list)

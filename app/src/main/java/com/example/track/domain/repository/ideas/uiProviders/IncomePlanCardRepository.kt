@@ -1,4 +1,4 @@
-package com.example.track.domain.repository.ideas
+package com.example.track.domain.repository.ideas.uiProviders
 
 import com.example.track.domain.models.abstractLayer.Idea
 import kotlinx.coroutines.flow.Flow

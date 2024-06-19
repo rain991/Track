@@ -22,6 +22,7 @@ import com.example.track.data.implementations.expenses.ExpensesCoreRepositoryImp
 import com.example.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
 import com.example.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
+import com.example.track.data.implementations.ideas.IdeaItemRepositoryImpl
 import com.example.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeCoreRepositoryImpl
 import com.example.track.data.implementations.incomes.IncomeItemRepositoryImpl
@@ -48,13 +49,11 @@ import com.example.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
 import com.example.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
 import com.example.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.example.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
-import com.example.track.domain.usecases.expensesRelated.categoriesusecases.AddCategoryUseCase
-import com.example.track.domain.usecases.expensesRelated.categoriesusecases.DeleteCategoryUseCase
-import com.example.track.domain.usecases.expensesRelated.categoriesusecases.EditCategoryUseCase
-import com.example.track.domain.usecases.expensesRelated.expenseusecases.AddExpensesItemUseCase
-import com.example.track.domain.usecases.expensesRelated.expenseusecases.DeleteExpenseItemUseCase
-import com.example.track.domain.usecases.expensesRelated.expenseusecases.EditExpenseItemUseCase
-import com.example.track.domain.usecases.expensesRelated.expenseusecases.GetExpensesListUseCase
+import com.example.track.domain.usecases.categoriesRelated.AddCategoryUseCase
+import com.example.track.domain.usecases.categoriesRelated.DeleteCategoryUseCase
+import com.example.track.domain.usecases.expenseRelated.AddExpenseItemUseCase
+import com.example.track.domain.usecases.ideasRelated.CreateIdeaUseCase
+import com.example.track.domain.usecases.incomeRelated.AddIncomeItemUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -93,6 +92,7 @@ val appModule = module {
     single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
 
     // Ideas
+    single<IdeaItemRepositoryImpl> { IdeaItemRepositoryImpl(get(), get(), get()) }
     single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get(), get(), get(), get()) }
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
 
@@ -121,15 +121,18 @@ val databaseModule = module {
 }
 
 val domainModule = module {
-    /* Use cases will be reworked soon */
-    factory<AddExpensesItemUseCase> { AddExpensesItemUseCase(get()) }
-    factory<DeleteExpenseItemUseCase> { DeleteExpenseItemUseCase(get()) }
-    factory<EditExpenseItemUseCase> { EditExpenseItemUseCase(get()) }
-    factory<GetExpensesListUseCase> { GetExpensesListUseCase(get()) }
+    // Expenses
+    factory<AddExpenseItemUseCase> { AddExpenseItemUseCase(get()) }
 
-    factory<AddCategoryUseCase> { AddCategoryUseCase(get()) }
-    factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get()) }
-    factory<EditCategoryUseCase> { EditCategoryUseCase(get()) }
+    // Income
+    factory<AddIncomeItemUseCase> { AddIncomeItemUseCase(get()) }
+
+    // Categories
+    factory<AddCategoryUseCase> { AddCategoryUseCase(get(), get()) }
+    factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get(), get()) }
+
+    // Idea
+    factory<CreateIdeaUseCase> { CreateIdeaUseCase(get()) }
 }
 
 val viewModelModule = module {
@@ -140,8 +143,8 @@ val viewModelModule = module {
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
     viewModel { IdeasListSettingsScreenViewModel(get()) }
     viewModel { ThemePreferenceSettingsViewModel(get()) }
-    viewModel { CategoriesSettingsScreenViewModel(get(), get()) }
-    viewModel { NewCategoryViewModel(get(), get()) }
+    viewModel { CategoriesSettingsScreenViewModel(get(), get(), get()) }
+    viewModel { NewCategoryViewModel(get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get()) }
     viewModel { PersonalStatsViewModel(get(), get()) }
 
@@ -156,7 +159,7 @@ val viewModelModule = module {
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
 
     // Feed related
-    viewModel { TrackScreenFeedViewModel(get()) }
+    viewModel { TrackScreenFeedViewModel(get(), get()) }
     viewModel { TrackScreenInfoCardsViewModel(get(), get(), get()) }
 
     // Ideas related

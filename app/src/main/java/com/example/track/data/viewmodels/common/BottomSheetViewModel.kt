@@ -5,7 +5,6 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
-import com.example.track.data.implementations.incomes.IncomeItemRepositoryImpl
 import com.example.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.converters.convertLocalDateToDate
@@ -15,7 +14,8 @@ import com.example.track.domain.models.expenses.ExpenseCategory
 import com.example.track.domain.models.expenses.ExpenseItem
 import com.example.track.domain.models.incomes.IncomeCategory
 import com.example.track.domain.models.incomes.IncomeItem
-import com.example.track.domain.usecases.expensesRelated.expenseusecases.AddExpensesItemUseCase
+import com.example.track.domain.usecases.expenseRelated.AddExpenseItemUseCase
+import com.example.track.domain.usecases.incomeRelated.AddIncomeItemUseCase
 import com.example.track.presentation.states.componentRelated.BottomSheetViewState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -35,11 +35,11 @@ import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
 class BottomSheetViewModel(
-    private val addExpensesItemUseCase: AddExpensesItemUseCase,
-    private val incomeItemRepositoryImpl: IncomeItemRepositoryImpl,
+    private val addExpenseItemUseCase: AddExpenseItemUseCase,
+    private val addIncomeItemUseCase: AddIncomeItemUseCase,
     private val categoryListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
 ) : ViewModel() {
     private val _expenseCategoryList = mutableStateListOf<ExpenseCategory>()
     val expenseCategoryList: List<ExpenseCategory> = _expenseCategoryList
@@ -117,7 +117,7 @@ class BottomSheetViewModel(
                 value = expenseViewState.value.inputExpense!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
-            addExpensesItemUseCase(currentExpenseItem)
+            addExpenseItemUseCase(currentExpenseItem)
             setCategoryPicked(DEFAULT_CATEGORY)
             setInputExpense(DEFAULT_EXPENSE)
             setDatePicked(DEFAULT_DATE)
@@ -135,7 +135,7 @@ class BottomSheetViewModel(
                 value = expenseViewState.value.inputExpense!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
-            incomeItemRepositoryImpl.addIncomeItem(currentIncomeItem)
+            addIncomeItemUseCase(currentIncomeItem)
             setCategoryPicked(DEFAULT_CATEGORY)
             setInputExpense(DEFAULT_EXPENSE)
             setDatePicked(DEFAULT_DATE)
