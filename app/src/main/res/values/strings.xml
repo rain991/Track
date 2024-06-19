@@ -184,5 +184,21 @@
     <string name="week">Week</string>
     <string name="month">Month</string>
     <string name="year">Year</string>
+    <string name="limit_planned">Limit planned</string>
+    <string name="income_planned">Income planned</string>
+    <string name="savings_planned">Savings planned</string>
+    <string name="add_idea">Add idea</string>
+    <string name="optional">optional</string>
+    <string name="saving_for">Saving for</string>
+    <string name="budget">budget</string>
+    <string name="planned_main_track_screen">Planned %1$s %2$s</string>
+    <string name="spent_main_track_screen">Spent %1$s %2$s</string>
+    <string name="scroll_up_CD">scroll up</string>
+    <string name="budget_main_feed_card">%1$s budget</string>
+    <string name="empty_incm_lazyColumn_additional1">Try it out using button in right bottom corner, it is available in every app screen</string>
+    <string name="add_to_adding_to_saving_idea_dialog">"Add to "</string>
+    <string name="planned_adding_to_saving_idea_dialog">"Planned %1$s "</string>
+    <string name="completed_for_adding_to_saving_idea_dialog">Completed for</string>
+    <string name="specified_category_fin_item_card">"%1$s in %2$s: "</string>
 
 </resources>

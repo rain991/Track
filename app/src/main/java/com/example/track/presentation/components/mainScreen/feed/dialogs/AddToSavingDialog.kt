@@ -25,9 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.track.R
 import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
@@ -63,7 +65,7 @@ fun AddToSavingDialog(
                     .padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    Text(text = "Add to " + currentSaving.value?.label, style = MaterialTheme.typography.titleMedium)
+                    Text(text = stringResource(R.string.add_to_adding_to_saving_idea_dialog) + currentSaving.value?.label, style = MaterialTheme.typography.titleMedium)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 AddToSavingDialogAmountInput(
@@ -76,17 +78,17 @@ fun AddToSavingDialog(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "Planned ${
-                        if (preferableCurrency.value.type == CurrencyTypes.FIAT) {
+                    text = stringResource(
+                        R.string.planned_adding_to_saving_idea_dialog, if (preferableCurrency.value.type == CurrencyTypes.FIAT) {
                             FIAT_DECIMAL_FORMAT.format(currentSaving.value?.goal)
                         } else {
                             CRYPTO_DECIMAL_FORMAT.format(currentSaving.value?.goal)
                         }
-                    } " + preferableCurrency.value.ticker,
+                    ) + preferableCurrency.value.ticker,
                     style = MaterialTheme.typography.bodySmall
                 )
                 Text(
-                    text = "Completed for" + " ${
+                    text = stringResource(R.string.completed_for_adding_to_saving_idea_dialog) + " ${
                         if (preferableCurrency.value.type == CurrencyTypes.FIAT) {
                             FIAT_DECIMAL_FORMAT.format(currentSaving.value?.value)
                         } else {
@@ -102,7 +104,7 @@ fun AddToSavingDialog(
                 )
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
                     OutlinedButton(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(null) }) {
-                        Text(text = "Decline")
+                        Text(text = stringResource(id = R.string.decline))
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     Button(onClick = {
@@ -110,7 +112,7 @@ fun AddToSavingDialog(
                             addToSavingIdeaDialogViewModel.addToSaving(inputValue)
                         }
                     }) {
-                        Text(text = "Add")
+                        Text(text = stringResource(id = R.string.add))
                     }
                 }
             }

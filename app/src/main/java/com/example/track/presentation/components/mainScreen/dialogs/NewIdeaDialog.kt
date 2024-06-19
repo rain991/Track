@@ -28,11 +28,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
+import com.example.track.R
 import com.example.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.example.track.data.other.constants.CURRENCY_DEFAULT
 import com.example.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
@@ -72,7 +74,7 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
                     modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
                 ) {
                     Text(
-                        text = "Add idea",
+                        text = stringResource(R.string.add_idea),
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
@@ -92,7 +94,7 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
                             ) {
                                 if (label == IdeaSelectorTypes.ExpenseLimit) {
                                     Text(
-                                        text = label.name,
+                                        text = stringResource(id = label.nameId),
                                         maxLines = 1,
                                         style = MaterialTheme.typography.labelSmall,
                                         overflow = TextOverflow.Ellipsis
@@ -100,7 +102,7 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
                                 } else {
                                     Text(
                                         modifier = Modifier.wrapContentWidth(),
-                                        text = label.name,
+                                        text = stringResource(id = label.nameId),
                                         maxLines = 1,
                                         style = MaterialTheme.typography.labelMedium,
                                         textAlign = TextAlign.Start
@@ -117,9 +119,9 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
                 ) {
                     Text(
                         text = when (newIdeaDialogState.value.typeSelected) {
-                            IdeaSelectorTypes.ExpenseLimit -> "Limit planned"
-                            IdeaSelectorTypes.IncomePlans -> "Income planned"
-                            IdeaSelectorTypes.Savings -> "Savings planned"
+                            IdeaSelectorTypes.ExpenseLimit -> stringResource(R.string.limit_planned)
+                            IdeaSelectorTypes.IncomePlans -> stringResource(R.string.income_planned)
+                            IdeaSelectorTypes.Savings -> stringResource(R.string.savings_planned)
                         },
                         style = MaterialTheme.typography.bodyMedium
                     )
@@ -140,14 +142,14 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
                     OutlinedButton(
                         modifier = Modifier.scale(0.8f),
                         onClick = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(false) }) {
-                        Text("Decline")
+                        Text(stringResource(id = R.string.decline))
                     }
                     FilledTonalButton(modifier = Modifier.scale(0.9f), onClick = {
                         coroutineScope.launch {
                             newIdeaDialogViewModel.addNewIdea()
                         }
                     }) {
-                        Text("Add")
+                        Text(stringResource(id = R.string.add))
                     }
                 }
             }

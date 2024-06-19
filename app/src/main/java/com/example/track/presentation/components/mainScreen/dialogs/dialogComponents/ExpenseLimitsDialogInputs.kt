@@ -46,12 +46,12 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         ) {
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(stringResource(R.string.limit_end_date_ideas))
-                Text(text = "optional", style = MaterialTheme.typography.labelSmall)
+                Text(text = stringResource(R.string.optional), style = MaterialTheme.typography.labelSmall)
             }
             Spacer(modifier = Modifier.width(12.dp))
             Button(onClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(true) }) {
                 Text(
-                    text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else "Date",
+                    text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else stringResource(id = R.string.date),
                     style = MaterialTheme.typography.bodySmall
                 )
             }

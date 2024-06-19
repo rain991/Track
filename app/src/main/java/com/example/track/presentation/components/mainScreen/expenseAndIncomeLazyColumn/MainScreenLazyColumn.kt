@@ -100,7 +100,7 @@ fun MainScreenLazyColumn() {
                     containerColor = MaterialTheme.colorScheme.primary,
                     contentColor = MaterialTheme.colorScheme.onPrimary
                 ) {
-                    Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = "scroll up")
+                    Icon(imageVector = Icons.Filled.KeyboardArrowUp, contentDescription = stringResource(R.string.scroll_up_CD))
                 }
             }
         }
@@ -309,7 +309,11 @@ private fun EmptyMainLazyColumnPlacement(isExpenseLazyColumn: Boolean) {
                 textAlign = TextAlign.Center
             )
             Text(
-                text = stringResource(R.string.empty_exp_lazyColumn_additional1),
+                text = if (isExpenseLazyColumn) {
+                    stringResource(R.string.empty_exp_lazyColumn_additional1)
+                } else {
+                    stringResource(R.string.empty_incm_lazyColumn_additional1)
+                },
                 style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                 textAlign = TextAlign.Center
             )

@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import com.example.track.R
 import com.example.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.example.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.example.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
@@ -49,8 +50,9 @@ fun TrackMainFeedCard() {
                 .padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
+            val currentMonth = stringResource(id = getMonthResID(localDate = LocalDate.now()))
             Text(
-                text = stringResource(id = getMonthResID(localDate = LocalDate.now())) + " " + "budget",
+                text = stringResource(R.string.budget_main_feed_card, currentMonth),
                 style = MaterialTheme.typography.headlineSmall,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -68,22 +70,22 @@ fun TrackMainFeedCard() {
                         .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Text(
-                        text = "Planned ${
-                            if (state.value.currency.type == CurrencyTypes.FIAT) {
+                        text = stringResource(
+                            R.string.planned_main_track_screen, if (state.value.currency.type == CurrencyTypes.FIAT) {
                                 FIAT_DECIMAL_FORMAT.format(state.value.budget)
                             } else {
                                 CRYPTO_DECIMAL_FORMAT.format(state.value.budget)
-                            }
-                        } ${state.value.currency.ticker}"
+                            }, state.value.currency.ticker
+                        )
                     )
                     Text(
-                        text = "Spent ${
-                            if (state.value.currency.type == CurrencyTypes.FIAT) {
+                        text = stringResource(
+                            R.string.spent_main_track_screen, if (state.value.currency.type == CurrencyTypes.FIAT) {
                                 FIAT_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
                             } else {
                                 CRYPTO_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
-                            }
-                        } ${state.value.currency.ticker}"
+                            }, state.value.currency.ticker
+                        )
                     )
                 }
                 Column(

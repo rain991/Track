@@ -63,7 +63,7 @@ fun TrackScreenInfoCards() {
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                         Text(
-                            text = stringResource(id = R.string.expense),
+                            text = stringResource(id = R.string.expenses_lazy_column),
                             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
                         )
                     }

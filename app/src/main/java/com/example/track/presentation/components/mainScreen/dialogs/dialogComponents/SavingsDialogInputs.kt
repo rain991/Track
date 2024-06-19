@@ -35,7 +35,7 @@ fun SavingsDialogInputs(
             .fillMaxWidth()
             .padding(vertical = 4.dp), horizontalArrangement = Arrangement.Start
     ) {
-        GradientInputTextField(value = labelInputText ?: "", label = "Saving for", maxLines = 2) {
+        GradientInputTextField(value = labelInputText ?: "", label = stringResource(R.string.saving_for), maxLines = 2) {
             if(it.length < IDEA_NOTE_MAX_LENGTH){
                 newIdeaDialogViewModel.setLabel(it)
             }
@@ -49,12 +49,12 @@ fun SavingsDialogInputs(
     ) {
         Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
             Text(text = stringResource(R.string.plan_end_date_ideas))
-            Text(text = "optional", style = MaterialTheme.typography.labelSmall)
+            Text(text = stringResource(R.string.optional), style = MaterialTheme.typography.labelSmall)
         }
         Spacer(modifier = Modifier.width(12.dp))
         Button(onClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(true) }) {
             Text(
-                text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else "Date",
+                text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else stringResource(id = R.string.date),
                 style = MaterialTheme.typography.bodySmall
             )
         }

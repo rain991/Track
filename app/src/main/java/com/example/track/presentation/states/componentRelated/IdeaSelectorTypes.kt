@@ -1,7 +1,9 @@
 package com.example.track.presentation.states.componentRelated
 
-sealed class IdeaSelectorTypes(val name: String) {
-    object ExpenseLimit : IdeaSelectorTypes("Expense limit")
-    object IncomePlans : IdeaSelectorTypes("Income plan")
-    object Savings : IdeaSelectorTypes("Savings")
+import com.example.track.R
+
+sealed class IdeaSelectorTypes(val nameId: Int) {
+    object ExpenseLimit : IdeaSelectorTypes(R.string.expense_limit)
+    object IncomePlans : IdeaSelectorTypes(R.string.income_plan)
+    object Savings : IdeaSelectorTypes(R.string.saving)
 }

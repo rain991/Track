@@ -74,6 +74,7 @@ fun FinancialItemCardTypeSimple(
     val locale = Locale.getDefault()
     val density = LocalDensity.current
     val categoryColor = parseColor(categoryEntity.colorId)
+    val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -128,7 +129,7 @@ fun FinancialItemCardTypeSimple(
                         }
                         AnimatedContent(targetState = resultedNotion, label = "horizontalTextChange", transitionSpec = {
                             slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
-                        }) {
+                        }) { resultedNotion ->
                             val calendar = Calendar.getInstance().apply {
                                 time = financialEntity.date
                             }
@@ -136,12 +137,14 @@ fun FinancialItemCardTypeSimple(
                             Text(
                                 text = if (!expanded) {
                                     buildAnnotatedString {
-                                        append(it.toString())
+                                        append(resultedNotion.toString())
                                     }
                                 } else {
                                     buildAnnotatedString {
                                         withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
-                                            append("${categoryEntity.note} in $monthName: ")
+                                            val categoryName =
+                                                stringResource(id = databaseStringResourcesProvider.provideStringResource(categoryEntity))
+                                            append(stringResource(R.string.specified_category_fin_item_card, categoryName, monthName))
                                         }
                                         withStyle(
                                             style = SpanStyle(
@@ -149,12 +152,12 @@ fun FinancialItemCardTypeSimple(
                                                 fontSize = 20.sp, fontWeight = FontWeight.SemiBold
                                             )
                                         ) {
-                                            append(it.toString())
+                                            append(resultedNotion.toString())
                                         }
                                         withStyle(
                                             style = SpanStyle(
                                                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                                                fontSize = MaterialTheme.typography.bodySmall.fontSize,//18.sp
+                                                fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                                 fontWeight = FontWeight.SemiBold
                                             )
                                         ) {
@@ -185,11 +188,13 @@ fun FinancialItemCardTypeSimple(
                             Text(
                                 text = buildAnnotatedString {
                                     withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
+                                        val categoryName =
+                                            stringResource(id = databaseStringResourcesProvider.provideStringResource(categoryEntity))
                                         append(
                                             if (categoryEntity is ExpenseCategory) {
-                                                stringResource(R.string.expenses_fin_item_card, categoryEntity.note)
+                                                stringResource(R.string.expenses_fin_item_card, categoryName)
                                             } else {
-                                                stringResource(R.string.incomes_fin_item_card, categoryEntity.note)
+                                                stringResource(R.string.incomes_fin_item_card, categoryName)
                                             }
 
                                         )
