@@ -31,7 +31,7 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
             .fillMaxWidth()
             .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = "Each month limit")
+        Text(text = stringResource(R.string.each_month_limit_new_idea_dialog))
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
             checked = newIdeaDialogState.eachMonth ?: true,

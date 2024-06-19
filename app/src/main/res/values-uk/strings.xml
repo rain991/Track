@@ -66,9 +66,9 @@
     <string name="you_have_already_added_incomes_worth_of">Ти вже додав %1$s доходів, сумарно на %2$s %3$s</string>
     <string name="login_message_personal_settings_screen">Ви зайшли в Track %1$s разів</string>
     <string name="message_categories_settings_screen">Створюй, шукай та видаляй категорії. Базові категорії не можуть бути видаленими</string>
-    <string name="expense_categories_categories_settings_screen">Категорія витрат</string>
+    <string name="expense_categories_categories_settings_screen">Категорії витрат</string>
     <string name="delete">Видалити</string>
-    <string name="income_categories">Категорія доходів</string>
+    <string name="income_categories">Категорії доходів</string>
     <string name="recent_lazy_column">Недавнє</string>
     <string name="expenses_lazy_column">Витрати</string>
     <string name="incomes_lazy_column">Доходи</string>
@@ -129,7 +129,7 @@
     <string name="warning_message_info_cards">0 операцій цього місяця</string>
     <string name="add">Додати</string>
     <string name="add_it">Додай</string>
-    <string name="aprox_month_income_login_screen">Приблизний місячний дохів в %1$s</string>
+    <string name="aprox_month_income_login_screen">Приблизний місячний дохід в %1$s</string>
     <string name="you_havent_added_incomes_yet_lazy_column">Ви ще не добавили жодного доходу</string>
     <string name="add_expense">Добавити витрату</string>
     <string name="add_new_expense">Добавити нову витрату</string>
@@ -160,4 +160,5 @@
     <string name="planned_adding_to_saving_idea_dialog">"Заплановано %1$s "</string>
     <string name="completed_for_adding_to_saving_idea_dialog">Виконано на</string>
     <string name="specified_category_fin_item_card">"%1$s %2$s: "</string>
+    <string name="each_month_limit_new_idea_dialog">Ліміт кожного місяця</string>
 </resources>
