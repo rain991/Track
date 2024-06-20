@@ -8,11 +8,11 @@ plugins {
 
 android {
     android.buildFeatures.buildConfig = true
-    namespace = "com.example.track"
+    namespace = "com.savenko.track"
     compileSdk = 34
 
     defaultConfig {
-        applicationId = "com.example.track"
+        applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 34
         versionCode = 1
