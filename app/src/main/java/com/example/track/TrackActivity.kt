@@ -4,7 +4,12 @@ package com.example.track
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.NetworkType
@@ -15,6 +20,7 @@ import com.example.track.data.other.constants.PREFERABLE_THEME_DEFAULT
 import com.example.track.data.other.dataStore.DataStoreManager
 import com.example.track.data.other.workers.CurrenciesRatesWorker
 import com.example.track.presentation.navigation.Navigation
+import com.example.track.presentation.states.screenRelated.SplashScreen
 import com.example.track.presentation.themes.ThemeManager
 import com.example.track.presentation.themes.getThemeByName
 import kotlinx.coroutines.CoroutineScope
@@ -43,8 +49,16 @@ class TrackActivity : ComponentActivity() {
         setContent {
             val useSystemTheme = dataStore.useSystemTheme.collectAsState(initial = false)
             val preferableTheme = dataStore.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT.name)
-            ThemeManager(isUsingDynamicColors = useSystemTheme.value, preferableTheme = getThemeByName(preferableTheme.value)) {
-                Navigation(dataStore)
+            var isSplashScreenVisible by remember { mutableStateOf(true) }
+            LaunchedEffect(key1 = preferableTheme.value) {
+                isSplashScreenVisible = false
+            }
+            if (isSplashScreenVisible) {
+                SplashScreen()
+            } else {
+                ThemeManager(isUsingDynamicColors = useSystemTheme.value, preferableTheme = getThemeByName(preferableTheme.value)) {
+                    Navigation(dataStore)
+                }
             }
         }
     }

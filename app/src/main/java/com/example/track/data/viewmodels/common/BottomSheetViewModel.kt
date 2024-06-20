@@ -86,6 +86,7 @@ class BottomSheetViewModel(
         )
     )
     val expenseViewState = _expenseViewState.asStateFlow()
+
     init {
         viewModelScope.launch {
             categoryListRepositoryImpl.getCategoriesList().collect {

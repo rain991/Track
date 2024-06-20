@@ -224,8 +224,8 @@ private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
     val selected = bottomSheetViewState.value.categoryPicked // warning
     LazyHorizontalStaggeredGrid(
-        modifier = Modifier.heightIn(min = 40.dp, max = 132.dp),
-        rows = StaggeredGridCells.FixedSize(32.dp),
+        modifier = Modifier.heightIn(min = 48.dp, max = 156.dp),
+        rows = StaggeredGridCells.FixedSize(40.dp),
         state = lazyHorizontalState,
         verticalArrangement = Arrangement.spacedBy(12.dp),
         horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 8.dp)

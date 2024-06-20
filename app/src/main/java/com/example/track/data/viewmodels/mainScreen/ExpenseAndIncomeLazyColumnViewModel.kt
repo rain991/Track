@@ -10,6 +10,7 @@ import com.example.track.data.implementations.expenses.categories.ExpensesCatego
 import com.example.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.example.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.example.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
+import com.example.track.data.other.converters.getEndOfTheMonth
 import com.example.track.data.other.converters.getStartOfMonthDate
 import com.example.track.domain.models.abstractLayer.CategoryEntity
 import com.example.track.domain.models.abstractLayer.FinancialEntity
@@ -91,13 +92,23 @@ class ExpenseAndIncomeLazyColumnViewModel(
         _isExpenseLazyColumn.value = !_isExpenseLazyColumn.value
     }
 
-    private val monthDateRange = Range(getStartOfMonthDate(Date(System.currentTimeMillis())), Date(System.currentTimeMillis()))
+
     suspend fun requestCountInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Flow<Int> {
-        return financialCardNotesProvider.requestCountNotionForFinancialCard(financialEntity, financialCategory, monthDateRange)
+        val currentMonthDateRange = Range(
+            getStartOfMonthDate(Date(financialEntity.date.time)), getEndOfTheMonth(Date(System.currentTimeMillis()))
+        )
+        return financialCardNotesProvider.requestCountNotionForFinancialCard(financialEntity, financialCategory, currentMonthDateRange)
     }
 
     suspend fun requestSummaryInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Flow<Float> {
-        return financialCardNotesProvider.requestValueSummaryNotionForFinancialCard(financialEntity, financialCategory, monthDateRange)
+        val currentMonthDateRange = Range(
+            getStartOfMonthDate(Date(financialEntity.date.time)), getEndOfTheMonth(Date(System.currentTimeMillis()))
+        )
+        return financialCardNotesProvider.requestValueSummaryNotionForFinancialCard(
+            financialEntity,
+            financialCategory,
+            currentMonthDateRange
+        )
     }
 }
 
