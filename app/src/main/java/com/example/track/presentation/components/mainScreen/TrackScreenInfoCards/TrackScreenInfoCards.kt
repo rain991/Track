@@ -99,7 +99,7 @@ fun TrackScreenInfoCards() {
                                     fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append(screenState.value.currentMonthExpensesCount.toString())
+                                append(screenState.value.currentMonthExpensesCount.toString() + " ")
                             }
                             withStyle(
                                 style = SpanStyle(
@@ -180,7 +180,7 @@ fun TrackScreenInfoCards() {
                                     fontSize = 14.sp, fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append(stringResource(R.string.operations_screen_info_cards))
+                                append(" " + stringResource(R.string.operations_screen_info_cards))
                             }
                         })
                     } else {

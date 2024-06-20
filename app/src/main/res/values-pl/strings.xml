@@ -125,7 +125,7 @@
     <string name="selected_time_period_track_stats_options">Wybrany czas %1$s - %2$s</string>
     <string name="expenses_fin_item_card">Wydatków:</string>
     <string name="incomes_fin_item_card">Dochodów:</string>
-    <string name="operations_screen_info_cards">operacja</string>
+    <string name="operations_screen_info_cards"> operacji</string>
     <string name="warning_message_info_cards">0 operacji w tym mięsiącu</string>
     <string name="add">Dodaj</string>
     <string name="add_it">Dodaj</string>

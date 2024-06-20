@@ -163,7 +163,7 @@
     <!-- Financial Cards -->
     <string name="expenses_fin_item_card">"%1$s expenses: "</string>
     <string name="incomes_fin_item_card">"%1$s incomes: "</string>
-    <string name="operations_screen_info_cards">" operations"</string>
+    <string name="operations_screen_info_cards">"operations"</string>
     <string name="warning_message_info_cards">0 operations this month</string>
 
     <!-- Other -->
