@@ -53,6 +53,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import com.savenko.track.R
+import com.savenko.track.data.other.constants.MAX_BUDGET_VALUE
 import com.savenko.track.data.other.constants.NAME_MAX_LENGTH
 import com.savenko.track.data.viewmodels.login.LoginViewModel
 import com.savenko.track.presentation.components.common.ui.CurrencyDropDownMenu
@@ -145,14 +146,15 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                 ),
                 value = screenState.value.budget.toString(),
                 onValueChange = { newText ->
-                    if (newText.length < NAME_MAX_LENGTH) {
-                        loginViewModel.setIncomeStateFlow(
-                            try {
-                                newText.toFloat()
-                            } catch (e: NumberFormatException) {
-                                screenState.value.budget
-                            }
-                        )
+                    try {
+                        val value = newText.toFloat()
+                        if (value < MAX_BUDGET_VALUE) {
+                            loginViewModel.setIncomeStateFlow(
+                                value
+                            )
+                        }
+                    } catch (e: NumberFormatException) {
+                        screenState.value.budget
                     }
                 },
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
@@ -168,12 +170,12 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
 
         Spacer(modifier = Modifier.height(16.dp))
         Row(modifier = Modifier.fillMaxWidth(0.5f)) {
-                CurrencyDropDownMenu(
-                    currencyList = loginViewModel.currencyList,
-                    selectedOption = screenState.value.currency,
-                    onSelect = {
-                        loginViewModel.setCurrencyStateFlow(it)
-                    })
+            CurrencyDropDownMenu(
+                currencyList = loginViewModel.currencyList,
+                selectedOption = screenState.value.currency,
+                onSelect = {
+                    loginViewModel.setCurrencyStateFlow(it)
+                })
         }
         Spacer(modifier = Modifier.height(16.dp))
         Button(
