@@ -34,6 +34,7 @@ class TrackScreenInfoCardsViewModel(
         )
     )
     val cardsState = _cardsState.asStateFlow()
+
     suspend fun initializeValues() {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         val startOfMonthDate = getStartOfMonthDate(todayDate)
@@ -97,5 +98,4 @@ class TrackScreenInfoCardsViewModel(
     private fun setCurrentMonthIncomesCount(value: Int) {
         _cardsState.update { _cardsState.value.copy(currentMonthIncomesCount = value) }
     }
-
 }
