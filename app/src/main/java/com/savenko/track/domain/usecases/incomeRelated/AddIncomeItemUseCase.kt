@@ -1,9 +1,9 @@
 package com.savenko.track.domain.usecases.incomeRelated
 
-import com.savenko.track.data.implementations.incomes.IncomeItemRepositoryImpl
 import com.savenko.track.domain.models.incomes.IncomeItem
+import com.savenko.track.domain.repository.incomes.IncomeItemRepository
 
-class AddIncomeItemUseCase(private val incomeItemRepositoryImpl: IncomeItemRepositoryImpl) {
+class AddIncomeItemUseCase(private val incomeItemRepositoryImpl: IncomeItemRepository) {
     suspend operator fun invoke(incomeItem : IncomeItem) {
         incomeItemRepositoryImpl.addIncomeItem(incomeItem)
     }

@@ -146,7 +146,7 @@ val viewModelModule = module {
     // Settings related
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
     viewModel { IdeasListSettingsScreenViewModel(get()) }
-    viewModel { ThemePreferenceSettingsViewModel(get()) }
+    viewModel { ThemePreferenceSettingsViewModel(get(),get()) }
     viewModel { CategoriesSettingsScreenViewModel(get(), get(), get()) }
     viewModel { NewCategoryViewModel(get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get(), get()) }
