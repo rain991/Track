@@ -55,5 +55,6 @@ Track is currently on closed alpha test. Expected to be available on Play Market
 - Koin DI
 - Retrofit
 - WorkManager
+- Kotlin Flows
 - Clean architecture and MVVM pattern
 - Testing : JUnit and Mockito
