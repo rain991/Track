@@ -29,7 +29,7 @@ import com.savenko.track.domain.models.currency.Currency
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
- fun IdeaInputField(preferableCurrency: Currency) {
+fun IdeaInputField(preferableCurrency: Currency) {
     val focusManager = LocalFocusManager.current
     val controller = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
@@ -51,9 +51,18 @@ import org.koin.androidx.compose.koinViewModel
             ),
             value = currentInputValue.toString(),
             onValueChange = { newText ->
-                newIdeaDialogViewModel.setGoal(newText.toFloat())
+                newIdeaDialogViewModel.setGoal(
+                    try {
+                        newText.toFloat()
+                    }catch (e: NumberFormatException) {
+                        currentInputValue
+                    }
+                )
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
             keyboardActions = KeyboardActions(
                 onDone = {
                     controller?.hide()
