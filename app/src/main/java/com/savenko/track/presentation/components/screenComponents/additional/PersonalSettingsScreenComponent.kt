@@ -35,6 +35,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
+import com.savenko.track.data.other.constants.MAX_BUDGET_VALUE
 import com.savenko.track.data.other.constants.NAME_MAX_LENGTH
 import com.savenko.track.data.viewmodels.settingsScreen.PersonalSettingsScreenViewmodel
 import com.savenko.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
@@ -99,8 +100,11 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
                     keyboardType = KeyboardType.Decimal,
                     label = stringResource(R.string.new_budget_personal_settings_screen, preferableCurrency.value.ticker)
                 ) {
-                    editableBudget = try {
-                        it.toFloat()
+                    try {
+                        val value = it.toFloat()
+                        if (value < MAX_BUDGET_VALUE) {
+                            editableBudget = value
+                        }
                     } catch (e: NumberFormatException) {
                         budget.value
                     }
@@ -149,22 +153,26 @@ private fun PersonalStatsSettingsContent(viewModel: PersonalStatsViewModel) {
             if (statsState.value.allTimeExpensesCount == 0) {
                 Text(text = stringResource(R.string.not_added_any_expenses_yet_personal_settings_screen))
             } else {
-                Text(text = stringResource(
-                    R.string.you_have_already_added_expenses_worth_of,
-                    statsState.value.allTimeExpensesCount,
-                    statsState.value.allTimeExpensesSum,
-                    statsState.value.preferableCurrency.ticker
-                ))
+                Text(
+                    text = stringResource(
+                        R.string.you_have_already_added_expenses_worth_of,
+                        statsState.value.allTimeExpensesCount,
+                        statsState.value.allTimeExpensesSum,
+                        statsState.value.preferableCurrency.ticker
+                    )
+                )
             }
             if (statsState.value.allTimeIncomesCount == 0) {
                 Text(text = stringResource(R.string.not_added_any_incomes_yet_personal_settings_screen))
             } else {
-                Text(text = stringResource(
-                    R.string.you_have_already_added_incomes_worth_of,
-                    statsState.value.allTimeIncomesCount,
-                    statsState.value.allTimeIncomesSum,
-                    statsState.value.preferableCurrency.ticker
-                ))
+                Text(
+                    text = stringResource(
+                        R.string.you_have_already_added_incomes_worth_of,
+                        statsState.value.allTimeIncomesCount,
+                        statsState.value.allTimeIncomesSum,
+                        statsState.value.preferableCurrency.ticker
+                    )
+                )
             }
             HorizontalDivider(modifier = Modifier.fillMaxWidth(0.9f))
             Text(text = stringResource(R.string.login_message_personal_settings_screen, statsState.value.loginCount))

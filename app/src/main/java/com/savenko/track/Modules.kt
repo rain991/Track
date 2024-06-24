@@ -54,6 +54,7 @@ import com.savenko.track.domain.usecases.categoriesRelated.DeleteCategoryUseCase
 import com.savenko.track.domain.usecases.expenseRelated.AddExpenseItemUseCase
 import com.savenko.track.domain.usecases.ideasRelated.CreateIdeaUseCase
 import com.savenko.track.domain.usecases.incomeRelated.AddIncomeItemUseCase
+import com.savenko.track.domain.usecases.userRelated.UpdateUserDataUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -121,6 +122,9 @@ val databaseModule = module {
 }
 
 val domainModule = module {
+    // User
+    factory<UpdateUserDataUseCase> { UpdateUserDataUseCase(get()) }
+
     // Expenses
     factory<AddExpenseItemUseCase> { AddExpenseItemUseCase(get()) }
 
@@ -137,15 +141,15 @@ val domainModule = module {
 
 val viewModelModule = module {
     // Login related
-    viewModel { LoginViewModel(get(), get(), get()) }
+    viewModel { LoginViewModel(get(), get(), get(), get()) }
 
     // Settings related
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
     viewModel { IdeasListSettingsScreenViewModel(get()) }
-    viewModel { ThemePreferenceSettingsViewModel(get()) }
+    viewModel { ThemePreferenceSettingsViewModel(get(),get()) }
     viewModel { CategoriesSettingsScreenViewModel(get(), get(), get()) }
     viewModel { NewCategoryViewModel(get()) }
-    viewModel { PersonalSettingsScreenViewmodel(get(), get()) }
+    viewModel { PersonalSettingsScreenViewmodel(get(), get(), get()) }
     viewModel { PersonalStatsViewModel(get(), get()) }
 
     // Track main screen related

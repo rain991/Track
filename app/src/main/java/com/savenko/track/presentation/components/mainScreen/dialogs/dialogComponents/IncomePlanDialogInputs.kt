@@ -15,8 +15,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
+import com.savenko.track.data.other.converters.formatDateWithYear
 import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.common.ui.CustomDatePicker
 import com.savenko.track.presentation.states.componentRelated.NewIdeaDialogState
@@ -38,14 +40,18 @@ fun IncomePlanDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         Spacer(modifier = Modifier.width(12.dp))
         Button(onClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(true) }) {
             Text(
-                text = if (newIdeaDialogState.endDate != null) newIdeaDialogState.endDate.toString() else stringResource(id = R.string.date),
-                style = MaterialTheme.typography.bodySmall
+                text = if (newIdeaDialogState.endDate != null) formatDateWithYear(newIdeaDialogState.endDate) else stringResource(id = R.string.date),
+                style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center
             )
         }
         CustomDatePicker(
             isVisible = newIdeaDialogState.isDateDialogVisible,
+            isFutureTimeSelectable = true,
             onNegativeClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(false) },
-            onPositiveClick = { date -> newIdeaDialogViewModel.setEndDate(date) }
+            onPositiveClick = { date ->
+                newIdeaDialogViewModel.setEndDate(date)
+                newIdeaDialogViewModel.setIsDatePickerDialogVisible(false)
+            }
         )
     }
 }

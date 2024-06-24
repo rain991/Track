@@ -20,3 +20,6 @@ val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", C
 const val CATEGORIES_NAME_MAX_LENGTH = 40
 const val IDEA_NOTE_MAX_LENGTH = 60
 const val NAME_MAX_LENGTH = 40
+const val MAX_BUDGET_VALUE = Int.MAX_VALUE
+const val MAX_IDEA_VALUE = Int.MAX_VALUE
+
