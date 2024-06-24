@@ -39,7 +39,7 @@ class BottomSheetViewModel(
     private val addIncomeItemUseCase: AddIncomeItemUseCase,
     private val categoryListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
-    currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
 ) : ViewModel() {
     private val _expenseCategoryList = mutableStateListOf<ExpenseCategory>()
     val expenseCategoryList: List<ExpenseCategory> = _expenseCategoryList

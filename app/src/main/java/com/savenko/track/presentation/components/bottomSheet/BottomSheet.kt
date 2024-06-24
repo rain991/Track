@@ -53,6 +53,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.R
@@ -78,8 +79,10 @@ fun BottomSheet() {
     val warningMessage = stringResource(id = R.string.warning_bottom_sheet_exp)
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
-    val currentCurrency = bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
+    val sheetState =
+        rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
+    val currentCurrency =
+        bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
     val isAddingExpense = bottomSheetViewState.value.isAddingExpense
     val categoryList = if (isAddingExpense) {
         bottomSheetViewModel.expenseCategoryList
@@ -133,7 +136,9 @@ fun BottomSheet() {
                                 ) {
                                     Text(
                                         text = it,
-                                        style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold)
+                                        style = MaterialTheme.typography.headlineMedium.copy(
+                                            fontWeight = FontWeight.SemiBold
+                                        )
                                     )
                                 }
                             }
@@ -144,8 +149,10 @@ fun BottomSheet() {
                         Spacer(Modifier.height(16.dp))
                         DatePicker()
                         Spacer(Modifier.height(16.dp))
-                        CategoriesGrid(categoryList)
-                        Spacer(Modifier.height(24.dp))
+                        Box(modifier = Modifier.weight(1f)) {
+                            CategoriesGrid(categoryList)
+                        }
+                        Spacer(Modifier.height(8.dp))
                         AcceptButton {
                             if (bottomSheetViewState.value.categoryPicked != null && bottomSheetViewState.value.datePicked.isBefore(
                                     LocalDate.now().plusDays(1)
@@ -171,9 +178,11 @@ fun BottomSheet() {
                                     }
                                 }
                             } else {
-                                Toast.makeText(context, warningMessage, Toast.LENGTH_SHORT).show()
+                                Toast.makeText(context, warningMessage, Toast.LENGTH_SHORT)
+                                    .show()
                             }
                         }
+
                     }
                 }
             }
@@ -279,7 +288,12 @@ private fun OutlinedTextField(label: String) {
 
 @Composable
 private fun AcceptButton(onClick: () -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .heightIn(30.dp, Dp.Infinity),
+        horizontalArrangement = Arrangement.Center
+    ) {
         Button(
             onClick = {
                 onClick()
@@ -289,7 +303,10 @@ private fun AcceptButton(onClick: () -> Unit) {
                 .wrapContentHeight()
                 .padding(bottom = 4.dp), shape = RoundedCornerShape(80)
         ) {
-            Text(text = stringResource(R.string.add_it), style = MaterialTheme.typography.bodyLarge.copy(letterSpacing = 0.8.sp))
+            Text(
+                text = stringResource(R.string.add_it),
+                style = MaterialTheme.typography.bodyLarge.copy(letterSpacing = 0.8.sp)
+            )
         }
     }
 }
