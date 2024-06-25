@@ -68,7 +68,10 @@ fun SettingsScreenComponent(
             ) {
                 Text(
                     text = stringResource(R.string.account),
-                    style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp, fontWeight = FontWeight.Bold),
+                    style = MaterialTheme.typography.titleMedium.copy(
+                        fontSize = 20.sp,
+                        fontWeight = FontWeight.Bold
+                    ),
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
@@ -111,7 +114,14 @@ private fun SettingsLinkedRow(text: String, onClick: () -> Unit) {
             .padding(horizontal = 12.dp, vertical = 8.dp)
             .clickable { onClick() }, horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(text = text, style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary))
-        Icon(imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight, contentDescription = text)
+        Text(
+            text = text,
+            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary)
+        )
+        Icon(
+            imageVector = Icons.AutoMirrored.Filled.KeyboardArrowRight,
+            contentDescription = text,
+            tint = MaterialTheme.colorScheme.onPrimary
+        )
     }
 }
