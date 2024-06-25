@@ -7,9 +7,10 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
-import org.junit.After
-import org.junit.Assert.assertEquals
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 
@@ -17,7 +18,7 @@ class AddCategoryUseCaseTest {
     val expenseCategoriesListRepository = mock<ExpensesCategoriesListRepositoryImpl>()
     val incomesCategoriesListRepositoryImpl = mock<IncomesCategoriesListRepositoryImpl>()
 
-    @After
+    @AfterEach
     fun tearDown() {
         Mockito.reset(expenseCategoriesListRepository, incomesCategoriesListRepositoryImpl)
     }

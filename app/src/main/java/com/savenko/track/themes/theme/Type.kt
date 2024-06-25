@@ -1,4 +1,4 @@
-package com.savenko.track.ui.theme
+package com.savenko.track.themes.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.ui.text.TextStyle

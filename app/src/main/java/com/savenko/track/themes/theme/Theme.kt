@@ -1,4 +1,4 @@
-package com.savenko.track.ui.theme
+package com.savenko.track.themes.theme
 
 import android.app.Activity
 import android.os.Build

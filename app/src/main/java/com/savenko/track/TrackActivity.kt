@@ -16,6 +16,7 @@ import androidx.work.NetworkType
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import androidx.work.workDataOf
+import com.savenko.track.data.other.constants.CURRENCIES_RATES_REQUEST_PERIOD
 import com.savenko.track.data.other.constants.PREFERABLE_THEME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.other.workers.CurrenciesRatesWorker
@@ -33,22 +34,26 @@ import java.util.concurrent.TimeUnit
 class TrackActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val dataStore: DataStoreManager by inject()
+        val dataStoreManager: DataStoreManager by inject()
         CoroutineScope(Dispatchers.IO).launch {
-            val actualLoginCount = dataStore.loginCountFlow.first()
-            if (actualLoginCount > 0) dataStore.incrementLoginCount()
+            val actualLoginCount = dataStoreManager.loginCountFlow.first()
+            if (actualLoginCount > 0) dataStoreManager.incrementLoginCount()
         }
         val constraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
         val workRequest = PeriodicWorkRequestBuilder<CurrenciesRatesWorker>(
-            1, TimeUnit.DAYS
+            repeatInterval = CURRENCIES_RATES_REQUEST_PERIOD, repeatIntervalTimeUnit = TimeUnit.DAYS
         ).setConstraints(constraints).setInputData(workDataOf()).build()
-        WorkManager.getInstance(applicationContext)
-            .enqueueUniquePeriodicWork("currenciesRateRequest", ExistingPeriodicWorkPolicy.KEEP, workRequest)
+        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
+            "currenciesRateRequest",
+            ExistingPeriodicWorkPolicy.KEEP,
+            workRequest
+        )
         setContent {
-            val useSystemTheme = dataStore.useSystemTheme.collectAsState(initial = false)
-            val preferableTheme = dataStore.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT.name)
+            val useSystemTheme = dataStoreManager.useSystemTheme.collectAsState(initial = false)
+            val preferableTheme =
+                dataStoreManager.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT.name)
             var isSplashScreenVisible by remember { mutableStateOf(true) }
             LaunchedEffect(key1 = preferableTheme.value) {
                 isSplashScreenVisible = false
@@ -56,8 +61,11 @@ class TrackActivity : ComponentActivity() {
             if (isSplashScreenVisible) {
                 SplashScreen()
             } else {
-                ThemeManager(isUsingDynamicColors = useSystemTheme.value, preferableTheme = getThemeByName(preferableTheme.value)) {
-                    Navigation(dataStore)
+                ThemeManager(
+                    isUsingDynamicColors = useSystemTheme.value,
+                    preferableTheme = getThemeByName(preferableTheme.value)
+                ) {
+                    Navigation(dataStoreManager)
                 }
             }
         }
