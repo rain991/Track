@@ -34,7 +34,7 @@ fun BlueTheme(
         content = content
     )
 }
-private val blueTheme_LightColors = lightColorScheme(
+val blueTheme_LightColors = lightColorScheme(
     primary = blue_light_theme_color_primary,
     onPrimary = blue_light_theme_color_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -65,7 +65,7 @@ private val blueTheme_LightColors = lightColorScheme(
     outlineVariant = md_theme_light_outlineVariant,
     scrim = md_theme_light_scrim,
 )
-private val blueTheme_darkColors = darkColorScheme(
+val blueTheme_darkColors = darkColorScheme(
     primary = blue_dark_theme_color_primary,
     onPrimary = blue_dark_theme_color_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
