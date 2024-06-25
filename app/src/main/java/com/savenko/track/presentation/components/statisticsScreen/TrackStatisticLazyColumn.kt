@@ -31,6 +31,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.converters.toDateRange
@@ -108,7 +109,8 @@ fun TrackStatisticLazyColumn(
                     }
 
                     is StatisticChartTimePeriod.Other -> {
-                        state.value.specifiedTimePeriod?.toDateRange() ?: StatisticChartTimePeriod.Year().provideDateRange()
+                        state.value.specifiedTimePeriod?.toDateRange()
+                            ?: StatisticChartTimePeriod.Year().provideDateRange()
                     }
                 }
             }
@@ -141,7 +143,8 @@ fun TrackStatisticLazyColumn(
                                 withContext(Dispatchers.IO) {
                                     statisticLazyColumnViewModel.requestSummaryInDateRangeNotion(
                                         financialEntity = currentFinancialEntity,
-                                        financialCategory = currentFinancialCategory, dateRange = dateRange
+                                        financialCategory = currentFinancialCategory,
+                                        dateRange = dateRange
                                     ).collect {
                                         financialEntityMonthSummary = it
                                     }
@@ -167,11 +170,12 @@ fun TrackStatisticLazyColumn(
                             financialEntityMonthSummary = financialEntityMonthSummary,
                             countOfFinancialEntities = countOfFinancialEntities
                         ) {
-                            selectedFinancialEntity = if (currentFinancialEntity == selectedFinancialEntity) {
-                                null
-                            } else {
-                                currentFinancialEntity
-                            }
+                            selectedFinancialEntity =
+                                if (currentFinancialEntity == selectedFinancialEntity) {
+                                    null
+                                } else {
+                                    currentFinancialEntity
+                                }
                         }
                         Spacer(modifier = Modifier.height(8.dp))
                     }
@@ -185,6 +189,10 @@ fun TrackStatisticLazyColumn(
 @Composable
 private fun EmptyStatisticLazyColumnPlacement() {
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-        Text(text = stringResource(R.string.warning_message_track_stats_lazycolumn), style = MaterialTheme.typography.titleSmall)
+        Text(
+            text = stringResource(R.string.warning_message_track_stats_lazycolumn),
+            style = MaterialTheme.typography.titleSmall,
+            textAlign = TextAlign.Center
+        )
     }
 }

@@ -116,7 +116,7 @@
     <string name="income_plan">План доходів</string>
     <string name="planned_income_plan_card">Заплановано %1$s %2$s</string>
     <string name="completed_for_income_plan_card">Виконано на %1$s %2$s</string>
-    <string name="preferable_period_income_plan_card">Період %</string>
+    <string name="preferable_period_income_plan_card">Період %1$s - %2$s</string>
     <string name="other">Інше</string>
     <string name="income">Дохід</string>
     <string name="warning_track_statistic_chart">Ми не маємо достатньо даних для побудови графіку</string>

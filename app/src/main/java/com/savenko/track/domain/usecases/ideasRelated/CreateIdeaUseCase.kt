@@ -1,9 +1,9 @@
 package com.savenko.track.domain.usecases.ideasRelated
 
+import com.savenko.track.data.implementations.ideas.IdeaItemRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.Idea
-import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaItemRepository
 
-class CreateIdeaUseCase(private val ideaItemRepositoryImpl: IdeaItemRepository) {
+class CreateIdeaUseCase(private val ideaItemRepositoryImpl: IdeaItemRepositoryImpl) {
     suspend operator fun invoke(idea : Idea) {
         ideaItemRepositoryImpl.addIdea(idea)
     }

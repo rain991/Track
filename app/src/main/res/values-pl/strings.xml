@@ -116,7 +116,7 @@
     <string name="income_plan">Plan dochodów</string>
     <string name="planned_income_plan_card">Planowane %1$s %2$s</string>
     <string name="completed_for_income_plan_card">Wykonane na %1$s %2$s</string>
-    <string name="preferable_period_income_plan_card">Okres %</string>
+    <string name="preferable_period_income_plan_card">Okres %1$s - %2$s</string>
     <string name="other">Inne</string>
     <string name="income">Dochód</string>
     <string name="warning_track_statistic_chart">Nie mamy wystarczająco danych do pobudowy wykresu</string>

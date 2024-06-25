@@ -1,14 +1,14 @@
 package com.savenko.track.domain.usecases.categoriesRelated
 
+import com.savenko.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
+import com.savenko.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
-import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
-import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 
 class DeleteCategoryUseCase(
-    private val categoriesListRepository: ExpensesCategoriesListRepository,
-    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository
+    private val categoriesListRepository: ExpensesCategoriesListRepositoryImpl,
+    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl
 ) {
     suspend operator fun invoke(category: CategoryEntity) {
         if (category is ExpenseCategory) {

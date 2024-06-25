@@ -41,7 +41,6 @@ class CurrenciesRatesHandler(
         } else {
             INCORRECT_CONVERSION_RESULT
         }
-
     }
 
     override suspend fun convertValueToBasicCurrency(value: Float, currencyTicker: String): Float {

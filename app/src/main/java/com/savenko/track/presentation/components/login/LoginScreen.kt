@@ -58,7 +58,7 @@ import com.savenko.track.data.other.constants.NAME_MAX_LENGTH
 import com.savenko.track.data.viewmodels.login.LoginViewModel
 import com.savenko.track.presentation.components.common.ui.CurrencyDropDownMenu
 import com.savenko.track.presentation.navigation.Screen
-import com.savenko.track.ui.theme.md_theme_light_primary
+import com.savenko.track.themes.theme.md_theme_light_primary
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -73,10 +73,14 @@ fun LoginScreen(navController: NavController) {
             SideEffect {
                 val window = (view.context as Activity).window
                 window.statusBarColor = color
-                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = useDarkTheme
+                WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars =
+                    useDarkTheme
             }
         }
-        Column(modifier = Modifier.fillMaxSize(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             LoginHeader()
             Spacer(modifier = Modifier.height(32.dp))
             LoginContent(loginViewModel, navController)
@@ -97,16 +101,21 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             .padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
-            modifier = Modifier.wrapContentWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Text(text = stringResource(R.string.name), style = MaterialTheme.typography.titleSmall)
+            Text(
+                text = stringResource(R.string.name),
+                style = MaterialTheme.typography.titleSmall,
+                textAlign = TextAlign.Center
+            )
+            Spacer(modifier = Modifier.width(8.dp))
             BasicTextField(
                 modifier = Modifier
                     .focusRequester(focusRequester)
                     .width(IntrinsicSize.Min)
-                    .padding(start = 12.dp),
+                    .padding(start = 8.dp),
                 textStyle = MaterialTheme.typography.displaySmall.copy(
                     color = MaterialTheme.colorScheme.primary
                 ),
@@ -116,25 +125,30 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                         loginViewModel.setFirstNameStateFlow(newText)
                     }
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Text, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Text,
+                    imeAction = ImeAction.Done
+                ),
                 keyboardActions = KeyboardActions(
                     onDone = {
                         controller?.hide()
                         focusManager.clearFocus()
                     }
-                ),
-                maxLines = 1
+                )
             )
         }
         Spacer(modifier = Modifier.height(24.dp))
         Row(
             modifier = Modifier.wrapContentWidth(),
-            horizontalArrangement = Arrangement.spacedBy(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = stringResource(id = R.string.aprox_month_income_login_screen, screenState.value.currency.ticker),
-                style = MaterialTheme.typography.titleSmall
+                text = stringResource(
+                    id = R.string.aprox_month_income_login_screen,
+                    screenState.value.currency.ticker
+                ),
+                style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center
             )
             BasicTextField(
                 modifier = Modifier
@@ -157,14 +171,16 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                         screenState.value.budget
                     }
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
                 keyboardActions = KeyboardActions(
                     onDone = {
                         controller?.hide()
                         focusManager.clearFocus()
                     }
-                ),
-                maxLines = 1,
+                )
             )
         }
 

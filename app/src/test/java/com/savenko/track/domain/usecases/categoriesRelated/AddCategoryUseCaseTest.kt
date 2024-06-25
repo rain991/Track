@@ -7,42 +7,44 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
-import org.junit.After
-import org.junit.Assert
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.Test
+
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 
 class AddCategoryUseCaseTest {
     val expenseCategoriesListRepository = mock<ExpensesCategoriesListRepositoryImpl>()
     val incomesCategoriesListRepositoryImpl = mock<IncomesCategoriesListRepositoryImpl>()
-    @After
+
+    @AfterEach
     fun tearDown() {
         Mockito.reset(expenseCategoriesListRepository, incomesCategoriesListRepositoryImpl)
     }
 
     @Test
-    fun `expense category was correctly added`() {
-        val testCategory = ExpenseCategory(categoryId = 13, note = "note test", colorId = "sdfsdfsdf")
-        Mockito.`when`(expenseCategoriesListRepository.getCategoryById(testCategory.categoryId)).thenReturn(testCategory)
+    fun `expense category was correctly added`() = runBlocking {
+        val testCategory =
+            ExpenseCategory(categoryId = 13, note = "note test", colorId = "sdfsdfsdf")
+        Mockito.`when`(expenseCategoriesListRepository.getCategoryById(testCategory.categoryId))
+            .thenReturn(testCategory)
         val useCase = AddCategoryUseCase(
             categoriesListRepository = expenseCategoriesListRepository,
             incomesCategoriesListRepositoryImpl = incomesCategoriesListRepositoryImpl
         )
-        runBlocking {
-            useCase(category = testCategory)
-            Mockito.verify(expenseCategoriesListRepository, Mockito.times(1))
-                .addCategory(testCategory)
-        }
-        val actual = runBlocking {
+        useCase(category = testCategory)
+        Mockito.verify(expenseCategoriesListRepository, Mockito.times(1))
+            .addCategory(testCategory)
+        val actual =
             expenseCategoriesListRepository.getCategoryById(testCategory.categoryId)
-        }
-        Assert.assertEquals(testCategory, actual)
+        assertEquals(testCategory, actual)
     }
 
     @Test
-    fun `income category was correctly added`() {
-        val testCategoryList = listOf(IncomeCategory(categoryId = 11, note = "note sdf", colorId = "colorId test"))
+    fun `income category was correctly added`() = runBlocking {
+        val testCategoryList =
+            listOf(IncomeCategory(categoryId = 11, note = "note sdf", colorId = "colorId test"))
         Mockito.`when`(incomesCategoriesListRepositoryImpl.getCategoriesList())
             .thenReturn(flow { emit(testCategoryList) })
 
@@ -50,15 +52,12 @@ class AddCategoryUseCaseTest {
             categoriesListRepository = expenseCategoriesListRepository,
             incomesCategoriesListRepositoryImpl = incomesCategoriesListRepositoryImpl
         )
-        runBlocking {
-            useCase(category = testCategoryList[0])
-            Mockito.verify(incomesCategoriesListRepositoryImpl, Mockito.times(1))
-                .addCategory(testCategoryList[0])
-        }
+        useCase(category = testCategoryList[0])
+        Mockito.verify(incomesCategoriesListRepositoryImpl, Mockito.times(1))
+            .addCategory(testCategoryList[0])
 
-        val actual = runBlocking {
+        val actual =
             incomesCategoriesListRepositoryImpl.getCategoriesList().firstOrNull()
-        }
-        Assert.assertEquals(testCategoryList, actual)
+        assertEquals(testCategoryList, actual)
     }
 }

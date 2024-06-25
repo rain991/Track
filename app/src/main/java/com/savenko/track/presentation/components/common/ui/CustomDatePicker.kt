@@ -14,7 +14,7 @@ import java.util.Date
 @Composable
 fun CustomDatePicker(
     isVisible: Boolean,
-    isFutureTimeSelectable : Boolean = false,
+    isFutureTimeSelectable: Boolean = false,
     onNegativeClick: () -> Unit,
     onPositiveClick: (Date) -> Unit,
     selectedDate: LocalDate = LocalDate.now()
@@ -26,11 +26,9 @@ fun CustomDatePicker(
             onNegativeClick = { onNegativeClick() },
             onPositiveClick = { localDate ->
                 val date = convertLocalDateToDate(localDate)
-                if(isFutureTimeSelectable){
-                    if (date.time >= System.currentTimeMillis()) {
-                        onPositiveClick(date)
-                    }
-                }else{
+                if (isFutureTimeSelectable && date.time >= System.currentTimeMillis()) {
+                    onPositiveClick(date)
+                } else {
                     if (date.time <= System.currentTimeMillis()) {
                         onPositiveClick(date)
                     }

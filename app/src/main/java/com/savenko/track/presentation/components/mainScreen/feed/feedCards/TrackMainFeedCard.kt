@@ -66,27 +66,38 @@ fun TrackMainFeedCard() {
             ) {
                 Column(
                     modifier = Modifier
-                        .weight(0.6f)
-                        .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.SpaceEvenly
+                        .weight(0.7f)
+                        .fillMaxHeight(),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.SpaceEvenly
                 ) {
+                    // Box(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(
-                            R.string.planned_main_track_screen, if (state.value.currency.type == CurrencyTypes.FIAT) {
+                            R.string.planned_main_track_screen,
+                            if (state.value.currency.type == CurrencyTypes.FIAT) {
                                 FIAT_DECIMAL_FORMAT.format(state.value.budget)
                             } else {
                                 CRYPTO_DECIMAL_FORMAT.format(state.value.budget)
-                            }, state.value.currency.ticker
-                        )
+                            },
+                            state.value.currency.ticker
+                        ),
+                        maxLines = 1
                     )
+
                     Text(
                         text = stringResource(
-                            R.string.spent_main_track_screen, if (state.value.currency.type == CurrencyTypes.FIAT) {
+                            R.string.spent_main_track_screen,
+                            if (state.value.currency.type == CurrencyTypes.FIAT) {
                                 FIAT_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
                             } else {
                                 CRYPTO_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
-                            }, state.value.currency.ticker
-                        )
+                            },
+                            state.value.currency.ticker
+                        ),
+                        maxLines = 1
                     )
+
                 }
                 Column(
                     modifier = Modifier

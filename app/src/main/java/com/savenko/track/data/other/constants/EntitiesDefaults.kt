@@ -22,4 +22,4 @@ const val IDEA_NOTE_MAX_LENGTH = 60
 const val NAME_MAX_LENGTH = 40
 const val MAX_BUDGET_VALUE = Int.MAX_VALUE
 const val MAX_IDEA_VALUE = Int.MAX_VALUE
-
+const val CURRENCIES_RATES_REQUEST_PERIOD = 3L // days

@@ -17,10 +17,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.savenko.track.R
-import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
-import com.savenko.track.presentation.states.componentRelated.StatisticChartTimePeriod
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottomAxis
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberStartAxis
@@ -39,6 +37,9 @@ import com.patrykandpatrick.vico.core.cartesian.axis.VerticalAxis
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.common.Dimensions
 import com.patrykandpatrick.vico.core.common.shader.DynamicShader
+import com.savenko.track.R
+import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
+import com.savenko.track.presentation.states.componentRelated.StatisticChartTimePeriod
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -68,14 +69,22 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
     {
         chartViewModel.initializeValues()
     }
-    Card(modifier = modifier, elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)) {
+    Card(
+        modifier = modifier,
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)
+    ) {
         Column(
             modifier = Modifier.padding(8.dp)
         ) {
-            val chartColors = listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary)
+            val chartColors =
+                listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary)
             if (chartData.size <= 1) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                    Text(text = stringResource(R.string.warning_track_statistic_chart), style = MaterialTheme.typography.titleSmall)
+                    Text(
+                        text = stringResource(R.string.warning_track_statistic_chart),
+                        style = MaterialTheme.typography.titleSmall,
+                        textAlign = TextAlign.Center
+                    )
                 }
             } else {
                 ProvideVicoTheme(theme = rememberM3VicoTheme()) {
@@ -89,14 +98,16 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                                 )
                             }),
                             startAxis = rememberStartAxis(
-                                guideline = null, horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
+                                guideline = null,
+                                horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
                                 titleComponent =
                                 rememberTextComponent(
                                     color = MaterialTheme.colorScheme.primary,
                                     padding = Dimensions.of(horizontal = 8.dp, vertical = 2.dp),
                                     margins = Dimensions.of(end = 4.dp),
                                     typeface = Typeface.MONOSPACE,
-                                ), title = chartState.value.preferableCurrency.ticker,
+                                ),
+                                title = chartState.value.preferableCurrency.ticker,
                                 itemPlacer = AxisItemPlacer.Vertical.count({ _ ->
                                     if (chartData.size < 4) {
                                         chartData.size
@@ -135,7 +146,10 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                             )
                         ),
                         modelProducer = modelProducer,
-                        zoomState = rememberVicoZoomState(zoomEnabled = false, initialZoom = Zoom.Content),
+                        zoomState = rememberVicoZoomState(
+                            zoomEnabled = false,
+                            initialZoom = Zoom.Content
+                        ),
                         modifier = Modifier.fillMaxSize()
                     )
                 }
