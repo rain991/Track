@@ -15,6 +15,9 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.savenko.track.presentation.themes.BlueTheme.blueTheme_LightColors
+import com.savenko.track.presentation.themes.BlueTheme.blueTheme_darkColors
+
 private val DarkColorScheme = darkColorScheme(
     primary = Purple80,
     secondary = PurpleGrey80,
@@ -26,6 +29,7 @@ private val LightColorScheme = lightColorScheme(
     tertiary = Pink40,
     onBackground = Color.Black
 )
+
 // val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
 @Composable
 fun TrackerTheme(
@@ -38,8 +42,9 @@ fun TrackerTheme(
             val context = LocalContext.current
             if (darkTheme) dynamicDarkColorScheme(context) else dynamicLightColorScheme(context)
         }
-        darkTheme -> DarkColorScheme
-        else -> LightColorScheme
+
+        darkTheme -> blueTheme_darkColors
+        else -> blueTheme_LightColors
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
@@ -49,7 +54,6 @@ fun TrackerTheme(
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
-
     MaterialTheme(
         colorScheme = colorScheme,
         typography = appTypography,

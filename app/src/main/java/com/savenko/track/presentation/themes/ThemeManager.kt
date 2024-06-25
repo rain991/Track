@@ -1,8 +1,7 @@
 package com.savenko.track.presentation.themes
 
-import androidx.compose.material3.ColorScheme
+import android.os.Build
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.platform.LocalContext
 import com.savenko.track.presentation.themes.BlueTheme.BlueTheme
 import com.savenko.track.presentation.themes.PinkTheme.PinkTheme
 import com.savenko.track.presentation.themes.PurpleTheme.PurpleTheme
@@ -17,9 +16,7 @@ fun ThemeManager(
     preferableTheme: Themes,
     content: @Composable () -> Unit
 ) {
-    val localContext = LocalContext.current
-    val colorScheme: ColorScheme? = null
-    if (isUsingDynamicColors) {
+    if (isUsingDynamicColors && Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
         TrackerTheme {
             content()
         }

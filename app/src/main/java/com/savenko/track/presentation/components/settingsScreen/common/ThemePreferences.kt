@@ -1,5 +1,6 @@
 package com.savenko.track.presentation.components.settingsScreen.common
 
+import android.os.Build
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -73,23 +74,25 @@ fun ThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
             )
             Spacer(modifier = Modifier.height(12.dp))
             Column {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    Text(
-                        stringResource(R.string.use_device_theme_settings_screen),
-                        style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
-                        modifier = Modifier.padding(start = 4.dp), textAlign = TextAlign.Start
-                    )
-                    SettingsSwitch(checked = useDeviceTheme.value, onCheckedChange = {
-                        coroutineScope.launch { themePreferenceSettingsViewModel.setUseSystemTheme(it) }
-                    })
+                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            stringResource(R.string.use_device_theme_settings_screen),
+                            style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
+                            modifier = Modifier.padding(start = 4.dp), textAlign = TextAlign.Start
+                        )
+                        SettingsSwitch(checked = useDeviceTheme.value, onCheckedChange = {
+                            coroutineScope.launch { themePreferenceSettingsViewModel.setUseSystemTheme(it) }
+                        })
+                    }
                 }
-                if (!useDeviceTheme.value) {
+                if (!useDeviceTheme.value || Build.VERSION.SDK_INT < Build.VERSION_CODES.S) {
                     Column(
                         modifier = Modifier
                             .fillMaxWidth()
