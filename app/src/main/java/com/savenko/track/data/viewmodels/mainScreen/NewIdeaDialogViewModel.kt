@@ -104,6 +104,8 @@ class NewIdeaDialogViewModel(
         createIdeaUseCase(idea)
         setIsNewIdeaDialogVisible(false)
         setGoal(0.0f)
+        setLabel(null)
+        setEndDate(null)
     }
 
 
@@ -185,7 +187,7 @@ class NewIdeaDialogViewModel(
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(warningMessage = value)
     }
 
-    fun setLabel(label: String) {
+    fun setLabel(label: String?) {
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(label = label)
     }
 
