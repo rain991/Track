@@ -5,8 +5,8 @@ import com.savenko.track.data.implementations.incomes.categories.IncomesCategori
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import kotlinx.coroutines.runBlocking
-import org.junit.After
-import org.junit.Test
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
@@ -15,7 +15,7 @@ class DeleteCategoryUseCaseTest {
     private val expenseCategoriesListRepository = mock<ExpensesCategoriesListRepositoryImpl>()
     private val incomesCategoriesListRepositoryImpl = mock<IncomesCategoriesListRepositoryImpl>()
 
-    @After
+    @AfterEach
     fun tearDown() {
         Mockito.reset(expenseCategoriesListRepository, incomesCategoriesListRepositoryImpl)
     }

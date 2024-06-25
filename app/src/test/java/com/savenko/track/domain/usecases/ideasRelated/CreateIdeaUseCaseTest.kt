@@ -5,7 +5,7 @@ import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.verify
 

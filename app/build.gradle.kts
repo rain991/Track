@@ -106,10 +106,12 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //junit
-    testImplementation("junit:junit:4.13.2")
+    testImplementation("junit:junit:5.10.2")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
     // testImplementation ("org.mockito:mockito-core:5.12.0")
     testImplementation ("org.mockito.kotlin:mockito-kotlin:5.3.1")
     androidTestImplementation("androidx.test.ext:junit:1.1.5")
+
     androidTestImplementation("androidx.test.espresso:espresso-core:3.5.1")
 
     //other

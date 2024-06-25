@@ -3,7 +3,7 @@ package com.savenko.track.domain.usecases.incomeRelated
 import com.savenko.track.data.implementations.incomes.IncomeItemRepositoryImpl
 import com.savenko.track.domain.models.incomes.IncomeItem
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.verify
 

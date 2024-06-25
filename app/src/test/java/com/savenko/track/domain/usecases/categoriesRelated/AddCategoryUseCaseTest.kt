@@ -8,7 +8,7 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
 import org.junit.After
-import org.junit.Assert
+import org.junit.Assert.assertEquals
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
@@ -37,7 +37,7 @@ class AddCategoryUseCaseTest {
             .addCategory(testCategory)
         val actual =
             expenseCategoriesListRepository.getCategoryById(testCategory.categoryId)
-        Assert.assertEquals(testCategory, actual)
+        assertEquals(testCategory, actual)
     }
 
     @Test
@@ -57,6 +57,6 @@ class AddCategoryUseCaseTest {
 
         val actual =
             incomesCategoriesListRepositoryImpl.getCategoriesList().firstOrNull()
-        Assert.assertEquals(testCategoryList, actual)
+        assertEquals(testCategoryList, actual)
     }
 }

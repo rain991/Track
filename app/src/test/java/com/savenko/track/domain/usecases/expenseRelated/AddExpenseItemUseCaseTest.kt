@@ -3,7 +3,7 @@ package com.savenko.track.domain.usecases.expenseRelated
 import com.savenko.track.data.implementations.expenses.ExpenseItemRepositoryImpl
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import kotlinx.coroutines.runBlocking
-import org.junit.Test
+import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.verify
 
