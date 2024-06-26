@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.savenko.track.data.other.constants.MAX_IDEA_VALUE
 import com.savenko.track.domain.models.currency.Currency
 
 @Composable
@@ -53,15 +54,22 @@ fun AddToSavingDialogAmountInput(
             ),
             value = currentValue.toString(),
             onValueChange = { newText: String ->
-                onValueChange(
-                    try {
-                        newText.toFloat()
-                    } catch (e: NumberFormatException) {
-                        currentValue
+                val result = try {
+                    val convertedValue = newText.toFloat()
+                    if (convertedValue < MAX_IDEA_VALUE) {
+                        convertedValue
+                    } else {
+                        MAX_IDEA_VALUE.toFloat()
                     }
-                )
+                } catch (e: NumberFormatException) {
+                    currentValue
+                }
+                onValueChange(result)
             },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+            keyboardOptions = KeyboardOptions(
+                keyboardType = KeyboardType.Number,
+                imeAction = ImeAction.Done
+            ),
             keyboardActions = KeyboardActions(
                 onDone = {
                     controller?.hide()
