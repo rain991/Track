@@ -58,7 +58,7 @@ import com.savenko.track.data.other.constants.NAME_MAX_LENGTH
 import com.savenko.track.data.viewmodels.login.LoginViewModel
 import com.savenko.track.presentation.components.common.ui.CurrencyDropDownMenu
 import com.savenko.track.presentation.navigation.Screen
-import com.savenko.track.themes.theme.md_theme_light_primary
+import com.savenko.track.presentation.themes.theme.md_theme_light_primary
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 

@@ -54,7 +54,7 @@
     <string name="oldest_first_idea_settings_screen">najpierw stare</string>
     <string name="message_currencies_settings_screen">Możesz zmienić walutę, klikając jej nazwę. Waluta priorytetowa zawsze będzie wyświetlana jako pierwsza</string>
     <string name="name_personal_settings_screen">Imie : %1$s</string>
-    <string name="budget_personal_settings_screen">Budżet: %1$s %2$s</string>
+    <string name="budget_personal_settings_screen">Budżet : %1$s %2$s</string>
     <string name="new_budget_personal_settings_screen">Nowy budżet w %1$s</string>
     <string name="new_name_personal_settings_screen">Nowe imie</string>
     <string name="decline">Odrzuć</string>

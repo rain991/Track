@@ -1,4 +1,4 @@
-package com.savenko.track.themes.theme
+package com.savenko.track.presentation.themes.theme
 
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
