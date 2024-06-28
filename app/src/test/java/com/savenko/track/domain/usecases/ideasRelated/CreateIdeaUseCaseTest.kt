@@ -4,6 +4,7 @@ import com.savenko.track.data.implementations.ideas.IdeaItemRepositoryImpl
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
+import com.savenko.track.domain.usecases.crud.ideasRelated.CreateIdeaUseCase
 import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.Test
 import org.mockito.Mockito.mock

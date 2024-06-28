@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoriesTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
-import com.savenko.track.domain.usecases.categoriesRelated.AddCategoryUseCase
+import com.savenko.track.domain.usecases.crud.categoriesRelated.AddCategoryUseCase
 
 class NewCategoryViewModel(
     private val addCategoryUseCase: AddCategoryUseCase

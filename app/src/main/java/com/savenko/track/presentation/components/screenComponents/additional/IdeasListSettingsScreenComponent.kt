@@ -33,7 +33,7 @@ import com.savenko.track.R
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
-import com.savenko.track.data.viewmodels.settingsScreen.IdeasListSettingsScreenViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.IdeasSettingsScreenViewModel
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
@@ -48,16 +48,16 @@ import org.koin.compose.koinInject
 @Composable
 fun IdeasListSettingsScreenComponent() {
     val addToSavingIdeaDialogViewModel = koinViewModel<AddToSavingIdeaDialogViewModel>()
-    val ideasListSettingsScreenViewModel = koinViewModel<IdeasListSettingsScreenViewModel>()
+    val ideasSettingsScreenViewModel = koinViewModel<IdeasSettingsScreenViewModel>()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()
-    val screenState = ideasListSettingsScreenViewModel.screenState.collectAsState()
+    val screenState = ideasSettingsScreenViewModel.screenState.collectAsState()
     val addToSavingIdeaDialogSavings = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
-    val listOfAllIdeas = ideasListSettingsScreenViewModel.listOfAllIdeas
+    val listOfAllIdeas = ideasSettingsScreenViewModel.listOfAllIdeas
     val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val listState = rememberLazyListState()
     LaunchedEffect(key1 = Unit) {
-        ideasListSettingsScreenViewModel.initializeValues()
+        ideasSettingsScreenViewModel.initializeValues()
     }
     if (addToSavingIdeaDialogSavings.value != null) {
         AddToSavingDialog(addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel)
@@ -84,7 +84,7 @@ fun IdeasListSettingsScreenComponent() {
                     checked = screenState.value.isShowingCompletedIdeas,
                     onCheckedChange = {
                         coroutineScope.launch {
-                            ideasListSettingsScreenViewModel.setIsShowingCompletedIdeas(it)
+                            ideasSettingsScreenViewModel.setIsShowingCompletedIdeas(it)
                         }
                     })
             }
@@ -97,7 +97,7 @@ fun IdeasListSettingsScreenComponent() {
             ) {
                 Text(text = stringResource(R.string.sorted_date_idea_settings_screen))
                 Spacer(modifier = Modifier.width(8.dp))
-                TextButton(onClick = { ideasListSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) }) {
+                TextButton(onClick = { ideasSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) }) {
                     Text(
                         text = if (screenState.value.isSortedDateDescending) {
                             stringResource(R.string.newest_first_idea_settings_screen)
@@ -132,7 +132,7 @@ fun IdeasListSettingsScreenComponent() {
                         is ExpenseLimits -> {
                             var completionValue by remember { mutableFloatStateOf(0.0f) }
                             LaunchedEffect(key1 = Unit) {
-                                ideasListSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
+                                ideasSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
                                     completionValue = it
                                 }
                             }
@@ -146,7 +146,7 @@ fun IdeasListSettingsScreenComponent() {
                         is IncomePlans -> {
                             var completionValue by remember { mutableFloatStateOf(0.0f) }
                             LaunchedEffect(key1 = Unit) {
-                                ideasListSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
+                                ideasSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
                                     completionValue = it
                                 }
                             }

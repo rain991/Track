@@ -5,9 +5,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.FinancialCardNotesProvider
-import com.savenko.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.savenko.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.savenko.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
 import com.savenko.track.data.other.converters.getEndOfTheMonth
@@ -18,6 +16,8 @@ import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
+import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserExpensesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserIncomesUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -27,9 +27,9 @@ import java.util.Date
 
 /* This VM contains needed components for UI of expenses lazycolumn on mainList, also data for TrackScreenInfoComposable */
 class ExpenseAndIncomeLazyColumnViewModel(
-    private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
+    private val getUserExpensesUseCase: GetUserExpensesUseCase,
+    private val getUserIncomesUseCase: GetUserIncomesUseCase,
     private val categoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
-    private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
     private val financialCardNotesProvider: FinancialCardNotesProvider
 ) : ViewModel() {
@@ -44,7 +44,8 @@ class ExpenseAndIncomeLazyColumnViewModel(
 
     private val _isScrolledBelow = MutableStateFlow(value = false)
     val isScrolledBelow = _isScrolledBelow.asStateFlow()
-    private val _expandedFinancialEntity: MutableStateFlow<FinancialEntity?> = MutableStateFlow(value = null)
+    private val _expandedFinancialEntity: MutableStateFlow<FinancialEntity?> =
+        MutableStateFlow(value = null)
     val expandedFinancialEntity = _expandedFinancialEntity.asStateFlow()
     private val _isExpenseLazyColumn = MutableStateFlow(value = true)
     val isExpenseLazyColumn = _isExpenseLazyColumn.asStateFlow()
@@ -57,13 +58,13 @@ class ExpenseAndIncomeLazyColumnViewModel(
             }
         }
         viewModelScope.launch {
-            expensesListRepositoryImpl.getSortedExpensesListDateDesc().collect {
+            getUserExpensesUseCase().collect {
                 _expensesList.clear()
                 _expensesList.addAll(it)
             }
         }
         viewModelScope.launch {
-            incomeListRepositoryImpl.getSortedIncomesListDateDesc().collect {
+            getUserIncomesUseCase().collect {
                 _incomeList.clear()
                 _incomeList.addAll(it)
             }
@@ -93,16 +94,28 @@ class ExpenseAndIncomeLazyColumnViewModel(
     }
 
 
-    suspend fun requestCountInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Flow<Int> {
+    suspend fun requestCountInMonthNotion(
+        financialEntity: FinancialEntity,
+        financialCategory: CategoryEntity
+    ): Flow<Int> {
         val currentMonthDateRange = Range(
-            getStartOfMonthDate(Date(financialEntity.date.time)), getEndOfTheMonth(Date(System.currentTimeMillis()))
+            getStartOfMonthDate(Date(financialEntity.date.time)),
+            getEndOfTheMonth(Date(System.currentTimeMillis()))
         )
-        return financialCardNotesProvider.requestCountNotionForFinancialCard(financialEntity, financialCategory, currentMonthDateRange)
+        return financialCardNotesProvider.requestCountNotionForFinancialCard(
+            financialEntity,
+            financialCategory,
+            currentMonthDateRange
+        )
     }
 
-    suspend fun requestSummaryInMonthNotion(financialEntity: FinancialEntity, financialCategory: CategoryEntity): Flow<Float> {
+    suspend fun requestSummaryInMonthNotion(
+        financialEntity: FinancialEntity,
+        financialCategory: CategoryEntity
+    ): Flow<Float> {
         val currentMonthDateRange = Range(
-            getStartOfMonthDate(Date(financialEntity.date.time)), getEndOfTheMonth(Date(System.currentTimeMillis()))
+            getStartOfMonthDate(Date(financialEntity.date.time)),
+            getEndOfTheMonth(Date(System.currentTimeMillis()))
         )
         return financialCardNotesProvider.requestValueSummaryNotionForFinancialCard(
             financialEntity,
