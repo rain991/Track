@@ -52,7 +52,7 @@ import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_
 import com.savenko.track.data.other.converters.areDatesSame
 import com.savenko.track.data.other.converters.areYearsSame
 import com.savenko.track.data.other.converters.convertDateToLocalDate
-import com.savenko.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
+import com.savenko.track.data.viewmodels.mainScreen.FinancialsLazyColumnViewModel
 import com.savenko.track.presentation.components.common.parser.getMonthResID
 import com.savenko.track.presentation.components.common.ui.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.components.mainScreen.TrackScreenInfoCards.TrackScreenInfoCards
@@ -67,17 +67,17 @@ import java.time.LocalDate
     Transactions (ui to switch between expeneses and incomes), EmptyLazyColumnPlacement, ExpenseDayHeader, ExpenseMonthHeader, ExpenseYearHeader   */
 @Composable
 fun MainScreenLazyColumn() {
-    val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
-    val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
-    val expensesList = expenseAndIncomeLazyColumnViewModel.expensesList
-    val expenseCategoriesList = expenseAndIncomeLazyColumnViewModel.expenseCategoriesList
-    val incomeList = expenseAndIncomeLazyColumnViewModel.incomeList
-    val incomeCategoriesList = expenseAndIncomeLazyColumnViewModel.incomeCategoriesList
+    val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
+    val isExpenseLazyColumn = financialsLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
+    val expensesList = financialsLazyColumnViewModel.expensesList
+    val expenseCategoriesList = financialsLazyColumnViewModel.expenseCategoriesList
+    val incomeList = financialsLazyColumnViewModel.incomeList
+    val incomeCategoriesList = financialsLazyColumnViewModel.incomeCategoriesList
     val listState = rememberLazyListState()
-    val expandedItem = expenseAndIncomeLazyColumnViewModel.expandedFinancialEntity.collectAsState()
+    val expandedItem = financialsLazyColumnViewModel.expandedFinancialEntity.collectAsState()
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE } }
     var isScrollingUp by remember { mutableStateOf(false) }
-    val isScrolledBelowState = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
+    val isScrolledBelowState = financialsLazyColumnViewModel.isScrolledBelow.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Box {
@@ -108,7 +108,7 @@ fun MainScreenLazyColumn() {
             snapshotFlow {
                 listState.firstVisibleItemIndex
             }.collect { index ->
-                expenseAndIncomeLazyColumnViewModel.setScrolledBelow(index)
+                financialsLazyColumnViewModel.setScrolledBelow(index)
             }
         }
         Column {
@@ -206,7 +206,7 @@ fun MainScreenLazyColumn() {
                                     LaunchedEffect(key1 = Unit, key2 = isExpenseLazyColumn.value) {
                                         async {
                                             withContext(Dispatchers.IO) {
-                                                expenseAndIncomeLazyColumnViewModel.requestSummaryInMonthNotion(
+                                                financialsLazyColumnViewModel.requestSummaryInMonthNotion(
                                                     financialEntity = currentFinancialEntity,
                                                     financialCategory = currentFinancialCategory
                                                 ).collect {
@@ -216,7 +216,7 @@ fun MainScreenLazyColumn() {
                                         }
                                         async {
                                             withContext(Dispatchers.IO) {
-                                                expenseAndIncomeLazyColumnViewModel.requestCountInMonthNotion(
+                                                financialsLazyColumnViewModel.requestCountInMonthNotion(
                                                     financialEntity = currentFinancialEntity,
                                                     financialCategory = currentFinancialCategory
                                                 ).collect {
@@ -233,7 +233,7 @@ fun MainScreenLazyColumn() {
                                         financialEntityMonthSummary = financialEntityMonthSummary,
                                         countOfFinancialEntities = countOfFinancialEntities
                                     ) {
-                                        expenseAndIncomeLazyColumnViewModel.setExpandedExpenseCard(
+                                        financialsLazyColumnViewModel.setExpandedExpenseCard(
                                             if (expandedItem.value != currentFinancialEntity) {
                                                 currentFinancialEntity
                                             } else {
@@ -255,8 +255,8 @@ fun MainScreenLazyColumn() {
 
 @Composable
 private fun Transactions() {
-    val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
-    val isExpenseLazyColumn = expenseAndIncomeLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
+    val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
+    val isExpenseLazyColumn = financialsLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     var text by remember { mutableStateOf("") }
     if (isExpenseLazyColumn.value) {
         text = stringResource(R.string.expenses_lazy_column)
@@ -275,7 +275,7 @@ private fun Transactions() {
                 slideInVertically { it } togetherWith slideOutVertically { -it }
             }) { text ->
             TextButton(
-                onClick = { expenseAndIncomeLazyColumnViewModel.toggleIsExpenseLazyColumn() }
+                onClick = { financialsLazyColumnViewModel.toggleIsExpenseLazyColumn() }
             ) {
                 Text(
                     text = text,

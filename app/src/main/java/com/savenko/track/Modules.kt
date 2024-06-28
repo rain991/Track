@@ -36,7 +36,7 @@ import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.savenko.track.data.viewmodels.login.LoginViewModel
 import com.savenko.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
-import com.savenko.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
+import com.savenko.track.data.viewmodels.mainScreen.FinancialsLazyColumnViewModel
 import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.savenko.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
@@ -161,7 +161,7 @@ val viewModelModule = module {
     viewModel { PersonalStatsViewModel(get(), get()) }
 
     // Track main screen related
-    viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get(), get()) }
+    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get()) }
 
     // Statistics related
     viewModel { StatisticChartViewModel(get(), get()) }

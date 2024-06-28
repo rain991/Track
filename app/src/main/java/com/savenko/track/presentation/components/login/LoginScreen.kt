@@ -34,6 +34,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -185,7 +186,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
         }
 
         Spacer(modifier = Modifier.height(16.dp))
-        Row(modifier = Modifier.fillMaxWidth(0.5f)) {
+        Row(modifier = Modifier.fillMaxWidth().scale(0.9f), horizontalArrangement = Arrangement.Center) {
             CurrencyDropDownMenu(
                 currencyList = loginViewModel.currencyList,
                 selectedOption = screenState.value.currency,
