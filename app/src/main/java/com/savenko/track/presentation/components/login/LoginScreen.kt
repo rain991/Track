@@ -3,6 +3,7 @@ package com.savenko.track.presentation.components.login
 
 import android.app.Activity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,23 +19,29 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.DropdownMenuItem
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -57,7 +64,7 @@ import com.savenko.track.R
 import com.savenko.track.data.other.constants.MAX_BUDGET_VALUE
 import com.savenko.track.data.other.constants.NAME_MAX_LENGTH
 import com.savenko.track.data.viewmodels.login.LoginViewModel
-import com.savenko.track.presentation.components.common.ui.CurrencyDropDownMenu
+import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.navigation.Screen
 import com.savenko.track.presentation.themes.theme.md_theme_light_primary
 import kotlinx.coroutines.launch
@@ -140,14 +147,13 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
         }
         Spacer(modifier = Modifier.height(24.dp))
         Row(
-            modifier = Modifier.wrapContentWidth(),
-            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
                 text = stringResource(
-                    id = R.string.aprox_month_income_login_screen,
-                    screenState.value.currency.ticker
+                    id = R.string.aprox_month_income_login_screen
                 ),
                 style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center
             )
@@ -183,18 +189,15 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                     }
                 )
             )
-        }
-
-        Spacer(modifier = Modifier.height(16.dp))
-        Row(modifier = Modifier.fillMaxWidth().scale(0.9f), horizontalArrangement = Arrangement.Center) {
-            CurrencyDropDownMenu(
-                currencyList = loginViewModel.currencyList,
+            Spacer(modifier = Modifier.width(8.dp))
+            LoginScreenCurrencyPicker(currencyList = loginViewModel.currencyList,
                 selectedOption = screenState.value.currency,
                 onSelect = {
                     loginViewModel.setCurrencyStateFlow(it)
                 })
         }
-        Spacer(modifier = Modifier.height(16.dp))
+
+        Spacer(modifier = Modifier.height(24.dp))
         Button(
             modifier = Modifier
                 .wrapContentWidth()
@@ -257,6 +260,60 @@ private fun LoginHeader() {
                         color = MaterialTheme.colorScheme.onPrimary
                     )
                 }
+            }
+        }
+    }
+}
+
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun LoginScreenCurrencyPicker(
+    currencyList: List<Currency>,
+    selectedOption: Currency,
+    onSelect: (Currency) -> Unit
+) {
+    val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
+    var isExpanded by remember { mutableStateOf(false) }
+    val focusRequester = remember { FocusRequester() }
+    ExposedDropdownMenuBox(
+        expanded = isExpanded,
+        onExpandedChange = {
+            isExpanded = !isExpanded
+        }, modifier = Modifier
+            .wrapContentWidth()
+            .focusRequester(focusRequester)
+            .wrapContentSize()
+    ) {
+        BasicTextField(
+            value = selectedOption.ticker,
+            readOnly = true,
+            modifier = Modifier
+                .menuAnchor()
+                .width(IntrinsicSize.Min)
+                .clickable { isExpanded = !isExpanded }, onValueChange = {
+            },
+            textStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.primary)
+        )
+
+        ExposedDropdownMenu(
+            modifier = Modifier.width(IntrinsicSize.Min),
+            expanded = isExpanded,
+            onDismissRequest = {
+                isExpanded = false
+            }
+        ) {
+            currencyList.forEach { selectionOption ->
+                DropdownMenuItem(
+                    text = { Text(text = selectionOption.name, color = uiColor) },
+                    onClick = {
+                        onSelect(selectionOption)
+                        isExpanded = false
+                    },
+                    trailingIcon = {
+                        Text(text = selectionOption.ticker, color = uiColor)
+                    }
+                )
             }
         }
     }

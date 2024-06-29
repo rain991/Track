@@ -169,7 +169,7 @@
     <!-- Other -->
     <string name="add">Add</string>
     <string name="add_it">Add it</string>
-    <string name="aprox_month_income_login_screen">Aprox. month income in %1$s</string>
+    <string name="aprox_month_income_login_screen">Aprox. month income</string>
     <string name="you_havent_added_incomes_yet_lazy_column">You haven\'t added incomes yet</string>
     <string name="add_expense">Add Expenses</string>
     <string name="add_new_expense">Add New Expense</string>

@@ -129,7 +129,7 @@
     <string name="warning_message_info_cards">0 operacji w tym mięsiącu</string>
     <string name="add">Dodaj</string>
     <string name="add_it">Dodaj</string>
-    <string name="aprox_month_income_login_screen">Miesięczny dochód w %1$s</string>
+    <string name="aprox_month_income_login_screen">Miesięczny dochód</string>
     <string name="you_havent_added_incomes_yet_lazy_column">Nie dodałeś jeszcze żadnego dochodu</string>
     <string name="add_expense">Dodaj wydatek</string>
     <string name="add_new_expense">Dodaj nowy wydatek</string>

@@ -129,7 +129,7 @@
     <string name="warning_message_info_cards">0 операций в этом месяце</string>
     <string name="add">Добавить</string>
     <string name="add_it">Добавь</string>
-    <string name="aprox_month_income_login_screen">Примерный месячный доход в %1$s</string>
+    <string name="aprox_month_income_login_screen">Примерный месячный доход</string>
     <string name="you_havent_added_incomes_yet_lazy_column">Вы еще не добавили никакого дохода</string>
     <string name="add_expense">Добавить расход</string>
     <string name="add_new_expense">Добавить новый расход</string>
