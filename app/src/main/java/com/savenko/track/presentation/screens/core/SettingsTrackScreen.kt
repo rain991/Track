@@ -1,4 +1,4 @@
-package com.savenko.track.presentation.screens.Core
+package com.savenko.track.presentation.screens.core
 
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box

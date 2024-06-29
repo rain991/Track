@@ -35,7 +35,7 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 
-/*  It is main screen feed which contains automatically scrollabl   e pager which always starting with card TrackMainFeedCard
+/*  It is main screen feed which contains automatically scrollable pager which always starting with card TrackMainFeedCard
     and ending with NewIdeaFeedCard. Also contains :   */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

@@ -1,4 +1,4 @@
-package com.savenko.track.presentation.screens.Core
+package com.savenko.track.presentation.screens.core
 
 import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
