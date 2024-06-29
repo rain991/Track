@@ -29,6 +29,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
@@ -42,6 +43,8 @@ import com.savenko.track.presentation.components.mainScreen.dialogs.dialogCompon
 import com.savenko.track.presentation.components.mainScreen.dialogs.dialogComponents.IdeaInputField
 import com.savenko.track.presentation.components.mainScreen.dialogs.dialogComponents.IncomePlanDialogInputs
 import com.savenko.track.presentation.components.mainScreen.dialogs.dialogComponents.SavingsDialogInputs
+import com.savenko.track.presentation.other.WindowInfo
+import com.savenko.track.presentation.other.rememberWindowInfo
 import com.savenko.track.presentation.states.componentRelated.IdeaSelectorTypes
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
@@ -55,13 +58,18 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()
     val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val windowInfo = rememberWindowInfo()
     Dialog(
         onDismissRequest = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(false) },
         properties = DialogProperties(usePlatformDefaultWidth = false)
     ) {
         Surface(
             modifier = Modifier
-                .fillMaxWidth(0.96f)
+                .fillMaxWidth(if(windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded){
+                    0.7f
+                }else{
+                    0.96f
+                })
                 .wrapContentHeight(),
             shape = RoundedCornerShape(8.dp),
         ) {
@@ -123,7 +131,7 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
                             IdeaSelectorTypes.IncomePlans -> stringResource(R.string.income_planned)
                             IdeaSelectorTypes.Savings -> stringResource(R.string.savings_planned)
                         },
-                        style = MaterialTheme.typography.bodyMedium
+                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
                     )
                     Spacer(modifier = Modifier.weight(1f))
                     IdeaInputField(preferableCurrency = preferableCurrency.value)

@@ -18,7 +18,7 @@ import androidx.navigation.NavHostController
 import com.savenko.track.R
 import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.mainScreen.dialogs.NewIdeaDialog
-import com.savenko.track.presentation.components.screenComponents.additional.IdeasListSettingsScreenComponent
+import com.savenko.track.presentation.components.screenComponents.additional.IdeasSettingsScreenComponent
 import com.savenko.track.presentation.components.settingsScreen.components.SettingsSpecifiedScreenHeader
 import com.savenko.track.presentation.navigation.Screen
 import org.koin.androidx.compose.koinViewModel
@@ -49,7 +49,7 @@ fun IdeasListSettingsScreen(navController: NavHostController) {
                 .fillMaxSize()
                 .padding(it)
         ) {
-            IdeasListSettingsScreenComponent()
+            IdeasSettingsScreenComponent()
         }
     }
 }

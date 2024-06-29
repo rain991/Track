@@ -32,6 +32,8 @@ import com.savenko.track.R
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.presentation.components.settingsScreen.common.ThemePreferences
 import com.savenko.track.presentation.navigation.Screen
+import com.savenko.track.presentation.other.WindowInfo
+import com.savenko.track.presentation.other.rememberWindowInfo
 
 
 @Composable
@@ -41,22 +43,46 @@ fun SettingsScreenComponent(
     isPageNameVisible: Boolean,
     settingsData: DataStoreManager
 ) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = 16.dp, vertical = 8.dp)
-            .clip(RoundedCornerShape(16.dp))
-            .background(
-                brush = Brush.linearGradient(
-                    colors = listOf(
-                        MaterialTheme.colorScheme.primary.copy(alpha = 0.7f),
-                        MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.8f)
-                    )
+    val windowInfo = rememberWindowInfo()
+    val expandedScreenModifier = Modifier
+        .padding(horizontal = 40.dp, vertical = 8.dp)
+        .clip(RoundedCornerShape(16.dp))
+        .background(
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    MaterialTheme.colorScheme.primary.copy(alpha = 1f),
+                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 1f)
                 )
-            ), horizontalAlignment = Alignment.CenterHorizontally
+            )
+        )
+    val compactScreenModifier = Modifier
+        .padding(horizontal = 16.dp, vertical = 8.dp)
+        .clip(RoundedCornerShape(16.dp))
+        .background(
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    MaterialTheme.colorScheme.primary.copy(alpha = 0.70f),
+                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.80f)
+                )
+            )
+        )
+    Column(
+        modifier = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+            expandedScreenModifier
+        } else {
+            compactScreenModifier
+        }, horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
+                .padding(
+                    if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+                        24.dp
+                    } else {
+                        0.dp
+                    }
+                )
                 .wrapContentHeight()
                 .padding(8.dp)
         ) {

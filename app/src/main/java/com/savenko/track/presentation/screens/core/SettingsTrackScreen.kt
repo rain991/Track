@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -29,7 +30,7 @@ fun SettingsTrackScreen(navHostController: NavHostController) {
     val settingsData = koinInject<DataStoreManager>()
     val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
     val toastState = currenciesSettingsViewModel.toastStateFlow.collectAsState()
-    androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
+    Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             if (isPageNameVisible.value) Header(pageName = stringResource(R.string.settings))
         },

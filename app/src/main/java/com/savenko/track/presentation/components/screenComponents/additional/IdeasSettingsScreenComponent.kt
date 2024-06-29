@@ -41,20 +41,25 @@ import com.savenko.track.presentation.components.mainScreen.feed.dialogs.AddToSa
 import com.savenko.track.presentation.components.mainScreen.feed.ideasCards.ExpenseLimitIdeaCard
 import com.savenko.track.presentation.components.mainScreen.feed.ideasCards.IncomePlanIdeaCard
 import com.savenko.track.presentation.components.mainScreen.feed.ideasCards.SavingsIdeaCard
+import com.savenko.track.presentation.other.WindowInfo
+import com.savenko.track.presentation.other.rememberWindowInfo
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 @Composable
-fun IdeasListSettingsScreenComponent() {
+fun IdeasSettingsScreenComponent() {
     val addToSavingIdeaDialogViewModel = koinViewModel<AddToSavingIdeaDialogViewModel>()
     val ideasSettingsScreenViewModel = koinViewModel<IdeasSettingsScreenViewModel>()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()
+    val windowInfo = rememberWindowInfo()
     val screenState = ideasSettingsScreenViewModel.screenState.collectAsState()
-    val addToSavingIdeaDialogSavings = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
+    val addToSavingIdeaDialogSavings =
+        addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
     val listOfAllIdeas = ideasSettingsScreenViewModel.listOfAllIdeas
-    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
+        .collectAsState(initial = CURRENCY_DEFAULT)
     val listState = rememberLazyListState()
     LaunchedEffect(key1 = Unit) {
         ideasSettingsScreenViewModel.initializeValues()
@@ -77,7 +82,9 @@ fun IdeasListSettingsScreenComponent() {
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp)
-                    .wrapContentHeight(), horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+                    .wrapContentHeight(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = stringResource(R.string.show_completed_ideas_idea_settings_screen))
                 Switch(
@@ -122,39 +129,71 @@ fun IdeasListSettingsScreenComponent() {
                 items(sortedIdeas.size) { index: Int ->
                     when (val currentIdea = sortedIdeas[index]) {
                         is Savings -> {
-                            SavingsIdeaCard(
-                                savings = currentIdea,
-                                preferableCurrency = preferableCurrencyState.value,
-                                addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
-                            )
+                            Box(
+                                modifier = Modifier.padding(
+                                    horizontal = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+                                        24.dp
+                                    } else {
+                                        0.dp
+                                    }
+                                )
+                            ) {
+                                SavingsIdeaCard(
+                                    savings = currentIdea,
+                                    preferableCurrency = preferableCurrencyState.value,
+                                    addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
+                                )
+                            }
                         }
 
                         is ExpenseLimits -> {
                             var completionValue by remember { mutableFloatStateOf(0.0f) }
                             LaunchedEffect(key1 = Unit) {
-                                ideasSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
-                                    completionValue = it
-                                }
+                                ideasSettingsScreenViewModel.getCompletionValue(currentIdea)
+                                    .collect {
+                                        completionValue = it
+                                    }
                             }
-                            ExpenseLimitIdeaCard(
-                                expenseLimit = currentIdea,
-                                completedValue = completionValue,
-                                preferableCurrency = preferableCurrencyState.value
-                            )
-                        }
+                            Box(
+                                modifier = Modifier.padding(
+                                    horizontal = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+                                        24.dp
+                                    } else {
+                                        0.dp
+                                    }
+                                )
+                            ) {
+                                ExpenseLimitIdeaCard(
+                                    expenseLimit = currentIdea,
+                                    completedValue = completionValue,
+                                    preferableCurrency = preferableCurrencyState.value
+                                )
+                            }
 
+                        }
                         is IncomePlans -> {
                             var completionValue by remember { mutableFloatStateOf(0.0f) }
                             LaunchedEffect(key1 = Unit) {
-                                ideasSettingsScreenViewModel.getCompletionValue(currentIdea).collect {
-                                    completionValue = it
-                                }
+                                ideasSettingsScreenViewModel.getCompletionValue(currentIdea)
+                                    .collect {
+                                        completionValue = it
+                                    }
                             }
-                            IncomePlanIdeaCard(
-                                incomePlans = currentIdea,
-                                completionValue = completionValue,
-                                preferableCurrency = preferableCurrencyState.value
-                            )
+                            Box(
+                                modifier = Modifier.padding(
+                                    horizontal = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+                                        24.dp
+                                    } else {
+                                        0.dp
+                                    }
+                                )
+                            ) {
+                                IncomePlanIdeaCard(
+                                    incomePlans = currentIdea,
+                                    completionValue = completionValue,
+                                    preferableCurrency = preferableCurrencyState.value
+                                )
+                            }
                         }
                     }
                     Spacer(modifier = Modifier.height(8.dp))
