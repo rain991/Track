@@ -11,7 +11,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.KeyboardArrowRight
 import androidx.compose.material3.HorizontalDivider
@@ -85,6 +87,7 @@ fun SettingsScreenComponent(
                 )
                 .wrapContentHeight()
                 .padding(8.dp)
+                .verticalScroll(state = rememberScrollState())
         ) {
             if (!isPageNameVisible) Spacer(modifier = Modifier.height(8.dp))
             Row(

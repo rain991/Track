@@ -108,11 +108,15 @@ fun BottomSheet() {
             val focusRequester = remember { FocusRequester() }
             Column(
                 modifier = Modifier
-                    .fillMaxHeight(if(windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded){
-                        0.75f
-                    }else{
-                        0.65f
-                    })
+                    .fillMaxHeight(
+                        if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+                            0.75f
+                        } else if (windowInfo.screenHeightInfo is WindowInfo.WindowType.Compact) {
+                            1f
+                        } else {
+                            0.65f
+                        }
+                    )
                     .fillMaxWidth()
             )
             {

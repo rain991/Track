@@ -12,11 +12,18 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.widthIn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
+import com.maxkeppeler.sheets.calendar.CalendarDialog
+import com.maxkeppeler.sheets.calendar.models.CalendarConfig
+import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
@@ -24,11 +31,6 @@ import com.savenko.track.presentation.components.statisticsScreen.TrackStatistic
 import com.savenko.track.presentation.components.statisticsScreen.TrackStatisticChartOptionsSelector
 import com.savenko.track.presentation.components.statisticsScreen.TrackStatisticLazyColumn
 import com.savenko.track.presentation.states.componentRelated.StatisticChartTimePeriod
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarConfig
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
-import com.maxkeppeler.sheets.calendar.models.CalendarStyle
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
@@ -62,6 +64,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             TrackStatisticChart(
                 modifier = Modifier
                     .fillMaxWidth()
+                    .widthIn(200.dp, Dp.Infinity)
                     .padding(8.dp), chartViewModel = chartViewModel
             )
         }

@@ -92,8 +92,7 @@ class StatisticChartViewModel(
                     expenseChartData,
                     incomeChartData
                 )
-            }
-                .collect { pairOfChartData ->
+            }.collect { pairOfChartData ->
                     val expenseChartData = pairOfChartData.first
                     val incomeChartData = pairOfChartData.second
                     setDataSet(expenseChartData)
@@ -106,7 +105,7 @@ class StatisticChartViewModel(
                         val expenseListOfValues = expenseChartData.map { it.value }
                         val incomeListOfValues = incomeChartData.map { it.value }
 
-                        if (expenseListOfValues.isNotEmpty() && incomeListOfValues.isNotEmpty()) {
+                        if (expenseListOfValues.isNotEmpty() || incomeListOfValues.isNotEmpty()) {
                             lineSeries {
                                 if (expenseXToDates.size > 1) {
                                     series(expenseXToDates.keys, expenseChartData.map { it.value })

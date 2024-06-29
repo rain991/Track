@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -45,7 +47,11 @@ import java.util.Date
 fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) {
     val chartState = chartViewModel.statisticChartState.collectAsState()
     val financialTypeSelectorItems =
-        listOf(FinancialEntities.IncomeFinancialEntity(), FinancialEntities.ExpenseFinancialEntity(), FinancialEntities.Both())
+        listOf(
+            FinancialEntities.IncomeFinancialEntity(),
+            FinancialEntities.ExpenseFinancialEntity(),
+            FinancialEntities.Both()
+        )
     val timeSpanSelectionItems =
         listOf(
             StatisticChartTimePeriod.Week(),
@@ -53,22 +59,31 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
             StatisticChartTimePeriod.Year(),
             StatisticChartTimePeriod.Other()
         )
-    Card(elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp), modifier = Modifier.padding(8.dp)) {
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
+        modifier = Modifier.padding(8.dp)
+    ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp), verticalAlignment = Alignment.CenterVertically
         ) {
-            Column(modifier = Modifier.weight(0.75f), horizontalAlignment = Alignment.CenterHorizontally) {
+            Column(
+                modifier = Modifier.weight(0.75f),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.width(IntrinsicSize.Max),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.scale(0.84f)) {
                         financialTypeSelectorItems.forEachIndexed { index, financialEntityType ->
                             SegmentedButton(
-                                shape = SegmentedButtonDefaults.itemShape(index = index, count = financialTypeSelectorItems.size),
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = financialTypeSelectorItems.size
+                                ),
                                 onClick = {
                                     chartViewModel.setFinancialEntity(financialEntityType)
                                 },
@@ -85,14 +100,17 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                     }
                 }
                 Row(
-                    modifier = Modifier.fillMaxWidth(),
+                    modifier = Modifier.wrapContentWidth(),
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     SingleChoiceSegmentedButtonRow(modifier = Modifier.scale(0.8f)) {
                         timeSpanSelectionItems.forEachIndexed { index, timeSpan ->
                             SegmentedButton(
-                                shape = SegmentedButtonDefaults.itemShape(index = index, count = timeSpanSelectionItems.size),
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = timeSpanSelectionItems.size
+                                ),
                                 onClick = {
                                     if (timeSpan !is StatisticChartTimePeriod.Other) {
                                         chartViewModel.setTimePeriod(timeSpan)
@@ -116,14 +134,16 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
             }
             Column(
                 modifier = Modifier
-                    .weight(0.25f)
-                    .height(IntrinsicSize.Max),
+                    .weight(0.25f),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
                 Button(
                     onClick = { chartViewModel.setChartVisibility(!chartState.value.isChartVisible) },
-                    modifier = Modifier.scale(0.75f)
+                    modifier = Modifier
+                        .scale(0.75f)
+                        .width(IntrinsicSize.Max)
+                        .height(IntrinsicSize.Min)
                 ) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
@@ -142,7 +162,7 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                                 stringResource(R.string.hide_chart)
                             } else {
                                 stringResource(R.string.show_chart)
-                            }, textAlign = TextAlign.Center
+                            }, textAlign = TextAlign.Center, maxLines = 2
                         )
                     }
                 }
@@ -151,7 +171,8 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp)
+                .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
+            horizontalArrangement = Arrangement.Center
         ) {
             val startOfPeriod = when (chartState.value.timePeriod) {
                 is StatisticChartTimePeriod.Month -> {
