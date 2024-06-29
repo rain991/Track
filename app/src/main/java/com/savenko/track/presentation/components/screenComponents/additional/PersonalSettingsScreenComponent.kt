@@ -28,7 +28,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
@@ -75,30 +74,46 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                        .wrapContentHeight()
                 ) {
-                    Text(text = stringResource(R.string.name_personal_settings_screen, name.value))
+                    Text(
+                        text = stringResource(R.string.name_personal_settings_screen, name.value),
+                        modifier = Modifier.weight(1f)
+                    )
                     IconButton(onClick = { isInEditingMode = true }) {
-                        Icon(imageVector = Icons.Default.Create, contentDescription = "edit personal info")
+                        Icon(
+                            imageVector = Icons.Default.Create,
+                            contentDescription = "edit personal info"
+                        )
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Text(text = stringResource(R.string.budget_personal_settings_screen, budget.value, preferableCurrency.value.ticker))
+                Text(
+                    text = stringResource(
+                        R.string.budget_personal_settings_screen,
+                        budget.value,
+                        preferableCurrency.value.ticker
+                    )
+                )
             }
             Spacer(modifier = Modifier.height(8.dp))
             if (isInEditingMode) {
                 var editableName by remember { mutableStateOf(name.value) }
                 var editableBudget by remember { mutableFloatStateOf(budget.value) }
-                GradientInputTextField(value = editableName, label = stringResource(R.string.new_name_personal_settings_screen)) {
+                GradientInputTextField(
+                    value = editableName,
+                    label = stringResource(R.string.new_name_personal_settings_screen)
+                ) {
                     if (it.length < NAME_MAX_LENGTH) editableName = it
                 }
                 Spacer(modifier = Modifier.height(16.dp))
                 GradientInputTextField(
                     value = editableBudget.toString(),
                     keyboardType = KeyboardType.Decimal,
-                    label = stringResource(R.string.new_budget_personal_settings_screen, preferableCurrency.value.ticker)
+                    label = stringResource(
+                        R.string.new_budget_personal_settings_screen,
+                        preferableCurrency.value.ticker
+                    )
                 ) {
                     try {
                         val value = it.toFloat()
@@ -122,7 +137,10 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
                     }
                     FilledTonalButton(modifier = Modifier.scale(0.9f), onClick = {
                         coroutineScope.launch {
-                            viewModel.setNewPersonalValues(newName = editableName, newBudget = editableBudget)
+                            viewModel.setNewPersonalValues(
+                                newName = editableName,
+                                newBudget = editableBudget
+                            )
                             isInEditingMode = false
                         }
                     }) {
@@ -145,10 +163,14 @@ private fun PersonalStatsSettingsContent(viewModel: PersonalStatsViewModel) {
         Column(
             modifier = Modifier
                 .wrapContentSize()
-                .padding(vertical = 8.dp, horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
+                .padding(vertical = 8.dp, horizontal = 16.dp),
+            verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = stringResource(R.string.your_stats_personal_settings_screen), style = MaterialTheme.typography.titleMedium)
+                Text(
+                    text = stringResource(R.string.your_stats_personal_settings_screen),
+                    style = MaterialTheme.typography.titleMedium
+                )
             }
             if (statsState.value.allTimeExpensesCount == 0) {
                 Text(text = stringResource(R.string.not_added_any_expenses_yet_personal_settings_screen))
@@ -175,7 +197,12 @@ private fun PersonalStatsSettingsContent(viewModel: PersonalStatsViewModel) {
                 )
             }
             HorizontalDivider(modifier = Modifier.fillMaxWidth(0.9f))
-            Text(text = stringResource(R.string.login_message_personal_settings_screen, statsState.value.loginCount))
+            Text(
+                text = stringResource(
+                    R.string.login_message_personal_settings_screen,
+                    statsState.value.loginCount
+                )
+            )
             Spacer(modifier = Modifier.height(8.dp))
         }
     }

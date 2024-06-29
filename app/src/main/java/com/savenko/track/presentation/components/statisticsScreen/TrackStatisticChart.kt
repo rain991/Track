@@ -109,13 +109,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                                 ),
                                 title = chartState.value.preferableCurrency.ticker,
                                 itemPlacer = AxisItemPlacer.Vertical.count({ _ ->
-                                    if (chartData.size < 4) {
-                                        chartData.size
-                                    } else if (chartData.size in 4..10) {
-                                        5
-                                    } else {
-                                        6
-                                    }
+                                    4
                                 })
                             ),
                             bottomAxis = rememberBottomAxis(
@@ -125,22 +119,26 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                                     spacing =
                                     when (chartState.value.timePeriod) {
                                         is StatisticChartTimePeriod.Year -> {
-                                            15
+                                            4
                                         }
 
                                         is StatisticChartTimePeriod.Month -> {
-                                            5
+                                            4
                                         }
 
                                         is StatisticChartTimePeriod.Week -> {
-                                            1
+                                           4
                                         }
 
                                         else -> {
                                             5
                                         }
                                     },
-                                    offset = 4,
+                                    offset = if (chartData.size > 6) {
+                                        4
+                                    } else {
+                                        0
+                                    },
                                     addExtremeLabelPadding = true
                                 ), tick = null
                             )

@@ -65,6 +65,8 @@ import com.savenko.track.presentation.components.bottomSheet.composables.AmountI
 import com.savenko.track.presentation.components.common.ui.CategoryChip
 import com.savenko.track.presentation.components.common.ui.CustomDatePicker
 import com.savenko.track.presentation.components.other.GradientInputTextField
+import com.savenko.track.presentation.other.WindowInfo
+import com.savenko.track.presentation.other.rememberWindowInfo
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -74,6 +76,7 @@ import java.time.LocalDate
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet() {
+    val windowInfo = rememberWindowInfo()
     val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
     val warningMessage = stringResource(id = R.string.warning_bottom_sheet_exp)
@@ -105,7 +108,15 @@ fun BottomSheet() {
             val focusRequester = remember { FocusRequester() }
             Column(
                 modifier = Modifier
-                    .fillMaxHeight(0.65f)
+                    .fillMaxHeight(
+                        if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+                            0.75f
+                        } else if (windowInfo.screenHeightInfo is WindowInfo.WindowType.Compact) {
+                            1f
+                        } else {
+                            0.65f
+                        }
+                    )
                     .fillMaxWidth()
             )
             {

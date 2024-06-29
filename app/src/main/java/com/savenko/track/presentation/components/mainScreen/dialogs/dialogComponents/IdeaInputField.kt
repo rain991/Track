@@ -24,6 +24,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.savenko.track.data.other.constants.MAX_IDEA_VALUE
 import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.savenko.track.domain.models.currency.Currency
 import org.koin.androidx.compose.koinViewModel
@@ -53,8 +54,13 @@ fun IdeaInputField(preferableCurrency: Currency) {
             onValueChange = { newText ->
                 newIdeaDialogViewModel.setGoal(
                     try {
-                        newText.toFloat()
-                    }catch (e: NumberFormatException) {
+                        val value = newText.toFloat()
+                        if (value < MAX_IDEA_VALUE) {
+                            value
+                        } else {
+                            MAX_IDEA_VALUE.toFloat()
+                        }
+                    } catch (e: NumberFormatException) {
                         currentInputValue
                     }
                 )
@@ -69,7 +75,7 @@ fun IdeaInputField(preferableCurrency: Currency) {
                     focusManager.clearFocus()
                 }
             ),
-            maxLines = 1,
+            maxLines = 2,
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(text = preferableCurrency.ticker, style = MaterialTheme.typography.bodyMedium)

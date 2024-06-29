@@ -36,25 +36,31 @@ import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.savenko.track.data.viewmodels.login.LoginViewModel
 import com.savenko.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
-import com.savenko.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
+import com.savenko.track.data.viewmodels.mainScreen.FinancialsLazyColumnViewModel
 import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
 import com.savenko.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.CategoriesSettingsScreenViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
-import com.savenko.track.data.viewmodels.settingsScreen.IdeasListSettingsScreenViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.IdeasSettingsScreenViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.NewCategoryViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.PersonalSettingsScreenViewmodel
 import com.savenko.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
-import com.savenko.track.domain.usecases.categoriesRelated.AddCategoryUseCase
-import com.savenko.track.domain.usecases.categoriesRelated.DeleteCategoryUseCase
-import com.savenko.track.domain.usecases.expenseRelated.AddExpenseItemUseCase
-import com.savenko.track.domain.usecases.ideasRelated.CreateIdeaUseCase
-import com.savenko.track.domain.usecases.incomeRelated.AddIncomeItemUseCase
-import com.savenko.track.domain.usecases.userRelated.UpdateUserDataUseCase
+import com.savenko.track.domain.usecases.crud.categoriesRelated.AddCategoryUseCase
+import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
+import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
+import com.savenko.track.domain.usecases.crud.ideasRelated.CreateIdeaUseCase
+import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
+import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserExpensesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserIncomesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredExpensesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
+import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -94,7 +100,9 @@ val appModule = module {
 
     // Ideas
     single<IdeaItemRepositoryImpl> { IdeaItemRepositoryImpl(get(), get(), get()) }
-    single<IdeaListRepositoryImpl> { IdeaListRepositoryImpl(get(), get(), get(), get(), get(), get()) }
+    single<IdeaListRepositoryImpl> {
+        IdeaListRepositoryImpl(get(), get(), get(), get(), get(), get())
+    }
     single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
 
     // Statistic related
@@ -122,21 +130,21 @@ val databaseModule = module {
 }
 
 val domainModule = module {
-    // User
+    // CRUD
     factory<UpdateUserDataUseCase> { UpdateUserDataUseCase(get()) }
-
-    // Expenses
     factory<AddExpenseItemUseCase> { AddExpenseItemUseCase(get()) }
-
-    // Income
     factory<AddIncomeItemUseCase> { AddIncomeItemUseCase(get()) }
-
-    // Categories
     factory<AddCategoryUseCase> { AddCategoryUseCase(get(), get()) }
     factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get(), get()) }
-
-    // Idea
     factory<CreateIdeaUseCase> { CreateIdeaUseCase(get()) }
+
+    // User Data
+    factory<GetUserExpensesUseCase> { GetUserExpensesUseCase(get()) }
+    factory<GetUserIncomesUseCase> { GetUserIncomesUseCase(get()) }
+    factory<GetDesiredIncomesUseCase> { GetDesiredIncomesUseCase(get()) }
+    factory<GetDesiredExpensesUseCase> { GetDesiredExpensesUseCase(get()) }
+    factory<GetDesiredFinancialEntitiesUseCase> { GetDesiredFinancialEntitiesUseCase(get(), get()) }
+    factory<GetUnfinishedIdeasUseCase> { GetUnfinishedIdeasUseCase(get()) }
 }
 
 val viewModelModule = module {
@@ -145,25 +153,25 @@ val viewModelModule = module {
 
     // Settings related
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
-    viewModel { IdeasListSettingsScreenViewModel(get()) }
-    viewModel { ThemePreferenceSettingsViewModel(get(),get()) }
+    viewModel { IdeasSettingsScreenViewModel(get()) }
+    viewModel { ThemePreferenceSettingsViewModel(get(), get()) }
     viewModel { CategoriesSettingsScreenViewModel(get(), get(), get()) }
     viewModel { NewCategoryViewModel(get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get(), get()) }
     viewModel { PersonalStatsViewModel(get(), get()) }
 
     // Track main screen related
-    viewModel { ExpenseAndIncomeLazyColumnViewModel(get(), get(), get(), get(), get()) }
+    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get()) }
 
     // Statistics related
     viewModel { StatisticChartViewModel(get(), get()) }
-    viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get()) }
+    viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
 
     // Bottom sheets
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
 
     // Feed related
-    viewModel { TrackScreenFeedViewModel(get(), get()) }
+    viewModel { TrackScreenFeedViewModel(get(), get(), get()) }
     viewModel { TrackScreenInfoCardsViewModel(get(), get(), get()) }
 
     // Ideas related

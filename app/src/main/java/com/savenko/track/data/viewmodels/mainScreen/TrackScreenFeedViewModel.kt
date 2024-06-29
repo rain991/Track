@@ -7,17 +7,18 @@ import com.savenko.track.data.implementations.ideas.IdeaItemRepositoryImpl
 import com.savenko.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.models.abstractLayer.createCompletedInstance
+import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
 
 class TrackScreenFeedViewModel(
+    private val getUnfinishedIdeasUseCase: GetUnfinishedIdeasUseCase,
     private val ideaListRepositoryImpl: IdeaListRepositoryImpl,
     private val ideaItemRepositoryImpl: IdeaItemRepositoryImpl
 ) : ViewModel() {
@@ -30,17 +31,7 @@ class TrackScreenFeedViewModel(
 
     init {
         viewModelScope.launch {
-            combine(
-                ideaListRepositoryImpl.getIncomesPlansList(),
-                ideaListRepositoryImpl.getSavingsList(),
-                ideaListRepositoryImpl.getExpenseLimitsList()
-            ) { incomePlans, savings, expenseLimits ->
-                val allIdeas = mutableListOf<Idea>()
-                allIdeas.addAll(incomePlans.filter { !it.completed })
-                allIdeas.addAll(savings.filter { !it.completed })
-                allIdeas.addAll(expenseLimits.filter { !it.completed })
-                allIdeas
-            }.collect { allIdeas ->
+            getUnfinishedIdeasUseCase().collect { allIdeas ->
                 _ideaList.clear()
                 _ideaList.addAll(allIdeas)
                 checkListOfIdeasCompletitionState()
@@ -68,7 +59,8 @@ class TrackScreenFeedViewModel(
 
 
     suspend fun getCompletionValue(idea: Idea): StateFlow<Float> {
-        return ideaListRepositoryImpl.getCompletionValue(idea).stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = 0.0f)
+        return ideaListRepositoryImpl.getCompletionValue(idea)
+            .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = 0.0f)
     }
 
     private suspend fun getIdeaCompletionValue(idea: Idea): Float {

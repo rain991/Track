@@ -39,11 +39,16 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
     val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
-    val preferableCurrency = currenciesSettingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT)
-    val firstAdditionalCurrency = currenciesSettingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = null)
-    val secondAdditionalCurrency = currenciesSettingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = null)
-    val thirdAdditionalCurrency = currenciesSettingsViewModel.thirdAdditionalCurrencyStateFlow.collectAsState(initial = null)
-    val fourthAdditionalCurrency = currenciesSettingsViewModel.fourthAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val preferableCurrency =
+        currenciesSettingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT)
+    val firstAdditionalCurrency =
+        currenciesSettingsViewModel.firstAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val secondAdditionalCurrency =
+        currenciesSettingsViewModel.secondAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val thirdAdditionalCurrency =
+        currenciesSettingsViewModel.thirdAdditionalCurrencyStateFlow.collectAsState(initial = null)
+    val fourthAdditionalCurrency =
+        currenciesSettingsViewModel.fourthAdditionalCurrencyStateFlow.collectAsState(initial = null)
     val coroutineScope = rememberCoroutineScope()
     Column(
         modifier = Modifier
@@ -186,6 +191,7 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
         if (fourthAdditionalCurrency.value != null) {
             Spacer(modifier = Modifier.height(8.dp))
         }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -197,28 +203,41 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 CurrenciesPlusTextButton {
                     if (firstAdditionalCurrency.value == null) {
                         coroutineScope.launch {
-                            currenciesSettingsViewModel.setFirstAdditionalCurrency(currenciesSettingsViewModel.getRandomNotUsedCurrency())
+                            currenciesSettingsViewModel.setFirstAdditionalCurrency(
+                                currenciesSettingsViewModel.getRandomNotUsedCurrency()
+                            )
                         }
                     } else if (secondAdditionalCurrency.value == null) {
                         coroutineScope.launch {
-                            currenciesSettingsViewModel.setSecondAdditionalCurrency(currenciesSettingsViewModel.getRandomNotUsedCurrency())
+                            currenciesSettingsViewModel.setSecondAdditionalCurrency(
+                                currenciesSettingsViewModel.getRandomNotUsedCurrency()
+                            )
                         }
                     } else if (thirdAdditionalCurrency.value == null) {
                         coroutineScope.launch {
-                            currenciesSettingsViewModel.setThirdAdditionalCurrency(currenciesSettingsViewModel.getRandomNotUsedCurrency())
+                            currenciesSettingsViewModel.setThirdAdditionalCurrency(
+                                currenciesSettingsViewModel.getRandomNotUsedCurrency()
+                            )
                         }
                     } else if (fourthAdditionalCurrency.value == null) {
                         coroutineScope.launch {
-                            currenciesSettingsViewModel.setFourthAdditionalCurrency(currenciesSettingsViewModel.getRandomNotUsedCurrency())
+                            currenciesSettingsViewModel.setFourthAdditionalCurrency(
+                                currenciesSettingsViewModel.getRandomNotUsedCurrency()
+                            )
                         }
                     }
                 }
             }
-            Spacer(modifier = Modifier.weight(1f))
-            AnimatedVisibility(visible = firstAdditionalCurrency.value != null || secondAdditionalCurrency.value != null || thirdAdditionalCurrency.value != null || fourthAdditionalCurrency.value != null) {
-                CurrenciesMinusTextButton {
-                    coroutineScope.launch {
-                        currenciesSettingsViewModel.setLatestCurrencyAsNull()
+            Row(
+                modifier = Modifier.weight(1f),
+                horizontalArrangement = Arrangement.End,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AnimatedVisibility(visible = firstAdditionalCurrency.value != null || secondAdditionalCurrency.value != null || thirdAdditionalCurrency.value != null || fourthAdditionalCurrency.value != null) {
+                    CurrenciesMinusTextButton {
+                        coroutineScope.launch {
+                            currenciesSettingsViewModel.setLatestCurrencyAsNull()
+                        }
                     }
                 }
             }

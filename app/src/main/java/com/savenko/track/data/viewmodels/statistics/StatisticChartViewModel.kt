@@ -3,6 +3,9 @@ package com.savenko.track.data.viewmodels.statistics
 import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
+import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
+import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import com.savenko.track.data.core.ChartDataProvider
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
@@ -10,9 +13,6 @@ import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.states.componentRelated.StatisticChartState
 import com.savenko.track.presentation.states.componentRelated.StatisticChartTimePeriod
-import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
-import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
-import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -68,7 +68,9 @@ class StatisticChartViewModel(
                     val listOfValues = _statisticChartState.value.chartData.map { it.value }
                     if (listOfValues.isNotEmpty()) {
                         lineSeries {
-                            series(xToDates.keys, _statisticChartState.value.chartData.map { it.value })
+                            series(
+                                xToDates.keys,
+                                _statisticChartState.value.chartData.map { it.value })
                             updateExtras { it[xToDateMapKey] = xToDates }
                         }
                     }
@@ -85,24 +87,34 @@ class StatisticChartViewModel(
                 statisticChartTimePeriod = _statisticChartState.value.timePeriod,
                 otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
             )
-            expenseFlow.combine(incomeFlow) { expenseChartData, incomeChartData -> Pair(expenseChartData, incomeChartData) }
-                .collect { pairOfChartData ->
+            expenseFlow.combine(incomeFlow) { expenseChartData, incomeChartData ->
+                Pair(
+                    expenseChartData,
+                    incomeChartData
+                )
+            }.collect { pairOfChartData ->
                     val expenseChartData = pairOfChartData.first
                     val incomeChartData = pairOfChartData.second
                     setDataSet(expenseChartData)
                     setAdditionalData(incomeChartData)
-                    val expenseXToDates = expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
-                    val incomeXToDates = incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
+                    val expenseXToDates =
+                        expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
+                    val incomeXToDates =
+                        incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
                     modelProducer.tryRunTransaction {
                         val expenseListOfValues = expenseChartData.map { it.value }
                         val incomeListOfValues = incomeChartData.map { it.value }
 
-                        if (expenseListOfValues.isNotEmpty() && incomeListOfValues.isNotEmpty()) {
+                        if (expenseListOfValues.isNotEmpty() || incomeListOfValues.isNotEmpty()) {
                             lineSeries {
-                                series(expenseXToDates.keys, expenseChartData.map { it.value })
-                                updateExtras { it[xToDateMapKey] = expenseXToDates }
-                                series(incomeXToDates.keys, incomeChartData.map { it.value })
-                                updateExtras { it[xToDateMapKey] = incomeXToDates }
+                                if (expenseXToDates.size > 1) {
+                                    series(expenseXToDates.keys, expenseChartData.map { it.value })
+                                    updateExtras { it[xToDateMapKey] = expenseXToDates }
+                                }
+                                if (incomeXToDates.size > 1) {
+                                    series(incomeXToDates.keys, incomeChartData.map { it.value })
+                                    updateExtras { it[xToDateMapKey] = incomeXToDates }
+                                }
                             }
                         }
                     }
@@ -123,10 +135,11 @@ class StatisticChartViewModel(
     }
 
     fun setTimePeriodDialogVisibility(value: Boolean) {
-        _statisticChartState.value = _statisticChartState.value.copy(isTimePeriodDialogVisible = value)
+        _statisticChartState.value =
+            _statisticChartState.value.copy(isTimePeriodDialogVisible = value)
     }
 
-    fun setChartVisibility(value : Boolean){
+    fun setChartVisibility(value: Boolean) {
         _statisticChartState.value = _statisticChartState.value.copy(isChartVisible = value)
     }
 

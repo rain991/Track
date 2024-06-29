@@ -14,8 +14,8 @@ import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
-import com.savenko.track.domain.usecases.expenseRelated.AddExpenseItemUseCase
-import com.savenko.track.domain.usecases.incomeRelated.AddIncomeItemUseCase
+import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
+import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
 import com.savenko.track.presentation.states.componentRelated.BottomSheetViewState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers

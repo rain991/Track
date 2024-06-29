@@ -10,25 +10,29 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
-import com.savenko.track.presentation.screens.Core.MainTrackScreen
-import com.savenko.track.presentation.screens.Core.SettingsTrackScreen
-import com.savenko.track.presentation.screens.Core.StatisticsTrackScreen
+import com.savenko.track.presentation.screens.core.MainTrackScreen
+import com.savenko.track.presentation.screens.core.SettingsTrackScreen
+import com.savenko.track.presentation.screens.core.StatisticsTrackScreen
 import org.koin.androidx.compose.koinViewModel
 
-@OptIn(ExperimentalFoundationApi::class)
-    @Composable
-    fun TrackScreenManager(navHostController: NavHostController) {
-        val viewModel = koinViewModel<TrackScreenManagerViewModel>()
-        val pagerValue = viewModel.pagerStateValue.collectAsState()
-        val pagerState = rememberPagerState(initialPage = pagerValue.value) { 3 }
 
-        Column(
-            modifier = Modifier.fillMaxSize()
-        ) {
-            HorizontalPager(
-                state = pagerState,
-                modifier = Modifier.weight(1f)
-            ) { page ->
+/*
+Track screen manager is pager that handles navigation accross main Track screens : SettingsTrackScreen, MainTrackScreen, StatisticsTrackScreen
+*/
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun TrackScreenManager(navHostController: NavHostController) {
+    val viewModel = koinViewModel<TrackScreenManagerViewModel>()
+    val pagerValue = viewModel.pagerStateValue.collectAsState()
+    val pagerState = rememberPagerState(initialPage = pagerValue.value) { 3 }
+
+    Column(
+        modifier = Modifier.fillMaxSize()
+    ) {
+        HorizontalPager(
+            state = pagerState,
+            modifier = Modifier.weight(1f)
+        ) { page ->
             when (page) {
                 0 -> SettingsTrackScreen(navHostController)
                 1 -> MainTrackScreen()

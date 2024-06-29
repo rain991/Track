@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
-import com.savenko.track.data.viewmodels.mainScreen.ExpenseAndIncomeLazyColumnViewModel
+import com.savenko.track.data.viewmodels.mainScreen.FinancialsLazyColumnViewModel
 import com.savenko.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import org.koin.androidx.compose.koinViewModel
@@ -39,8 +39,8 @@ import org.koin.androidx.compose.koinViewModel
 fun TrackScreenInfoCards() {
     val viewModel = koinViewModel<TrackScreenInfoCardsViewModel>()
     val screenState = viewModel.cardsState.collectAsState()
-    val expenseAndIncomeLazyColumnViewModel = koinViewModel<ExpenseAndIncomeLazyColumnViewModel>()
-    val isScrolledBelow = expenseAndIncomeLazyColumnViewModel.isScrolledBelow.collectAsState()
+    val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
+    val isScrolledBelow = financialsLazyColumnViewModel.isScrolledBelow.collectAsState()
     LaunchedEffect(key1 = Unit) {
         viewModel.initializeValues()
     }

@@ -10,7 +10,7 @@ import com.savenko.track.data.other.constants.LIST_OF_DEFAULT_INCOMES_CATEGORIES
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
-import com.savenko.track.domain.usecases.categoriesRelated.DeleteCategoryUseCase
+import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 

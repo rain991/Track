@@ -5,24 +5,25 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.FinancialCardNotesProvider
-import com.savenko.track.data.implementations.expenses.ExpensesListRepositoryImpl
 import com.savenko.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.IncomeListRepositoryImpl
 import com.savenko.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
+import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredExpensesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.launch
 import java.util.Date
 
 class StatisticLazyColumnViewModel(
-    private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
-    private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
+    private val getDesiredIncomesUseCase: GetDesiredIncomesUseCase,
+    private val getDesiredExpensesUseCase: GetDesiredExpensesUseCase,
+    private val getDesiredFinancialEntitiesUseCase: GetDesiredFinancialEntitiesUseCase,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
     private val expensesCategoriesListRepository: ExpensesCategoriesListRepositoryImpl,
     private val financialCardNotesProvider: FinancialCardNotesProvider
@@ -36,19 +37,22 @@ class StatisticLazyColumnViewModel(
     private val _incomeCategoriesList = mutableStateListOf<IncomeCategory>()
     val incomeCategoriesList: List<IncomeCategory> = _incomeCategoriesList
 
-    suspend fun innitializeListOfEntities(timePeriod: Range<Date>, financialEntities: FinancialEntities) {
+    suspend fun innitializeListOfEntities(
+        timePeriod: Range<Date>,
+        financialEntities: FinancialEntities
+    ) {
         viewModelScope.launch {
             async {
                 when (financialEntities) {
                     is FinancialEntities.IncomeFinancialEntity -> {
-                        incomeListRepositoryImpl.getIncomesInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper).collect {
+                        getDesiredIncomesUseCase(timePeriod).collect {
                             _listOfFilteredFinancialEntities.clear()
                             _listOfFilteredFinancialEntities.addAll(it)
                         }
                     }
 
                     is FinancialEntities.ExpenseFinancialEntity -> {
-                        expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper).collect {
+                        getDesiredExpensesUseCase(timePeriod).collect {
                             _listOfFilteredFinancialEntities.clear()
                             _listOfFilteredFinancialEntities.addAll(it)
 
@@ -56,15 +60,7 @@ class StatisticLazyColumnViewModel(
                     }
 
                     is FinancialEntities.Both -> {
-                        val expenseItemsFlow =
-                            expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper)
-                        val incomeItemsFlow = incomeListRepositoryImpl.getIncomesInTimeSpanDateDesc(timePeriod.lower, timePeriod.upper)
-                        combine(expenseItemsFlow, incomeItemsFlow) { expenseItems, incomeItems ->
-                            val list = mutableListOf<FinancialEntity>()
-                            list.addAll(expenseItems)
-                            list.addAll(incomeItems)
-                            list
-                        }.collect { listOfFinancialEntities ->
+                        getDesiredFinancialEntitiesUseCase(timePeriod).collect { listOfFinancialEntities ->
                             _listOfFilteredFinancialEntities.clear()
                             _listOfFilteredFinancialEntities.addAll(listOfFinancialEntities.sortedByDescending { it.date.time })
                         }
@@ -91,7 +87,11 @@ class StatisticLazyColumnViewModel(
         financialCategory: CategoryEntity,
         dateRange: Range<Date>
     ): Flow<Int> {
-        return financialCardNotesProvider.requestCountNotionForFinancialCard(financialEntity, financialCategory, dateRange)
+        return financialCardNotesProvider.requestCountNotionForFinancialCard(
+            financialEntity,
+            financialCategory,
+            dateRange
+        )
     }
 
     suspend fun requestSummaryInDateRangeNotion(
@@ -99,6 +99,10 @@ class StatisticLazyColumnViewModel(
         financialCategory: CategoryEntity,
         dateRange: Range<Date>
     ): Flow<Float> {
-        return financialCardNotesProvider.requestValueSummaryNotionForFinancialCard(financialEntity, financialCategory, dateRange)
+        return financialCardNotesProvider.requestValueSummaryNotionForFinancialCard(
+            financialEntity,
+            financialCategory,
+            dateRange
+        )
     }
 }

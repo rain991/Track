@@ -2,7 +2,7 @@ package com.savenko.track.data.viewmodels.settingsScreen
 
 import androidx.lifecycle.ViewModel
 import com.savenko.track.data.other.dataStore.DataStoreManager
-import com.savenko.track.domain.usecases.userRelated.UpdateUserDataUseCase
+import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
 import com.savenko.track.presentation.themes.Themes
 
 class ThemePreferenceSettingsViewModel(

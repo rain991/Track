@@ -4,6 +4,7 @@ import com.savenko.track.data.implementations.expenses.categories.ExpensesCatego
 import com.savenko.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
+import com.savenko.track.domain.usecases.crud.categoriesRelated.AddCategoryUseCase
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking

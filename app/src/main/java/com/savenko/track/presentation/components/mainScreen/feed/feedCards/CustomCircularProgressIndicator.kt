@@ -101,7 +101,8 @@ fun CustomCircularProgressIndicator(
             val outerRadius = circleRadius + circleThickness / 2f
             val gap = 15f
             for (i in 0..(maxValue - minValue)) {
-                val color = if (i < initialValue - minValue) primaryColor else primaryColor.copy(alpha = 0.3f)
+                val color =
+                    if (i < initialValue - minValue) primaryColor else primaryColor.copy(alpha = 0.3f)
                 val angleInDegrees = i * 360f / (maxValue - minValue).toFloat()
                 val angleInRad = angleInDegrees * PI / 180f + PI / 2f
 
@@ -131,6 +132,8 @@ fun CustomCircularProgressIndicator(
                 }
 
             }
+
+
             drawContext.canvas.nativeCanvas.apply {
                 drawIntoCanvas {
                     drawText(
@@ -138,10 +141,10 @@ fun CustomCircularProgressIndicator(
                         circleCenter.x,
                         circleCenter.y + 36.dp.toPx() / 3f,  // 45.dp 3f
                         Paint().apply {
-                            textSize = if (initialValue.toString().length <= 2){
-                                28.sp.toPx()
-                            } else{
-                                20.sp.toPx()
+                            textSize = if (initialValue.toString().length <= 2) {
+                                24.sp.toPx()
+                            } else {
+                                16.sp.toPx()
                             }
                             textAlign = Paint.Align.CENTER
                             color = Color.White.toArgb()
@@ -150,6 +153,7 @@ fun CustomCircularProgressIndicator(
                     )
                 }
             }
+
 
         }
     }
