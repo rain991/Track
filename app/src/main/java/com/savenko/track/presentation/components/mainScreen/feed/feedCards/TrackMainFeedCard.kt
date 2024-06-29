@@ -104,14 +104,15 @@ fun TrackMainFeedCard() {
                         .weight(0.4f)
                         .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    val circleHeight= 80f
                     CustomCircularProgressIndicator(
                         modifier = Modifier
-                            .size(96.dp)
+                            .size(circleHeight.times(1.1f).dp)
                             .background(MaterialTheme.colorScheme.surfaceVariant),
                         initialValue = (state.value.budgetExpectancy * 100).toInt(),
                         primaryColor = MaterialTheme.colorScheme.primary,
                         secondaryColor = MaterialTheme.colorScheme.secondary,
-                        circleRadius = 90f
+                        circleRadius = circleHeight
                     )
                 }
             }

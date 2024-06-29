@@ -51,7 +51,7 @@ fun SettingsScreenComponent(
             brush = Brush.linearGradient(
                 colors = listOf(
                     MaterialTheme.colorScheme.primary.copy(alpha = 1f),
-                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 1f)
+                    MaterialTheme.colorScheme.tertiary.copy(alpha = 1f)
                 )
             )
         )
@@ -62,7 +62,7 @@ fun SettingsScreenComponent(
             brush = Brush.linearGradient(
                 colors = listOf(
                     MaterialTheme.colorScheme.primary.copy(alpha = 0.70f),
-                    MaterialTheme.colorScheme.onPrimary.copy(alpha = 0.80f)
+                    MaterialTheme.colorScheme.tertiary.copy(alpha = 0.80f)
                 )
             )
         )
