@@ -10,7 +10,7 @@ import com.savenko.track.R
 import com.savenko.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
-import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
 import com.savenko.track.presentation.components.common.ui.Header
 import com.savenko.track.presentation.components.mainScreen.dialogs.NewIdeaDialog

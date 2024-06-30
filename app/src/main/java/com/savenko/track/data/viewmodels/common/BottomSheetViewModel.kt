@@ -4,10 +4,10 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
+import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
+import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
-import com.savenko.track.data.other.converters.convertLocalDateToDate
+import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.expenses.ExpenseCategory

@@ -46,7 +46,7 @@ import com.savenko.track.R
 import com.savenko.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
-import com.savenko.track.data.other.converters.formatDateWithoutYear
+import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.currency.Currency

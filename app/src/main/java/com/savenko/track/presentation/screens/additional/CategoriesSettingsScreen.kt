@@ -21,8 +21,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 
 import com.savenko.track.R
-import com.savenko.track.data.viewmodels.settingsScreen.CategoriesSettingsScreenViewModel
-import com.savenko.track.data.viewmodels.settingsScreen.NewCategoryViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.category.CategoriesSettingsScreenViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.category.NewCategoryViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoriesTypes
 import com.savenko.track.presentation.components.screenComponents.additional.CategoriesSettingsScreenComponent
 import com.savenko.track.presentation.components.settingsScreen.components.NewCategoryDialog

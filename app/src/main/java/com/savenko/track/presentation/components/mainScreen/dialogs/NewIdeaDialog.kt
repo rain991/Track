@@ -38,7 +38,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.savenko.track.R
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
-import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.mainScreen.dialogs.dialogComponents.ExpenseLimitsDialogInputs
 import com.savenko.track.presentation.components.mainScreen.dialogs.dialogComponents.IdeaInputField
 import com.savenko.track.presentation.components.mainScreen.dialogs.dialogComponents.IncomePlanDialogInputs

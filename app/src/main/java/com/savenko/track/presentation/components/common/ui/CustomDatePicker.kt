@@ -7,7 +7,7 @@ import com.maxkeppeler.sheets.date_time.DateTimeDialog
 import com.maxkeppeler.sheets.date_time.models.DateTimeConfig
 import com.maxkeppeler.sheets.date_time.models.DateTimeSelection
 import com.savenko.track.data.other.constants.MIN_SUPPORTED_YEAR
-import com.savenko.track.data.other.converters.convertLocalDateToDate
+import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import java.time.LocalDate
 import java.util.Date
 

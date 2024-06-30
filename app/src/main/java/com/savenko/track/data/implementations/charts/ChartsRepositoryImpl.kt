@@ -4,11 +4,11 @@ import com.savenko.track.data.database.expensesRelated.ExpenseCategoryDao
 import com.savenko.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.savenko.track.data.database.incomeRelated.IncomeCategoryDao
 import com.savenko.track.data.database.incomeRelated.IncomeDao
-import com.savenko.track.data.other.converters.convertLocalDateToDate
-import com.savenko.track.data.other.converters.getEndOfTheMonth
-import com.savenko.track.data.other.converters.getEndOfYearDate
-import com.savenko.track.data.other.converters.getStartOfMonthDate
-import com.savenko.track.data.other.converters.getStartOfYearDate
+import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
+import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
+import com.savenko.track.data.other.converters.dates.getEndOfYearDate
+import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
+import com.savenko.track.data.other.converters.dates.getStartOfYearDate
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.repository.charts.ChartsRepository

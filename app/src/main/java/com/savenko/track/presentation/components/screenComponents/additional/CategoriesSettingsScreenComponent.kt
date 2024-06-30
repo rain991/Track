@@ -38,7 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.viewmodels.settingsScreen.CategoriesSettingsScreenViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.category.CategoriesSettingsScreenViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.components.common.parser.parseColor

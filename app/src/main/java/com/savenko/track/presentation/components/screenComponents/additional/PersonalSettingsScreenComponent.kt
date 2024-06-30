@@ -36,8 +36,8 @@ import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.MAX_BUDGET_VALUE
 import com.savenko.track.data.other.constants.NAME_MAX_LENGTH
-import com.savenko.track.data.viewmodels.settingsScreen.PersonalSettingsScreenViewmodel
-import com.savenko.track.data.viewmodels.settingsScreen.PersonalStatsViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalSettingsScreenViewmodel
+import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsViewModel
 import com.savenko.track.presentation.components.other.GradientInputTextField
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel

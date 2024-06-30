@@ -2,9 +2,9 @@ package com.savenko.track.presentation.states.componentRelated
 
 import android.util.Range
 import com.savenko.track.R
-import com.savenko.track.data.other.converters.getStartOfMonthDate
-import com.savenko.track.data.other.converters.getStartOfWeekDate
-import com.savenko.track.data.other.converters.getStartOfYearDate
+import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
+import com.savenko.track.data.other.converters.dates.getStartOfWeekDate
+import com.savenko.track.data.other.converters.dates.getStartOfYearDate
 import java.util.Date
 
 sealed class StatisticChartTimePeriod(val nameId: Int) {

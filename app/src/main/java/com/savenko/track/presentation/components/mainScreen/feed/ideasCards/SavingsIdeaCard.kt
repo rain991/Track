@@ -25,7 +25,7 @@ import com.savenko.track.R
 
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
-import com.savenko.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.idea.Savings

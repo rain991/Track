@@ -1,6 +1,6 @@
 package com.savenko.track.domain.usecases.expenseRelated
 
-import com.savenko.track.data.implementations.expenses.ExpenseItemRepositoryImpl
+import com.savenko.track.data.implementations.expenses.expenseItem.ExpenseItemRepositoryImpl
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
 import kotlinx.coroutines.runBlocking
