@@ -52,7 +52,11 @@ fun CategoryChip(
             disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
     ) {
-        Row(modifier = Modifier.fillMaxSize(), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+        Row(
+            modifier = Modifier.fillMaxSize(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.Center
+        ) {
             AnimatedVisibility(visible = isSelected) {
                 Icon(
                     imageVector = Icons.Filled.Check,
@@ -63,7 +67,15 @@ fun CategoryChip(
             }
             if (isSelected) Spacer(modifier = Modifier.width(4.dp))
             Text(
-                text = stringResource(id = databaseStringResourcesProvider.provideStringResource(category)),
+                text = if (category.isDefault()) {
+                    stringResource(
+                        id = databaseStringResourcesProvider.provideStringResource(
+                            category
+                        )
+                    )
+                } else {
+                    category.note
+                },
                 style = if (category.note.length < 12) {
                     textStyle
                 } else {

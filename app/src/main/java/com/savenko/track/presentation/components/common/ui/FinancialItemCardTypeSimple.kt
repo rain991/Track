@@ -89,7 +89,10 @@ fun FinancialItemCardTypeSimple(
                 .fillMaxWidth()
                 .padding(4.dp)
         ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 Column(
                     modifier = Modifier
                         .weight(1f),
@@ -127,13 +130,17 @@ fun FinancialItemCardTypeSimple(
                                 CRYPTO_DECIMAL_FORMAT.format(financialEntityMonthSummary)
                             }
                         }
-                        AnimatedContent(targetState = resultedNotion, label = "horizontalTextChange", transitionSpec = {
-                            slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
-                        }) { resultedNotion ->
+                        AnimatedContent(
+                            targetState = resultedNotion,
+                            label = "horizontalTextChange",
+                            transitionSpec = {
+                                slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
+                            }) { resultedNotion ->
                             val calendar = Calendar.getInstance().apply {
                                 time = financialEntity.date
                             }
-                            val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
+                            val monthName =
+                                calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
                             Text(
                                 text = if (!expanded) {
                                     buildAnnotatedString {
@@ -141,10 +148,25 @@ fun FinancialItemCardTypeSimple(
                                     }
                                 } else {
                                     buildAnnotatedString {
-                                        withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
+                                        withStyle(
+                                            style = SpanStyle(
+                                                fontSize = 16.sp,
+                                                fontWeight = FontWeight.Medium
+                                            )
+                                        ) {
                                             val categoryName =
-                                                stringResource(id = databaseStringResourcesProvider.provideStringResource(categoryEntity))
-                                            append(stringResource(R.string.specified_category_fin_item_card, categoryName, monthName))
+                                                stringResource(
+                                                    id = databaseStringResourcesProvider.provideStringResource(
+                                                        categoryEntity
+                                                    )
+                                                )
+                                            append(
+                                                stringResource(
+                                                    R.string.specified_category_fin_item_card,
+                                                    categoryName,
+                                                    monthName
+                                                )
+                                            )
                                         }
                                         withStyle(
                                             style = SpanStyle(
@@ -187,21 +209,41 @@ fun FinancialItemCardTypeSimple(
                         ), exit = slideOutVertically() + shrinkVertically() + fadeOut()) {
                             Text(
                                 text = buildAnnotatedString {
-                                    withStyle(style = SpanStyle(fontSize = 16.sp, fontWeight = FontWeight.Medium)) {
-                                        val categoryName =
-                                            stringResource(id = databaseStringResourcesProvider.provideStringResource(categoryEntity))
+                                    withStyle(
+                                        style = SpanStyle(
+                                            fontSize = 16.sp,
+                                            fontWeight = FontWeight.Medium
+                                        )
+                                    ) {
+                                        val categoryName = if (categoryEntity.isDefault()) {
+                                            stringResource(
+                                                id = databaseStringResourcesProvider.provideStringResource(
+                                                    categoryEntity
+                                                )
+                                            )
+                                        } else {
+                                            categoryEntity.note
+                                        }
+
                                         append(
                                             if (categoryEntity is ExpenseCategory) {
-                                                stringResource(R.string.expenses_fin_item_card, categoryName)
+                                                stringResource(
+                                                    R.string.expenses_fin_item_card,
+                                                    categoryName
+                                                )
                                             } else {
-                                                stringResource(R.string.incomes_fin_item_card, categoryName)
+                                                stringResource(
+                                                    R.string.incomes_fin_item_card,
+                                                    categoryName
+                                                )
                                             }
 
                                         )
                                     }
                                     withStyle(
                                         style = SpanStyle(
-                                            color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 20.sp,
+                                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                                            fontSize = 20.sp,
                                             fontWeight = FontWeight.SemiBold
                                         )
                                     ) {
@@ -229,18 +271,26 @@ fun FinancialItemCardTypeSimple(
 }
 
 @Composable
-private fun ExpenseValueCard(financialEntity: FinancialEntity, currentCurrencyName: String, isExpanded: Boolean) {
+private fun ExpenseValueCard(
+    financialEntity: FinancialEntity,
+    currentCurrencyName: String,
+    isExpanded: Boolean
+) {
     val currencyListRepositoryImpl = koinInject<CurrencyListRepositoryImpl>()
     var listOfCurrencies = listOf<Currency>()
     LaunchedEffect(key1 = Unit) {
         listOfCurrencies = currencyListRepositoryImpl.getCurrencyList().first()
     }
-    val currentCurrency = listOfCurrencies.firstOrNull { it.ticker == financialEntity.currencyTicker }
+    val currentCurrency =
+        listOfCurrencies.firstOrNull { it.ticker == financialEntity.currencyTicker }
     val currencyType = currentCurrency?.type
 
 
 
-    Card(elevation = CardDefaults.cardElevation(defaultElevation = 22.dp, focusedElevation = 14.dp), modifier = Modifier.padding(4.dp)) {
+    Card(
+        elevation = CardDefaults.cardElevation(defaultElevation = 22.dp, focusedElevation = 14.dp),
+        modifier = Modifier.padding(4.dp)
+    ) {
         Column(
             modifier = Modifier
                 .animateContentSize()
@@ -277,7 +327,15 @@ private fun CategoryCard(category: CategoryEntity, containerColor: Color) {
     ) {
         Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)) {
             Text(
-                text = stringResource(id = databaseStringResourcesProvider.provideStringResource(category)),
+                text = if (category.isDefault()) {
+                    stringResource(
+                        id = databaseStringResourcesProvider.provideStringResource(
+                            category
+                        )
+                    )
+                } else {
+                    category.note
+                },
                 style = MaterialTheme.typography.bodyMedium.copy(fontSize = 18.sp),
                 textAlign = TextAlign.Center
             )
@@ -288,17 +346,22 @@ private fun CategoryCard(category: CategoryEntity, containerColor: Color) {
 @Composable
 private fun NoteCard(expenseItem: FinancialEntity) {
     Card(
-        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp), modifier = Modifier.wrapContentSize(),
+        elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
+        modifier = Modifier.wrapContentSize(),
         colors = CardColors(
             containerColor = MaterialTheme.colorScheme.primary,
             contentColor = MaterialTheme.colorScheme.onPrimary,
             disabledContainerColor = MaterialTheme.colorScheme.primary,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
-        ), shape = MaterialTheme.shapes.small
+        ),
+        shape = MaterialTheme.shapes.small
     ) {
         Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)) {
             Text(
-                text = if (expenseItem.note.length < 8) stringResource(R.string.note_exp_list, expenseItem.note) else expenseItem.note,
+                text = if (expenseItem.note.length < 8) stringResource(
+                    R.string.note_exp_list,
+                    expenseItem.note
+                ) else expenseItem.note,
                 style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
             )
         }
