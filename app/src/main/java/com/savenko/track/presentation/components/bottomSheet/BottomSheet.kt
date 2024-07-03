@@ -201,6 +201,7 @@ fun BottomSheet() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun DatePicker() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
@@ -227,13 +228,19 @@ private fun DatePicker() {
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
             Text(text = text, style = MaterialTheme.typography.bodyMedium)
         }
-        CustomDatePicker(
-            isVisible = bottomSheetViewState.value.timePickerState,
-            onNegativeClick = { bottomSheetViewModel.togglePickerState() },
-            onPositiveClick = { date ->
-                bottomSheetViewModel.setDatePicked(convertDateToLocalDate(date))
-                bottomSheetViewModel.togglePickerState()
-            })
+//        if (bottomSheetViewState.value.timePickerState) {
+//            androidx.compose.material3.DatePicker(
+//                state = datePickerState
+//            )
+//        }
+
+         CustomDatePicker(
+             isVisible = bottomSheetViewState.value.timePickerState,
+             onNegativeClick = { bottomSheetViewModel.togglePickerState() },
+             onPositiveClick = { date ->
+                 bottomSheetViewModel.setDatePicked(convertDateToLocalDate(date))
+                 bottomSheetViewModel.togglePickerState()
+             })
     }
 }
 

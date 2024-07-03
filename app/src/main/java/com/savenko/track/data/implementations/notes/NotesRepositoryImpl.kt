@@ -19,6 +19,7 @@ import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.util.Date
 
+/* NotesRepository is currently not used */
 class NotesRepositoryImpl(
     private val incomeDao: IncomeDao,
     private val expenseItemsDao: ExpenseItemsDAO,
