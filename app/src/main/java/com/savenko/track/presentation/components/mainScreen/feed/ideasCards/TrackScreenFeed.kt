@@ -21,9 +21,9 @@ import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FEED_CARD_DELAY_ADDITIONAL
 import com.savenko.track.data.other.constants.FEED_CARD_DELAY_FAST
 import com.savenko.track.data.other.constants.FEED_CARD_DELAY_SLOW
-import com.savenko.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
-import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
-import com.savenko.track.data.viewmodels.mainScreen.TrackScreenFeedViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.TrackScreenFeedViewModel
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings

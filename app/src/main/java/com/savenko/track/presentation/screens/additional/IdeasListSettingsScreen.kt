@@ -16,7 +16,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.savenko.track.R
-import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.mainScreen.dialogs.NewIdeaDialog
 import com.savenko.track.presentation.components.screenComponents.additional.IdeasSettingsScreenComponent
 import com.savenko.track.presentation.components.settingsScreen.components.SettingsSpecifiedScreenHeader

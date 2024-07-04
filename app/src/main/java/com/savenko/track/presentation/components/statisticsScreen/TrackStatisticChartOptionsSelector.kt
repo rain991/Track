@@ -32,11 +32,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.other.converters.convertLocalDateToDate
-import com.savenko.track.data.other.converters.formatDateWithYear
-import com.savenko.track.data.other.converters.getStartOfMonthDate
-import com.savenko.track.data.other.converters.getStartOfWeekDate
-import com.savenko.track.data.other.converters.getStartOfYearDate
+import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
+import com.savenko.track.data.other.converters.dates.formatDateWithYear
+import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
+import com.savenko.track.data.other.converters.dates.getStartOfWeekDate
+import com.savenko.track.data.other.converters.dates.getStartOfYearDate
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.presentation.states.componentRelated.StatisticChartTimePeriod

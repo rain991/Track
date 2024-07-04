@@ -4,10 +4,10 @@ import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.database.ideaRelated.ExpenseLimitsDao
 import com.savenko.track.data.database.ideaRelated.IncomePlansDao
 import com.savenko.track.data.database.ideaRelated.SavingsDao
-import com.savenko.track.data.implementations.expenses.ExpensesCoreRepositoryImpl
-import com.savenko.track.data.implementations.incomes.IncomeCoreRepositoryImpl
-import com.savenko.track.data.other.converters.convertLocalDateToDate
-import com.savenko.track.data.other.converters.getEndOfTheMonth
+import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesCoreRepositoryImpl
+import com.savenko.track.data.implementations.incomes.incomeItem.IncomeCoreRepositoryImpl
+import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
+import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
 import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.idea.ExpenseLimits

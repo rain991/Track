@@ -29,7 +29,7 @@ import com.savenko.track.data.other.constants.PREFERABLE_THEME_DEFAULT
 import com.savenko.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.savenko.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
-import com.savenko.track.data.viewmodels.settingsScreen.ThemePreferenceSettingsViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
 import com.savenko.track.presentation.components.settingsScreen.components.CircleWithBorder
 import com.savenko.track.presentation.themes.BlueTheme.blue_dark_theme_color_onPrimary
 import com.savenko.track.presentation.themes.BlueTheme.blue_dark_theme_color_primary

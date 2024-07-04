@@ -1,7 +1,7 @@
 package com.savenko.track.domain.usecases.userData.financialEntities.specified
 
 import android.util.Range
-import com.savenko.track.data.implementations.incomes.IncomeListRepositoryImpl
+import com.savenko.track.data.implementations.incomes.incomeItem.IncomeListRepositoryImpl
 import com.savenko.track.domain.models.incomes.IncomeItem
 import kotlinx.coroutines.flow.Flow
 import java.util.Date

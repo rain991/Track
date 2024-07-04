@@ -34,7 +34,7 @@ import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.PERCENTAGE_DECIMAL_FORMAT
-import com.savenko.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import kotlinx.coroutines.launch
 

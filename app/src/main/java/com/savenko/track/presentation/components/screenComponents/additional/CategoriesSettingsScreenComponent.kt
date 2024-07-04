@@ -38,7 +38,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.viewmodels.settingsScreen.CategoriesSettingsScreenViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.category.CategoriesSettingsScreenViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.components.common.parser.parseColor
@@ -61,14 +61,23 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
             .verticalScroll(rememberScrollState())
     ) {
         Spacer(modifier = Modifier.height(8.dp))
-        Text(text = stringResource(R.string.message_categories_settings_screen), style = MaterialTheme.typography.bodyMedium)
+        Text(
+            text = stringResource(R.string.message_categories_settings_screen),
+            style = MaterialTheme.typography.bodyMedium
+        )
         Spacer(modifier = Modifier.height(8.dp))
         Card(
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp,
+                focusedElevation = 8.dp
+            ),
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     Text(
                         text = stringResource(R.string.expense_categories_categories_settings_screen),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
@@ -93,7 +102,11 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
                                 ) {
                                     Text(
                                         text = stringResource(R.string.delete),
-                                        modifier = Modifier.pointerInput(key1 = true) { viewModel.deleteCategory(currentExpenseCategory) })
+                                        modifier = Modifier.pointerInput(key1 = true) {
+                                            viewModel.deleteCategory(
+                                                currentExpenseCategory
+                                            )
+                                        })
                                 }
                             }
                         }
@@ -103,11 +116,17 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
             }
         }
         Card(
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
+            elevation = CardDefaults.cardElevation(
+                defaultElevation = 8.dp,
+                focusedElevation = 8.dp
+            ),
             modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
         ) {
             Column(modifier = Modifier.padding(8.dp)) {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.Center
+                ) {
                     Text(
                         text = stringResource(R.string.income_categories),
                         style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold)
@@ -132,7 +151,11 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
                                 ) {
                                     Text(
                                         text = stringResource(R.string.delete),
-                                        modifier = Modifier.pointerInput(key1 = true) { viewModel.deleteCategory(currentIncomeCategory) })
+                                        modifier = Modifier.pointerInput(key1 = true) {
+                                            viewModel.deleteCategory(
+                                                currentIncomeCategory
+                                            )
+                                        })
                                 }
                             }
                         }
@@ -169,7 +192,15 @@ fun CategorySettingsChip(
             horizontalArrangement = Arrangement.Center
         ) {
             Text(
-                text = stringResource(id = databaseStringResourcesProvider.provideStringResource(category)),
+                text = if (category.isDefault()) {
+                    stringResource(
+                        id = databaseStringResourcesProvider.provideStringResource(
+                            category
+                        )
+                    )
+                } else {
+                    category.note
+                },
                 style = if (category.note.length < 12) {
                     MaterialTheme.typography.bodyMedium
                 } else {

@@ -6,7 +6,7 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import com.savenko.track.data.other.constants.DB_PATH
-import com.savenko.track.data.other.converters.Converters
+import com.savenko.track.data.other.converters.roomConverters.Converters
 import com.savenko.track.data.database.currenciesRelated.CurrenciesPreferenceDao
 import com.savenko.track.data.database.currenciesRelated.CurrencyDao
 import com.savenko.track.data.database.expensesRelated.ExpenseCategoryDao

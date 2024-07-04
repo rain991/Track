@@ -15,6 +15,8 @@ val PREFERABLE_THEME_DEFAULT: Themes = Themes.BlueTheme
 
 // Entities defaults
 val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)
+const val DEFAULT_EXPENSE_CATEGORIES_MAX_INDEX = 13
+const val DEFAULT_INCOME_CATEGORIES_MAX_INDEX = 9
 
 // Max entities values
 const val CATEGORIES_NAME_MAX_LENGTH = 40

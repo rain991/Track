@@ -5,8 +5,8 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.FinancialCardNotesProvider
-import com.savenko.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.categories.IncomesCategoriesListRepositoryImpl
+import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
+import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity

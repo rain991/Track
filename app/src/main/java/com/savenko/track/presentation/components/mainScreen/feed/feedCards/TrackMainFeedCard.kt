@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
-import com.savenko.track.data.viewmodels.mainScreen.BudgetIdeaCardViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.BudgetIdeaCardViewModel
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.presentation.components.common.parser.getMonthResID
 import org.koin.androidx.compose.koinViewModel

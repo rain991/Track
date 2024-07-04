@@ -10,8 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.savenko.track.data.implementations.expenses.categories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
+import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
+import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.common.ui.CategoryChip
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject

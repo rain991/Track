@@ -1,6 +1,6 @@
 package com.savenko.track.domain.usecases.incomeRelated
 
-import com.savenko.track.data.implementations.incomes.IncomeItemRepositoryImpl
+import com.savenko.track.data.implementations.incomes.incomeItem.IncomeItemRepositoryImpl
 import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
 import kotlinx.coroutines.runBlocking

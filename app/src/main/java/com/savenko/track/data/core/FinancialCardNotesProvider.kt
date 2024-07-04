@@ -1,8 +1,8 @@
 package com.savenko.track.data.core
 
 import android.util.Range
-import com.savenko.track.data.implementations.expenses.ExpensesCoreRepositoryImpl
-import com.savenko.track.data.implementations.incomes.IncomeCoreRepositoryImpl
+import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesCoreRepositoryImpl
+import com.savenko.track.data.implementations.incomes.incomeItem.IncomeCoreRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory

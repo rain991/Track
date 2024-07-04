@@ -15,8 +15,8 @@ android {
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 34
-        versionCode = 10
-        versionName = "1.2.0"
+        versionCode = 12
+        versionName = "1.2.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -61,12 +61,11 @@ dependencies {
     val workVersion = "2.9.0"
     val koinVersion = "3.5.3"
     val retrofitVersion = "2.9.0"
-    val maxkeppelerSheetComposeVersion = "1.2.0"
     val roomVersion = "2.6.1"
 
     //android
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.1")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
 
     //data related
     implementation("androidx.datastore:datastore-preferences:1.0.0") // newer dataStore version could cause crash
@@ -75,9 +74,6 @@ dependencies {
 
     //third-party libraries
     implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.21")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:core:$maxkeppelerSheetComposeVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:$maxkeppelerSheetComposeVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:$maxkeppelerSheetComposeVersion")
 
     //koin DI
     implementation("io.insert-koin:koin-core:$koinVersion")
@@ -92,22 +88,20 @@ dependencies {
     //compose
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.activity:activity-compose:1.9.0")
-    implementation(platform("androidx.compose:compose-bom:2024.05.00"))
+    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.2.1")
-    implementation("androidx.compose.runtime:runtime-livedata:1.6.7")
     implementation("androidx.core:core-splashscreen:1.0.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.05.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.06.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.6.7")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.6.8")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
 
     //junit
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
-    // testImplementation ("org.mockito:mockito-core:5.12.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
 

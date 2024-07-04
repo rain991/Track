@@ -4,11 +4,16 @@ package com.savenko.track.presentation.components.mainScreen.dialogs
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -38,7 +43,7 @@ import androidx.compose.ui.window.DialogProperties
 import com.savenko.track.R
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
-import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.mainScreen.dialogs.dialogComponents.ExpenseLimitsDialogInputs
 import com.savenko.track.presentation.components.mainScreen.dialogs.dialogComponents.IdeaInputField
 import com.savenko.track.presentation.components.mainScreen.dialogs.dialogComponents.IncomePlanDialogInputs
@@ -51,13 +56,14 @@ import org.koin.compose.koinInject
 
 /*  Contains components related to creating a new idea dialog: SavingsDialogInputs, ExpenseLimitsDialogInputs, IncomePlanDialogInputs,
     IdeaInputField, NewIdeaCategoriesGrid  */
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
-fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
+fun NewIdeaDialog(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
     val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val coroutineScope = rememberCoroutineScope()
-    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
+        .collectAsState(initial = CURRENCY_DEFAULT)
     val windowInfo = rememberWindowInfo()
     Dialog(
         onDismissRequest = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(false) },
@@ -65,19 +71,28 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
     ) {
         Surface(
             modifier = Modifier
-                .fillMaxWidth(if(windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded){
-                    0.7f
-                }else{
-                    0.96f
-                })
+                .fillMaxWidth(
+                    if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+                        0.7f
+                    } else {
+                        0.96f
+                    }
+                )
                 .wrapContentHeight(),
             shape = RoundedCornerShape(8.dp),
         ) {
             if (newIdeaDialogState.value.warningMessage != "") {
-                Toast.makeText(LocalContext.current, newIdeaDialogState.value.warningMessage, Toast.LENGTH_SHORT).show()
+                Toast.makeText(
+                    LocalContext.current,
+                    newIdeaDialogState.value.warningMessage,
+                    Toast.LENGTH_SHORT
+                ).show()
                 newIdeaDialogViewModel.setWarningMessage("")
             }
-            Column(modifier = Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(12.dp)) {
+            Column(
+                modifier = Modifier.padding(16.dp),
+                verticalArrangement = Arrangement.spacedBy(12.dp)
+            ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
                 ) {
@@ -86,7 +101,11 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
                         style = MaterialTheme.typography.titleSmall
                     )
                 }
-                val options = listOf(IdeaSelectorTypes.Savings, IdeaSelectorTypes.ExpenseLimit, IdeaSelectorTypes.IncomePlans)
+                val options = listOf(
+                    IdeaSelectorTypes.Savings,
+                    IdeaSelectorTypes.ExpenseLimit,
+                    IdeaSelectorTypes.IncomePlans
+                )
                 Row {
                     SingleChoiceSegmentedButtonRow(
                         modifier = Modifier
@@ -96,7 +115,10 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
                         options.forEachIndexed { index, label ->
                             SegmentedButton(
                                 modifier = Modifier.safeContentPadding(),
-                                shape = SegmentedButtonDefaults.itemShape(index = index, count = options.size),
+                                shape = SegmentedButtonDefaults.itemShape(
+                                    index = index,
+                                    count = options.size
+                                ),
                                 onClick = { newIdeaDialogViewModel.setTypeSelected(label) },
                                 selected = newIdeaDialogState.value.typeSelected == label
                             ) {
@@ -120,22 +142,27 @@ fun NewIdeaDialog(newIdeaDialogViewModel : NewIdeaDialogViewModel) {
                         }
                     }
                 }
-                Row(
+                FlowRow(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 4.dp), verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Start
+                        .padding(vertical = 4.dp),
+                    horizontalArrangement = Arrangement.Center
                 ) {
-                    Text(
-                        text = when (newIdeaDialogState.value.typeSelected) {
-                            IdeaSelectorTypes.ExpenseLimit -> stringResource(R.string.limit_planned)
-                            IdeaSelectorTypes.IncomePlans -> stringResource(R.string.income_planned)
-                            IdeaSelectorTypes.Savings -> stringResource(R.string.savings_planned)
-                        },
-                        style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
-                    )
-                    Spacer(modifier = Modifier.weight(1f))
+                    Row(
+                        modifier = Modifier.height(IntrinsicSize.Max).align(Alignment.CenterVertically),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(
+                            text = when (newIdeaDialogState.value.typeSelected) {
+                                IdeaSelectorTypes.ExpenseLimit -> stringResource(R.string.limit_planned)
+                                IdeaSelectorTypes.IncomePlans -> stringResource(R.string.income_planned)
+                                IdeaSelectorTypes.Savings -> stringResource(R.string.savings_planned)
+                            },
+                            style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.SemiBold)
+                        )
+                    }
+                    Spacer(modifier = Modifier.width(8.dp))
                     IdeaInputField(preferableCurrency = preferableCurrency.value)
-                    Spacer(modifier = Modifier.weight(1f))
                 }
                 when (newIdeaDialogState.value.typeSelected) {
                     IdeaSelectorTypes.ExpenseLimit -> ExpenseLimitsDialogInputs(newIdeaDialogState = newIdeaDialogState.value)

@@ -32,8 +32,8 @@ import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
-import com.savenko.track.data.viewmodels.mainScreen.AddToSavingIdeaDialogViewModel
-import com.savenko.track.data.viewmodels.settingsScreen.IdeasSettingsScreenViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.ideas.IdeasSettingsScreenViewModel
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings

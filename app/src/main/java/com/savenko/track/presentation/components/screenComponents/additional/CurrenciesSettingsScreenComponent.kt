@@ -29,7 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
-import com.savenko.track.data.viewmodels.settingsScreen.CurrenciesSettingsViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.currencies.CurrenciesSettingsViewModel
 import com.savenko.track.presentation.components.common.ui.CurrencyDropDownMenu
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel

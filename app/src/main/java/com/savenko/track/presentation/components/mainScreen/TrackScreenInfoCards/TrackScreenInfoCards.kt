@@ -29,8 +29,8 @@ import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
-import com.savenko.track.data.viewmodels.mainScreen.FinancialsLazyColumnViewModel
-import com.savenko.track.data.viewmodels.mainScreen.TrackScreenInfoCardsViewModel
+import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feedCards.TrackScreenInfoCardsViewModel
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import org.koin.androidx.compose.koinViewModel
 

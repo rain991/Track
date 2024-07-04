@@ -25,7 +25,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.data.other.constants.MAX_IDEA_VALUE
-import com.savenko.track.data.viewmodels.mainScreen.NewIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.domain.models.currency.Currency
 import org.koin.androidx.compose.koinViewModel
 

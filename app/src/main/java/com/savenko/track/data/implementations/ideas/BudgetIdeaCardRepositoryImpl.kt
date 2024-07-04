@@ -1,6 +1,6 @@
 package com.savenko.track.data.implementations.ideas
 
-import com.savenko.track.data.implementations.expenses.ExpensesCoreRepositoryImpl
+import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesCoreRepositoryImpl
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.repository.ideas.uiProviders.BudgetIdeaCardRepository
 import kotlinx.coroutines.flow.Flow

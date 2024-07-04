@@ -49,10 +49,10 @@ import com.savenko.track.R
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
-import com.savenko.track.data.other.converters.areDatesSame
-import com.savenko.track.data.other.converters.areYearsSame
-import com.savenko.track.data.other.converters.convertDateToLocalDate
-import com.savenko.track.data.viewmodels.mainScreen.FinancialsLazyColumnViewModel
+import com.savenko.track.data.other.converters.dates.areDatesSame
+import com.savenko.track.data.other.converters.dates.areYearsSame
+import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
+import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.presentation.components.common.parser.getMonthResID
 import com.savenko.track.presentation.components.common.ui.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.components.mainScreen.TrackScreenInfoCards.TrackScreenInfoCards
