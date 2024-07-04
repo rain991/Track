@@ -1,5 +1,6 @@
-package com.savenko.track.presentation.components.common.ui
+package com.savenko.track.presentation.components.common.ui.datePickers
 
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Button
 import androidx.compose.material3.DatePickerDialog
 import androidx.compose.material3.DateRangePicker
@@ -9,6 +10,10 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.unit.dp
+import com.savenko.track.R
 import java.util.Date
 
 
@@ -31,7 +36,7 @@ fun DateRangePickerDialog(
         }
     })
     if (isDialogVisible) {
-        DatePickerDialog(
+        DatePickerDialog(modifier = Modifier.padding(8.dp),
             onDismissRequest = {
                 onAccept(
                     Date(dateRangePickerState.selectedStartDateMillis ?: System.currentTimeMillis()),
@@ -42,7 +47,7 @@ fun DateRangePickerDialog(
                 Button(
                     onClick = { onDecline() }
                 ) {
-                    Text(text = "Cancel")
+                    Text(text = stringResource(R.string.cancel))
                 }
             },
             confirmButton = {
@@ -52,7 +57,7 @@ fun DateRangePickerDialog(
                         Date(dateRangePickerState.selectedEndDateMillis ?: (System.currentTimeMillis() + 86400000))
                     )
                 }) {
-                    Text(text = "Confirm")
+                    Text(text = stringResource(R.string.confirm))
                 }
             }) {
             DateRangePicker(state = dateRangePickerState, title = null, showModeToggle = false)

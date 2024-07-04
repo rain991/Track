@@ -201,5 +201,7 @@
     <string name="completed_for_adding_to_saving_idea_dialog">Completed for</string>
     <string name="specified_category_fin_item_card">"%1$s in %2$s: "</string>
     <string name="each_month_limit_new_idea_dialog">Each month limit</string>
+    <string name="confirm">Confirm</string>
+    <string name="cancel">Cancel</string>
 
 </resources>

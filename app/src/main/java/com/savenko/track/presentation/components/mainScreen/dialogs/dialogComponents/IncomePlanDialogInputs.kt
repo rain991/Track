@@ -20,7 +20,7 @@ import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.converters.dates.formatDateWithYear
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
-import com.savenko.track.presentation.components.common.ui.SingleDatePickerDialog
+import com.savenko.track.presentation.components.common.ui.datePickers.SingleDatePickerDialog
 import com.savenko.track.presentation.states.componentRelated.NewIdeaDialogState
 import org.koin.androidx.compose.koinViewModel
 

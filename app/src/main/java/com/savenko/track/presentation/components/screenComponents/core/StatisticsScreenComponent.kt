@@ -22,7 +22,7 @@ import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
-import com.savenko.track.presentation.components.common.ui.DateRangePickerDialog
+import com.savenko.track.presentation.components.common.ui.datePickers.DateRangePickerDialog
 import com.savenko.track.presentation.components.statisticsScreen.TrackStatisticChart
 import com.savenko.track.presentation.components.statisticsScreen.TrackStatisticChartOptionsSelector
 import com.savenko.track.presentation.components.statisticsScreen.TrackStatisticLazyColumn

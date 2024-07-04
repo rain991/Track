@@ -63,7 +63,7 @@ import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.components.bottomSheet.composables.AmountInput
 import com.savenko.track.presentation.components.common.ui.CategoryChip
-import com.savenko.track.presentation.components.common.ui.SingleDatePickerDialog
+import com.savenko.track.presentation.components.common.ui.datePickers.SingleDatePickerDialog
 import com.savenko.track.presentation.components.other.GradientInputTextField
 import com.savenko.track.presentation.other.WindowInfo
 import com.savenko.track.presentation.other.rememberWindowInfo
