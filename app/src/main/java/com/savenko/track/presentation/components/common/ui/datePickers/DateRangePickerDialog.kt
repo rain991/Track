@@ -10,6 +10,9 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -35,12 +38,38 @@ fun DateRangePickerDialog(
             return true
         }
     })
+    val startDate by remember {
+        derivedStateOf {
+            dateRangePickerState.selectedStartDateMillis?.let {
+                dateRangePickerState.selectedStartDateMillis
+            } ?: run {
+                if (futureDatePicker) {
+                    System.currentTimeMillis()
+                } else {
+                    System.currentTimeMillis() - 86400000L
+                }
+            }
+        }
+    }
+    val endDate by remember {
+        derivedStateOf {
+            dateRangePickerState.selectedEndDateMillis?.let {
+                dateRangePickerState.selectedEndDateMillis
+            } ?: run {
+                if (futureDatePicker) {
+                    System.currentTimeMillis() + 86400000L
+                } else {
+                    System.currentTimeMillis()
+                }
+            }
+        }
+    }
     if (isDialogVisible) {
         DatePickerDialog(modifier = Modifier.padding(8.dp),
             onDismissRequest = {
                 onAccept(
-                    Date(dateRangePickerState.selectedStartDateMillis ?: System.currentTimeMillis()),
-                    Date(dateRangePickerState.selectedEndDateMillis ?: (System.currentTimeMillis() + 86400000))
+                    Date(startDate),
+                    Date(endDate)
                 )
             },
             dismissButton = {
@@ -53,8 +82,8 @@ fun DateRangePickerDialog(
             confirmButton = {
                 TextButton(onClick = {
                     onAccept(
-                        Date(dateRangePickerState.selectedStartDateMillis ?: System.currentTimeMillis()),
-                        Date(dateRangePickerState.selectedEndDateMillis ?: (System.currentTimeMillis() + 86400000))
+                        Date(startDate),
+                        Date(endDate)
                     )
                 }) {
                     Text(text = stringResource(R.string.confirm))
