@@ -7,7 +7,7 @@ import com.savenko.track.presentation.themes.PinkTheme.PinkTheme
 import com.savenko.track.presentation.themes.PurpleTheme.PurpleTheme
 import com.savenko.track.presentation.themes.RedTheme.RedTheme
 import com.savenko.track.presentation.themes.YellowTheme.YellowTheme
-import com.savenko.track.presentation.themes.theme.TrackerTheme
+import com.savenko.track.presentation.themes.DynamicColorTheme.TrackerTheme
 
 
 @Composable

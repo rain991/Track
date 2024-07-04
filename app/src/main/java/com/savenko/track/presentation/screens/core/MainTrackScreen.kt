@@ -12,13 +12,13 @@ import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
-import com.savenko.track.presentation.components.common.ui.Header
-import com.savenko.track.presentation.components.mainScreen.dialogs.NewIdeaDialog
-import com.savenko.track.presentation.components.other.ExtendedButtonExample
-import com.savenko.track.presentation.components.screenComponents.core.MainTrackScreenCompactComponent
-import com.savenko.track.presentation.components.screenComponents.core.MainTrackScreenExpandedComponent
-import com.savenko.track.presentation.other.WindowInfo
-import com.savenko.track.presentation.other.rememberWindowInfo
+import com.savenko.track.presentation.components.screenRelated.Header
+import com.savenko.track.presentation.components.dialogs.newIdeaDialog.NewIdeaDialog
+import com.savenko.track.presentation.components.customComponents.ExtendedButtonExample
+import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.MainTrackScreenCompactComponent
+import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.MainTrackScreenExpandedComponent
+import com.savenko.track.presentation.other.windowInfo.WindowInfo
+import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 

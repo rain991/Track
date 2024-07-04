@@ -6,7 +6,7 @@ import com.savenko.track.data.core.PersonalStatsProvider
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.currency.Currency
-import com.savenko.track.presentation.states.componentRelated.PersonalStatsState
+import com.savenko.track.presentation.screens.states.additional.settings.personalSettings.PersonalStatsState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

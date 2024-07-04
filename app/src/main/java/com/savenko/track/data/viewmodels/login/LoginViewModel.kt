@@ -9,7 +9,7 @@ import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
-import com.savenko.track.presentation.states.screenRelated.LoginScreenState
+import com.savenko.track.presentation.screens.states.core.loginScreen.LoginScreenState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow

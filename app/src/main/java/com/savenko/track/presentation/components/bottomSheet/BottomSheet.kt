@@ -61,12 +61,11 @@ import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
-import com.savenko.track.presentation.components.bottomSheet.composables.AmountInput
-import com.savenko.track.presentation.components.common.ui.CategoryChip
-import com.savenko.track.presentation.components.common.ui.datePickers.SingleDatePickerDialog
-import com.savenko.track.presentation.components.other.GradientInputTextField
-import com.savenko.track.presentation.other.WindowInfo
-import com.savenko.track.presentation.other.rememberWindowInfo
+import com.savenko.track.presentation.other.windowInfo.WindowInfo
+import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
+import com.savenko.track.presentation.components.customComponents.CategoryChip
+import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
+import com.savenko.track.presentation.components.customComponents.GradientInputTextField
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -81,7 +80,7 @@ fun BottomSheet() {
     val coroutineScope = rememberCoroutineScope()
     val warningMessage = stringResource(id = R.string.warning_bottom_sheet_exp)
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
+    val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     val sheetState =
         rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
     val currentCurrency =
@@ -154,7 +153,7 @@ fun BottomSheet() {
                                 }
                             }
                         }
-                        AmountInput(focusRequester, controller, currentCurrency.value!!)
+                        BottomSheetAmountInput(focusRequester, controller, currentCurrency.value!!)
                         Spacer(Modifier.weight(1f))
                         OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
                         Spacer(Modifier.height(16.dp))
@@ -189,8 +188,7 @@ fun BottomSheet() {
                                     }
                                 }
                             } else {
-                                Toast.makeText(context, warningMessage, Toast.LENGTH_SHORT)
-                                    .show()
+                                Toast.makeText(context, warningMessage, Toast.LENGTH_SHORT).show()
                             }
                         }
 
@@ -204,7 +202,7 @@ fun BottomSheet() {
 @Composable
 private fun DatePicker() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
+    val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     var text by remember { mutableStateOf(bottomSheetViewState.value.datePicked.toString()) }
     text = if (!bottomSheetViewModel.isDateInOtherSpan(bottomSheetViewState.value.datePicked)) {
         stringResource(R.string.date)
@@ -241,7 +239,7 @@ private fun DatePicker() {
 private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
+    val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     val selected = bottomSheetViewState.value.categoryPicked // warning
     LazyHorizontalStaggeredGrid(
         modifier = Modifier.heightIn(min = 48.dp, max = 156.dp),
@@ -287,7 +285,7 @@ private fun OutlinedDateButton(text: String, isSelected: Boolean, onSelect: () -
 @Composable
 private fun OutlinedTextField(label: String) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val bottomSheetViewState = bottomSheetViewModel.expenseViewState.collectAsState()
+    val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     val text = bottomSheetViewState.value.note
     Box(modifier = Modifier.padding(start = 8.dp)) {
         GradientInputTextField(value = text, label = label) {

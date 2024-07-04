@@ -10,7 +10,7 @@ import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.currency.Currency
-import com.savenko.track.presentation.states.componentRelated.TrackInfoCardsState
+import com.savenko.track.presentation.screens.states.core.mainScreen.TrackInfoCardsState
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow

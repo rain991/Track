@@ -16,7 +16,7 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
 import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
-import com.savenko.track.presentation.states.componentRelated.BottomSheetViewState
+import com.savenko.track.presentation.screens.states.core.common.BottomSheetViewState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -72,7 +72,7 @@ class BottomSheetViewModel(
         }
     }.distinctUntilChanged()
 
-    private val _expenseViewState = MutableStateFlow(
+    private val _bottomSheetViewState = MutableStateFlow(
         BottomSheetViewState(
             isAddingExpense = true,
             isBottomSheetExpanded = false,
@@ -85,7 +85,7 @@ class BottomSheetViewModel(
             yesterdayButtonActiveState = false
         )
     )
-    val expenseViewState = _expenseViewState.asStateFlow()
+    val bottomSheetViewState = _bottomSheetViewState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -95,7 +95,7 @@ class BottomSheetViewModel(
             }
         }
         viewModelScope.launch {
-            incomesCategoriesListRepositoryImpl.getCategoriesList().collect() {
+            incomesCategoriesListRepositoryImpl.getCategoriesList().collect {
                 _incomeCategoryList.clear()
                 _incomeCategoryList.addAll(it)
             }
@@ -112,10 +112,10 @@ class BottomSheetViewModel(
     suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             val currentExpenseItem = ExpenseItem(
-                categoryId = expenseViewState.value.categoryPicked!!.categoryId,
-                note = expenseViewState.value.note,
-                date = convertLocalDateToDate(expenseViewState.value.datePicked),
-                value = expenseViewState.value.inputExpense!!,
+                categoryId = bottomSheetViewState.value.categoryPicked!!.categoryId,
+                note = bottomSheetViewState.value.note,
+                date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
+                value = bottomSheetViewState.value.inputExpense!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
             addExpenseItemUseCase(currentExpenseItem)
@@ -130,10 +130,10 @@ class BottomSheetViewModel(
     suspend fun addIncome(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             val currentIncomeItem = IncomeItem(
-                categoryId = expenseViewState.value.categoryPicked!!.categoryId,
-                note = expenseViewState.value.note,
-                date = convertLocalDateToDate(expenseViewState.value.datePicked),
-                value = expenseViewState.value.inputExpense!!,
+                categoryId = bottomSheetViewState.value.categoryPicked!!.categoryId,
+                note = bottomSheetViewState.value.note,
+                date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
+                value = bottomSheetViewState.value.inputExpense!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
             addIncomeItemUseCase(currentIncomeItem)
@@ -146,32 +146,34 @@ class BottomSheetViewModel(
     }
 
     fun setBottomSheetExpanded(value: Boolean) {
-        _expenseViewState.value = _expenseViewState.value.copy(isBottomSheetExpanded = value)
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(isBottomSheetExpanded = value)
     }
 
     fun setNote(note: String) {
-        _expenseViewState.value = _expenseViewState.value.copy(note = note)
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(note = note)
     }
 
     fun setInputExpense(inputExpense: Float) {
-        _expenseViewState.value = _expenseViewState.value.copy(inputExpense = inputExpense)
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(inputExpense = inputExpense)
     }
 
     fun setCategoryPicked(category: CategoryEntity?) {
-        _expenseViewState.value = expenseViewState.value.copy(categoryPicked = category)
+        _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = category)
     }
 
     fun togglePickerState() {
-        _expenseViewState.value = expenseViewState.value.copy(timePickerState = !_expenseViewState.value.timePickerState)
+        _bottomSheetViewState.value =
+            bottomSheetViewState.value.copy(timePickerState = !_bottomSheetViewState.value.timePickerState)
     }
 
     fun toggleIsAddingExpense() {
-        _expenseViewState.value = expenseViewState.value.copy(isAddingExpense = !_expenseViewState.value.isAddingExpense)
+        _bottomSheetViewState.value =
+            bottomSheetViewState.value.copy(isAddingExpense = !_bottomSheetViewState.value.isAddingExpense)
     }
 
     fun setDatePicked(neededDate: LocalDate) {
-        _expenseViewState.update {
-            expenseViewState.value.copy(
+        _bottomSheetViewState.update {
+            bottomSheetViewState.value.copy(
                 datePicked = neededDate,
                 todayButtonActiveState = (neededDate == LocalDate.now()),
                 yesterdayButtonActiveState = (neededDate == (LocalDate.now().minusDays(1)))

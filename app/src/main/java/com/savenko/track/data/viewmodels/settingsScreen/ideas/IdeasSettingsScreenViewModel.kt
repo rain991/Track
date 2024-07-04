@@ -8,7 +8,7 @@ import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
-import com.savenko.track.presentation.states.screenRelated.IdeasListSettingsScreenState
+import com.savenko.track.presentation.screens.states.additional.settings.ideasSettings.IdeasSettingsScreenState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -22,7 +22,7 @@ class IdeasSettingsScreenViewModel(private val ideaListRepositoryImpl: IdeaListR
     private val _listOfAllIdeas = mutableStateListOf<Idea>()
     val listOfAllIdeas: List<Idea> = _listOfAllIdeas
     private val _screenState = MutableStateFlow(
-        IdeasListSettingsScreenState(listOfSelectedIdeas = _listOfAllIdeas, isSortedDateDescending = true, isShowingCompletedIdeas = true)
+        IdeasSettingsScreenState(listOfSelectedIdeas = _listOfAllIdeas, isSortedDateDescending = true, isShowingCompletedIdeas = true)
     )
     val screenState = _screenState.asStateFlow()
 

@@ -9,8 +9,8 @@ import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
 import com.savenko.track.domain.usecases.crud.ideasRelated.CreateIdeaUseCase
-import com.savenko.track.presentation.states.componentRelated.IdeaSelectorTypes
-import com.savenko.track.presentation.states.componentRelated.NewIdeaDialogState
+import com.savenko.track.presentation.other.composableTypes.IdeaSelectorTypes
+import com.savenko.track.presentation.screens.states.core.common.NewIdeaDialogState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
