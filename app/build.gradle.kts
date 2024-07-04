@@ -76,7 +76,6 @@ dependencies {
     //third-party libraries
     implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.21")
     implementation("com.maxkeppeler.sheets-compose-dialogs:core:$maxkeppelerSheetComposeVersion")
-    implementation("com.maxkeppeler.sheets-compose-dialogs:date-time:$maxkeppelerSheetComposeVersion")
     implementation("com.maxkeppeler.sheets-compose-dialogs:calendar:$maxkeppelerSheetComposeVersion")
 
     //koin DI
@@ -107,7 +106,6 @@ dependencies {
     //junit
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
-    // testImplementation ("org.mockito:mockito-core:5.12.0")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
 

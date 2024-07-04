@@ -63,7 +63,7 @@ import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.components.bottomSheet.composables.AmountInput
 import com.savenko.track.presentation.components.common.ui.CategoryChip
-import com.savenko.track.presentation.components.common.ui.CustomDatePicker
+import com.savenko.track.presentation.components.common.ui.SingleDatePickerDialog
 import com.savenko.track.presentation.components.other.GradientInputTextField
 import com.savenko.track.presentation.other.WindowInfo
 import com.savenko.track.presentation.other.rememberWindowInfo
@@ -227,19 +227,13 @@ private fun DatePicker() {
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
             Text(text = text, style = MaterialTheme.typography.bodyMedium)
         }
-//        if (bottomSheetViewState.value.timePickerState) {
-//            androidx.compose.material3.DatePicker(
-//                state = datePickerState
-//            )
-//        }
-
-        CustomDatePicker(
-            isVisible = bottomSheetViewState.value.timePickerState,
-            onNegativeClick = { bottomSheetViewModel.togglePickerState() },
-            onPositiveClick = { date ->
-                bottomSheetViewModel.setDatePicked(convertDateToLocalDate(date))
-                bottomSheetViewModel.togglePickerState()
-            })
+        SingleDatePickerDialog(
+            isDialogVisible = bottomSheetViewState.value.timePickerState,
+            futureDatePicker = false,
+            onDecline = { bottomSheetViewModel.togglePickerState() }) { date ->
+            bottomSheetViewModel.setDatePicked(convertDateToLocalDate(date))
+            bottomSheetViewModel.togglePickerState()
+        }
     }
 }
 
