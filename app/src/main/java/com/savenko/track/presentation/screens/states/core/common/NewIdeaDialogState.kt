@@ -1,10 +1,9 @@
 package com.savenko.track.presentation.screens.states.core.common
 
 import com.savenko.track.domain.models.expenses.ExpenseCategory
-import com.savenko.track.presentation.other.composableTypes.IdeaSelectorTypes
+import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
+import com.savenko.track.presentation.other.composableTypes.options.IdeaSelectorTypes
 import java.util.Date
-
-
 
 data class NewIdeaDialogState(
     val goal: Float,
@@ -18,5 +17,5 @@ data class NewIdeaDialogState(
     val selectedCategory1: ExpenseCategory?,
     val selectedCategory2: ExpenseCategory?,
     val selectedCategory3: ExpenseCategory?,
-    val warningMessage : String = ""
+    val warningMessage : NewIdeaDialogErrors? = null
 )

@@ -9,7 +9,8 @@ import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
 import com.savenko.track.domain.usecases.crud.ideasRelated.CreateIdeaUseCase
-import com.savenko.track.presentation.other.composableTypes.IdeaSelectorTypes
+import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
+import com.savenko.track.presentation.other.composableTypes.options.IdeaSelectorTypes
 import com.savenko.track.presentation.screens.states.core.common.NewIdeaDialogState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -52,9 +53,9 @@ class NewIdeaDialogViewModel(
                     )
                 } else {
                     if (newIdeaDialogState.value.goal <= 0) {
-                        setWarningMessage("Goal should be greater than 0")
+                        setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
                     } else if (newIdeaDialogState.value.label == null) {
-                        setWarningMessage("Type correct saving label")
+                        setWarningMessage(NewIdeaDialogErrors.IncorrectSavingLabel)
                     }
                     return
                 }
@@ -69,7 +70,7 @@ class NewIdeaDialogViewModel(
                         endDate = newIdeaDialogState.value.endDate
                     )
                 } else {
-                    setWarningMessage("Goal should be greater than 0")
+                    setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
                     return
                 }
             }
@@ -93,19 +94,19 @@ class NewIdeaDialogViewModel(
                     )
                 } else {
                     if (newIdeaDialogState.value.goal <= 0) {
-                        setWarningMessage("Goal should be greater than 0")
+                        setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
                     } else if (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) {
-                        setWarningMessage("Incorrect date")
+                        setWarningMessage(NewIdeaDialogErrors.EmptyDate)
                     }
                     return
                 }
             }
         }
         createIdeaUseCase(idea)
-        setIsNewIdeaDialogVisible(false)
         setGoal(0.0f)
         setLabel(null)
         setEndDate(null)
+        setIsNewIdeaDialogVisible(false)
     }
 
 
@@ -180,15 +181,14 @@ class NewIdeaDialogViewModel(
             _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory3 = value)
             return
         }
-        setWarningMessage("You have already selected 3 categories")
+        setWarningMessage(NewIdeaDialogErrors.MaxCategoriesSelected)
     }
 
-    fun setWarningMessage(value: String) {
+    fun setWarningMessage(value: NewIdeaDialogErrors?) {
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(warningMessage = value)
     }
 
     fun setLabel(label: String?) {
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(label = label)
     }
-
 }

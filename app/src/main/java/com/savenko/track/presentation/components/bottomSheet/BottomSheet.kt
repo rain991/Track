@@ -64,7 +64,7 @@ import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.components.customComponents.CategoryChip
 import com.savenko.track.presentation.components.customComponents.GradientInputTextField
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
-import com.savenko.track.presentation.other.composableTypes.BottomSheetErrors
+import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
 import kotlinx.coroutines.launch

@@ -16,7 +16,7 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
 import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
-import com.savenko.track.presentation.other.composableTypes.BottomSheetErrors
+import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 import com.savenko.track.presentation.screens.states.core.common.BottomSheetViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -160,7 +160,11 @@ class BottomSheetViewModel(
     }
 
     fun setCategoryPicked(category: CategoryEntity?) {
-        _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = category)
+        if(_bottomSheetViewState.value.categoryPicked != category){
+            _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = category)
+        }else{
+            _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = null)
+        }
     }
 
     fun togglePickerState() {

@@ -21,8 +21,9 @@ import com.savenko.track.R
 import com.savenko.track.data.other.constants.IDEA_NOTE_MAX_LENGTH
 import com.savenko.track.data.other.converters.dates.formatDateWithYear
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
-import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
 import com.savenko.track.presentation.components.customComponents.GradientInputTextField
+import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
+import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
 import com.savenko.track.presentation.screens.states.core.common.NewIdeaDialogState
 import org.koin.androidx.compose.koinViewModel
 
@@ -32,11 +33,7 @@ fun SavingsDialogInputs(
 ) {
     val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val labelInputText = newIdeaDialogState.label
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 4.dp), horizontalArrangement = Arrangement.Start
-    ) {
+    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
         GradientInputTextField(
             value = labelInputText ?: "",
             label = stringResource(R.string.saving_for),
@@ -45,6 +42,13 @@ fun SavingsDialogInputs(
             if (it.length < IDEA_NOTE_MAX_LENGTH) {
                 newIdeaDialogViewModel.setLabel(it)
             }
+        }
+        if(newIdeaDialogState.warningMessage is NewIdeaDialogErrors.IncorrectSavingLabel){
+            Text(
+                text = stringResource(id = NewIdeaDialogErrors.IncorrectSavingLabel.error),
+                style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error),
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
         }
     }
     Spacer(modifier = Modifier.height(4.dp))

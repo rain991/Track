@@ -205,5 +205,9 @@
     <string name="cancel">Cancel</string>
     <string name="incorrect_input_value_BS_error">Incorrect input value</string>
     <string name="select_financial_category_BS_error">Select financial category</string>
+    <string name="incorrect_goal_value_newIdeaDialog_error">Incorrect goal value</string>
+    <string name="incorrect_saving_label_error">Incorrect saving label</string>
+    <string name="select_correct_date_error">Select correct date</string>
+    <string name="you_have_already_selected_categories_error">You have already selected 3 categories</string>
 
 </resources>

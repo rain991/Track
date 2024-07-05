@@ -1,4 +1,4 @@
-package com.savenko.track.presentation.other.composableTypes
+package com.savenko.track.presentation.other.composableTypes.errors
 
 import com.savenko.track.R
 

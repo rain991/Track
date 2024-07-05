@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.currency.Currency
-import com.savenko.track.presentation.other.composableTypes.BottomSheetErrors
+import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 import org.koin.androidx.compose.koinViewModel
 
 // Warning amountInput is currently depends on external viewModels

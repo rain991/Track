@@ -1,7 +1,6 @@
 package com.savenko.track.presentation.components.dialogs.newIdeaDialog
 
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -32,7 +31,6 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -44,13 +42,14 @@ import com.savenko.track.R
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
-import com.savenko.track.presentation.other.windowInfo.WindowInfo
-import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
-import com.savenko.track.presentation.components.dialogs.newIdeaDialog.components.dialogInputs.ExpenseLimitsDialogInputs
 import com.savenko.track.presentation.components.dialogs.newIdeaDialog.components.NewIdeaDialogInputField
+import com.savenko.track.presentation.components.dialogs.newIdeaDialog.components.dialogInputs.ExpenseLimitsDialogInputs
 import com.savenko.track.presentation.components.dialogs.newIdeaDialog.components.dialogInputs.IncomePlanDialogInputs
 import com.savenko.track.presentation.components.dialogs.newIdeaDialog.components.dialogInputs.SavingsDialogInputs
-import com.savenko.track.presentation.other.composableTypes.IdeaSelectorTypes
+import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
+import com.savenko.track.presentation.other.composableTypes.options.IdeaSelectorTypes
+import com.savenko.track.presentation.other.windowInfo.WindowInfo
+import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
 import kotlinx.coroutines.launch
 import org.koin.compose.koinInject
 
@@ -81,14 +80,6 @@ fun NewIdeaDialog(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
                 .wrapContentHeight(),
             shape = RoundedCornerShape(8.dp),
         ) {
-            if (newIdeaDialogState.value.warningMessage != "") {
-                Toast.makeText(
-                    LocalContext.current,
-                    newIdeaDialogState.value.warningMessage,
-                    Toast.LENGTH_SHORT
-                ).show()
-                newIdeaDialogViewModel.setWarningMessage("")
-            }
             Column(
                 modifier = Modifier.padding(16.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp)
@@ -163,6 +154,14 @@ fun NewIdeaDialog(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
                     }
                     Spacer(modifier = Modifier.width(8.dp))
                     NewIdeaDialogInputField(preferableCurrency = preferableCurrency.value)
+                }
+                if(newIdeaDialogState.value.warningMessage is NewIdeaDialogErrors.IncorrectGoalValue){
+                    Row(modifier = Modifier.fillMaxWidth().wrapContentHeight(), horizontalArrangement = Arrangement.Center){
+                        Text(
+                            text = stringResource(id = NewIdeaDialogErrors.IncorrectGoalValue.error),
+                            style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error)
+                        )
+                    }
                 }
                 when (newIdeaDialogState.value.typeSelected) {
                     IdeaSelectorTypes.ExpenseLimit -> ExpenseLimitsDialogInputs(newIdeaDialogState = newIdeaDialogState.value)

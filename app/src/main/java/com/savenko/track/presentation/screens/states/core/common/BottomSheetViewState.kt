@@ -1,7 +1,7 @@
 package com.savenko.track.presentation.screens.states.core.common
 
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
-import com.savenko.track.presentation.other.composableTypes.BottomSheetErrors
+import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 import java.time.LocalDate
 
 data class BottomSheetViewState(

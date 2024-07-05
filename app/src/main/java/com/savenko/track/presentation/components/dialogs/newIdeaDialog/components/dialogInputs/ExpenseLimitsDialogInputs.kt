@@ -94,6 +94,6 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
             onCheckedChange = { newIdeaDialogViewModel.setSelectedToAllCategories(it) })
     }
     if (newIdeaDialogState.relatedToAllCategories != true) {
-        NewIdeaDialogCategoriesGrid()
+        NewIdeaDialogCategoriesGrid(newIdeaDialogViewModel)
     }
 }
