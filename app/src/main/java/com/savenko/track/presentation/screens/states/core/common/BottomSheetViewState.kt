@@ -1,6 +1,7 @@
 package com.savenko.track.presentation.screens.states.core.common
 
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
+import com.savenko.track.presentation.other.composableTypes.BottomSheetErrors
 import java.time.LocalDate
 
 data class BottomSheetViewState(
@@ -12,5 +13,6 @@ data class BottomSheetViewState(
     val timePickerState: Boolean,
     val datePicked: LocalDate = LocalDate.now(),
     val todayButtonActiveState: Boolean = true,
-    val yesterdayButtonActiveState: Boolean = false
+    val yesterdayButtonActiveState: Boolean = false,
+    val warningMessage : BottomSheetErrors? = null
 )

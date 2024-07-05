@@ -1,6 +1,7 @@
 package com.savenko.track.presentation.components.bottomSheet
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -21,12 +22,14 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.SoftwareKeyboardController
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.presentation.other.composableTypes.BottomSheetErrors
 import org.koin.androidx.compose.koinViewModel
 
 // Warning amountInput is currently depends on external viewModels
@@ -34,48 +37,60 @@ import org.koin.androidx.compose.koinViewModel
 fun BottomSheetAmountInput(
     focusRequester: FocusRequester,
     controller: SoftwareKeyboardController?,
-    currentCurrency: Currency
+    currentCurrency: Currency,
+    hasErrors: Boolean = false
 ) {
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     val currentInputValue = bottomSheetViewState.value.inputExpense
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.Center,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        BasicTextField(
-            modifier = Modifier
-                .focusRequester(focusRequester)
-                .width(IntrinsicSize.Min)
-                .padding(start = 12.dp),
-            textStyle = MaterialTheme.typography.titleMedium.copy(
-                fontSize = 54.sp,
-                letterSpacing = 1.3.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            ),
-            value = currentInputValue.toString(),
-            onValueChange = { newText ->
-                bottomSheetViewModel.setInputExpense(
-                    try {
-                        newText.toFloat()
-                    } catch (e: NumberFormatException) {
-                        currentInputValue ?: 0.0f
+    Column(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            BasicTextField(
+                modifier = Modifier
+                    .focusRequester(focusRequester)
+                    .width(IntrinsicSize.Min)
+                    .padding(start = 12.dp),
+                textStyle = MaterialTheme.typography.titleMedium.copy(
+                    fontSize = 54.sp,
+                    letterSpacing = 1.3.sp,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer
+                ),
+                value = currentInputValue.toString(),
+                onValueChange = { newText ->
+                    bottomSheetViewModel.setInputExpense(
+                        try {
+                            newText.toFloat()
+                        } catch (e: NumberFormatException) {
+                            currentInputValue ?: 0.0f
+                        }
+                    )
+                },
+                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        controller?.hide()
+                        focusManager.clearFocus()
                     }
-                )
-            },
-            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
-            keyboardActions = KeyboardActions(
-                onDone = {
-                    controller?.hide()
-                    focusManager.clearFocus()
-                }
-            ),
-            maxLines = 1,
-        )
-        TextButton(onClick = { bottomSheetViewModel.changeSelectedCurrency() }, modifier = Modifier.wrapContentWidth()) {
-            Text(text = currentCurrency.ticker, style = MaterialTheme.typography.titleMedium)
+                ),
+                maxLines = 1)
+            TextButton(
+                onClick = { bottomSheetViewModel.changeSelectedCurrency() },
+                modifier = Modifier.wrapContentWidth()
+            ) {
+                Text(text = currentCurrency.ticker, style = MaterialTheme.typography.titleMedium)
+            }
+        }
+        if (hasErrors) {
+            Text(
+                text = stringResource(id = BottomSheetErrors.IncorrectInputValue.error),
+                style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error),
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
         }
     }
 }

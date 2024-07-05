@@ -49,7 +49,7 @@ fun PersonalSettingsScreenComponent() {
     Column(modifier = Modifier.fillMaxSize()) {
         PersonalSettingsContent(personalSettingsScreenViewmodel)
         Spacer(Modifier.height(16.dp))
-        PersonalStatsSettingsContent(personalStatsViewmodel)
+        PersonalSettingsStatistics(personalStatsViewmodel)
     }
 }
 
@@ -153,7 +153,7 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
 }
 
 @Composable
-private fun PersonalStatsSettingsContent(viewModel: PersonalStatsViewModel) {
+private fun PersonalSettingsStatistics(viewModel: PersonalStatsViewModel) {
     val statsState = viewModel.personalStatsState.collectAsState()
     Card(
         modifier = Modifier

@@ -203,5 +203,7 @@
     <string name="each_month_limit_new_idea_dialog">Each month limit</string>
     <string name="confirm">Confirm</string>
     <string name="cancel">Cancel</string>
+    <string name="incorrect_input_value_BS_error">Incorrect input value</string>
+    <string name="select_financial_category_BS_error">Select financial category</string>
 
 </resources>

@@ -1,6 +1,5 @@
 package com.savenko.track.presentation.components.bottomSheet
 
-import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.slideInVertically
@@ -48,7 +47,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -59,16 +57,17 @@ import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
+import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
+import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
+import com.savenko.track.presentation.components.customComponents.CategoryChip
+import com.savenko.track.presentation.components.customComponents.GradientInputTextField
+import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
+import com.savenko.track.presentation.other.composableTypes.BottomSheetErrors
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
-import com.savenko.track.presentation.components.customComponents.CategoryChip
-import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
-import com.savenko.track.presentation.components.customComponents.GradientInputTextField
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
@@ -76,13 +75,10 @@ import java.time.LocalDate
 @Composable
 fun BottomSheet() {
     val windowInfo = rememberWindowInfo()
-    val context = LocalContext.current
     val coroutineScope = rememberCoroutineScope()
-    val warningMessage = stringResource(id = R.string.warning_bottom_sheet_exp)
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
-    val sheetState =
-        rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
+    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
     val currentCurrency =
         bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
     val isAddingExpense = bottomSheetViewState.value.isAddingExpense
@@ -153,45 +149,29 @@ fun BottomSheet() {
                                 }
                             }
                         }
-                        BottomSheetAmountInput(focusRequester, controller, currentCurrency.value!!)
+                        BottomSheetAmountInput(
+                            focusRequester = focusRequester,
+                            controller = controller,
+                            currentCurrency = currentCurrency.value!!,
+                            hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue
+                        )
                         Spacer(Modifier.weight(1f))
                         OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
                         Spacer(Modifier.height(16.dp))
                         DatePicker()
                         Spacer(Modifier.height(16.dp))
                         Box(modifier = Modifier.weight(1f)) {
-                            CategoriesGrid(categoryList)
+                            CategoriesGrid(
+                                categoryList = categoryList,
+                                hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected
+                            )
                         }
                         Spacer(Modifier.height(8.dp))
                         AcceptButton {
-                            if (bottomSheetViewState.value.categoryPicked != null && bottomSheetViewState.value.datePicked.isBefore(
-                                    LocalDate.now().plusDays(1)
-                                ) && bottomSheetViewState.value.inputExpense != null && bottomSheetViewState.value.inputExpense!! > 0
-                            ) {
-                                if (bottomSheetViewState.value.isAddingExpense) {
-                                    coroutineScope.launch {
-                                        withContext(Dispatchers.IO) {
-                                            bottomSheetViewModel.addExpense()
-                                        }
-                                        withContext(Dispatchers.Main) {
-                                            bottomSheetViewModel.setBottomSheetExpanded(false)
-                                        }
-                                    }
-                                } else {
-                                    coroutineScope.launch {
-                                        withContext(Dispatchers.IO) {
-                                            bottomSheetViewModel.addIncome()
-                                        }
-                                        withContext(Dispatchers.Main) {
-                                            bottomSheetViewModel.setBottomSheetExpanded(false)
-                                        }
-                                    }
-                                }
-                            } else {
-                                Toast.makeText(context, warningMessage, Toast.LENGTH_SHORT).show()
+                            coroutineScope.launch {
+                                bottomSheetViewModel.addFinancialItem()
                             }
                         }
-
                     }
                 }
             }
@@ -203,11 +183,11 @@ fun BottomSheet() {
 private fun DatePicker() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
-    var text by remember { mutableStateOf(bottomSheetViewState.value.datePicked.toString()) }
+    var text by remember { mutableStateOf(formatDateWithoutYear(convertLocalDateToDate(bottomSheetViewState.value.datePicked))) }
     text = if (!bottomSheetViewModel.isDateInOtherSpan(bottomSheetViewState.value.datePicked)) {
         stringResource(R.string.date)
     } else {
-        bottomSheetViewState.value.datePicked.toString()
+        formatDateWithoutYear(convertLocalDateToDate(bottomSheetViewState.value.datePicked))
     }
     Row(
         modifier = Modifier
@@ -236,26 +216,41 @@ private fun DatePicker() {
 }
 
 @Composable
-private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
+private fun CategoriesGrid(categoryList: List<CategoryEntity>, hasErrors: Boolean) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     val selected = bottomSheetViewState.value.categoryPicked // warning
-    LazyHorizontalStaggeredGrid(
-        modifier = Modifier.heightIn(min = 48.dp, max = 156.dp),
-        rows = StaggeredGridCells.FixedSize(40.dp),
-        state = lazyHorizontalState,
-        verticalArrangement = Arrangement.spacedBy(12.dp),
-        horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 8.dp)
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
-        items(count = categoryList.size) { index ->
-            val item = categoryList[index]
-            CategoryChip(
-                category = item,
-                isSelected = (selected == item),
-                onSelect = { bottomSheetViewModel.setCategoryPicked(item) })
+        if (hasErrors) {
+            Text(
+                text = stringResource(id = BottomSheetErrors.CategoryNotSelected.error),
+                style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error),
+                modifier = Modifier.padding(horizontal = 8.dp)
+            )
+        }
+        Spacer(modifier = Modifier.height(4.dp))
+        LazyHorizontalStaggeredGrid(
+            modifier = Modifier.heightIn(min = 48.dp, max = 156.dp),
+            rows = StaggeredGridCells.FixedSize(40.dp),
+            state = lazyHorizontalState,
+            verticalArrangement = Arrangement.spacedBy(12.dp),
+            horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 8.dp)
+        ) {
+            items(count = categoryList.size) { index ->
+                val item = categoryList[index]
+                CategoryChip(
+                    category = item,
+                    isSelected = (selected == item),
+                    onSelect = { bottomSheetViewModel.setCategoryPicked(item) })
+            }
         }
     }
+
 }
 
 @Composable

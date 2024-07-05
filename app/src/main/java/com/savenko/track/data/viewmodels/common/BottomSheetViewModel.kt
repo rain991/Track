@@ -16,8 +16,8 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
 import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
+import com.savenko.track.presentation.other.composableTypes.BottomSheetErrors
 import com.savenko.track.presentation.screens.states.core.common.BottomSheetViewState
-import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -109,26 +109,27 @@ class BottomSheetViewModel(
         val DEFAULT_DATE = LocalDate.now()
     }
 
-    suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
-            val currentExpenseItem = ExpenseItem(
-                categoryId = bottomSheetViewState.value.categoryPicked!!.categoryId,
-                note = bottomSheetViewState.value.note,
-                date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
-                value = bottomSheetViewState.value.inputExpense!!,
-                currencyTicker = selectedCurrency.first()!!.ticker
-            )
-            addExpenseItemUseCase(currentExpenseItem)
-            setCategoryPicked(DEFAULT_CATEGORY)
-            setInputExpense(DEFAULT_EXPENSE)
-            setDatePicked(DEFAULT_DATE)
-            setNote(DEFAULT_NOTE)
-            setBottomSheetExpanded(false)
+    suspend fun addFinancialItem() {
+        if (bottomSheetViewState.value.inputExpense == null || bottomSheetViewState.value.inputExpense!! == 0.0f) {
+            setWarningMessage(BottomSheetErrors.IncorrectInputValue)
+            return
         }
-    }
-
-    suspend fun addIncome(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
+        if (bottomSheetViewState.value.categoryPicked == null) {
+            setWarningMessage(BottomSheetErrors.CategoryNotSelected)
+            return
+        }
+        if (bottomSheetViewState.value.isAddingExpense) {
+            withContext(Dispatchers.IO) {
+                val currentExpenseItem = ExpenseItem(
+                    categoryId = bottomSheetViewState.value.categoryPicked!!.categoryId,
+                    note = bottomSheetViewState.value.note,
+                    date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
+                    value = bottomSheetViewState.value.inputExpense!!,
+                    currencyTicker = selectedCurrency.first()!!.ticker
+                )
+                addExpenseItemUseCase(currentExpenseItem)
+            }
+        } else {
             val currentIncomeItem = IncomeItem(
                 categoryId = bottomSheetViewState.value.categoryPicked!!.categoryId,
                 note = bottomSheetViewState.value.note,
@@ -137,12 +138,13 @@ class BottomSheetViewModel(
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
             addIncomeItemUseCase(currentIncomeItem)
-            setCategoryPicked(DEFAULT_CATEGORY)
-            setInputExpense(DEFAULT_EXPENSE)
-            setDatePicked(DEFAULT_DATE)
-            setNote(DEFAULT_NOTE)
-            setBottomSheetExpanded(false)
         }
+        setCategoryPicked(DEFAULT_CATEGORY)
+        setInputExpense(DEFAULT_EXPENSE)
+        setDatePicked(DEFAULT_DATE)
+        setNote(DEFAULT_NOTE)
+        setWarningMessage(null)
+        setBottomSheetExpanded(false)
     }
 
     fun setBottomSheetExpanded(value: Boolean) {
@@ -204,6 +206,10 @@ class BottomSheetViewModel(
 
     private fun setSelectedCurrency(index: Int) {
         _selectedCurrencyIndex.value = index
+    }
+
+    private fun setWarningMessage(message: BottomSheetErrors?) {
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(warningMessage = message)
     }
 }
 
