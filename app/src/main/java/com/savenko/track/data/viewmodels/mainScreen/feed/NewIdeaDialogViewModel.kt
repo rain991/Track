@@ -42,7 +42,7 @@ class NewIdeaDialogViewModel(
         lateinit var idea: Idea
         when (newIdeaDialogState.value.typeSelected) {
             IdeaSelectorTypes.Savings -> {
-                if (newIdeaDialogState.value.includedInBudget != null && newIdeaDialogState.value.goal > 0 && newIdeaDialogState.value.label != null) {
+                if (newIdeaDialogState.value.includedInBudget != null && newIdeaDialogState.value.goal > 0 && newIdeaDialogState.value.label != null && newIdeaDialogState.value.label!!.isNotEmpty()) {
                     idea = Savings(
                         goal = newIdeaDialogState.value.goal,
                         completed = false,
@@ -54,7 +54,7 @@ class NewIdeaDialogViewModel(
                 } else {
                     if (newIdeaDialogState.value.goal <= 0) {
                         setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
-                    } else if (newIdeaDialogState.value.label == null) {
+                    } else if (newIdeaDialogState.value.label == null || newIdeaDialogState.value.label!!.isNotEmpty()) {
                         setWarningMessage(NewIdeaDialogErrors.IncorrectSavingLabel)
                     }
                     return
@@ -120,6 +120,9 @@ class NewIdeaDialogViewModel(
 
     fun setGoal(value: Float) {
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(goal = value)
+        if (value > 0 && _newIdeaDialogState.value.warningMessage is NewIdeaDialogErrors.IncorrectGoalValue) {
+            setWarningMessage(null)
+        }
     }
 
     fun setTypeSelected(value: IdeaSelectorTypes) {
@@ -184,11 +187,14 @@ class NewIdeaDialogViewModel(
         setWarningMessage(NewIdeaDialogErrors.MaxCategoriesSelected)
     }
 
-    fun setWarningMessage(value: NewIdeaDialogErrors?) {
-        _newIdeaDialogState.value = newIdeaDialogState.value.copy(warningMessage = value)
-    }
-
     fun setLabel(label: String?) {
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(label = label)
+        if (_newIdeaDialogState.value.label != null && _newIdeaDialogState.value.label!!.isNotEmpty() && _newIdeaDialogState.value.warningMessage is NewIdeaDialogErrors.IncorrectSavingLabel) {
+            setWarningMessage(null)
+        }
+    }
+
+    private fun setWarningMessage(value: NewIdeaDialogErrors?) {
+        _newIdeaDialogState.value = newIdeaDialogState.value.copy(warningMessage = value)
     }
 }

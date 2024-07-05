@@ -140,7 +140,7 @@ class BottomSheetViewModel(
             addIncomeItemUseCase(currentIncomeItem)
         }
         setCategoryPicked(DEFAULT_CATEGORY)
-        setInputExpense(DEFAULT_EXPENSE)
+        setInputValue(DEFAULT_EXPENSE)
         setDatePicked(DEFAULT_DATE)
         setNote(DEFAULT_NOTE)
         setWarningMessage(null)
@@ -151,19 +151,25 @@ class BottomSheetViewModel(
         _bottomSheetViewState.value = _bottomSheetViewState.value.copy(isBottomSheetExpanded = value)
     }
 
+    fun setInputValue(inputValue: Float) {
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(inputExpense = inputValue)
+        if (_bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue && inputValue > 0) {
+            setWarningMessage(null)
+        }
+    }
+
     fun setNote(note: String) {
         _bottomSheetViewState.value = _bottomSheetViewState.value.copy(note = note)
     }
 
-    fun setInputExpense(inputExpense: Float) {
-        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(inputExpense = inputExpense)
-    }
-
     fun setCategoryPicked(category: CategoryEntity?) {
-        if(_bottomSheetViewState.value.categoryPicked != category){
+        if (_bottomSheetViewState.value.categoryPicked != category) {
             _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = category)
-        }else{
+        } else {
             _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = null)
+        }
+        if (category != null && _bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected){
+            setWarningMessage(null)
         }
     }
 

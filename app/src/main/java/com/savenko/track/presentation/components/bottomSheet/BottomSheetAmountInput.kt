@@ -62,7 +62,7 @@ fun BottomSheetAmountInput(
                 ),
                 value = currentInputValue.toString(),
                 onValueChange = { newText ->
-                    bottomSheetViewModel.setInputExpense(
+                    bottomSheetViewModel.setInputValue(
                         try {
                             newText.toFloat()
                         } catch (e: NumberFormatException) {

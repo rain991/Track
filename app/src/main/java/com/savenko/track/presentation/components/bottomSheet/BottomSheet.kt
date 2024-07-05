@@ -160,11 +160,17 @@ fun BottomSheet() {
                         Spacer(Modifier.height(16.dp))
                         DatePicker()
                         Spacer(Modifier.height(16.dp))
+                        if (bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected) {
+                            Box(modifier = Modifier.height(24.dp)) {
+                                Text(
+                                    text = stringResource(id = BottomSheetErrors.CategoryNotSelected.error),
+                                    style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error),
+                                    modifier = Modifier.padding(horizontal = 8.dp)
+                                )
+                            }
+                        }
                         Box(modifier = Modifier.weight(1f)) {
-                            CategoriesGrid(
-                                categoryList = categoryList,
-                                hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected
-                            )
+                            CategoriesGrid(categoryList = categoryList,)
                         }
                         Spacer(Modifier.height(8.dp))
                         AcceptButton {
@@ -216,26 +222,14 @@ private fun DatePicker() {
 }
 
 @Composable
-private fun CategoriesGrid(categoryList: List<CategoryEntity>, hasErrors: Boolean) {
+private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
-    val selected = bottomSheetViewState.value.categoryPicked // warning
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .wrapContentHeight()
-    ) {
-        if (hasErrors) {
-            Text(
-                text = stringResource(id = BottomSheetErrors.CategoryNotSelected.error),
-                style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error),
-                modifier = Modifier.padding(horizontal = 8.dp)
-            )
-        }
-        Spacer(modifier = Modifier.height(4.dp))
+    val selected = bottomSheetViewState.value.categoryPicked
+    Column(modifier = Modifier.fillMaxWidth()) {
         LazyHorizontalStaggeredGrid(
-            modifier = Modifier.heightIn(min = 48.dp, max = 156.dp),
+            modifier = Modifier.heightIn(min = 48.dp, max = 180.dp),
             rows = StaggeredGridCells.FixedSize(40.dp),
             state = lazyHorizontalState,
             verticalArrangement = Arrangement.spacedBy(12.dp),
@@ -250,7 +244,6 @@ private fun CategoriesGrid(categoryList: List<CategoryEntity>, hasErrors: Boolea
             }
         }
     }
-
 }
 
 @Composable
