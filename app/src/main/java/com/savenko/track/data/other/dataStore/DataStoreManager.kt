@@ -1,6 +1,7 @@
 package com.savenko.track.data.other.dataStore
 
 import android.content.Context
+import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.floatPreferencesKey
@@ -21,16 +22,22 @@ import kotlinx.coroutines.withContext
 class DataStoreManager(private val context: Context) {
     companion object {
         //USER
-        private val LOGIN_COUNT = intPreferencesKey("first_launch")
-        private val NAME = stringPreferencesKey("user_name")
-        private val BUDGET = floatPreferencesKey("user_budget")
+        val LOGIN_COUNT = intPreferencesKey("first_launch")
+         val NAME = stringPreferencesKey("user_name")
+         val BUDGET = floatPreferencesKey("user_budget")
 
         //THEME
-        private val USE_SYSTEM_THEME = booleanPreferencesKey("use_system_theme")
-        private val PREFERABLE_THEME = stringPreferencesKey("preferable_theme")
-        private val SHOW_PAGE_NAME = booleanPreferencesKey("show_page_name")
+         val USE_SYSTEM_THEME = booleanPreferencesKey("use_system_theme")
+         val PREFERABLE_THEME = stringPreferencesKey("preferable_theme")
+         val SHOW_PAGE_NAME = booleanPreferencesKey("show_page_name")
+
+        // Additional settings
+         val NON_CATEGORY_FINANCIALS = booleanPreferencesKey("non_category_financials")
     }
-    val loginCountFlow: Flow<Int> = context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: LOGIN_COUNT_DEFAULT }
+
+    val loginCountFlow: Flow<Int> =
+        context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: LOGIN_COUNT_DEFAULT }
+
     suspend fun incrementLoginCount(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
             context.dataStore.edit {
@@ -39,48 +46,31 @@ class DataStoreManager(private val context: Context) {
             }
         }
     }
+
     val nameFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[NAME] ?: NAME_DEFAULT }
-    suspend fun setName(newName: String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
-            context.dataStore.edit {
-                it[NAME] = newName
-            }
-        }
-    }
+
+
     val budgetFlow: Flow<Float> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: BUDGET_DEFAULT }
-    suspend fun setBudget(newBudget: Float, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
-            context.dataStore.edit {
-                it[BUDGET] = newBudget
-            }
-        }
-    }
-    val isShowPageName: Flow<Boolean> = context.dataStore.data.map { preferences -> preferences[SHOW_PAGE_NAME] ?: SHOW_PAGE_NAME_DEFAULT }
-    suspend fun setShowPageName(value: Boolean, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
-            context.dataStore.edit {
-                it[SHOW_PAGE_NAME] = value
-            }
-        }
-    }
+
+
+    val isShowPageName: Flow<Boolean> =
+        context.dataStore.data.map { preferences -> preferences[SHOW_PAGE_NAME] ?: SHOW_PAGE_NAME_DEFAULT }
+
+
+
     val useSystemTheme: Flow<Boolean> = context.dataStore.data.map { preferences ->
         preferences[USE_SYSTEM_THEME] ?: USE_SYSTEM_THEME_DEFAULT
     }
-    suspend fun setUseSystemTheme(value: Boolean, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
-            context.dataStore.edit {
-                it[USE_SYSTEM_THEME] = value
-            }
-        }
-    }
+
 
     val preferableTheme: Flow<String> = context.dataStore.data.map { preferences ->
         preferences[PREFERABLE_THEME] ?: PREFERABLE_THEME_DEFAULT.name
     }
-    suspend fun setPreferableTheme(value: String, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
+
+    suspend fun <T> setPreference(key: Preferences.Key<T>, value: T, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
-            context.dataStore.edit {
-                it[PREFERABLE_THEME] = value
+            context.dataStore.edit { preferences ->
+                preferences[key] = value
             }
         }
     }

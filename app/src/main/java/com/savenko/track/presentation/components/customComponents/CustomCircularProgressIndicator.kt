@@ -56,7 +56,6 @@ fun CustomCircularProgressIndicator(
             val circleThickness = width / 25f
             circleCenter = Offset(x = width / 2f, y = height / 2f)
 
-
             drawCircle(
                 brush = Brush.radialGradient(
                     listOf(
@@ -153,8 +152,6 @@ fun CustomCircularProgressIndicator(
                     )
                 }
             }
-
-
         }
     }
 }

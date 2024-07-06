@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
@@ -33,7 +32,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -103,30 +101,28 @@ fun NewIdeaDialog(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
                             .fillMaxWidth()
                             .padding(start = 4.dp, end = 12.dp)
                     ) {
-                        options.forEachIndexed { index, label ->
+                        options.forEachIndexed { index, selectionType ->
                             SegmentedButton(
                                 modifier = Modifier.safeContentPadding(),
                                 shape = SegmentedButtonDefaults.itemShape(
                                     index = index,
                                     count = options.size
                                 ),
-                                onClick = { newIdeaDialogViewModel.setTypeSelected(label) },
-                                selected = newIdeaDialogState.value.typeSelected == label
+                                onClick = { newIdeaDialogViewModel.setTypeSelected(selectionType) },
+                                selected = newIdeaDialogState.value.typeSelected == selectionType
                             ) {
-                                if (label == IdeaSelectorTypes.ExpenseLimit) {
+                                if (selectionType == IdeaSelectorTypes.ExpenseLimit) {
                                     Text(
-                                        text = stringResource(id = label.nameId),
+                                        text = stringResource(id = selectionType.nameId),
                                         maxLines = 1,
                                         style = MaterialTheme.typography.labelSmall,
                                         overflow = TextOverflow.Ellipsis
                                     )
                                 } else {
                                     Text(
-                                        modifier = Modifier.wrapContentWidth(),
-                                        text = stringResource(id = label.nameId),
+                                        text = stringResource(id = selectionType.nameId),
                                         maxLines = 1,
-                                        style = MaterialTheme.typography.labelMedium,
-                                        textAlign = TextAlign.Start
+                                        style = MaterialTheme.typography.labelMedium
                                     )
                                 }
                             }

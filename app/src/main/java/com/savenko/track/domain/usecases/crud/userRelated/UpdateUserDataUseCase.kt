@@ -10,10 +10,10 @@ class UpdateUserDataUseCase(private val dataStoreManager: DataStoreManager) {
         newShowPageName: Boolean? = null,
         newPreferableTheme: String? = null
     ) {
-        if (newUserName != null) dataStoreManager.setName(newUserName)
-        if (newBudget != null) dataStoreManager.setBudget(newBudget)
-        if (newUseSystemTheme != null) dataStoreManager.setUseSystemTheme(newUseSystemTheme)
-        if (newShowPageName != null) dataStoreManager.setShowPageName(newShowPageName)
-        if (newPreferableTheme != null) dataStoreManager.setPreferableTheme(newPreferableTheme)
+        if (newUserName != null) dataStoreManager.setPreference(key = DataStoreManager.NAME, value = newUserName)
+        if (newBudget != null) dataStoreManager.setPreference(key = DataStoreManager.BUDGET, value = newBudget)
+        if (newUseSystemTheme != null) dataStoreManager.setPreference(key = DataStoreManager.USE_SYSTEM_THEME, value = newUseSystemTheme)
+        if (newShowPageName != null) dataStoreManager.setPreference(key = DataStoreManager.SHOW_PAGE_NAME, value = newShowPageName)
+        if (newPreferableTheme != null) dataStoreManager.setPreference(key = DataStoreManager.PREFERABLE_THEME, value = newPreferableTheme)
     }
 }

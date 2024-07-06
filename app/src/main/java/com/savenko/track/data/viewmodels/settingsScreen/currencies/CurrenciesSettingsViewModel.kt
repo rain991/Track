@@ -44,13 +44,15 @@ class CurrenciesSettingsViewModel(
             }
         }
     }
+
     // setPreferableCurrency contains logic to change preferable currency all across the app
     suspend fun setPreferableCurrency(value: Currency) {
         if (firstAdditionalCurrencyStateFlow.first() != value && secondAdditionalCurrencyStateFlow.first() != value &&
             thirdAdditionalCurrencyStateFlow.first() != value && fourthAdditionalCurrencyStateFlow.first() != value
         ) {
-            val preferableCurrency =  currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
-            dataStoreManager.setBudget(
+            val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
+            dataStoreManager.setPreference(
+                key = DataStoreManager.BUDGET, value =
                 currenciesRatesHandler.convertValueToAnyCurrency(
                     dataStoreManager.budgetFlow.first(),
                     preferableCurrency,
@@ -119,7 +121,6 @@ class CurrenciesSettingsViewModel(
             currenciesPreferenceRepositoryImpl.setFourthAdditionalCurrency(null)
         }
     }
-
 
 
     suspend fun setLatestCurrencyAsNull() {
