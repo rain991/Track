@@ -7,11 +7,12 @@ import com.savenko.track.presentation.themes.Themes
 // User defaults
 const val NAME_DEFAULT: String = "User"
 const val LOGIN_COUNT_DEFAULT = 0
-const val NON_CATEGORY_FINANCIALS_DEFAULT = false
 const val BUDGET_DEFAULT: Float = 0.0f
 const val SHOW_PAGE_NAME_DEFAULT: Boolean = true
 const val USE_SYSTEM_THEME_DEFAULT: Boolean = true
 val PREFERABLE_THEME_DEFAULT: Themes = Themes.BlueTheme
+const val NON_CATEGORY_FINANCIALS_DEFAULT = false
+const val GROUPING_CATEGORY_ID_DEFAULT = Int.MIN_VALUE
 
 // Entities defaults
 val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)

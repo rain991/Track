@@ -17,17 +17,17 @@ import com.savenko.track.data.database.incomeRelated.IncomeDao
 import com.savenko.track.data.implementations.charts.ChartsRepositoryImpl
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.implementations.currencies.CurrencyListRepositoryImpl
+import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
 import com.savenko.track.data.implementations.expenses.expenseItem.ExpenseItemRepositoryImpl
 import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesCoreRepositoryImpl
 import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesListRepositoryImpl
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
 import com.savenko.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
 import com.savenko.track.data.implementations.ideas.IdeaItemRepositoryImpl
 import com.savenko.track.data.implementations.ideas.IdeaListRepositoryImpl
+import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.implementations.incomes.incomeItem.IncomeCoreRepositoryImpl
 import com.savenko.track.data.implementations.incomes.incomeItem.IncomeItemRepositoryImpl
 import com.savenko.track.data.implementations.incomes.incomeItem.IncomeListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.implementations.notes.NotesRepositoryImpl
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.other.workers.CurrenciesRatesWorker
@@ -36,14 +36,15 @@ import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.savenko.track.data.viewmodels.login.LoginViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.BudgetIdeaCardViewModel
-import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.TrackScreenFeedViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feedCards.TrackScreenInfoCardsViewModel
+import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.additionalPreferences.AdditionalPreferencesSettingsViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.category.CategoriesSettingsScreenViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.category.NewCategoryViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.currencies.CurrenciesSettingsViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.ideas.IdeasSettingsScreenViewModel
-import com.savenko.track.data.viewmodels.settingsScreen.category.NewCategoryViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalSettingsScreenViewmodel
 import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
@@ -159,6 +160,7 @@ val viewModelModule = module {
     viewModel { NewCategoryViewModel(get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get(), get()) }
     viewModel { PersonalStatsViewModel(get(), get()) }
+    viewModel { AdditionalPreferencesSettingsViewModel(get(), get(), get(), get()) }
 
     // Track main screen related
     viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get()) }

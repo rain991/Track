@@ -81,6 +81,7 @@ fun SettingsScreenComponent(
             SettingsScreenThemePreferences(
                 modifier = Modifier, dataStoreManager = settingsData
             )
+            SettingsScreenAdditionalPreferences()
         }
     }
 }

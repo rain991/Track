@@ -52,7 +52,6 @@ import com.savenko.track.presentation.themes.YellowTheme.yellow_dark_theme_prima
 import com.savenko.track.presentation.themes.YellowTheme.yellow_light_theme_onPrimary
 import com.savenko.track.presentation.themes.YellowTheme.yellow_light_theme_primary
 import com.savenko.track.presentation.themes.getThemeByName
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -86,7 +85,7 @@ fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataSto
                             style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                             modifier = Modifier.padding(start = 4.dp), textAlign = TextAlign.Start
                         )
-                        SettingsSwitch(checked = useDeviceTheme.value, onCheckedChange = {
+                        Switch(checked = useDeviceTheme.value, onCheckedChange = {
                             coroutineScope.launch { themePreferenceSettingsViewModel.setUseSystemTheme(it) }
                         })
                     }
@@ -224,7 +223,7 @@ fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataSto
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                     modifier = Modifier.padding(start = 4.dp)
                 )
-                SettingsSwitch(checked = showPageNameChecked.value, onCheckedChange = {
+                Switch(checked = showPageNameChecked.value, onCheckedChange = {
                     coroutineScope.launch {
                         themePreferenceSettingsViewModel.setShowPagesNameFlow(it)
                     }
@@ -233,21 +232,3 @@ fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataSto
         }
     }
 }
-
-@Composable
-private fun SettingsSwitch(checked: Boolean, onCheckedChange: (Boolean) -> Unit) {
-    Switch(checked = checked, onCheckedChange = onCheckedChange)
-}
-
-@Composable
-private fun OptionalSettingsSwitch(
-    enabledFlow: Flow<Boolean>,
-    checkedFlow: Flow<Boolean>,
-    initial: Boolean,
-    onCheckedChange: (Boolean) -> Unit
-) {
-    val enabled = enabledFlow.collectAsState(initial = false)
-    val checked = checkedFlow.collectAsState(initial = initial)
-    Switch(checked = checked.value, onCheckedChange = onCheckedChange, enabled = enabled.value)
-}
-

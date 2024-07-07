@@ -8,6 +8,7 @@ import androidx.datastore.preferences.core.floatPreferencesKey
 import androidx.datastore.preferences.core.intPreferencesKey
 import androidx.datastore.preferences.core.stringPreferencesKey
 import com.savenko.track.data.other.constants.BUDGET_DEFAULT
+import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
 import com.savenko.track.data.other.constants.LOGIN_COUNT_DEFAULT
 import com.savenko.track.data.other.constants.NAME_DEFAULT
 import com.savenko.track.data.other.constants.NON_CATEGORY_FINANCIALS_DEFAULT
@@ -33,7 +34,10 @@ class DataStoreManager(private val context: Context) {
         val SHOW_PAGE_NAME = booleanPreferencesKey("show_page_name")
 
         // Additional settings
-        val NON_CATEGORY_FINANCIALS = booleanPreferencesKey("non_category_financials")
+        val NON_CATEGORISED_EXPENSES = booleanPreferencesKey("non_category_expenses")
+        val GROUPING_EXPENSES_CATEGORY_ID = intPreferencesKey("grouping_expenses_category_id")
+        val NON_CATEGORISED_INCOMES = booleanPreferencesKey("non_category_incomes")
+        val GROUPING_INCOMES_CATEGORY_ID = intPreferencesKey("grouping_incomes_category_id")
     }
 
     val loginCountFlow: Flow<Int> =
@@ -58,12 +62,22 @@ class DataStoreManager(private val context: Context) {
     val useSystemTheme: Flow<Boolean> =
         context.dataStore.data.map { preferences -> preferences[USE_SYSTEM_THEME] ?: USE_SYSTEM_THEME_DEFAULT }
 
-    val preferableTheme: Flow<String> = context.dataStore.data.map { preferences ->
-        preferences[PREFERABLE_THEME] ?: PREFERABLE_THEME_DEFAULT.name
+    val preferableTheme: Flow<String> =
+        context.dataStore.data.map { preferences -> preferences[PREFERABLE_THEME] ?: PREFERABLE_THEME_DEFAULT.name }
+    val nonCategoryExpenses: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[NON_CATEGORISED_EXPENSES] ?: NON_CATEGORY_FINANCIALS_DEFAULT
     }
-    val nonCategoryFinancials: Flow<Boolean> = context.dataStore.data.map { preferences ->
-        preferences[NON_CATEGORY_FINANCIALS] ?: NON_CATEGORY_FINANCIALS_DEFAULT
+    val groupingExpenseCategoryId: Flow<Int> =
+        context.dataStore.data.map { preferences ->
+            preferences[GROUPING_EXPENSES_CATEGORY_ID] ?: GROUPING_CATEGORY_ID_DEFAULT
+        }
+    val nonCategoryIncomes: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[NON_CATEGORISED_INCOMES] ?: NON_CATEGORY_FINANCIALS_DEFAULT
     }
+    val groupingIncomeCategoryId: Flow<Int> =
+        context.dataStore.data.map { preferences ->
+            preferences[GROUPING_INCOMES_CATEGORY_ID] ?: GROUPING_CATEGORY_ID_DEFAULT
+        }
 
     suspend fun <T> setPreference(key: Preferences.Key<T>, value: T, dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         withContext(dispatcher) {
