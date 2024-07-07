@@ -1,4 +1,4 @@
-package com.savenko.track.presentation.screens.screenComponents.core.settingsScreen
+package com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,6 +17,7 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.savenko.track.R
 import com.savenko.track.presentation.navigation.Screen
+import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.SettingsLinkedRow
 
 @Composable
 fun SettingsScreenAccountPreferences(navHostController: NavHostController) {

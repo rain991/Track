@@ -41,7 +41,7 @@ import com.savenko.track.data.other.constants.CATEGORIES_NAME_MAX_LENGTH
 import com.savenko.track.domain.models.abstractLayer.CategoriesTypes
 import com.savenko.track.presentation.components.customComponents.GradientInputTextField
 import com.savenko.track.presentation.other.colors.generateRandomColor
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.CircleWithBorder
+import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.themePreferences.CircleWithBorder
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

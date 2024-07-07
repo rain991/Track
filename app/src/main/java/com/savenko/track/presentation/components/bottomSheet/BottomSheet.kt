@@ -170,7 +170,7 @@ fun BottomSheet() {
                             }
                         }
                         Box(modifier = Modifier.weight(1f)) {
-                            CategoriesGrid(categoryList = categoryList,)
+                            BottomSheetCategoriesGrid(categoryList = categoryList,)
                         }
                         Spacer(Modifier.height(8.dp))
                         AcceptButton {
@@ -222,7 +222,7 @@ private fun DatePicker() {
 }
 
 @Composable
-private fun CategoriesGrid(categoryList: List<CategoryEntity>) {
+private fun BottomSheetCategoriesGrid(categoryList: List<CategoryEntity>) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()

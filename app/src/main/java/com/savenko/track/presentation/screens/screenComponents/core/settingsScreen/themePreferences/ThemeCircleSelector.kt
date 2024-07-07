@@ -1,4 +1,4 @@
-package com.savenko.track.presentation.screens.screenComponents.core.settingsScreen
+package com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.themePreferences
 
 
 import androidx.compose.foundation.Canvas
