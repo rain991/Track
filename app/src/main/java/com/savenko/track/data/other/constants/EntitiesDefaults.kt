@@ -26,3 +26,7 @@ const val NAME_MAX_LENGTH = 40
 const val MAX_BUDGET_VALUE = Int.MAX_VALUE
 const val MAX_IDEA_VALUE = Int.MAX_VALUE
 const val CURRENCIES_RATES_REQUEST_PERIOD = 3L // days
+
+/*  warning changing this parameter will not increase real max value,
+ it is only limit for composables (needed migration in Room from categories IDs parameters to list of categories IDs) */
+const val EXPENSE_LIMIT_MAX_CATEGORIES_SELECTED = 3

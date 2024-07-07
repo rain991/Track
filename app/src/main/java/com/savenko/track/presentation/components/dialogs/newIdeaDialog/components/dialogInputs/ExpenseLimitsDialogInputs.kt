@@ -23,6 +23,7 @@ import com.savenko.track.data.other.converters.dates.formatDateWithYear
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
 import com.savenko.track.presentation.components.dialogs.newIdeaDialog.components.NewIdeaDialogCategoriesGrid
+import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
 import com.savenko.track.presentation.screens.states.core.common.NewIdeaDialogState
 import org.koin.androidx.compose.koinViewModel
 
@@ -93,7 +94,14 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
             checked = newIdeaDialogState.relatedToAllCategories ?: true,
             onCheckedChange = { newIdeaDialogViewModel.setSelectedToAllCategories(it) })
     }
-    if (newIdeaDialogState.relatedToAllCategories != true) {
+    if (newIdeaDialogState.warningMessage is NewIdeaDialogErrors.SelectCategory) {
+        Text(
+            text = stringResource(id = NewIdeaDialogErrors.SelectCategory.error),
+            style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error)
+        )
+    }
+    if (newIdeaDialogState.relatedToAllCategories == false) {
         NewIdeaDialogCategoriesGrid(newIdeaDialogViewModel)
+
     }
 }

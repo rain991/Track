@@ -32,6 +32,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
@@ -136,7 +137,9 @@ fun NewIdeaDialog(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
                     horizontalArrangement = Arrangement.Center
                 ) {
                     Row(
-                        modifier = Modifier.height(IntrinsicSize.Max).align(Alignment.CenterVertically),
+                        modifier = Modifier
+                            .height(IntrinsicSize.Max)
+                            .align(Alignment.CenterVertically),
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
@@ -151,11 +154,17 @@ fun NewIdeaDialog(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
                     Spacer(modifier = Modifier.width(8.dp))
                     NewIdeaDialogInputField(preferableCurrency = preferableCurrency.value)
                 }
-                if(newIdeaDialogState.value.warningMessage is NewIdeaDialogErrors.IncorrectGoalValue){
-                    Row(modifier = Modifier.fillMaxWidth().wrapContentHeight(), horizontalArrangement = Arrangement.Center){
+                if (newIdeaDialogState.value.warningMessage is NewIdeaDialogErrors.IncorrectGoalValue) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.Center
+                    ) {
                         Text(
                             text = stringResource(id = NewIdeaDialogErrors.IncorrectGoalValue.error),
-                            style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error)
+                            style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error),
+                            textAlign = TextAlign.Center
                         )
                     }
                 }

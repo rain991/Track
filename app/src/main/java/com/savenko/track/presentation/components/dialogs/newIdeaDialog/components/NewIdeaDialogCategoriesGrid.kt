@@ -30,9 +30,9 @@ fun NewIdeaDialogCategoriesGrid(newIdeaDialogViewModel: NewIdeaDialogViewModel) 
     val expenseCategoriesList =
         expenseCategoriesListRepositoryImpl.getCategoriesList().collectAsState(initial = listOf())
     val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()
-    val firstSelectedCategory = newIdeaDialogState.value.selectedCategory1
-    val secondSelectedCategory = newIdeaDialogState.value.selectedCategory2
-    val thirdSelectedCategory = newIdeaDialogState.value.selectedCategory3
+    val firstSelectedCategory = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(0)
+    val secondSelectedCategory = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(1)
+    val thirdSelectedCategory = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(2)
     Column(
         modifier = Modifier
             .fillMaxWidth()

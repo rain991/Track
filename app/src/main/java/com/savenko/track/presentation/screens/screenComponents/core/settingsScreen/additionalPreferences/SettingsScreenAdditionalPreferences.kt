@@ -49,7 +49,7 @@ fun SettingsScreenAdditionalPreferences() {
         }
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 8.dp)) {
+            .padding(horizontal = 8.dp)) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -97,7 +97,7 @@ fun SettingsScreenAdditionalPreferences() {
         }
         Column(modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 8.dp)) {
+            .padding(horizontal = 8.dp)) {
             Row(modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically

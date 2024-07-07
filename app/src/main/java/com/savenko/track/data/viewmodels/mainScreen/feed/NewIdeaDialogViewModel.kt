@@ -1,6 +1,9 @@
 package com.savenko.track.data.viewmodels.mainScreen.feed
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
+import com.savenko.track.data.other.constants.EXPENSE_LIMIT_MAX_CATEGORIES_SELECTED
+import com.savenko.track.data.other.constants.TAG
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.abstractLayer.Idea
@@ -30,9 +33,7 @@ class NewIdeaDialogViewModel(
             relatedToAllCategories = null,
             eachMonth = null,
             endDate = null,
-            selectedCategory1 = null,
-            selectedCategory2 = null,
-            selectedCategory3 = null,
+            listOfSelectedCategories = listOf(),
             includedInBudget = true,
             label = null
         )
@@ -76,7 +77,7 @@ class NewIdeaDialogViewModel(
             }
 
             IdeaSelectorTypes.ExpenseLimit -> {
-                if (newIdeaDialogState.value.relatedToAllCategories != null && newIdeaDialogState.value.goal > 0 && (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) && (newIdeaDialogState.value.relatedToAllCategories == true || newIdeaDialogState.value.selectedCategory1 != null || newIdeaDialogState.value.selectedCategory2 != null || newIdeaDialogState.value.selectedCategory3 != null)) {
+                if (newIdeaDialogState.value.relatedToAllCategories != null && newIdeaDialogState.value.goal > 0 && (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) && (newIdeaDialogState.value.relatedToAllCategories == true || newIdeaDialogState.value.listOfSelectedCategories.isNotEmpty())) {
                     idea = ExpenseLimits(
                         goal = newIdeaDialogState.value.goal,
                         completed = false,
@@ -88,16 +89,19 @@ class NewIdeaDialogViewModel(
                         endDate = newIdeaDialogState.value.endDate,
                         isEachMonth = newIdeaDialogState.value.eachMonth,
                         isRelatedToAllCategories = newIdeaDialogState.value.relatedToAllCategories!!,
-                        firstRelatedCategoryId = newIdeaDialogState.value.selectedCategory1?.categoryId,
-                        secondRelatedCategoryId = newIdeaDialogState.value.selectedCategory2?.categoryId,
-                        thirdRelatedCategoryId = newIdeaDialogState.value.selectedCategory3?.categoryId
+                        firstRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(0)?.categoryId,
+                        secondRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(1)?.categoryId,
+                        thirdRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(2)?.categoryId
                     )
                 } else {
                     if (newIdeaDialogState.value.goal <= 0) {
                         setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
-                    } else if (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) {
+                    } else if (newIdeaDialogState.value.eachMonth == null && newIdeaDialogState.value.endDate == null) {
                         setWarningMessage(NewIdeaDialogErrors.EmptyDate)
+                    } else if (newIdeaDialogState.value.relatedToAllCategories == false && newIdeaDialogState.value.listOfSelectedCategories.isEmpty()) {
+                        setWarningMessage(NewIdeaDialogErrors.SelectCategory)
                     }
+                    Log.d(TAG, "addNewIdea: ${newIdeaDialogState.value.warningMessage}")
                     return
                 }
             }
@@ -130,9 +134,7 @@ class NewIdeaDialogViewModel(
             _newIdeaDialogState.value = newIdeaDialogState.value.copy(typeSelected = value)
             _newIdeaDialogState.value = newIdeaDialogState.value.copy(
                 relatedToAllCategories = true,
-                selectedCategory1 = null,
-                selectedCategory2 = null,
-                selectedCategory3 = null,
+                listOfSelectedCategories = listOf(),
                 eachMonth = true,
                 endDate = null
             )
@@ -154,9 +156,7 @@ class NewIdeaDialogViewModel(
     fun setSelectedToAllCategories(value: Boolean) {
         if (value) {
             _newIdeaDialogState.value = newIdeaDialogState.value.copy(relatedToAllCategories = true)
-            _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory1 = null)
-            _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory2 = null)
-            _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory3 = null)
+            _newIdeaDialogState.value = newIdeaDialogState.value.copy(listOfSelectedCategories = emptyList())
         } else {
             _newIdeaDialogState.value = newIdeaDialogState.value.copy(relatedToAllCategories = false)
         }
@@ -171,20 +171,29 @@ class NewIdeaDialogViewModel(
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(endDate = value)
     }
 
-    fun setSelectedCategory(value: ExpenseCategory?) {
-        if (_newIdeaDialogState.value.selectedCategory1 == null) {
-            _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory1 = value)
+    fun setSelectedCategory(category: ExpenseCategory) {
+        val listOfCategories = _newIdeaDialogState.value.listOfSelectedCategories
+        val isAlreadyAdded = listOfCategories.filter { it == category }
+        if (isAlreadyAdded.isNotEmpty()) {
+            _newIdeaDialogState.value =
+                _newIdeaDialogState.value.copy(listOfSelectedCategories = listOfCategories.filter { it != category })
+            if (_newIdeaDialogState.value.warningMessage is NewIdeaDialogErrors.MaxCategoriesSelected) {
+                _newIdeaDialogState.value = _newIdeaDialogState.value.copy(warningMessage = null)
+            }
             return
         }
-        if (newIdeaDialogState.value.selectedCategory2 == null) {
-            _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory2 = value)
-            return
+        if (listOfCategories.size < EXPENSE_LIMIT_MAX_CATEGORIES_SELECTED) {
+            val mutableList = listOfCategories.toMutableList()
+            mutableList.add(category)
+            _newIdeaDialogState.value = _newIdeaDialogState.value.copy(
+                listOfSelectedCategories = mutableList
+            )
+            if (_newIdeaDialogState.value.warningMessage is NewIdeaDialogErrors.SelectCategory) {
+                setWarningMessage(null)
+            }
+        } else if (listOfCategories.size == EXPENSE_LIMIT_MAX_CATEGORIES_SELECTED) {
+            setWarningMessage(NewIdeaDialogErrors.MaxCategoriesSelected)
         }
-        if (newIdeaDialogState.value.selectedCategory3 == null) {
-            _newIdeaDialogState.value = newIdeaDialogState.value.copy(selectedCategory3 = value)
-            return
-        }
-        setWarningMessage(NewIdeaDialogErrors.MaxCategoriesSelected)
     }
 
     fun setLabel(label: String?) {
