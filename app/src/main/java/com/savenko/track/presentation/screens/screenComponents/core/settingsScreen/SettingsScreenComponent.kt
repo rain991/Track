@@ -84,6 +84,7 @@ fun SettingsScreenComponent(
             SettingsScreenThemePreferences(
                 modifier = Modifier, dataStoreManager = settingsData
             )
+            Spacer(modifier = Modifier.height(12.dp))
             SettingsScreenAdditionalPreferences()
         }
     }

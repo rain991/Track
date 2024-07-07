@@ -5,10 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
@@ -35,7 +34,6 @@ fun CategoryChip(
     category: CategoryEntity,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     isSelected: Boolean,
-    selectable: Boolean = true,
     onSelect: (CategoryEntity) -> Unit,
     chipScale: Float = 1.0f
 ) {
@@ -53,7 +51,7 @@ fun CategoryChip(
         )
     ) {
         Row(
-            modifier = Modifier.fillMaxSize(),
+            modifier = Modifier.wrapContentWidth(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -81,15 +79,7 @@ fun CategoryChip(
                 } else {
                     MaterialTheme.typography.bodySmall
                 },
-                modifier = Modifier
-                    .fillMaxHeight()
-                    .fillMaxWidth(
-                        if (selectable) {
-                            0.84f
-                        } else {
-                            1.0f
-                        }
-                    ),
+                modifier = Modifier.fillMaxHeight(),
                 color = MaterialTheme.colorScheme.onPrimary,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Visible,

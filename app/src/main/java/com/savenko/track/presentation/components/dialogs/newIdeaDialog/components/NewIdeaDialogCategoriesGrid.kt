@@ -57,8 +57,9 @@ fun NewIdeaDialogCategoriesGrid(newIdeaDialogViewModel: NewIdeaDialogViewModel) 
                 CategoryChip(
                     category = item,
                     isSelected = (item == firstSelectedCategory || item == secondSelectedCategory || item == thirdSelectedCategory),
-                    chipScale = 0.92f,
-                    onSelect = { newIdeaDialogViewModel.setSelectedCategory(item) })
+                    onSelect = { newIdeaDialogViewModel.setSelectedCategory(item) },
+                    chipScale = 0.92f
+                )
             }
         }
     }
