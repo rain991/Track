@@ -10,6 +10,7 @@ import androidx.datastore.preferences.core.stringPreferencesKey
 import com.savenko.track.data.other.constants.BUDGET_DEFAULT
 import com.savenko.track.data.other.constants.LOGIN_COUNT_DEFAULT
 import com.savenko.track.data.other.constants.NAME_DEFAULT
+import com.savenko.track.data.other.constants.NON_CATEGORY_FINANCIALS_DEFAULT
 import com.savenko.track.data.other.constants.PREFERABLE_THEME_DEFAULT
 import com.savenko.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.savenko.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
@@ -23,16 +24,16 @@ class DataStoreManager(private val context: Context) {
     companion object {
         //USER
         val LOGIN_COUNT = intPreferencesKey("first_launch")
-         val NAME = stringPreferencesKey("user_name")
-         val BUDGET = floatPreferencesKey("user_budget")
+        val NAME = stringPreferencesKey("user_name")
+        val BUDGET = floatPreferencesKey("user_budget")
 
         //THEME
-         val USE_SYSTEM_THEME = booleanPreferencesKey("use_system_theme")
-         val PREFERABLE_THEME = stringPreferencesKey("preferable_theme")
-         val SHOW_PAGE_NAME = booleanPreferencesKey("show_page_name")
+        val USE_SYSTEM_THEME = booleanPreferencesKey("use_system_theme")
+        val PREFERABLE_THEME = stringPreferencesKey("preferable_theme")
+        val SHOW_PAGE_NAME = booleanPreferencesKey("show_page_name")
 
         // Additional settings
-         val NON_CATEGORY_FINANCIALS = booleanPreferencesKey("non_category_financials")
+        val NON_CATEGORY_FINANCIALS = booleanPreferencesKey("non_category_financials")
     }
 
     val loginCountFlow: Flow<Int> =
@@ -49,22 +50,19 @@ class DataStoreManager(private val context: Context) {
 
     val nameFlow: Flow<String> = context.dataStore.data.map { preferences -> preferences[NAME] ?: NAME_DEFAULT }
 
-
     val budgetFlow: Flow<Float> = context.dataStore.data.map { preferences -> preferences[BUDGET] ?: BUDGET_DEFAULT }
-
 
     val isShowPageName: Flow<Boolean> =
         context.dataStore.data.map { preferences -> preferences[SHOW_PAGE_NAME] ?: SHOW_PAGE_NAME_DEFAULT }
 
-
-
-    val useSystemTheme: Flow<Boolean> = context.dataStore.data.map { preferences ->
-        preferences[USE_SYSTEM_THEME] ?: USE_SYSTEM_THEME_DEFAULT
-    }
-
+    val useSystemTheme: Flow<Boolean> =
+        context.dataStore.data.map { preferences -> preferences[USE_SYSTEM_THEME] ?: USE_SYSTEM_THEME_DEFAULT }
 
     val preferableTheme: Flow<String> = context.dataStore.data.map { preferences ->
         preferences[PREFERABLE_THEME] ?: PREFERABLE_THEME_DEFAULT.name
+    }
+    val nonCategoryFinancials: Flow<Boolean> = context.dataStore.data.map { preferences ->
+        preferences[NON_CATEGORY_FINANCIALS] ?: NON_CATEGORY_FINANCIALS_DEFAULT
     }
 
     suspend fun <T> setPreference(key: Preferences.Key<T>, value: T, dispatcher: CoroutineDispatcher = Dispatchers.IO) {

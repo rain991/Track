@@ -7,7 +7,7 @@ import com.savenko.track.presentation.themes.Themes
 // User defaults
 const val NAME_DEFAULT: String = "User"
 const val LOGIN_COUNT_DEFAULT = 0
-const val NEEDS_LOGIN: Boolean = true
+const val NON_CATEGORY_FINANCIALS_DEFAULT = false
 const val BUDGET_DEFAULT: Float = 0.0f
 const val SHOW_PAGE_NAME_DEFAULT: Boolean = true
 const val USE_SYSTEM_THEME_DEFAULT: Boolean = true

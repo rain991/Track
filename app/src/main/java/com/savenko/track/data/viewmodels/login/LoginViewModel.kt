@@ -39,7 +39,8 @@ class LoginViewModel(
     suspend fun addToDataStore(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         if (_loginScreenState.value.budget != BUDGET_DEFAULT && _loginScreenState.value.name.isNotEmpty()) {
             withContext(dispatcher) {
-                updateUserDataUseCase(newBudget = _loginScreenState.value.budget, newUserName = _loginScreenState.value.name)
+                updateUserDataUseCase(key = DataStoreManager.BUDGET, value = _loginScreenState.value.budget)
+                updateUserDataUseCase(key = DataStoreManager.NAME, value = _loginScreenState.value.name)
                 dataStoreManager.incrementLoginCount()
             }
             withContext(dispatcher) {

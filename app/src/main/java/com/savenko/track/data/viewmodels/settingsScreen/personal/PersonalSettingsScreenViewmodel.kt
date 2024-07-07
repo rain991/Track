@@ -35,10 +35,10 @@ class PersonalSettingsScreenViewmodel(
 
     suspend fun setNewPersonalValues(newName: String, newBudget: Float) {
         if (newName != userName.value && newName.length > 1) {
-            updateUserDataUseCase(newUserName = newName)
+            updateUserDataUseCase(key = DataStoreManager.NAME, value = newName)
         }
         if (newBudget != budget.value && newBudget > 0) {
-            updateUserDataUseCase(newBudget = newBudget)
+            updateUserDataUseCase(key = DataStoreManager.BUDGET, value = newBudget)
         }
     }
 
