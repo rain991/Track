@@ -11,16 +11,16 @@ class ThemePreferenceSettingsViewModel(
 ) : ViewModel() {
     val showPagesNameFlow = dataStoreManager.isShowPageName
     suspend fun setShowPagesNameFlow(value: Boolean) {
-        updateUserDataUseCase(newShowPageName = value)
+        updateUserDataUseCase(key = DataStoreManager.SHOW_PAGE_NAME, value = value)
     }
 
     val useSystemTheme = dataStoreManager.useSystemTheme
     suspend fun setUseSystemTheme(value: Boolean) {
-        updateUserDataUseCase(newUseSystemTheme = value)
+        updateUserDataUseCase(key = DataStoreManager.USE_SYSTEM_THEME, value = value)
     }
 
     val preferableTheme = dataStoreManager.preferableTheme
     suspend fun setPreferableTheme(value: Themes) {
-        updateUserDataUseCase(newPreferableTheme = value.name)
+        updateUserDataUseCase(key = DataStoreManager.PREFERABLE_THEME, value = value.name)
     }
 }

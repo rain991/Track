@@ -131,8 +131,8 @@ class NotesRepositoryImpl(
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return incomeDao.getBiggestIncomeInTimeSpan(start = getStartOfYearDate(todayDate).time, end = getEndOfYearDate(todayDate).time)
     }
-
     override suspend fun requestLoginCounts(): Int {
+
         return dataStoreManager.loginCountFlow.first()
     }
 

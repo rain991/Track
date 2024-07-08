@@ -163,4 +163,10 @@
     <string name="each_month_limit_new_idea_dialog">Лимит каждого месяца</string>
     <string name="confirm">Подтвердить</string>
     <string name="cancel">Отменить</string>
+    <string name="incorrect_input_value_BS_error">Введите значение</string>
+    <string name="select_financial_category_BS_error">Выберите финансовую категорию</string>
+    <string name="incorrect_goal_value_newIdeaDialog_error">Введите цель</string>
+    <string name="incorrect_saving_label_error">Введите цель сбережений</string>
+    <string name="select_correct_date_error">Введите правильную дату</string>
+    <string name="you_have_already_selected_categories_error">Максимум 3 категории</string>
 </resources>

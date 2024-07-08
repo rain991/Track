@@ -11,8 +11,8 @@ import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRep
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.currency.Currency
-import com.savenko.track.presentation.states.componentRelated.StatisticChartState
-import com.savenko.track.presentation.states.componentRelated.StatisticChartTimePeriod
+import com.savenko.track.presentation.screens.states.core.statisticScreen.StatisticChartState
+import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -9,7 +9,7 @@ import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
-import com.savenko.track.presentation.states.screenRelated.LoginScreenState
+import com.savenko.track.presentation.screens.states.core.loginScreen.LoginScreenState
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -39,7 +39,8 @@ class LoginViewModel(
     suspend fun addToDataStore(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
         if (_loginScreenState.value.budget != BUDGET_DEFAULT && _loginScreenState.value.name.isNotEmpty()) {
             withContext(dispatcher) {
-                updateUserDataUseCase(newBudget = _loginScreenState.value.budget, newUserName = _loginScreenState.value.name)
+                updateUserDataUseCase(key = DataStoreManager.BUDGET, value = _loginScreenState.value.budget)
+                updateUserDataUseCase(key = DataStoreManager.NAME, value = _loginScreenState.value.name)
                 dataStoreManager.incrementLoginCount()
             }
             withContext(dispatcher) {

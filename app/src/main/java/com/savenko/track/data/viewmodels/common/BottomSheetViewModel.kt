@@ -7,7 +7,11 @@ import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRep
 import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
 import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
+import com.savenko.track.data.other.constants.EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
+import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
+import com.savenko.track.data.other.constants.INCOME_CATEGORY_GROUPING_ID_DEFAULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
+import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.expenses.ExpenseCategory
@@ -16,8 +20,8 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
 import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
-import com.savenko.track.presentation.states.componentRelated.BottomSheetViewState
-import kotlinx.coroutines.CoroutineDispatcher
+import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
+import com.savenko.track.presentation.screens.states.core.common.BottomSheetViewState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -39,7 +43,8 @@ class BottomSheetViewModel(
     private val addIncomeItemUseCase: AddIncomeItemUseCase,
     private val categoryListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
     private val _expenseCategoryList = mutableStateListOf<ExpenseCategory>()
     val expenseCategoryList: List<ExpenseCategory> = _expenseCategoryList
@@ -72,12 +77,12 @@ class BottomSheetViewModel(
         }
     }.distinctUntilChanged()
 
-    private val _expenseViewState = MutableStateFlow(
+    private val _bottomSheetViewState = MutableStateFlow(
         BottomSheetViewState(
             isAddingExpense = true,
             isBottomSheetExpanded = false,
             note = DEFAULT_NOTE,
-            inputExpense = DEFAULT_EXPENSE,
+            inputValue = DEFAULT_INPUT_VALUE,
             categoryPicked = DEFAULT_CATEGORY,
             timePickerState = false,
             datePicked = LocalDate.now(),
@@ -85,7 +90,7 @@ class BottomSheetViewModel(
             yesterdayButtonActiveState = false
         )
     )
-    val expenseViewState = _expenseViewState.asStateFlow()
+    val bottomSheetViewState = _bottomSheetViewState.asStateFlow()
 
     init {
         viewModelScope.launch {
@@ -95,7 +100,7 @@ class BottomSheetViewModel(
             }
         }
         viewModelScope.launch {
-            incomesCategoriesListRepositoryImpl.getCategoriesList().collect() {
+            incomesCategoriesListRepositoryImpl.getCategoriesList().collect {
                 _incomeCategoryList.clear()
                 _incomeCategoryList.addAll(it)
             }
@@ -103,75 +108,122 @@ class BottomSheetViewModel(
     }
 
     companion object {
-        val DEFAULT_NOTE = ""
-        val DEFAULT_EXPENSE = 0.0f
+        const val DEFAULT_NOTE = ""
+        const val DEFAULT_INPUT_VALUE = 0.0f
         val DEFAULT_CATEGORY = null
         val DEFAULT_DATE = LocalDate.now()
     }
 
-    suspend fun addExpense(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
-            val currentExpenseItem = ExpenseItem(
-                categoryId = expenseViewState.value.categoryPicked!!.categoryId,
-                note = expenseViewState.value.note,
-                date = convertLocalDateToDate(expenseViewState.value.datePicked),
-                value = expenseViewState.value.inputExpense!!,
-                currencyTicker = selectedCurrency.first()!!.ticker
-            )
-            addExpenseItemUseCase(currentExpenseItem)
-            setCategoryPicked(DEFAULT_CATEGORY)
-            setInputExpense(DEFAULT_EXPENSE)
-            setDatePicked(DEFAULT_DATE)
-            setNote(DEFAULT_NOTE)
-            setBottomSheetExpanded(false)
+    suspend fun addFinancialItem() {
+        val nonCategorisedExpenses = dataStoreManager.nonCategoryExpenses.first()
+        val nonCategorisedIncomes = dataStoreManager.nonCategoryIncomes.first()
+        val groupingExpenseCategoryId = dataStoreManager.groupingExpenseCategoryId.first()
+        val groupingIncomeCategoryId = dataStoreManager.groupingIncomeCategoryId.first()
+        if (bottomSheetViewState.value.inputValue == null || bottomSheetViewState.value.inputValue == 0.0f) {
+            setWarningMessage(BottomSheetErrors.IncorrectInputValue)
+            return
         }
-    }
+        if (nonCategorisedExpenses && bottomSheetViewState.value.isAddingExpense && (bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId == GROUPING_CATEGORY_ID_DEFAULT)) {
+            setWarningMessage(BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected)
+            return
+        }
+        if (nonCategorisedIncomes && !bottomSheetViewState.value.isAddingExpense && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId == GROUPING_CATEGORY_ID_DEFAULT) {
+            setWarningMessage(BottomSheetErrors.IncomeGroupingCategoryIsNotSelected)
+            return
+        }
+        if (bottomSheetViewState.value.categoryPicked == null && ((bottomSheetViewState.value.isAddingExpense && !nonCategorisedExpenses) || (!bottomSheetViewState.value.isAddingExpense && !nonCategorisedIncomes))) {
+            setWarningMessage(BottomSheetErrors.CategoryNotSelected)
+            return
+        }
 
-    suspend fun addIncome(dispatcher: CoroutineDispatcher = Dispatchers.IO) {
-        withContext(dispatcher) {
+        if (bottomSheetViewState.value.isAddingExpense) {
+            withContext(Dispatchers.IO) {
+                val expenseCategoryPickedId =
+                    if (nonCategorisedExpenses && bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
+                        groupingExpenseCategoryId
+                    } else {
+                        EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
+                    }
+                val currentExpenseItem = ExpenseItem(
+                    categoryId = if (bottomSheetViewState.value.categoryPicked != null) {
+                        bottomSheetViewState.value.categoryPicked!!.categoryId
+                    } else {
+                        expenseCategoryPickedId
+                    },
+                    note = bottomSheetViewState.value.note,
+                    date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
+                    value = bottomSheetViewState.value.inputValue!!,
+                    currencyTicker = selectedCurrency.first()!!.ticker
+                )
+                addExpenseItemUseCase(currentExpenseItem)
+            }
+        } else {
+            val incomeCategoryPickedId =
+                if (nonCategorisedIncomes && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
+                    groupingIncomeCategoryId
+                } else {
+                    INCOME_CATEGORY_GROUPING_ID_DEFAULT
+                }
             val currentIncomeItem = IncomeItem(
-                categoryId = expenseViewState.value.categoryPicked!!.categoryId,
-                note = expenseViewState.value.note,
-                date = convertLocalDateToDate(expenseViewState.value.datePicked),
-                value = expenseViewState.value.inputExpense!!,
+                categoryId = if (bottomSheetViewState.value.categoryPicked != null) {
+                    bottomSheetViewState.value.categoryPicked!!.categoryId
+                } else {
+                    incomeCategoryPickedId
+                },
+                note = bottomSheetViewState.value.note,
+                date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
+                value = bottomSheetViewState.value.inputValue!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
             addIncomeItemUseCase(currentIncomeItem)
-            setCategoryPicked(DEFAULT_CATEGORY)
-            setInputExpense(DEFAULT_EXPENSE)
-            setDatePicked(DEFAULT_DATE)
-            setNote(DEFAULT_NOTE)
-            setBottomSheetExpanded(false)
         }
+        setCategoryPicked(DEFAULT_CATEGORY)
+        setInputValue(DEFAULT_INPUT_VALUE)
+        setDatePicked(DEFAULT_DATE)
+        setNote(DEFAULT_NOTE)
+        setWarningMessage(null)
+        setBottomSheetExpanded(false)
     }
 
     fun setBottomSheetExpanded(value: Boolean) {
-        _expenseViewState.value = _expenseViewState.value.copy(isBottomSheetExpanded = value)
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(isBottomSheetExpanded = value)
+    }
+
+    fun setInputValue(inputValue: Float) {
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(inputValue = inputValue)
+        if (_bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue && inputValue > 0) {
+            setWarningMessage(null)
+        }
     }
 
     fun setNote(note: String) {
-        _expenseViewState.value = _expenseViewState.value.copy(note = note)
-    }
-
-    fun setInputExpense(inputExpense: Float) {
-        _expenseViewState.value = _expenseViewState.value.copy(inputExpense = inputExpense)
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(note = note)
     }
 
     fun setCategoryPicked(category: CategoryEntity?) {
-        _expenseViewState.value = expenseViewState.value.copy(categoryPicked = category)
+        if (_bottomSheetViewState.value.categoryPicked != category) {
+            _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = category)
+        } else {
+            _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = null)
+        }
+        if (category != null && _bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected) {
+            setWarningMessage(null)
+        }
     }
 
     fun togglePickerState() {
-        _expenseViewState.value = expenseViewState.value.copy(timePickerState = !_expenseViewState.value.timePickerState)
+        _bottomSheetViewState.value =
+            bottomSheetViewState.value.copy(timePickerState = !_bottomSheetViewState.value.timePickerState)
     }
 
     fun toggleIsAddingExpense() {
-        _expenseViewState.value = expenseViewState.value.copy(isAddingExpense = !_expenseViewState.value.isAddingExpense)
+        _bottomSheetViewState.value =
+            bottomSheetViewState.value.copy(isAddingExpense = !_bottomSheetViewState.value.isAddingExpense)
     }
 
     fun setDatePicked(neededDate: LocalDate) {
-        _expenseViewState.update {
-            expenseViewState.value.copy(
+        _bottomSheetViewState.update {
+            bottomSheetViewState.value.copy(
                 datePicked = neededDate,
                 todayButtonActiveState = (neededDate == LocalDate.now()),
                 yesterdayButtonActiveState = (neededDate == (LocalDate.now().minusDays(1)))
@@ -202,6 +254,10 @@ class BottomSheetViewModel(
 
     private fun setSelectedCurrency(index: Int) {
         _selectedCurrencyIndex.value = index
+    }
+
+    private fun setWarningMessage(message: BottomSheetErrors?) {
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(warningMessage = message)
     }
 }
 

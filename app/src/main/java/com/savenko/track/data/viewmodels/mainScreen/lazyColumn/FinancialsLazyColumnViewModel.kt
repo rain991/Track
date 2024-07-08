@@ -25,7 +25,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 
-/* This VM contains needed components for UI of expenses lazycolumn on mainList, also data for TrackScreenInfoComposable */
+/* This VM contains needed components for UI of expenses lazyColumn on mainList, also data for TrackScreenInfoComposable */
 class FinancialsLazyColumnViewModel(
     private val getUserExpensesUseCase: GetUserExpensesUseCase,
     private val getUserIncomesUseCase: GetUserIncomesUseCase,

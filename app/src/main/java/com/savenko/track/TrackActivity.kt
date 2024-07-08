@@ -21,7 +21,7 @@ import com.savenko.track.data.other.constants.PREFERABLE_THEME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.other.workers.CurrenciesRatesWorker
 import com.savenko.track.presentation.navigation.Navigation
-import com.savenko.track.presentation.states.screenRelated.SplashScreen
+import com.savenko.track.presentation.screens.additional.other.SplashScreen
 import com.savenko.track.presentation.themes.ThemeManager
 import com.savenko.track.presentation.themes.getThemeByName
 import kotlinx.coroutines.CoroutineScope

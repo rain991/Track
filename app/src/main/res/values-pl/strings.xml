@@ -163,4 +163,10 @@
     <string name="each_month_limit_new_idea_dialog">Limit każdego miesiąca</string>
     <string name="confirm">Potwierdź</string>
     <string name="cancel">Odrzuć</string>
+    <string name="incorrect_input_value_BS_error">Wprowadź wartość</string>
+    <string name="select_financial_category_BS_error">Wybierz kategorię finansową</string>
+    <string name="incorrect_goal_value_newIdeaDialog_error">Wprowadź cel</string>
+    <string name="incorrect_saving_label_error">Wprowadź cel oszczędności</string>
+    <string name="select_correct_date_error">Wybierz poprawną datę</string>
+    <string name="you_have_already_selected_categories_error">Wybrałeś już 3 kategorie</string>
 </resources>

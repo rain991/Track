@@ -12,8 +12,8 @@ import com.savenko.track.data.other.converters.dates.getStartOfWeekDate
 import com.savenko.track.data.other.converters.dates.getStartOfYearDate
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
-import com.savenko.track.presentation.states.componentRelated.StatisticChartTimePeriod
-import com.savenko.track.presentation.states.componentRelated.provideDateRange
+import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
+import com.savenko.track.presentation.other.composableTypes.provideDateRange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first

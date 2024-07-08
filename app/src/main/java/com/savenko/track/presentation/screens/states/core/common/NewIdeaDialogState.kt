@@ -1,0 +1,19 @@
+package com.savenko.track.presentation.screens.states.core.common
+
+import com.savenko.track.domain.models.expenses.ExpenseCategory
+import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
+import com.savenko.track.presentation.other.composableTypes.options.IdeaSelectorTypes
+import java.util.Date
+
+data class NewIdeaDialogState(
+    val goal: Float,
+    val typeSelected: IdeaSelectorTypes,
+    val includedInBudget: Boolean?,
+    val eachMonth: Boolean?,
+    val endDate: Date?,
+    val label: String?,
+    val isDateDialogVisible: Boolean,
+    val relatedToAllCategories: Boolean?,
+    val listOfSelectedCategories: List<ExpenseCategory> = listOf(),
+    val warningMessage: NewIdeaDialogErrors? = null
+)
