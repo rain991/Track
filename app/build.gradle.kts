@@ -15,8 +15,8 @@ android {
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 34
-        versionCode = 13
-        versionName = "1.2.3"
+        versionCode = 14
+        versionName = "1.2.4"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -100,6 +100,7 @@ dependencies {
 
     //junit
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
+    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
     androidTestImplementation("androidx.test.ext:junit:1.2.1")
