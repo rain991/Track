@@ -43,7 +43,7 @@ fun BottomSheetAmountInput(
     val focusManager = LocalFocusManager.current
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
-    val currentInputValue = bottomSheetViewState.value.inputExpense
+    val currentInputValue = bottomSheetViewState.value.inputValue
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier.fillMaxWidth(),

@@ -8,7 +8,7 @@ data class BottomSheetViewState(
     val isAddingExpense : Boolean = true,
     val isBottomSheetExpanded: Boolean,
     val note: String,
-    val inputExpense: Float?,
+    val inputValue: Float?,
     val categoryPicked: CategoryEntity?,
     val timePickerState: Boolean,
     val datePicked: LocalDate = LocalDate.now(),

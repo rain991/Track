@@ -82,7 +82,7 @@ class BottomSheetViewModel(
             isAddingExpense = true,
             isBottomSheetExpanded = false,
             note = DEFAULT_NOTE,
-            inputExpense = DEFAULT_EXPENSE,
+            inputValue = DEFAULT_INPUT_VALUE,
             categoryPicked = DEFAULT_CATEGORY,
             timePickerState = false,
             datePicked = LocalDate.now(),
@@ -108,8 +108,8 @@ class BottomSheetViewModel(
     }
 
     companion object {
-        val DEFAULT_NOTE = ""
-        val DEFAULT_EXPENSE = 0.0f
+        const val DEFAULT_NOTE = ""
+        const val DEFAULT_INPUT_VALUE = 0.0f
         val DEFAULT_CATEGORY = null
         val DEFAULT_DATE = LocalDate.now()
     }
@@ -119,7 +119,7 @@ class BottomSheetViewModel(
         val nonCategorisedIncomes = dataStoreManager.nonCategoryIncomes.first()
         val groupingExpenseCategoryId = dataStoreManager.groupingExpenseCategoryId.first()
         val groupingIncomeCategoryId = dataStoreManager.groupingIncomeCategoryId.first()
-        if (bottomSheetViewState.value.inputExpense == null || bottomSheetViewState.value.inputExpense == 0.0f) {
+        if (bottomSheetViewState.value.inputValue == null || bottomSheetViewState.value.inputValue == 0.0f) {
             setWarningMessage(BottomSheetErrors.IncorrectInputValue)
             return
         }
@@ -152,7 +152,7 @@ class BottomSheetViewModel(
                     },
                     note = bottomSheetViewState.value.note,
                     date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
-                    value = bottomSheetViewState.value.inputExpense!!,
+                    value = bottomSheetViewState.value.inputValue!!,
                     currencyTicker = selectedCurrency.first()!!.ticker
                 )
                 addExpenseItemUseCase(currentExpenseItem)
@@ -172,13 +172,13 @@ class BottomSheetViewModel(
                 },
                 note = bottomSheetViewState.value.note,
                 date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
-                value = bottomSheetViewState.value.inputExpense!!,
+                value = bottomSheetViewState.value.inputValue!!,
                 currencyTicker = selectedCurrency.first()!!.ticker
             )
             addIncomeItemUseCase(currentIncomeItem)
         }
         setCategoryPicked(DEFAULT_CATEGORY)
-        setInputValue(DEFAULT_EXPENSE)
+        setInputValue(DEFAULT_INPUT_VALUE)
         setDatePicked(DEFAULT_DATE)
         setNote(DEFAULT_NOTE)
         setWarningMessage(null)
@@ -190,7 +190,7 @@ class BottomSheetViewModel(
     }
 
     fun setInputValue(inputValue: Float) {
-        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(inputExpense = inputValue)
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(inputValue = inputValue)
         if (_bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue && inputValue > 0) {
             setWarningMessage(null)
         }
