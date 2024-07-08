@@ -12,7 +12,9 @@ const val SHOW_PAGE_NAME_DEFAULT: Boolean = true
 const val USE_SYSTEM_THEME_DEFAULT: Boolean = true
 val PREFERABLE_THEME_DEFAULT: Themes = Themes.BlueTheme
 const val NON_CATEGORY_FINANCIALS_DEFAULT = false
-const val GROUPING_CATEGORY_ID_DEFAULT = Int.MIN_VALUE
+const val GROUPING_CATEGORY_ID_DEFAULT = Int.MIN_VALUE // This value used to compare if user selected any category
+const val EXPENSE_CATEGORY_GROUPING_ID_DEFAULT = 13
+const val INCOME_CATEGORY_GROUPING_ID_DEFAULT = 9
 
 // Entities defaults
 val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)

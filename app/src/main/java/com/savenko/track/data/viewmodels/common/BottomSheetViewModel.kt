@@ -7,7 +7,9 @@ import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRep
 import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
 import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
+import com.savenko.track.data.other.constants.EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
 import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
+import com.savenko.track.data.other.constants.INCOME_CATEGORY_GROUPING_ID_DEFAULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
@@ -121,23 +123,33 @@ class BottomSheetViewModel(
             setWarningMessage(BottomSheetErrors.IncorrectInputValue)
             return
         }
-        if (bottomSheetViewState.value.categoryPicked == null && ((bottomSheetViewState.value.isAddingExpense && !nonCategorisedExpenses) || (!bottomSheetViewState.value.isAddingExpense && !nonCategorisedIncomes))) {
-            setWarningMessage(BottomSheetErrors.CategoryNotSelected)
-            return
-        }
         if (nonCategorisedExpenses && bottomSheetViewState.value.isAddingExpense && (bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId == GROUPING_CATEGORY_ID_DEFAULT)) {
             setWarningMessage(BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected)
             return
         }
-
         if (nonCategorisedIncomes && !bottomSheetViewState.value.isAddingExpense && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId == GROUPING_CATEGORY_ID_DEFAULT) {
             setWarningMessage(BottomSheetErrors.IncomeGroupingCategoryIsNotSelected)
             return
         }
+        if (bottomSheetViewState.value.categoryPicked == null && ((bottomSheetViewState.value.isAddingExpense && !nonCategorisedExpenses) || (!bottomSheetViewState.value.isAddingExpense && !nonCategorisedIncomes))) {
+            setWarningMessage(BottomSheetErrors.CategoryNotSelected)
+            return
+        }
+
         if (bottomSheetViewState.value.isAddingExpense) {
             withContext(Dispatchers.IO) {
+                val expenseCategoryPickedId =
+                    if (nonCategorisedExpenses && bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
+                        groupingExpenseCategoryId
+                    } else {
+                        EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
+                    }
                 val currentExpenseItem = ExpenseItem(
-                    categoryId = bottomSheetViewState.value.categoryPicked!!.categoryId,
+                    categoryId = if (bottomSheetViewState.value.categoryPicked != null) {
+                        bottomSheetViewState.value.categoryPicked!!.categoryId
+                    } else {
+                        expenseCategoryPickedId
+                    },
                     note = bottomSheetViewState.value.note,
                     date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
                     value = bottomSheetViewState.value.inputExpense!!,
@@ -146,8 +158,18 @@ class BottomSheetViewModel(
                 addExpenseItemUseCase(currentExpenseItem)
             }
         } else {
+            val incomeCategoryPickedId =
+                if (nonCategorisedIncomes && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
+                    groupingIncomeCategoryId
+                } else {
+                    INCOME_CATEGORY_GROUPING_ID_DEFAULT
+                }
             val currentIncomeItem = IncomeItem(
-                categoryId = bottomSheetViewState.value.categoryPicked!!.categoryId,
+                categoryId = if (bottomSheetViewState.value.categoryPicked != null) {
+                    bottomSheetViewState.value.categoryPicked!!.categoryId
+                } else {
+                    incomeCategoryPickedId
+                },
                 note = bottomSheetViewState.value.note,
                 date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
                 value = bottomSheetViewState.value.inputExpense!!,
