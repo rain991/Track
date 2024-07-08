@@ -211,5 +211,7 @@
     <string name="you_have_already_selected_categories_error">You have already selected 3 categories</string>
     <string name="additional">Additional</string>
     <string name="select_category_new_idea_dialog_error">Select category or make expense limit related to all categories</string>
+    <string name="non_categorised_expenses_error_BS">Select grouping category for non-categorised expenses</string>
+    <string name="non_categorised_incomes_error_BS">Select grouping category for non-categorised incomes</string>
 
 </resources>

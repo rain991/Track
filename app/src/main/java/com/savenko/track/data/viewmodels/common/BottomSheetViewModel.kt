@@ -7,7 +7,9 @@ import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRep
 import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
 import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
+import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
+import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.expenses.ExpenseCategory
@@ -39,7 +41,8 @@ class BottomSheetViewModel(
     private val addIncomeItemUseCase: AddIncomeItemUseCase,
     private val categoryListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
+    private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
     private val _expenseCategoryList = mutableStateListOf<ExpenseCategory>()
     val expenseCategoryList: List<ExpenseCategory> = _expenseCategoryList
@@ -110,12 +113,25 @@ class BottomSheetViewModel(
     }
 
     suspend fun addFinancialItem() {
-        if (bottomSheetViewState.value.inputExpense == null || bottomSheetViewState.value.inputExpense!! == 0.0f) {
+        val nonCategorisedExpenses = dataStoreManager.nonCategoryExpenses.first()
+        val nonCategorisedIncomes = dataStoreManager.nonCategoryIncomes.first()
+        val groupingExpenseCategoryId = dataStoreManager.groupingExpenseCategoryId.first()
+        val groupingIncomeCategoryId = dataStoreManager.groupingIncomeCategoryId.first()
+        if (bottomSheetViewState.value.inputExpense == null || bottomSheetViewState.value.inputExpense == 0.0f) {
             setWarningMessage(BottomSheetErrors.IncorrectInputValue)
             return
         }
-        if (bottomSheetViewState.value.categoryPicked == null) {
+        if (bottomSheetViewState.value.categoryPicked == null && ((bottomSheetViewState.value.isAddingExpense && !nonCategorisedExpenses) || (!bottomSheetViewState.value.isAddingExpense && !nonCategorisedIncomes))) {
             setWarningMessage(BottomSheetErrors.CategoryNotSelected)
+            return
+        }
+        if (nonCategorisedExpenses && bottomSheetViewState.value.isAddingExpense && (bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId == GROUPING_CATEGORY_ID_DEFAULT)) {
+            setWarningMessage(BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected)
+            return
+        }
+
+        if (nonCategorisedIncomes && !bottomSheetViewState.value.isAddingExpense && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId == GROUPING_CATEGORY_ID_DEFAULT) {
+            setWarningMessage(BottomSheetErrors.IncomeGroupingCategoryIsNotSelected)
             return
         }
         if (bottomSheetViewState.value.isAddingExpense) {
@@ -168,7 +184,7 @@ class BottomSheetViewModel(
         } else {
             _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = null)
         }
-        if (category != null && _bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected){
+        if (category != null && _bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected) {
             setWarningMessage(null)
         }
     }

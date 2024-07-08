@@ -84,7 +84,7 @@ fun SettingsScreenAdditionalPreferences() {
                     )
                 }
             }
-            if (state.value.nonCategorisedExpenses && isExpenseCategorySelectionVisible || state.value.groupingExpensesCategoryId == GROUPING_CATEGORY_ID_DEFAULT) {
+            if (state.value.nonCategorisedExpenses && (isExpenseCategorySelectionVisible || state.value.groupingExpensesCategoryId == GROUPING_CATEGORY_ID_DEFAULT)) {
                 AdditionalPreferencesCategoriesGrid(
                     listOfCategories = state.value.expenseCategories,
                     selectedCategory = state.value.expenseCategories.find { it.categoryId == state.value.groupingExpensesCategoryId }) {

@@ -160,17 +160,34 @@ fun BottomSheet() {
                         Spacer(Modifier.height(16.dp))
                         DatePicker()
                         Spacer(Modifier.height(16.dp))
-                        if (bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected) {
+                        if (bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected || bottomSheetViewState.value.warningMessage is BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected || bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncomeGroupingCategoryIsNotSelected) {
                             Box(modifier = Modifier.height(24.dp)) {
+                                val text = when (bottomSheetViewState.value.warningMessage) {
+                                    is BottomSheetErrors.CategoryNotSelected -> {
+                                        BottomSheetErrors.CategoryNotSelected.error
+                                    }
+
+                                    is BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected -> {
+                                        BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected.error
+                                    }
+
+                                    is BottomSheetErrors.IncomeGroupingCategoryIsNotSelected -> {
+                                        BottomSheetErrors.IncomeGroupingCategoryIsNotSelected.error
+                                    }
+
+                                    else -> {
+                                        R.string.error
+                                    }
+                                }
                                 Text(
-                                    text = stringResource(id = BottomSheetErrors.CategoryNotSelected.error),
+                                    text = stringResource(id = text),
                                     style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error),
                                     modifier = Modifier.padding(horizontal = 8.dp)
                                 )
                             }
                         }
                         Box(modifier = Modifier.weight(1f)) {
-                            BottomSheetCategoriesGrid(categoryList = categoryList,)
+                            BottomSheetCategoriesGrid(categoryList = categoryList)
                         }
                         Spacer(Modifier.height(8.dp))
                         AcceptButton {

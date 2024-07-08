@@ -170,7 +170,7 @@ val viewModelModule = module {
     viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
 
     // Bottom sheets
-    viewModel { BottomSheetViewModel(get(), get(), get(), get(), get()) }
+    viewModel { BottomSheetViewModel(get(), get(), get(), get(), get(),get()) }
 
     // Feed related
     viewModel { TrackScreenFeedViewModel(get(), get(), get()) }
