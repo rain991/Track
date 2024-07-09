@@ -169,4 +169,9 @@
     <string name="incorrect_saving_label_error">Введите цель сбережений</string>
     <string name="select_correct_date_error">Введите правильную дату</string>
     <string name="you_have_already_selected_categories_error">Максимум 3 категории</string>
+    <string name="additional">Дополнительное</string>
+    <string name="select_category_new_idea_dialog_error">Выберите категорию или установите лимит расходов, относящийся ко всем категориям</string>
+    <string name="non_categorised_expenses_error_BS">Выберите категорию группировки для некатегоризированных расходов</string>
+    <string name="non_categorised_incomes_error_BS">Выберите категорию группировки для некатегоризированных доходов</string>
+    <string name="login_screen">Экран базовых настроек</string>
 </resources>

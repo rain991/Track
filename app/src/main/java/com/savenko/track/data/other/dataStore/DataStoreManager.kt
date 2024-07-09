@@ -39,7 +39,6 @@ class DataStoreManager(private val context: Context) {
         val NON_CATEGORISED_INCOMES = booleanPreferencesKey("non_category_incomes")
         val GROUPING_INCOMES_CATEGORY_ID = intPreferencesKey("grouping_incomes_category_id")
     }
-
     val loginCountFlow: Flow<Int> =
         context.dataStore.data.map { preferences -> preferences[LOGIN_COUNT] ?: LOGIN_COUNT_DEFAULT }
 
