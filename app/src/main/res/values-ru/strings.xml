@@ -173,4 +173,5 @@
     <string name="select_category_new_idea_dialog_error">Выберите категорию или установите лимит расходов, относящийся ко всем категориям</string>
     <string name="non_categorised_expenses_error_BS">Выберите категорию группировки для некатегоризированных расходов</string>
     <string name="non_categorised_incomes_error_BS">Выберите категорию группировки для некатегоризированных доходов</string>
+    <string name="login_screen">Экран базовых настроек</string>
 </resources>

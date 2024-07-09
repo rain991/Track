@@ -231,7 +231,7 @@ private fun LoginHeader() {
                 .fillMaxWidth()
                 .fillMaxHeight(fraction = 0.45f),
             painter = painterResource(id = R.drawable.header),
-            contentDescription = null,
+            contentDescription = stringResource(R.string.login_screen),
             contentScale = ContentScale.FillBounds,
             colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary)
         )

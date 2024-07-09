@@ -173,4 +173,5 @@
     <string name="select_category_new_idea_dialog_error">Wybierz kategorię lub ustaw limit wydatków związany ze wszystkimi kategoriami</string>
     <string name="non_categorised_expenses_error_BS">Wybierz kategorię grupowania dla wydatków niekategoryzowanych</string>
     <string name="non_categorised_incomes_error_BS">Wybierz kategorię grupowania dla dochodów niekategoryzowanych</string>
+    <string name="login_screen">Ekran ustawień podstawowych</string>
 </resources>

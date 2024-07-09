@@ -213,5 +213,6 @@
     <string name="select_category_new_idea_dialog_error">Select category or make expense limit related to all categories</string>
     <string name="non_categorised_expenses_error_BS">Select grouping category for non-categorised expenses</string>
     <string name="non_categorised_incomes_error_BS">Select grouping category for non-categorised incomes</string>
+    <string name="login_screen">Login screen</string>
 
 </resources>
