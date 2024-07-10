@@ -83,7 +83,7 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
                     IconButton(onClick = { isInEditingMode = true }) {
                         Icon(
                             imageVector = Icons.Default.Create,
-                            contentDescription = "edit personal info"
+                            contentDescription = stringResource(R.string.edit_personal_info)
                         )
                     }
                 }
