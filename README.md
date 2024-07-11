@@ -41,12 +41,12 @@
 ## Why Choose Track?
 
 - **Comprehensive Financial Management:** From daily expense tracking to long-term goal setting, Track covers most aspects of financial management, providing a easy-to-use solution for your financial needs.
-- **Personalized Experience:** Track’s customizable features ensure that the app adapts to your preferences.
+- **Personalized Experience:** Track customizable features ensure that the app adapts to your preferences.
 - **Security and Privacy:** Track's security measures ensure that your financial data is protected, none financial or personal data is collected. 
 
 ## Get Started with Track
 
-Track is currently on closed alpha test. Expected to be available on Play Market store in the first half of July
+Track is currently on closed alpha test. Expected to be available on Play Market store by the end of July
 
 ## Used Technologies
 - Kotlin
