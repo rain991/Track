@@ -15,7 +15,7 @@ const val NON_CATEGORY_FINANCIALS_DEFAULT = false
 const val GROUPING_CATEGORY_ID_DEFAULT = Int.MIN_VALUE // This value used to compare if user selected any category
 const val EXPENSE_CATEGORY_GROUPING_ID_DEFAULT = 13
 const val INCOME_CATEGORY_GROUPING_ID_DEFAULT = 9
-const val ACCEPTABLE_EMPTY_CURRENCIES_RATES = 0.5f // means if more then 0.5f currencies with empty rate, activity will call worker to receive new rates
+
 
 // Entities defaults
 val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)
