@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
@@ -30,7 +29,8 @@ import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.viewmodels.settingsScreen.currencies.CurrenciesSettingsViewModel
-import com.savenko.track.presentation.components.dropDownMenus.CurrencyDropDownMenu
+import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences.currenciesSettings.CurrenciesSettingsCurrencyPicker
+import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences.currenciesSettings.CurrenciesSettingsRow
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -38,6 +38,7 @@ import org.koin.androidx.compose.koinViewModel
     Also contains CurrenciesMinusTextButton and Plus buttons to remove and add new currencies relatively    */
 @Composable
 fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
+    val coroutineScope = rememberCoroutineScope()
     val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
     val preferableCurrency =
         currenciesSettingsViewModel.preferableCurrencyStateFlow.collectAsState(initial = CURRENCY_DEFAULT)
@@ -49,7 +50,8 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
         currenciesSettingsViewModel.thirdAdditionalCurrencyStateFlow.collectAsState(initial = null)
     val fourthAdditionalCurrency =
         currenciesSettingsViewModel.fourthAdditionalCurrencyStateFlow.collectAsState(initial = null)
-    val coroutineScope = rememberCoroutineScope()
+    val currenciesPreferenceList =
+        listOf(firstAdditionalCurrency, secondAdditionalCurrency, thirdAdditionalCurrency, fourthAdditionalCurrency)
     Column(
         modifier = Modifier
             .padding(paddingValues)
@@ -75,119 +77,47 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
                 modifier = Modifier.padding(start = 4.dp)
             )
-            Box(Modifier.width(140.dp)) {
-                CurrencyDropDownMenu(
-                    currencyList = currenciesSettingsViewModel.currencyList,
-                    selectedOption = preferableCurrency.value,
-                    onSelect = {
+            CurrenciesSettingsCurrencyPicker(
+                currencyList = currenciesSettingsViewModel.currencyList,
+                selectedOption = preferableCurrency.value
+            ) {
+                coroutineScope.launch {
+                    currenciesSettingsViewModel.setPreferableCurrency(it)
+                }
+            }
+        }
+        for (currencyPreference in currenciesPreferenceList) {
+            CurrenciesSettingsRow(
+                currency = currencyPreference.value,
+                currenciesList = currenciesSettingsViewModel.currencyList
+            ) { newCurrency ->
+                when (currencyPreference) {
+                    firstAdditionalCurrency -> {
                         coroutineScope.launch {
-                            currenciesSettingsViewModel.setPreferableCurrency(it)
+                            currenciesSettingsViewModel.setFirstAdditionalCurrency(newCurrency)
                         }
-                    })
-            }
-        }
-        Spacer(modifier = Modifier.height(8.dp))
-        AnimatedVisibility(visible = firstAdditionalCurrency.value != null) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(R.string.extra_currency_settings_screen),
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-                Box(Modifier.width(140.dp)) {
-                    CurrencyDropDownMenu(
-                        currencyList = currenciesSettingsViewModel.currencyList,
-                        selectedOption = firstAdditionalCurrency.value ?: CURRENCY_DEFAULT,
-                        onSelect = {
-                            coroutineScope.launch {
-                                currenciesSettingsViewModel.setFirstAdditionalCurrency(it)
-                            }
-                        })
+                    }
+
+                    secondAdditionalCurrency -> {
+                        coroutineScope.launch {
+                            currenciesSettingsViewModel.setSecondAdditionalCurrency(newCurrency)
+                        }
+                    }
+
+                    thirdAdditionalCurrency -> {
+                        coroutineScope.launch {
+                            currenciesSettingsViewModel.setThirdAdditionalCurrency(newCurrency)
+                        }
+                    }
+                    fourthAdditionalCurrency -> {
+                        coroutineScope.launch {
+                            currenciesSettingsViewModel.setFourthAdditionalCurrency(newCurrency)
+                        }
+                    }
                 }
             }
         }
-        if (firstAdditionalCurrency.value != null) {
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        AnimatedVisibility(visible = secondAdditionalCurrency.value != null) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(R.string.extra_currency_settings_screen),
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-                Box(Modifier.width(140.dp)) {
-                    CurrencyDropDownMenu(
-                        currencyList = currenciesSettingsViewModel.currencyList,
-                        selectedOption = secondAdditionalCurrency.value ?: CURRENCY_DEFAULT,
-                        onSelect = {
-                            coroutineScope.launch {
-                                currenciesSettingsViewModel.setSecondAdditionalCurrency(it)
-                            }
-                        })
-                }
-            }
-        }
-        if (secondAdditionalCurrency.value != null) {
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        AnimatedVisibility(visible = thirdAdditionalCurrency.value != null) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(R.string.extra_currency_settings_screen),
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-                Box(Modifier.width(140.dp)) {
-                    CurrencyDropDownMenu(
-                        currencyList = currenciesSettingsViewModel.currencyList,
-                        selectedOption = thirdAdditionalCurrency.value ?: CURRENCY_DEFAULT,
-                        onSelect = {
-                            coroutineScope.launch {
-                                currenciesSettingsViewModel.setThirdAdditionalCurrency(it)
-                            }
-                        })
-                }
-            }
-        }
-        if (thirdAdditionalCurrency.value != null) {
-            Spacer(modifier = Modifier.height(8.dp))
-        }
-        AnimatedVisibility(visible = fourthAdditionalCurrency.value != null) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                Text(
-                    text = stringResource(R.string.extra_currency_settings_screen),
-                    style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
-                    modifier = Modifier.padding(start = 4.dp)
-                )
-                Box(Modifier.width(140.dp)) {
-                    CurrencyDropDownMenu(
-                        currencyList = currenciesSettingsViewModel.currencyList,
-                        selectedOption = fourthAdditionalCurrency.value ?: CURRENCY_DEFAULT,
-                        onSelect = {
-                            coroutineScope.launch {
-                                currenciesSettingsViewModel.setFourthAdditionalCurrency(it)
-                            }
-                        })
-                }
-            }
-        }
+
         if (fourthAdditionalCurrency.value != null) {
             Spacer(modifier = Modifier.height(8.dp))
         }
@@ -282,3 +212,4 @@ private fun CurrenciesPlusTextButton(onClick: () -> Unit) {
         )
     }
 }
+

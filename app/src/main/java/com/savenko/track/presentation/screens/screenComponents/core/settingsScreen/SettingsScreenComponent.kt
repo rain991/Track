@@ -22,7 +22,7 @@ import androidx.navigation.NavHostController
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences.SettingsScreenAccountPreferences
+import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences.common.SettingsScreenAccountPreferences
 import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.additionalPreferences.SettingsScreenAdditionalPreferences
 import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.themePreferences.SettingsScreenThemePreferences
 

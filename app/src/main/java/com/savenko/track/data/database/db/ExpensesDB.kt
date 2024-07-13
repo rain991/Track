@@ -72,7 +72,7 @@ abstract class ExpensesDB : RoomDatabase() {
                 database.execSQL("DELETE FROM currency")
                 val insertStatement = """
                     INSERT INTO currency (ticker, name, type, rate) VALUES
-                    ('AED', 'United Arab Emirates Dirham', 'default', NULL),
+                    ('AED', 'UAE Dirham', 'default', NULL),
                     ('ARS', 'Argentine Peso', 'default', NULL),
                     ('AUD', 'Australian Dollar', 'default', NULL),
                     ('BRL', 'Brazilian Real', 'default', NULL),

@@ -1,4 +1,4 @@
-package com.savenko.track.presentation.screens.screenComponents.core.settingsScreen
+package com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences.common
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
