@@ -28,6 +28,7 @@
     <string name="yesterday">Вчера</string>
     <string name="selected_date_add_exp">Другая дата</string>
     <string name="your_note_adding_exp">Заметка</string>
+    <string name="checked_category_add_exp_CD">Выбраная категория</string>
     <string name="note_exp_list">Заметка: %1$s</string>
     <string name="warning_bottom_sheet_exp">Выбери категорию</string>
     <string name="empty_exp_lazyColumn_title">Вы еще не добавили расходов</string>

@@ -2,8 +2,6 @@
 <resources>
 
     <!-- App information -->
-    <string name="app_name" translatable="false">Track</string>
-    <string name="app_logo" translatable="false">Anwendungslogo</string>
     <string name="logo_app_description">Bequemes und einfach zu bedienendes Ausgaben-Tracker</string>
 
     <!-- General -->
@@ -42,7 +40,7 @@
 
     <!-- Notes and warnings -->
     <string name="your_note_adding_exp">Notiz</string>
-    <string name="checked_category_add_exp_CD" translatable="false">Geprüfte Kategorie</string>
+    <string name="checked_category_add_exp_CD">Geprüfte Kategorie</string>
     <string name="note_exp_list">Notiz: %1$s</string>
     <string name="warning_bottom_sheet_exp">Kategorie auswählen oder richtigen Wert eingeben</string>
 

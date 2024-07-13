@@ -28,6 +28,7 @@
     <string name="yesterday">Wczoraj</string>
     <string name="selected_date_add_exp">Inna data</string>
     <string name="your_note_adding_exp">Notatka</string>
+    <string name="checked_category_add_exp_CD">Wybrana kategoria</string>
     <string name="note_exp_list">Notatka %1$s</string>
     <string name="warning_bottom_sheet_exp">Wybierz kategorię</string>
     <string name="empty_exp_lazyColumn_title">Nie dodałeś jeszcze wydatków</string>

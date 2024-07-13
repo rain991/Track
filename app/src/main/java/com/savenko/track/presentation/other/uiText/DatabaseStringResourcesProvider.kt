@@ -5,7 +5,7 @@ import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 
 class DatabaseStringResourcesProvider {
-    fun provideStringResource(category: CategoryEntity): Int {
+    fun provideDefaultCategoriesStringResource(category: CategoryEntity): Int {
         return if (category is ExpenseCategory) {
             when (category.categoryId) {
                 1 -> {
