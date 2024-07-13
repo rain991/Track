@@ -81,8 +81,7 @@ fun MainScreenLazyColumn(containsInfoCards: Boolean) {
     var isScrollingUp by remember { mutableStateOf(false) }
     val isScrolledBelowState = financialsLazyColumnViewModel.isScrolledBelow.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
-    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
-        .collectAsState(initial = CURRENCY_DEFAULT)
+    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Box {
         Box(
             modifier = Modifier
