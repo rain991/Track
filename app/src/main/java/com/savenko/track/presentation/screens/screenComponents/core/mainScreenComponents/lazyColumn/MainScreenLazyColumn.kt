@@ -53,11 +53,11 @@ import com.savenko.track.data.other.converters.dates.areDatesSame
 import com.savenko.track.data.other.converters.dates.areYearsSame
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
-import com.savenko.track.presentation.other.getMonthResID
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
-import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.mainScreenInfoCards.TrackScreenInfoCards
+import com.savenko.track.presentation.other.getMonthResID
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
+import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.mainScreenInfoCards.TrackScreenInfoCards
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
 import kotlinx.coroutines.withContext
@@ -83,7 +83,6 @@ fun MainScreenLazyColumn(containsInfoCards: Boolean) {
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
         .collectAsState(initial = CURRENCY_DEFAULT)
-
     Box {
         Box(
             modifier = Modifier
@@ -120,7 +119,10 @@ fun MainScreenLazyColumn(containsInfoCards: Boolean) {
         }
         Column {
             if (containsInfoCards) {
-                TrackScreenInfoCards()
+                TrackScreenInfoCards(
+                    financialsLazyColumnViewModel.isExpenseLazyColumn.value,
+                    onExpenseCardClick = { if (!financialsLazyColumnViewModel.isExpenseLazyColumn.value) financialsLazyColumnViewModel.toggleIsExpenseLazyColumn() },
+                    onIncomeCardClick = { if (financialsLazyColumnViewModel.isExpenseLazyColumn.value) financialsLazyColumnViewModel.toggleIsExpenseLazyColumn() })
             }
             Box(
                 modifier = Modifier

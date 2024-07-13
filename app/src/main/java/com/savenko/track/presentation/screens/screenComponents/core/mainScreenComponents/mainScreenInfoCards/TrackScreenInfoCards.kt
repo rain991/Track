@@ -1,6 +1,9 @@
 package com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.mainScreenInfoCards
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +19,11 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -29,14 +35,18 @@ import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
-import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feedCards.TrackScreenInfoCardsViewModel
+import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import org.koin.androidx.compose.koinViewModel
 
 /*  Contains 2 additional cards above lazy column in main screen. Those card show overall stats about expenses and income relatively.   */
 @Composable
-fun TrackScreenInfoCards() {
+fun TrackScreenInfoCards(
+    isExpenseCardSelected: Boolean = true,
+    onExpenseCardClick: () -> Unit,
+    onIncomeCardClick: () -> Unit
+) {
     val viewModel = koinViewModel<TrackScreenInfoCardsViewModel>()
     val screenState = viewModel.cardsState.collectAsState()
     val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
@@ -45,6 +55,31 @@ fun TrackScreenInfoCards() {
         viewModel.initializeValues()
     }
     AnimatedVisibility(visible = !isScrolledBelow.value) {
+        val gradientColor1 = MaterialTheme.colorScheme.primary
+        val gradientColor2 = MaterialTheme.colorScheme.tertiary
+        val borderBrush = remember {
+            Brush.linearGradient(
+                listOf(
+                    gradientColor1,
+                    gradientColor2
+                )
+            )
+        }
+        val expenseCardBorderWidth: Float by animateFloatAsState(
+            targetValue = if (isExpenseCardSelected) {
+                2.0f
+            } else {
+                0.0f
+            }, label = "expenseCardBorderWidth"
+        )
+        val incomeCardBorderWidth: Float by animateFloatAsState(
+            targetValue = if (!isExpenseCardSelected) {
+                2.0f
+            } else {
+                0.0f
+            }, label = "incomeCardBorderWidth"
+        )
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -54,12 +89,19 @@ fun TrackScreenInfoCards() {
                 modifier = Modifier
                     .height(120.dp)
                     .weight(0.5f)
-                    .padding(start = 8.dp, end = 8.dp, top = 8.dp), shape = RoundedCornerShape(8.dp)
+                    .padding(start = 8.dp, end = 8.dp, top = 8.dp)
+                    .border(width = expenseCardBorderWidth.dp, borderBrush, RoundedCornerShape(8.dp))
+                    .clickable {
+                        onExpenseCardClick()
+                    },
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                         Text(
@@ -128,12 +170,19 @@ fun TrackScreenInfoCards() {
                 modifier = Modifier
                     .height(120.dp)
                     .weight(0.5f)
-                    .padding(start = 8.dp, end = 8.dp, top = 8.dp), shape = RoundedCornerShape(8.dp)
+                    .padding(start = 8.dp, end = 8.dp, top = 8.dp)
+                    .border(width = incomeCardBorderWidth.dp, borderBrush, RoundedCornerShape(8.dp))
+                    .clickable {
+                        onIncomeCardClick()
+                    },
+                shape = RoundedCornerShape(8.dp)
             ) {
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(4.dp), verticalArrangement = Arrangement.spacedBy(8.dp), horizontalAlignment = Alignment.CenterHorizontally
+                        .padding(4.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                         Text(

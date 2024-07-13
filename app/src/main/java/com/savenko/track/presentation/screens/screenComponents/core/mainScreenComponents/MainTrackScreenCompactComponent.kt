@@ -12,11 +12,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.mainScreenInfoCards.TrackScreenInfoCards
-import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.lazyColumn.MainScreenLazyColumn
 import com.savenko.track.presentation.components.ideasCards.TrackScreenFeed
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
+import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.lazyColumn.MainScreenLazyColumn
 
 @Composable
 fun MainTrackScreenCompactComponent(paddingValues: PaddingValues, isPageNameVisible: Boolean) {
@@ -49,11 +48,11 @@ fun MainTrackScreenExpandedComponent(paddingValues: PaddingValues) {
         ) {
             TrackScreenFeed()
             Spacer(modifier = Modifier.height(8.dp))
-            TrackScreenInfoCards()
+            //TrackScreenInfoCards()
         }
 
         Column(modifier = Modifier.weight(1f)) {
-            MainScreenLazyColumn(containsInfoCards = false)
+            MainScreenLazyColumn(containsInfoCards = true)
         }
     }
 }
