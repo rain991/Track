@@ -28,6 +28,7 @@
     <string name="yesterday">Wczoraj</string>
     <string name="selected_date_add_exp">Inna data</string>
     <string name="your_note_adding_exp">Notatka</string>
+    <string name="checked_category_add_exp_CD">Wybrana kategoria</string>
     <string name="note_exp_list">Notatka %1$s</string>
     <string name="warning_bottom_sheet_exp">Wybierz kategorię</string>
     <string name="empty_exp_lazyColumn_title">Nie dodałeś jeszcze wydatków</string>
@@ -174,4 +175,5 @@
     <string name="non_categorised_expenses_error_BS">Wybierz kategorię grupowania dla wydatków niekategoryzowanych</string>
     <string name="non_categorised_incomes_error_BS">Wybierz kategorię grupowania dla dochodów niekategoryzowanych</string>
     <string name="login_screen">Ekran ustawień podstawowych</string>
+    <string name="edit_personal_info">Zmień dane personalne</string>
 </resources>

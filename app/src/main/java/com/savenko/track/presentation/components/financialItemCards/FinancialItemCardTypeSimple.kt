@@ -156,7 +156,7 @@ fun FinancialItemCardTypeSimple(
                                         ) {
                                             val categoryName =
                                                 stringResource(
-                                                    id = databaseStringResourcesProvider.provideStringResource(
+                                                    id = databaseStringResourcesProvider.provideDefaultCategoriesStringResource(
                                                         categoryEntity
                                                     )
                                                 )
@@ -217,7 +217,7 @@ fun FinancialItemCardTypeSimple(
                                     ) {
                                         val categoryName = if (categoryEntity.isDefault()) {
                                             stringResource(
-                                                id = databaseStringResourcesProvider.provideStringResource(
+                                                id = databaseStringResourcesProvider.provideDefaultCategoriesStringResource(
                                                     categoryEntity
                                                 )
                                             )
@@ -329,7 +329,7 @@ private fun CategoryCard(category: CategoryEntity, containerColor: Color) {
             Text(
                 text = if (category.isDefault()) {
                     stringResource(
-                        id = databaseStringResourcesProvider.provideStringResource(
+                        id = databaseStringResourcesProvider.provideDefaultCategoriesStringResource(
                             category
                         )
                     )

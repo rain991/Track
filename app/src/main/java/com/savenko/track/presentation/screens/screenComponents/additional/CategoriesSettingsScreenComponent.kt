@@ -194,7 +194,7 @@ fun CategorySettingsChip(
             Text(
                 text = if (category.isDefault()) {
                     stringResource(
-                        id = databaseStringResourcesProvider.provideStringResource(
+                        id = databaseStringResourcesProvider.provideDefaultCategoriesStringResource(
                             category
                         )
                     )

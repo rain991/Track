@@ -28,6 +28,7 @@
     <string name="yesterday">Вчора</string>
     <string name="selected_date_add_exp">Інша дата</string>
     <string name="your_note_adding_exp">Нотатка</string>
+    <string name="checked_category_add_exp_CD">Вибрана категорія</string>
     <string name="note_exp_list">Нотатка: %1$s</string>
     <string name="warning_bottom_sheet_exp">Вибери категорію</string>
     <string name="empty_exp_lazyColumn_title">Ви ще не додали витрат</string>
@@ -174,4 +175,5 @@
     <string name="non_categorised_expenses_error_BS">Виберіть категорію групування для некатегоризованих витрат</string>
     <string name="non_categorised_incomes_error_BS">Виберіть категорію групування для некатегоризованих доходів</string>
     <string name="login_screen">Екран базових налаштувань</string>
+    <string name="edit_personal_info">Зміни персональні дані</string>
 </resources>

@@ -44,9 +44,10 @@ class FinancialsLazyColumnViewModel(
 
     private val _isScrolledBelow = MutableStateFlow(value = false)
     val isScrolledBelow = _isScrolledBelow.asStateFlow()
-    private val _expandedFinancialEntity: MutableStateFlow<FinancialEntity?> =
-        MutableStateFlow(value = null)
+
+    private val _expandedFinancialEntity: MutableStateFlow<FinancialEntity?> = MutableStateFlow(value = null)
     val expandedFinancialEntity = _expandedFinancialEntity.asStateFlow()
+
     private val _isExpenseLazyColumn = MutableStateFlow(value = true)
     val isExpenseLazyColumn = _isExpenseLazyColumn.asStateFlow()
 

@@ -16,6 +16,7 @@ const val GROUPING_CATEGORY_ID_DEFAULT = Int.MIN_VALUE // This value used to com
 const val EXPENSE_CATEGORY_GROUPING_ID_DEFAULT = 13
 const val INCOME_CATEGORY_GROUPING_ID_DEFAULT = 9
 
+
 // Entities defaults
 val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)
 const val DEFAULT_EXPENSE_CATEGORIES_MAX_INDEX = 13

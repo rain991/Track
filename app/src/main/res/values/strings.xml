@@ -41,7 +41,7 @@
 
     <!-- Notes and warnings -->
     <string name="your_note_adding_exp">Note</string>
-    <string name="checked_category_add_exp_CD" translatable="false">Checked category</string>
+    <string name="checked_category_add_exp_CD">Checked category</string>
     <string name="note_exp_list">Note: %1$s</string>
     <string name="warning_bottom_sheet_exp">Select category or type correct value</string>
 
@@ -214,5 +214,6 @@
     <string name="non_categorised_expenses_error_BS">Select grouping category for non-categorised expenses</string>
     <string name="non_categorised_incomes_error_BS">Select grouping category for non-categorised incomes</string>
     <string name="login_screen">Login screen</string>
+    <string name="edit_personal_info">edit personal info</string>
 
 </resources>

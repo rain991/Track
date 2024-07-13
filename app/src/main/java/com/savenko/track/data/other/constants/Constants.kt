@@ -4,6 +4,7 @@ import java.text.DecimalFormat
 
 // Retrofit
 const val CURRENCY_CALL_URL_DEFAULT = "https://api.currencyfreaks.com"
+const val ACCEPTABLE_EMPTY_CURRENCIES_RATES = 0.7f // means if more then 0.3f currencies with empty rate, activity will call worker to receive new rates
 
 // Track defaults
 const val DB_PATH = "database/expense_tracker.db"
