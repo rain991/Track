@@ -61,7 +61,7 @@ class BottomSheetViewModel(
         .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
     private val fourthAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFourthAdditionalCurrency()
         .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
-    private val listOfCurrencies = listOf(
+    val listOfCurrencies = listOf(
         preferableCurrency,
         firstAdditionalCurrency,
         secondAdditionalCurrency,

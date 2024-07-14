@@ -8,6 +8,7 @@ import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -18,6 +19,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
@@ -29,6 +31,8 @@ import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridS
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.KeyboardArrowDown
+import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -46,8 +50,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -73,7 +76,7 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet(bottomSheetViewModel : BottomSheetViewModel) {
+fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
     val windowInfo = rememberWindowInfo()
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
@@ -98,8 +101,6 @@ fun BottomSheet(bottomSheetViewModel : BottomSheetViewModel) {
             },
             sheetState = sheetState
         ) {
-            val controller = LocalSoftwareKeyboardController.current
-            val focusRequester = remember { FocusRequester() }
             Column(
                 modifier = Modifier
                     .fillMaxHeight(
@@ -121,7 +122,9 @@ fun BottomSheet(bottomSheetViewModel : BottomSheetViewModel) {
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
                         Row(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .height(IntrinsicSize.Min),
                             horizontalArrangement = Arrangement.Center,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
@@ -147,10 +150,30 @@ fun BottomSheet(bottomSheetViewModel : BottomSheetViewModel) {
                                     )
                                 }
                             }
+                            Column(modifier = Modifier.fillMaxHeight()) {
+                                AnimatedContent(targetState = bottomSheetViewState.value.isAddingExpense, label = "") {
+                                    if (it) {
+                                        Column(Modifier.fillMaxHeight().padding(vertical = 8.dp).offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Bottom) {
+                                            Icon(
+                                                imageVector = Icons.Default.KeyboardArrowDown,
+                                                modifier = Modifier.scale(0.8f),
+                                                contentDescription = null
+                                            )
+                                        }
+                                    } else {
+                                        Column(Modifier.fillMaxHeight().padding(vertical = 8.dp).offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Top) {
+                                            Icon(
+                                                imageVector = Icons.Default.KeyboardArrowUp,
+                                                modifier = Modifier.scale(0.8f),
+                                                contentDescription = null
+                                            )
+                                        }
+                                    }
+                                }
+                            }
                         }
                         BottomSheetAmountInput(
-                            focusRequester = focusRequester,
-                            controller = controller,
+                            bottomSheetViewModel = bottomSheetViewModel,
                             currentCurrency = currentCurrency.value!!,
                             hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue
                         )
