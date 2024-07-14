@@ -13,14 +13,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.savenko.track.R
 
 
 @Composable
-fun ExtendedButtonExample(
+fun MainScreenFloatingActionButton(
     isButtonExpanded: Boolean,
+    text : String = "",
     onClick: () -> Unit
 ) {
     Box(
@@ -36,8 +35,8 @@ fun ExtendedButtonExample(
             ExtendedFloatingActionButton(
                 expanded = isButtonExpanded,
                 onClick = onClick,
-                icon = { Icon(Icons.Filled.Edit, stringResource(R.string.add_new_expense)) },
-                text = { Text(text = stringResource(R.string.add_expense)) })
+                icon = { Icon(imageVector = Icons.Filled.Edit, contentDescription = text) },
+                text = { Text(text = text) })
         }
     }
 }

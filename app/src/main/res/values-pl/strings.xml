@@ -133,6 +133,7 @@
     <string name="aprox_month_income_login_screen">Miesięczny dochód</string>
     <string name="you_havent_added_incomes_yet_lazy_column">Nie dodałeś jeszcze żadnego dochodu</string>
     <string name="add_expense">Dodaj wydatek</string>
+    <string name="add_incomes">Dodaj dochody</string>
     <string name="add_new_expense">Dodaj nowy wydatek</string>
     <string name="create_new_category">Stwórz kategorie</string>
     <string name="category_exist_warning_new_category_dialog">Ta kategoria już istnieje</string>

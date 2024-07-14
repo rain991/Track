@@ -68,7 +68,7 @@ import java.time.LocalDate
 /*  Contains lazy column used in expense screen. Also contains such private composable functions:
     Transactions (ui to switch between expeneses and incomes), EmptyLazyColumnPlacement, ExpenseDayHeader, ExpenseMonthHeader, ExpenseYearHeader   */
 @Composable
-fun MainScreenLazyColumn(containsInfoCards: Boolean) {
+fun MainScreenLazyColumn(containsInfoCards: Boolean, switchBottomSheetToExpenses: () -> Unit, switchBottomSheetToIncomes: () -> Unit, ) {
     val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
     val isExpenseLazyColumn = financialsLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     val expensesList = financialsLazyColumnViewModel.expensesList
@@ -120,8 +120,14 @@ fun MainScreenLazyColumn(containsInfoCards: Boolean) {
             if (containsInfoCards) {
                 TrackScreenInfoCards(
                     financialsLazyColumnViewModel.isExpenseLazyColumn.value,
-                    onExpenseCardClick = { if (!financialsLazyColumnViewModel.isExpenseLazyColumn.value) financialsLazyColumnViewModel.toggleIsExpenseLazyColumn() },
-                    onIncomeCardClick = { if (financialsLazyColumnViewModel.isExpenseLazyColumn.value) financialsLazyColumnViewModel.toggleIsExpenseLazyColumn() })
+                    onExpenseCardClick = { if (!financialsLazyColumnViewModel.isExpenseLazyColumn.value) {
+                        financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
+                        switchBottomSheetToExpenses()
+                    } },
+                    onIncomeCardClick = { if (financialsLazyColumnViewModel.isExpenseLazyColumn.value) {
+                        financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
+                        switchBottomSheetToIncomes()
+                    } })
             }
             Box(
                 modifier = Modifier

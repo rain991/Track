@@ -90,7 +90,12 @@ fun TrackScreenInfoCards(
                     .height(120.dp)
                     .weight(0.5f)
                     .padding(start = 8.dp, end = 8.dp, top = 8.dp)
-                    .border(width = expenseCardBorderWidth.dp, borderBrush, RoundedCornerShape(8.dp))
+                    .then(
+                        if (expenseCardBorderWidth > 0) Modifier.border(
+                            width = expenseCardBorderWidth.dp,
+                            borderBrush,
+                            RoundedCornerShape(8.dp)
+                        ) else Modifier)
                     .clickable {
                         onExpenseCardClick()
                     },
@@ -171,7 +176,13 @@ fun TrackScreenInfoCards(
                     .height(120.dp)
                     .weight(0.5f)
                     .padding(start = 8.dp, end = 8.dp, top = 8.dp)
-                    .border(width = incomeCardBorderWidth.dp, borderBrush, RoundedCornerShape(8.dp))
+                    .then(
+                        if (incomeCardBorderWidth > 0.0f) Modifier.border(
+                            width = incomeCardBorderWidth.dp,
+                            borderBrush,
+                            RoundedCornerShape(8.dp)
+                        ) else Modifier
+                    )
                     .clickable {
                         onIncomeCardClick()
                     },

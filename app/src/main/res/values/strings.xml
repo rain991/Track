@@ -172,6 +172,7 @@
     <string name="aprox_month_income_login_screen">Aprox. month income</string>
     <string name="you_havent_added_incomes_yet_lazy_column">You haven\'t added incomes yet</string>
     <string name="add_expense">Add Expenses</string>
+    <string name="add_incomes">Add Incomes</string>
     <string name="add_new_expense">Add New Expense</string>
     <string name="create_new_category">Create new category</string>
     <string name="category_exist_warning_new_category_dialog">This category already exist</string>

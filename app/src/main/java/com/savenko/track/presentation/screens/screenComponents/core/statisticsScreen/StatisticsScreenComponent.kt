@@ -19,20 +19,22 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
+import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.DateRangePickerDialog
+import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
 import com.savenko.track.presentation.screens.screenComponents.core.statisticsScreen.components.TrackStatisticChart
 import com.savenko.track.presentation.screens.screenComponents.core.statisticsScreen.components.TrackStatisticChartOptionsSelector
 import com.savenko.track.presentation.screens.screenComponents.core.statisticsScreen.components.TrackStatisticLazyColumn
-import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
 import org.koin.androidx.compose.koinViewModel
 
 
 @Composable
 fun StatisticsScreenComponent(innerPadding: PaddingValues) {
     val chartViewModel = koinViewModel<StatisticChartViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val statisticLazyColumnViewModel = koinViewModel<StatisticLazyColumnViewModel>()
     val state = chartViewModel.statisticChartState.collectAsState()
     DateRangePickerDialog(
@@ -50,7 +52,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             .padding(horizontal = 8.dp)
             .animateContentSize()
     ) {
-        BottomSheet()
+        BottomSheet(bottomSheetViewModel)
         AnimatedVisibility(
             visible = state.value.isChartVisible, modifier = Modifier.weight(2f),
             enter = slideInVertically(initialOffsetY = { fullHeight -> -fullHeight }) + fadeIn(),

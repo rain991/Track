@@ -17,8 +17,8 @@ import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.currencies.CurrenciesSettingsViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
+import com.savenko.track.presentation.components.customComponents.MainScreenFloatingActionButton
 import com.savenko.track.presentation.components.screenRelated.Header
-import com.savenko.track.presentation.components.customComponents.ExtendedButtonExample
 import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.SettingsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -35,12 +35,12 @@ fun SettingsTrackScreen(navHostController: NavHostController) {
             if (isPageNameVisible.value) Header(pageName = stringResource(R.string.settings))
         },
         floatingActionButton = {
-            ExtendedButtonExample(
+            MainScreenFloatingActionButton(
                 isButtonExpanded = false,
                 onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
         }
     ) {
-        BottomSheet()
+        BottomSheet(bottomSheetViewModel)
         if (toastState.value.length > 1) {
             Toast.makeText(LocalContext.current, toastState.value, Toast.LENGTH_SHORT).show()
             currenciesSettingsViewModel.clearToastMessage()

@@ -133,6 +133,7 @@
     <string name="aprox_month_income_login_screen">Примерный месячный доход</string>
     <string name="you_havent_added_incomes_yet_lazy_column">Вы еще не добавили никакого дохода</string>
     <string name="add_expense">Добавить расход</string>
+    <string name="add_incomes">Добавить расходы</string>
     <string name="add_new_expense">Добавить новый расход</string>
     <string name="create_new_category">Создать новую категорию</string>
     <string name="category_exist_warning_new_category_dialog">Эта категория уже существует</string>

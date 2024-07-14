@@ -221,6 +221,11 @@ class BottomSheetViewModel(
             bottomSheetViewState.value.copy(isAddingExpense = !_bottomSheetViewState.value.isAddingExpense)
     }
 
+    fun setIsAddingExpense(value : Boolean) {
+        _bottomSheetViewState.value =
+            bottomSheetViewState.value.copy(isAddingExpense = value)
+    }
+
     fun setDatePicked(neededDate: LocalDate) {
         _bottomSheetViewState.update {
             bottomSheetViewState.value.copy(

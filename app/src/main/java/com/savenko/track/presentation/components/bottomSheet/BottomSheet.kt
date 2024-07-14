@@ -73,10 +73,9 @@ import java.time.LocalDate
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BottomSheet() {
+fun BottomSheet(bottomSheetViewModel : BottomSheetViewModel) {
     val windowInfo = rememberWindowInfo()
     val coroutineScope = rememberCoroutineScope()
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
     val currentCurrency =
