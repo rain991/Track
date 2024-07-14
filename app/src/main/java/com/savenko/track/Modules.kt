@@ -53,6 +53,7 @@ import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.domain.usecases.crud.categoriesRelated.AddCategoryUseCase
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
+import com.savenko.track.domain.usecases.crud.financials.DeleteFinancialItemUseCase
 import com.savenko.track.domain.usecases.crud.ideasRelated.CreateIdeaUseCase
 import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
 import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
@@ -136,8 +137,9 @@ val domainModule = module {
     factory<AddExpenseItemUseCase> { AddExpenseItemUseCase(get()) }
     factory<AddIncomeItemUseCase> { AddIncomeItemUseCase(get()) }
     factory<AddCategoryUseCase> { AddCategoryUseCase(get(), get()) }
-    factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get(), get()) }
     factory<CreateIdeaUseCase> { CreateIdeaUseCase(get()) }
+    factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get(), get()) }
+    factory<DeleteFinancialItemUseCase> { DeleteFinancialItemUseCase(get(), get()) }
 
     // User Data
     factory<GetUserExpensesUseCase> { GetUserExpensesUseCase(get()) }
@@ -163,14 +165,14 @@ val viewModelModule = module {
     viewModel { AdditionalPreferencesSettingsViewModel(get(), get(), get(), get()) }
 
     // Track main screen related
-    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get()) }
+    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
 
     // Statistics related
     viewModel { StatisticChartViewModel(get(), get()) }
     viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
 
     // Bottom sheets
-    viewModel { BottomSheetViewModel(get(), get(), get(), get(), get(),get()) }
+    viewModel { BottomSheetViewModel(get(), get(), get(), get(), get(), get()) }
 
     // Feed related
     viewModel { TrackScreenFeedViewModel(get(), get(), get()) }

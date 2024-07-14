@@ -11,6 +11,7 @@ import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -23,15 +24,21 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.res.stringResource
@@ -69,7 +76,8 @@ fun FinancialItemCardTypeSimple(
     financialEntityMonthSummary: Float,
     countOfFinancialEntities: Int,
     preferableCurrency: Currency,
-    onClick: () -> Unit
+    onClick: () -> Unit,
+    onDeleteFinancial: (FinancialEntity) -> Unit
 ) {
     val locale = Locale.getDefault()
     val density = LocalDensity.current
@@ -98,17 +106,51 @@ fun FinancialItemCardTypeSimple(
                         .weight(1f),
                     verticalArrangement = Arrangement.Top
                 ) {
-                    Row(
-                        horizontalArrangement = Arrangement.Center, modifier = Modifier
-                            .wrapContentHeight()
+                    Box(
+                        modifier = Modifier
                             .fillMaxWidth()
+                            .wrapContentHeight()
                     ) {
-                        if (financialEntity.note.isNotEmpty()) {
-                            NoteCard(expenseItem = financialEntity)
-                        } else {
-                            CategoryCard(category = categoryEntity, containerColor = categoryColor)
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .align(Alignment.TopStart)
+                                .wrapContentHeight()
+                        ) {
+                            AnimatedVisibility (visible = expanded) {
+                                 Box(modifier = Modifier
+                                            .wrapContentSize()
+                                            .clip(CircleShape)
+                                            .background(categoryColor)
+                                        ){
+                                    Icon(
+                                        imageVector = Icons.Default.Delete,
+                                        contentDescription = stringResource(R.string.delete_financial_item_CD),
+                                        modifier = Modifier
+                                            .scale(0.7f)
+                                            .clickable {
+                                                onDeleteFinancial(financialEntity)
+                                            },
+                                        tint = MaterialTheme.colorScheme.onPrimary
+                                    )
+                                }
+                            }
+                        }
+                        Row(
+                            horizontalArrangement = Arrangement.Center,
+                            modifier = Modifier
+                                .align(Alignment.Center) // Center the Row absolutely
+                                .fillMaxWidth()
+                                .wrapContentHeight()
+                        ) {
+                            if (financialEntity.note.isNotEmpty()) {
+                                NoteCard(expenseItem = financialEntity)
+                            } else {
+                                CategoryCard(category = categoryEntity, containerColor = categoryColor)
+                            }
                         }
                     }
+
                     Spacer(modifier = Modifier.weight(1f))
                     Row(
                         modifier = Modifier

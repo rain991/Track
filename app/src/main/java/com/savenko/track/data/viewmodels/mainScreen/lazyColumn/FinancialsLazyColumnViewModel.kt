@@ -16,6 +16,7 @@ import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
+import com.savenko.track.domain.usecases.crud.financials.DeleteFinancialItemUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserExpensesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserIncomesUseCase
 import kotlinx.coroutines.flow.Flow
@@ -29,6 +30,7 @@ import java.util.Date
 class FinancialsLazyColumnViewModel(
     private val getUserExpensesUseCase: GetUserExpensesUseCase,
     private val getUserIncomesUseCase: GetUserIncomesUseCase,
+    private val deleteFinancialItemUseCase: DeleteFinancialItemUseCase,
     private val categoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
     private val financialCardNotesProvider: FinancialCardNotesProvider
@@ -92,6 +94,10 @@ class FinancialsLazyColumnViewModel(
 
     fun toggleIsExpenseLazyColumn() {
         _isExpenseLazyColumn.value = !_isExpenseLazyColumn.value
+    }
+
+    suspend fun deleteFinancialItem(financialEntity: FinancialEntity){
+        deleteFinancialItemUseCase(financialEntity)
     }
 
 

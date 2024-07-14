@@ -36,6 +36,7 @@ import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
@@ -60,6 +61,7 @@ import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
 import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.mainScreenInfoCards.TrackScreenInfoCards
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -68,7 +70,11 @@ import java.time.LocalDate
 /*  Contains lazy column used in expense screen. Also contains such private composable functions:
     Transactions (ui to switch between expeneses and incomes), EmptyLazyColumnPlacement, ExpenseDayHeader, ExpenseMonthHeader, ExpenseYearHeader   */
 @Composable
-fun MainScreenLazyColumn(containsInfoCards: Boolean, switchBottomSheetToExpenses: () -> Unit, switchBottomSheetToIncomes: () -> Unit, ) {
+fun MainScreenLazyColumn(
+    containsInfoCards: Boolean,
+    switchBottomSheetToExpenses: () -> Unit,
+    switchBottomSheetToIncomes: () -> Unit,
+) {
     val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
     val isExpenseLazyColumn = financialsLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     val expensesList = financialsLazyColumnViewModel.expensesList
@@ -81,7 +87,9 @@ fun MainScreenLazyColumn(containsInfoCards: Boolean, switchBottomSheetToExpenses
     var isScrollingUp by remember { mutableStateOf(false) }
     val isScrolledBelowState = financialsLazyColumnViewModel.isScrolledBelow.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
-    val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val preferableCurrency =
+        currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val coroutineScope = rememberCoroutineScope()
     Box {
         Box(
             modifier = Modifier
@@ -120,14 +128,18 @@ fun MainScreenLazyColumn(containsInfoCards: Boolean, switchBottomSheetToExpenses
             if (containsInfoCards) {
                 TrackScreenInfoCards(
                     financialsLazyColumnViewModel.isExpenseLazyColumn.value,
-                    onExpenseCardClick = { if (!financialsLazyColumnViewModel.isExpenseLazyColumn.value) {
-                        financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
-                        switchBottomSheetToExpenses()
-                    } },
-                    onIncomeCardClick = { if (financialsLazyColumnViewModel.isExpenseLazyColumn.value) {
-                        financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
-                        switchBottomSheetToIncomes()
-                    } })
+                    onExpenseCardClick = {
+                        if (!financialsLazyColumnViewModel.isExpenseLazyColumn.value) {
+                            financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
+                            switchBottomSheetToExpenses()
+                        }
+                    },
+                    onIncomeCardClick = {
+                        if (financialsLazyColumnViewModel.isExpenseLazyColumn.value) {
+                            financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
+                            switchBottomSheetToIncomes()
+                        }
+                    })
             }
             Box(
                 modifier = Modifier
@@ -272,16 +284,22 @@ fun MainScreenLazyColumn(containsInfoCards: Boolean, switchBottomSheetToExpenses
                                         expanded = (expandedItem.value == currentFinancialEntity),
                                         preferableCurrency = preferableCurrency.value,
                                         financialEntityMonthSummary = financialEntityMonthSummary,
-                                        countOfFinancialEntities = countOfFinancialEntities
-                                    ) {
-                                        financialsLazyColumnViewModel.setExpandedExpenseCard(
-                                            if (expandedItem.value != currentFinancialEntity) {
-                                                currentFinancialEntity
-                                            } else {
-                                                null
+                                        countOfFinancialEntities = countOfFinancialEntities,
+                                        onDeleteFinancial = {
+                                            coroutineScope.launch {
+                                                financialsLazyColumnViewModel.deleteFinancialItem(it)
                                             }
-                                        )
-                                    }
+                                        },
+                                        onClick = {
+                                            financialsLazyColumnViewModel.setExpandedExpenseCard(
+                                                if (expandedItem.value != currentFinancialEntity) {
+                                                    currentFinancialEntity
+                                                } else {
+                                                    null
+                                                }
+                                            )
+                                        }
+                                    )
                                     if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
                                 }
                             }

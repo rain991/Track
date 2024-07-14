@@ -168,15 +168,19 @@ fun TrackStatisticLazyColumn(
                             expanded = false,
                             preferableCurrency = state.value.preferableCurrency,
                             financialEntityMonthSummary = financialEntityMonthSummary,
-                            countOfFinancialEntities = countOfFinancialEntities
-                        ) {
-                            selectedFinancialEntity =
-                                if (currentFinancialEntity == selectedFinancialEntity) {
-                                    null
-                                } else {
-                                    currentFinancialEntity
-                                }
-                        }
+                            countOfFinancialEntities = countOfFinancialEntities,
+                            onDeleteFinancial = {
+
+                            },
+                            onClick = {
+                                selectedFinancialEntity =
+                                    if (currentFinancialEntity == selectedFinancialEntity) {
+                                        null
+                                    } else {
+                                        currentFinancialEntity
+                                    }
+                            }
+                        )
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }

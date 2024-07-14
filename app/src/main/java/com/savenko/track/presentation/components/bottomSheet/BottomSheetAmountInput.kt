@@ -99,62 +99,66 @@ fun BottomSheetAmountInput(
             ) {
                 Text(text = currentCurrency.ticker, style = MaterialTheme.typography.titleMedium)
             }
-            Column(modifier = Modifier.fillMaxHeight()) {
-                AnimatedContent(targetState = currentSelectedCurrency, label = "") { selectedCurrency ->
-                    val selectedIndex = listOfCurrencies.indexOfFirst { it.value == selectedCurrency.value }
-                    when (selectedIndex) {
-                        0 -> {
-                            Column(
-                                Modifier
-                                    .fillMaxHeight()
-                                    .padding(vertical = 12.dp)
-                                    .offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Bottom
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.KeyboardArrowDown,
-                                    modifier = Modifier.scale(0.7f),
-                                    contentDescription = null
-                                )
+            if (listOfCurrencies.size > 1) {
+                Column(modifier = Modifier.fillMaxHeight()) {
+                    AnimatedContent(targetState = currentSelectedCurrency, label = "") { selectedCurrency ->
+                        val selectedIndex = listOfCurrencies.indexOfFirst { it.value == selectedCurrency.value }
+                        when (selectedIndex) {
+                            0 -> {
+                                Column(
+                                    Modifier
+                                        .fillMaxHeight()
+                                        .padding(vertical = 12.dp)
+                                        .offset((-12).dp, 0.dp), verticalArrangement = Arrangement.Bottom
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowDown,
+                                        modifier = Modifier.scale(0.7f),
+                                        contentDescription = null
+                                    )
+                                }
                             }
-                        }
 
-                        listOfCurrencies.size - 1 -> {
-                            Column(
-                                Modifier
-                                    .fillMaxHeight()
-                                    .padding(vertical = 12.dp)
-                                    .offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Top
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.KeyboardArrowUp,
-                                    modifier = Modifier.scale(0.7f),
-                                    contentDescription = null
-                                )
+                            listOfCurrencies.size - 1 -> {
+                                Column(
+                                    Modifier
+                                        .fillMaxHeight()
+                                        .padding(vertical = 12.dp)
+                                        .offset((-12).dp, 0.dp), verticalArrangement = Arrangement.Top
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowUp,
+                                        modifier = Modifier.scale(0.7f),
+                                        contentDescription = null
+                                    )
+                                }
                             }
-                        }
-                        else -> {
-                            Column(
-                                Modifier
-                                    .fillMaxHeight()
-                                    .padding(vertical = 12.dp)
-                                    .offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Center
-                            ) {
-                                Icon(
-                                    imageVector = Icons.Default.KeyboardArrowUp,
-                                    modifier = Modifier.scale(0.7f),
-                                    contentDescription = null
-                                )
-                                Spacer(modifier = Modifier.height(2.dp))
-                                Icon(
-                                    imageVector = Icons.Default.KeyboardArrowDown,
-                                    modifier = Modifier.scale(0.7f),
-                                    contentDescription = null
-                                )
+
+                            else -> {
+                                Column(
+                                    Modifier
+                                        .fillMaxHeight()
+                                        .padding(vertical = 12.dp)
+                                        .offset((-12).dp, 0.dp), verticalArrangement = Arrangement.Center
+                                ) {
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowUp,
+                                        modifier = Modifier.scale(0.7f),
+                                        contentDescription = null
+                                    )
+                                    Spacer(modifier = Modifier.height(2.dp))
+                                    Icon(
+                                        imageVector = Icons.Default.KeyboardArrowDown,
+                                        modifier = Modifier.scale(0.7f),
+                                        contentDescription = null
+                                    )
+                                }
                             }
                         }
                     }
                 }
             }
+
         }
         if (hasErrors) {
             Text(

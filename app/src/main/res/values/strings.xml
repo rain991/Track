@@ -216,5 +216,6 @@
     <string name="non_categorised_incomes_error_BS">Select grouping category for non-categorised incomes</string>
     <string name="login_screen">Login screen</string>
     <string name="edit_personal_info">edit personal info</string>
+    <string name="delete_financial_item_CD">Delete financial item</string>
 
 </resources>
