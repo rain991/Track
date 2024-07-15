@@ -16,29 +16,35 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
 import com.savenko.track.R
+import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
+import com.savenko.track.data.viewmodels.settingsScreen.ideas.IdeasSettingsScreenViewModel
 import com.savenko.track.presentation.components.dialogs.newIdeaDialog.NewIdeaDialog
-import com.savenko.track.presentation.screens.screenComponents.additional.IdeasSettingsScreenComponent
 import com.savenko.track.presentation.components.screenRelated.SettingsSpecifiedScreenHeader
 import com.savenko.track.presentation.navigation.Screen
+import com.savenko.track.presentation.screens.screenComponents.additional.IdeasSettingsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun IdeasListSettingsScreen(navController: NavHostController) {
     val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
+    val addToSavingIdeaDialogViewModel = koinViewModel<AddToSavingIdeaDialogViewModel>()
+    val ideasSettingsScreenViewModel = koinViewModel<IdeasSettingsScreenViewModel>()
     val isNewIdeaDialogVisible = newIdeaDialogViewModel.isNewIdeaDialogVisible.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            SettingsSpecifiedScreenHeader(stringResource(id = R.string.ideas)){
+            SettingsSpecifiedScreenHeader(stringResource(id = R.string.ideas)) {
                 navController.navigate(Screen.MainScreen.route)
             }
         },
         floatingActionButton = {
-                ExtendedFloatingActionButton(
-                    expanded = false,
-                    onClick = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(true) },
-                    icon = { Icon(Icons.Filled.Add, stringResource(R.string.add_new_idea)) },
-                    text = { Text(text = stringResource(R.string.add_new_idea)) }, modifier = Modifier.padding(end = 16.dp, bottom = 16.dp))
+            ExtendedFloatingActionButton(
+                expanded = false,
+                onClick = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(true) },
+                icon = { Icon(Icons.Filled.Add, stringResource(R.string.add_new_idea)) },
+                text = { Text(text = stringResource(R.string.add_new_idea)) },
+                modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
+            )
         }
     ) {
         if (isNewIdeaDialogVisible.value) {
@@ -49,7 +55,10 @@ fun IdeasListSettingsScreen(navController: NavHostController) {
                 .fillMaxSize()
                 .padding(it)
         ) {
-            IdeasSettingsScreenComponent()
+            IdeasSettingsScreenComponent(
+                addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel,
+                ideasSettingsScreenViewModel = ideasSettingsScreenViewModel
+            )
         }
     }
 }

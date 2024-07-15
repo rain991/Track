@@ -11,8 +11,8 @@ import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRep
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.currency.Currency
-import com.savenko.track.presentation.screens.states.core.statisticScreen.StatisticChartState
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
+import com.savenko.track.presentation.screens.states.core.statisticScreen.StatisticChartState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -63,7 +63,13 @@ class StatisticChartViewModel(
                 otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
             ).collect { chartData ->
                 setDataSet(chartData)
-                val xToDates = chartData.keys.associateBy { it.toEpochDay().toFloat() }
+                val xToDates = chartData.keys.associateBy {
+                    try {
+                        it.toEpochDay().toFloat()
+                    } catch (exception: Exception) {
+                        0.0f
+                    }
+                }
                 modelProducer.tryRunTransaction {
                     val listOfValues = _statisticChartState.value.chartData.map { it.value }
                     if (listOfValues.isNotEmpty()) {
@@ -93,32 +99,32 @@ class StatisticChartViewModel(
                     incomeChartData
                 )
             }.collect { pairOfChartData ->
-                    val expenseChartData = pairOfChartData.first
-                    val incomeChartData = pairOfChartData.second
-                    setDataSet(expenseChartData)
-                    setAdditionalData(incomeChartData)
-                    val expenseXToDates =
-                        expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
-                    val incomeXToDates =
-                        incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
-                    modelProducer.tryRunTransaction {
-                        val expenseListOfValues = expenseChartData.map { it.value }
-                        val incomeListOfValues = incomeChartData.map { it.value }
+                val expenseChartData = pairOfChartData.first
+                val incomeChartData = pairOfChartData.second
+                setDataSet(expenseChartData)
+                setAdditionalData(incomeChartData)
+                val expenseXToDates =
+                    expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
+                val incomeXToDates =
+                    incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
+                modelProducer.tryRunTransaction {
+                    val expenseListOfValues = expenseChartData.map { it.value }
+                    val incomeListOfValues = incomeChartData.map { it.value }
 
-                        if (expenseListOfValues.isNotEmpty() || incomeListOfValues.isNotEmpty()) {
-                            lineSeries {
-                                if (expenseXToDates.size > 1) {
-                                    series(expenseXToDates.keys, expenseChartData.map { it.value })
-                                    updateExtras { it[xToDateMapKey] = expenseXToDates }
-                                }
-                                if (incomeXToDates.size > 1) {
-                                    series(incomeXToDates.keys, incomeChartData.map { it.value })
-                                    updateExtras { it[xToDateMapKey] = incomeXToDates }
-                                }
+                    if (expenseListOfValues.isNotEmpty() || incomeListOfValues.isNotEmpty()) {
+                        lineSeries {
+                            if (expenseXToDates.size > 1) {
+                                series(expenseXToDates.keys, expenseChartData.map { it.value })
+                                updateExtras { it[xToDateMapKey] = expenseXToDates }
+                            }
+                            if (incomeXToDates.size > 1) {
+                                series(incomeXToDates.keys, incomeChartData.map { it.value })
+                                updateExtras { it[xToDateMapKey] = incomeXToDates }
                             }
                         }
                     }
                 }
+            }
         }
     }
 

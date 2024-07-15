@@ -63,6 +63,7 @@ import com.savenko.track.domain.usecases.userData.financialEntities.specified.Ge
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
 import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
+import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -148,6 +149,7 @@ val domainModule = module {
     factory<GetDesiredExpensesUseCase> { GetDesiredExpensesUseCase(get()) }
     factory<GetDesiredFinancialEntitiesUseCase> { GetDesiredFinancialEntitiesUseCase(get(), get()) }
     factory<GetUnfinishedIdeasUseCase> { GetUnfinishedIdeasUseCase(get()) }
+    factory<ChangePreferableCurrencyUseCase> { ChangePreferableCurrencyUseCase(get(), get(), get(), get()) }
 }
 
 val viewModelModule = module {
@@ -155,8 +157,8 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get(), get()) }
 
     // Settings related
-    viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
-    viewModel { IdeasSettingsScreenViewModel(get()) }
+    viewModel { CurrenciesSettingsViewModel(get(), get(), get()) }
+    viewModel { IdeasSettingsScreenViewModel(get(), get()) }
     viewModel { ThemePreferenceSettingsViewModel(get(), get()) }
     viewModel { CategoriesSettingsScreenViewModel(get(), get(), get()) }
     viewModel { NewCategoryViewModel(get()) }

@@ -56,10 +56,10 @@ fun PersonalSettingsScreenComponent() {
 @Composable
 private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) {
     val coroutineScope = rememberCoroutineScope()
-    var isInEditingMode by remember { mutableStateOf(false) }
     val name = viewModel.userName.collectAsState()
     val budget = viewModel.budget.collectAsState()
     val preferableCurrency = viewModel.preferableCurrency.collectAsState()
+    var isInEditingMode by remember { mutableStateOf(false) }
     Card(
         modifier = Modifier
             .fillMaxWidth()

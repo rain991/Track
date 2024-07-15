@@ -30,8 +30,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.ideas.IdeasSettingsScreenViewModel
 import com.savenko.track.domain.models.idea.ExpenseLimits
@@ -44,30 +42,23 @@ import com.savenko.track.presentation.components.ideasCards.SavingsIdeaCard
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 
 @Composable
-fun IdeasSettingsScreenComponent() {
-    val addToSavingIdeaDialogViewModel = koinViewModel<AddToSavingIdeaDialogViewModel>()
-    val ideasSettingsScreenViewModel = koinViewModel<IdeasSettingsScreenViewModel>()
-    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
+fun IdeasSettingsScreenComponent(
+    addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel,
+    ideasSettingsScreenViewModel: IdeasSettingsScreenViewModel
+) {
     val coroutineScope = rememberCoroutineScope()
     val windowInfo = rememberWindowInfo()
-    val screenState = ideasSettingsScreenViewModel.screenState.collectAsState()
-    val addToSavingIdeaDialogSavings =
-        addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
-    val listOfAllIdeas = ideasSettingsScreenViewModel.listOfAllIdeas
-    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
-        .collectAsState(initial = CURRENCY_DEFAULT)
     val listState = rememberLazyListState()
-    LaunchedEffect(key1 = Unit) {
-        ideasSettingsScreenViewModel.initializeValues()
-    }
+    val screenState = ideasSettingsScreenViewModel.screenState.collectAsState()
+    val addToSavingIdeaDialogSavings = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
+    val listOfAllIdeas = ideasSettingsScreenViewModel.listOfAllIdeas
+    val preferableCurrency = screenState.value.preferableCurrency
+
     if (addToSavingIdeaDialogSavings.value != null) {
         AddToSavingDialog(addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel)
     }
-
     if (listOfAllIdeas.isEmpty()) {
         Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             Text(text = stringResource(R.string.warning_message_idea_settings_screen))
@@ -140,7 +131,7 @@ fun IdeasSettingsScreenComponent() {
                             ) {
                                 SavingsIdeaCard(
                                     savings = currentIdea,
-                                    preferableCurrency = preferableCurrencyState.value,
+                                    preferableCurrency = preferableCurrency,
                                     addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
                                 )
                             }
@@ -166,11 +157,12 @@ fun IdeasSettingsScreenComponent() {
                                 ExpenseLimitIdeaCard(
                                     expenseLimit = currentIdea,
                                     completedValue = completionValue,
-                                    preferableCurrency = preferableCurrencyState.value
+                                    preferableCurrency = preferableCurrency
                                 )
                             }
 
                         }
+
                         is IncomePlans -> {
                             var completionValue by remember { mutableFloatStateOf(0.0f) }
                             LaunchedEffect(key1 = Unit) {
@@ -191,7 +183,7 @@ fun IdeasSettingsScreenComponent() {
                                 IncomePlanIdeaCard(
                                     incomePlans = currentIdea,
                                     completionValue = completionValue,
-                                    preferableCurrency = preferableCurrencyState.value
+                                    preferableCurrency = preferableCurrency
                                 )
                             }
                         }

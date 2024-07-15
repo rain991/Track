@@ -3,12 +3,10 @@ package com.savenko.track.data.viewmodels.settingsScreen.currencies
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.implementations.currencies.CurrencyListRepositoryImpl
-import com.savenko.track.data.implementations.ideas.IdeaListRepositoryImpl
-import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -16,11 +14,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CurrenciesSettingsViewModel(
-    private val dataStoreManager: DataStoreManager,
+    private val changePreferableCurrencyUseCase: ChangePreferableCurrencyUseCase,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
-    private val currencyListRepositoryImpl: CurrencyListRepositoryImpl,
-    private val currenciesRatesHandler: CurrenciesRatesHandler,
-    private val ideaListRepositoryImpl: IdeaListRepositoryImpl
+    private val currencyListRepositoryImpl: CurrencyListRepositoryImpl
 ) : ViewModel() {
     private val _currencyList = mutableStateListOf<Currency>()
     val currencyList: List<Currency> = _currencyList
@@ -46,23 +42,22 @@ class CurrenciesSettingsViewModel(
     }
 
     // setPreferableCurrency contains logic to change preferable currency all across the app
-    suspend fun setPreferableCurrency(value: Currency) {
-        if (firstAdditionalCurrencyStateFlow.first() != value && secondAdditionalCurrencyStateFlow.first() != value &&
-            thirdAdditionalCurrencyStateFlow.first() != value && fourthAdditionalCurrencyStateFlow.first() != value
-        ) {
-            val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
-            dataStoreManager.setPreference(
-                key = DataStoreManager.BUDGET, value =
-                currenciesRatesHandler.convertValueToAnyCurrency(
-                    dataStoreManager.budgetFlow.first(),
-                    preferableCurrency,
-                    value
-                )
-            )
-            ideaListRepositoryImpl.changePreferableCurrenciesOnIdeas(value, preferableCurrency)
-            currenciesPreferenceRepositoryImpl.setPreferableCurrency(value)
-        } else {
-            setToastMessage("${value.ticker} is already in use")
+    suspend fun setPreferableCurrency(targetCurrency: Currency) {
+        val preferableCurrency = preferableCurrencyStateFlow.first()
+        val firstAdditionalCurrency = firstAdditionalCurrencyStateFlow.first()
+        val secondAdditionalCurrency = secondAdditionalCurrencyStateFlow.first()
+        val thirdAdditionalCurrency = thirdAdditionalCurrencyStateFlow.first()
+        val fourthAdditionalCurrency = fourthAdditionalCurrencyStateFlow.first()
+        val isChangingSuccess = changePreferableCurrencyUseCase(
+            targetCurrency = targetCurrency,
+            currentPreferableCurrency = preferableCurrency,
+            firstAdditionalCurrency = firstAdditionalCurrency,
+            secondAdditionalCurrency = secondAdditionalCurrency,
+            thirdAdditionalCurrency = thirdAdditionalCurrency,
+            fourthAdditionalCurrency = fourthAdditionalCurrency
+        )
+        if(!isChangingSuccess)   {
+            setToastMessage("${targetCurrency.ticker} is already in use")
         }
     }
 

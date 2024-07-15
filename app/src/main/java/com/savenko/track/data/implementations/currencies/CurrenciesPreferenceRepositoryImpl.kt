@@ -6,8 +6,7 @@ import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import kotlinx.coroutines.flow.Flow
 
-class CurrenciesPreferenceRepositoryImpl(private val currenciesPreferenceDao: CurrenciesPreferenceDao) :
-    CurrenciesPreferenceRepository {
+class CurrenciesPreferenceRepositoryImpl(private val currenciesPreferenceDao: CurrenciesPreferenceDao) : CurrenciesPreferenceRepository {
     override fun getCurrenciesPreferences(): Flow<CurrenciesPreference> {
         return currenciesPreferenceDao.getCurrenciesPreferences()
     }
