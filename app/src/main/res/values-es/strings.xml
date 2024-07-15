@@ -215,5 +215,6 @@
     <string name="non_categorised_incomes_error_BS">Seleccione categoría de agrupación para ingresos no categorizados</string>
     <string name="login_screen">Pantalla de inicio de sesión</string>
     <string name="edit_personal_info">editar información personal</string>
+    <string name="delete_financial_item_CD">Suprimir partida financiera</string>
 
 </resources>

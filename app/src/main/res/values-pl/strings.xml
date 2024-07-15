@@ -177,4 +177,5 @@
     <string name="non_categorised_incomes_error_BS">Wybierz kategorię grupowania dla dochodów niekategoryzowanych</string>
     <string name="login_screen">Ekran ustawień podstawowych</string>
     <string name="edit_personal_info">Zmień dane personalne</string>
+    <string name="delete_financial_item_CD">Usuń pozycję finansową</string>
 </resources>

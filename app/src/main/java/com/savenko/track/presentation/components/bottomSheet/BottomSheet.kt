@@ -178,9 +178,14 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                             hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue
                         )
                         Spacer(Modifier.weight(1f))
-                        OutlinedTextField(label = stringResource(R.string.your_note_adding_exp))
+                        val text = bottomSheetViewState.value.note
+                        Box(modifier = Modifier.padding(start = 8.dp)) {
+                            GradientInputTextField(value = text, label = stringResource(R.string.your_note_adding_exp)) {
+                                bottomSheetViewModel.setNote(it)
+                            }
+                        }
                         Spacer(Modifier.height(16.dp))
-                        DatePicker()
+                        BottomSheetDatePicker(bottomSheetViewModel)
                         Spacer(Modifier.height(16.dp))
                         if (bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected || bottomSheetViewState.value.warningMessage is BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected || bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncomeGroupingCategoryIsNotSelected) {
                             Box(modifier = Modifier.height(24.dp)) {
@@ -225,8 +230,7 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
 }
 
 @Composable
-private fun DatePicker() {
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+private fun BottomSheetDatePicker(bottomSheetViewModel : BottomSheetViewModel) {
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     var text by remember { mutableStateOf(formatDateWithoutYear(convertLocalDateToDate(bottomSheetViewState.value.datePicked))) }
     text = if (!bottomSheetViewModel.isDateInOtherSpan(bottomSheetViewState.value.datePicked)) {
@@ -239,11 +243,11 @@ private fun DatePicker() {
             .fillMaxWidth()
             .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)
     ) {
-        OutlinedDateButton(
+        BottomSheetDateButton(
             text = stringResource(R.string.today),
             isSelected = (bottomSheetViewState.value.todayButtonActiveState)
         ) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
-        OutlinedDateButton(
+        BottomSheetDateButton(
             text = stringResource(R.string.yesterday),
             isSelected = (bottomSheetViewState.value.yesterdayButtonActiveState)
         ) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
@@ -286,7 +290,7 @@ private fun BottomSheetCategoriesGrid(categoryList: List<CategoryEntity>) {
 }
 
 @Composable
-private fun OutlinedDateButton(text: String, isSelected: Boolean, onSelect: () -> Unit) {
+private fun BottomSheetDateButton(text: String, isSelected: Boolean, onSelect: () -> Unit) {
     Button(
         onClick = onSelect
     ) {
@@ -308,19 +312,6 @@ private fun OutlinedDateButton(text: String, isSelected: Boolean, onSelect: () -
 
     }
 }
-
-@Composable
-private fun OutlinedTextField(label: String) {
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
-    val text = bottomSheetViewState.value.note
-    Box(modifier = Modifier.padding(start = 8.dp)) {
-        GradientInputTextField(value = text, label = label) {
-            bottomSheetViewModel.setNote(it)
-        }
-    }
-}
-
 
 @Composable
 private fun AcceptButton(onClick: () -> Unit) {

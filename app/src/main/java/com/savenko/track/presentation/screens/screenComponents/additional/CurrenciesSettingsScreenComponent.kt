@@ -63,7 +63,7 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
             Text(
                 text = stringResource(R.string.message_currencies_settings_screen),
                 color = MaterialTheme.colorScheme.onPrimaryContainer,
-                style = MaterialTheme.typography.bodySmall
+                style = MaterialTheme.typography.bodyMedium
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
@@ -117,15 +117,13 @@ fun CurrenciesSettingsScreenComponent(paddingValues: PaddingValues) {
                 }
             }
         }
-
         if (fourthAdditionalCurrency.value != null) {
             Spacer(modifier = Modifier.height(8.dp))
         }
-
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp),
+                .padding(horizontal = 8.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Spacer(modifier = Modifier.weight(1f))

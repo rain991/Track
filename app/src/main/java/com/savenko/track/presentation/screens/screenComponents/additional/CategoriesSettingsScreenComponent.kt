@@ -32,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -181,9 +182,9 @@ fun CategorySettingsChip(
         onClick = { onSelect(category) },
         colors = ButtonColors(
             containerColor = parseColor(hexColor = category.colorId),
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
+            contentColor = Color.White,
             disabledContainerColor = parseColor(hexColor = category.colorId),
-            disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            disabledContentColor = Color.White
         )
     ) {
         Row(
@@ -201,12 +202,7 @@ fun CategorySettingsChip(
                 } else {
                     category.note
                 },
-                style = if (category.note.length < 12) {
-                    MaterialTheme.typography.bodyMedium
-                } else {
-                    MaterialTheme.typography.bodySmall
-                },
-                color = MaterialTheme.colorScheme.onPrimary,
+                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Center,
                 maxLines = 1
             )

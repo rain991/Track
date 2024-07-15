@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -19,15 +20,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-
 import com.savenko.track.R
 import com.savenko.track.data.viewmodels.settingsScreen.category.CategoriesSettingsScreenViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.category.NewCategoryViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoriesTypes
-import com.savenko.track.presentation.screens.screenComponents.additional.CategoriesSettingsScreenComponent
 import com.savenko.track.presentation.components.dialogs.newCategoryDialog.NewCategoryDialog
 import com.savenko.track.presentation.components.screenRelated.SettingsSpecifiedScreenHeader
 import com.savenko.track.presentation.navigation.Screen
+import com.savenko.track.presentation.screens.screenComponents.additional.CategoriesSettingsScreenComponent
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -40,7 +40,7 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
     var isAddingNewCategoryDialogVisible by remember { mutableStateOf(false) }
     var categoryAlreadyExistDialogError by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
-    androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
+    Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             SettingsSpecifiedScreenHeader(stringResource(id = R.string.categories)) {
                 navController.navigate(Screen.MainScreen.route)

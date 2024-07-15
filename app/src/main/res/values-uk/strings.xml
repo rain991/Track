@@ -177,4 +177,5 @@
     <string name="non_categorised_incomes_error_BS">Виберіть категорію групування для некатегоризованих доходів</string>
     <string name="login_screen">Екран базових налаштувань</string>
     <string name="edit_personal_info">Зміни персональні дані</string>
+    <string name="delete_financial_item_CD">Видали фінансовий елемент</string>
 </resources>
