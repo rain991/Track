@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -54,6 +55,7 @@ import com.savenko.track.data.other.converters.dates.areDatesSame
 import com.savenko.track.data.other.converters.dates.areYearsSame
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
+import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.other.getMonthResID
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
@@ -156,25 +158,18 @@ fun MainScreenLazyColumn(
                 EmptyMainLazyColumnPlacement(isExpenseLazyColumn = isExpenseLazyColumn)
             } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-                    items(
-                        if (isExpenseLazyColumn) {
-                            expensesList.size
-                        } else {
-                            incomeList.size
-                        }
-                    ) { index ->
-                        val currentFinancialEntity = if (isExpenseLazyColumn) {
-                            expensesList[index]
-                        } else {
-                            incomeList[index]
-                        }
+                    itemsIndexed(items = if (isExpenseLazyColumn) {
+                        expensesList
+                    } else {
+                        incomeList
+                    },  key = { index, item: FinancialEntity -> item.id }
+                    ) {  index, currentFinancialEntity ->
                         val currentFinancialCategory =
                             if (isExpenseLazyColumn) {
                                 expenseCategoriesList.find { it.categoryId == currentFinancialEntity.categoryId }
                             } else {
                                 incomeCategoriesList.find { it.categoryId == currentFinancialEntity.categoryId }
                             }
-
                         var isPreviousDayDifferent = index == 0
                         var isNextDayDifferent = false
                         var isPreviousYearDifferent = false
@@ -331,7 +326,6 @@ private fun Transactions(isExpenseLazyColumn: Boolean, toggleIsExpenseLazyColumn
         } else {
             Arrangement.Start
         },
-
         verticalAlignment = Alignment.CenterVertically
     ) {
         AnimatedContent(

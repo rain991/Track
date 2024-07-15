@@ -9,6 +9,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
@@ -20,9 +23,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainTrackScreenExpandedComponent(paddingValues: PaddingValues, bottomSheetViewModel: BottomSheetViewModel) {
     val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
-    val financialLazyColumnState = financialsLazyColumnViewModel.financialLazyColumnState.collectAsState()
-    val isExpenseLazyColumn = financialLazyColumnState.value.isExpenseLazyColumn
-    val isScrolledBelow = financialLazyColumnState.value.isScrolledBelow
+    val financialLazyColumnState by financialsLazyColumnViewModel.financialLazyColumnState.collectAsState()
+    val isExpenseLazyColumnFlow = remember { derivedStateOf { financialLazyColumnState.isExpenseLazyColumn } }
+    val isScrolledBelow = remember { derivedStateOf { financialLazyColumnState.isScrolledBelow }}
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -38,15 +41,15 @@ fun MainTrackScreenExpandedComponent(paddingValues: PaddingValues, bottomSheetVi
             TrackScreenFeed()
             Spacer(modifier = Modifier.weight(0.2f))
             TrackScreenInfoCards(
-                isScrolledBelow = isScrolledBelow,
-                isExpenseCardSelected = isExpenseLazyColumn,
+                isScrolledBelow = isScrolledBelow.value,
+                isExpenseCardSelected = isExpenseLazyColumnFlow.value,
                 onExpenseCardClick = {
-                    if (!isExpenseLazyColumn) {
+                    if (!isExpenseLazyColumnFlow.value) {
                         financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
                     }
                 },
                 onIncomeCardClick = {
-                    if (isExpenseLazyColumn) {
+                    if (isExpenseLazyColumnFlow.value) {
                         financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
                     }
                 })

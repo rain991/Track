@@ -78,7 +78,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
         ) {
             val chartColors =
                 listOf(MaterialTheme.colorScheme.primary, MaterialTheme.colorScheme.onPrimary)
-            if (chartData.size <= 1) {
+            if (chartData.size <= 1 || chartData.any { it.value.isNaN() }) {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
                     Text(
                         text = stringResource(R.string.warning_track_statistic_chart),
