@@ -50,7 +50,7 @@ import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsVi
 import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
-import com.savenko.track.domain.usecases.crud.categoriesRelated.AddCategoryUseCase
+import com.savenko.track.domain.usecases.crud.categoriesRelated.CreateCategoryUseCase
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
 import com.savenko.track.domain.usecases.crud.financials.DeleteFinancialItemUseCase
@@ -136,7 +136,7 @@ val domainModule = module {
     factory<UpdateUserDataUseCase> { UpdateUserDataUseCase(get()) }
     factory<AddExpenseItemUseCase> { AddExpenseItemUseCase(get()) }
     factory<AddIncomeItemUseCase> { AddIncomeItemUseCase(get()) }
-    factory<AddCategoryUseCase> { AddCategoryUseCase(get(), get()) }
+    factory<CreateCategoryUseCase> { CreateCategoryUseCase(get(), get()) }
     factory<CreateIdeaUseCase> { CreateIdeaUseCase(get()) }
     factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get(), get()) }
     factory<DeleteFinancialItemUseCase> { DeleteFinancialItemUseCase(get(), get()) }

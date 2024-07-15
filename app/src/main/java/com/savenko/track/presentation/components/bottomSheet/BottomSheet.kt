@@ -59,6 +59,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
+import com.savenko.track.data.other.constants.FINANCIAL_NOTE_MAX_LENGTH
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
@@ -181,7 +182,7 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                         val text = bottomSheetViewState.value.note
                         Box(modifier = Modifier.padding(start = 8.dp)) {
                             GradientInputTextField(value = text, label = stringResource(R.string.your_note_adding_exp)) {
-                                bottomSheetViewModel.setNote(it)
+                                if(it.length < FINANCIAL_NOTE_MAX_LENGTH) bottomSheetViewModel.setNote(it)
                             }
                         }
                         Spacer(Modifier.height(16.dp))

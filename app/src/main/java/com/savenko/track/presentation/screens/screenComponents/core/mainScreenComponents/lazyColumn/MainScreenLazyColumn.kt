@@ -75,21 +75,22 @@ fun MainScreenLazyColumn(
     switchBottomSheetToExpenses: () -> Unit,
     switchBottomSheetToIncomes: () -> Unit,
 ) {
-    val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
-    val isExpenseLazyColumn = financialsLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
-    val expensesList = financialsLazyColumnViewModel.expensesList
-    val expenseCategoriesList = financialsLazyColumnViewModel.expenseCategoriesList
-    val incomeList = financialsLazyColumnViewModel.incomeList
-    val incomeCategoriesList = financialsLazyColumnViewModel.incomeCategoriesList
+    val coroutineScope = rememberCoroutineScope()
     val listState = rememberLazyListState()
-    val expandedItem = financialsLazyColumnViewModel.expandedFinancialEntity.collectAsState()
+    val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
+    val lazyColumnState = financialsLazyColumnViewModel.financialLazyColumnState.collectAsState()
+    val isExpenseLazyColumn = lazyColumnState.value.isExpenseLazyColumn
+    val expensesList = lazyColumnState.value.expensesList
+    val expenseCategoriesList = lazyColumnState.value.expenseCategoriesList
+    val incomeList = lazyColumnState.value.incomeList
+    val incomeCategoriesList = lazyColumnState.value.incomeCategoriesList
+    val expandedItem = lazyColumnState.value.expandedFinancialEntity
+    val isScrolledBelow = lazyColumnState.value.isScrolledBelow
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE } }
     var isScrollingUp by remember { mutableStateOf(false) }
-    val isScrolledBelowState = financialsLazyColumnViewModel.isScrolledBelow.collectAsState()
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
     val preferableCurrency =
         currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
-    val coroutineScope = rememberCoroutineScope()
     Box {
         Box(
             modifier = Modifier
@@ -126,16 +127,16 @@ fun MainScreenLazyColumn(
         }
         Column {
             if (containsInfoCards) {
-                TrackScreenInfoCards(
-                    financialsLazyColumnViewModel.isExpenseLazyColumn.value,
+                TrackScreenInfoCards(isScrolledBelow = isScrolledBelow,
+                    isExpenseCardSelected = isExpenseLazyColumn,
                     onExpenseCardClick = {
-                        if (!financialsLazyColumnViewModel.isExpenseLazyColumn.value) {
+                        if (!isExpenseLazyColumn) {
                             financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
                             switchBottomSheetToExpenses()
                         }
                     },
                     onIncomeCardClick = {
-                        if (financialsLazyColumnViewModel.isExpenseLazyColumn.value) {
+                        if (isExpenseLazyColumn) {
                             financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
                             switchBottomSheetToIncomes()
                         }
@@ -144,29 +145,31 @@ fun MainScreenLazyColumn(
             Box(
                 modifier = Modifier
                     .wrapContentWidth()
-                    .padding(start = 8.dp, bottom = if (isScrolledBelowState.value) 4.dp else 0.dp)
+                    .padding(start = 8.dp, bottom = if (isScrolledBelow) 4.dp else 0.dp)
             ) {
-                Transactions()
+                Transactions(isExpenseLazyColumn = isExpenseLazyColumn) {
+                    financialsLazyColumnViewModel::toggleIsExpenseLazyColumn.invoke()
+                }
             }
             Spacer(modifier = Modifier.height(4.dp))
-            if ((isExpenseLazyColumn.value && expensesList.isEmpty()) || (!isExpenseLazyColumn.value && incomeList.isEmpty())) {
-                EmptyMainLazyColumnPlacement(isExpenseLazyColumn = isExpenseLazyColumn.value)
+            if ((isExpenseLazyColumn && expensesList.isEmpty()) || (!isExpenseLazyColumn && incomeList.isEmpty())) {
+                EmptyMainLazyColumnPlacement(isExpenseLazyColumn = isExpenseLazyColumn)
             } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
                     items(
-                        if (isExpenseLazyColumn.value) {
+                        if (isExpenseLazyColumn) {
                             expensesList.size
                         } else {
                             incomeList.size
                         }
                     ) { index ->
-                        val currentFinancialEntity = if (isExpenseLazyColumn.value) {
+                        val currentFinancialEntity = if (isExpenseLazyColumn) {
                             expensesList[index]
                         } else {
                             incomeList[index]
                         }
                         val currentFinancialCategory =
-                            if (isExpenseLazyColumn.value) {
+                            if (isExpenseLazyColumn) {
                                 expenseCategoriesList.find { it.categoryId == currentFinancialEntity.categoryId }
                             } else {
                                 incomeCategoriesList.find { it.categoryId == currentFinancialEntity.categoryId }
@@ -176,7 +179,7 @@ fun MainScreenLazyColumn(
                         var isNextDayDifferent = false
                         var isPreviousYearDifferent = false
                         if (index > 0) {
-                            val previousFinancialEntity = if (isExpenseLazyColumn.value) {
+                            val previousFinancialEntity = if (isExpenseLazyColumn) {
                                 expensesList[index - 1]
                             } else {
                                 incomeList[index - 1]
@@ -192,7 +195,7 @@ fun MainScreenLazyColumn(
                                     currentFinancialEntity.date
                                 )
                         }
-                        if (isExpenseLazyColumn.value) {
+                        if (isExpenseLazyColumn) {
                             if (index < expensesList.size - 1) {
                                 isNextDayDifferent = !areDatesSame(
                                     expensesList[index + 1].date,
@@ -256,7 +259,7 @@ fun MainScreenLazyColumn(
                                         )
                                     }
                                     var countOfFinancialEntities by remember { mutableIntStateOf(0) }
-                                    LaunchedEffect(key1 = Unit, key2 = isExpenseLazyColumn.value) {
+                                    LaunchedEffect(key1 = Unit, key2 = isExpenseLazyColumn) {
                                         async {
                                             withContext(Dispatchers.IO) {
                                                 financialsLazyColumnViewModel.requestSummaryInMonthNotion(
@@ -281,7 +284,7 @@ fun MainScreenLazyColumn(
                                     FinancialItemCardTypeSimple(
                                         financialEntity = currentFinancialEntity,
                                         categoryEntity = currentFinancialCategory,
-                                        expanded = (expandedItem.value == currentFinancialEntity),
+                                        expanded = (expandedItem == currentFinancialEntity),
                                         preferableCurrency = preferableCurrency.value,
                                         financialEntityMonthSummary = financialEntityMonthSummary,
                                         countOfFinancialEntities = countOfFinancialEntities,
@@ -292,7 +295,7 @@ fun MainScreenLazyColumn(
                                         },
                                         onClick = {
                                             financialsLazyColumnViewModel.setExpandedExpenseCard(
-                                                if (expandedItem.value != currentFinancialEntity) {
+                                                if (expandedItem != currentFinancialEntity) {
                                                     currentFinancialEntity
                                                 } else {
                                                     null
@@ -313,12 +316,10 @@ fun MainScreenLazyColumn(
 
 
 @Composable
-private fun Transactions() {
+private fun Transactions(isExpenseLazyColumn: Boolean, toggleIsExpenseLazyColumn: () -> Unit) {
     val windowInfo = rememberWindowInfo()
-    val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
-    val isExpenseLazyColumn = financialsLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
     var text by remember { mutableStateOf("") }
-    if (isExpenseLazyColumn.value) {
+    if (isExpenseLazyColumn) {
         text = stringResource(R.string.expenses_lazy_column)
     } else {
         text = stringResource(R.string.incomes_lazy_column)
@@ -340,7 +341,7 @@ private fun Transactions() {
                 slideInVertically { it } togetherWith slideOutVertically { -it }
             }) { text ->
             TextButton(
-                onClick = { financialsLazyColumnViewModel.toggleIsExpenseLazyColumn() }
+                onClick = { toggleIsExpenseLazyColumn() }
             ) {
                 Text(
                     text = text,

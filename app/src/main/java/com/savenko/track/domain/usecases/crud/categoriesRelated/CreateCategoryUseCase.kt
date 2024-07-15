@@ -8,7 +8,7 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class AddCategoryUseCase(
+class CreateCategoryUseCase(
     private val categoriesListRepository: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl
 ) {

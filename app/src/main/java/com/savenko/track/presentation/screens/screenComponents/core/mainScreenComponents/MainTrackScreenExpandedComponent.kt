@@ -20,7 +20,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun MainTrackScreenExpandedComponent(paddingValues: PaddingValues, bottomSheetViewModel: BottomSheetViewModel) {
     val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
-    val isExpenseLazyColumn = financialsLazyColumnViewModel.isExpenseLazyColumn.collectAsState()
+    val financialLazyColumnState = financialsLazyColumnViewModel.financialLazyColumnState.collectAsState()
+    val isExpenseLazyColumn = financialLazyColumnState.value.isExpenseLazyColumn
+    val isScrolledBelow = financialLazyColumnState.value.isScrolledBelow
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -36,21 +38,23 @@ fun MainTrackScreenExpandedComponent(paddingValues: PaddingValues, bottomSheetVi
             TrackScreenFeed()
             Spacer(modifier = Modifier.weight(0.2f))
             TrackScreenInfoCards(
-                isExpenseLazyColumn.value,
+                isScrolledBelow = isScrolledBelow,
+                isExpenseCardSelected = isExpenseLazyColumn,
                 onExpenseCardClick = {
-                    if (!isExpenseLazyColumn.value) {
+                    if (!isExpenseLazyColumn) {
                         financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
                     }
                 },
                 onIncomeCardClick = {
-                    if (isExpenseLazyColumn.value) {
+                    if (isExpenseLazyColumn) {
                         financialsLazyColumnViewModel.toggleIsExpenseLazyColumn()
                     }
                 })
             Spacer(modifier = Modifier.weight(1f))
         }
         Column(modifier = Modifier.weight(1f)) {
-            MainScreenLazyColumn(containsInfoCards = false,
+            MainScreenLazyColumn(
+                containsInfoCards = false,
                 switchBottomSheetToExpenses = { bottomSheetViewModel.setIsAddingExpense(true) },
                 switchBottomSheetToIncomes = { bottomSheetViewModel.setIsAddingExpense(false) })
         }

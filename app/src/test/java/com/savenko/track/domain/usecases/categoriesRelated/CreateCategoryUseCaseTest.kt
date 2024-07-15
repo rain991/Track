@@ -4,7 +4,7 @@ import com.savenko.track.data.implementations.expenses.expenseCategories.Expense
 import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
-import com.savenko.track.domain.usecases.crud.categoriesRelated.AddCategoryUseCase
+import com.savenko.track.domain.usecases.crud.categoriesRelated.CreateCategoryUseCase
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.runBlocking
@@ -15,7 +15,7 @@ import org.junit.jupiter.api.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 
-class AddCategoryUseCaseTest {
+class CreateCategoryUseCaseTest {
     val expenseCategoriesListRepository = mock<ExpensesCategoriesListRepositoryImpl>()
     val incomesCategoriesListRepositoryImpl = mock<IncomesCategoriesListRepositoryImpl>()
 
@@ -30,7 +30,7 @@ class AddCategoryUseCaseTest {
             ExpenseCategory(categoryId = 13, note = "note test", colorId = "sdfsdfsdf")
         Mockito.`when`(expenseCategoriesListRepository.getCategoryById(testCategory.categoryId))
             .thenReturn(testCategory)
-        val useCase = AddCategoryUseCase(
+        val useCase = CreateCategoryUseCase(
             categoriesListRepository = expenseCategoriesListRepository,
             incomesCategoriesListRepositoryImpl = incomesCategoriesListRepositoryImpl
         )
@@ -49,7 +49,7 @@ class AddCategoryUseCaseTest {
         Mockito.`when`(incomesCategoriesListRepositoryImpl.getCategoriesList())
             .thenReturn(flow { emit(testCategoryList) })
 
-        val useCase = AddCategoryUseCase(
+        val useCase = CreateCategoryUseCase(
             categoriesListRepository = expenseCategoriesListRepository,
             incomesCategoriesListRepositoryImpl = incomesCategoriesListRepositoryImpl
         )

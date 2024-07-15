@@ -1,7 +1,6 @@
 package com.savenko.track.data.viewmodels.mainScreen.lazyColumn
 
 import android.util.Range
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.FinancialCardNotesProvider
@@ -12,13 +11,10 @@ import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
-import com.savenko.track.domain.models.expenses.ExpenseCategory
-import com.savenko.track.domain.models.expenses.ExpenseItem
-import com.savenko.track.domain.models.incomes.IncomeCategory
-import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.domain.usecases.crud.financials.DeleteFinancialItemUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserExpensesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserIncomesUseCase
+import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialLazyColumnState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -31,72 +27,61 @@ class FinancialsLazyColumnViewModel(
     private val getUserExpensesUseCase: GetUserExpensesUseCase,
     private val getUserIncomesUseCase: GetUserIncomesUseCase,
     private val deleteFinancialItemUseCase: DeleteFinancialItemUseCase,
-    private val categoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
+    private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
     private val financialCardNotesProvider: FinancialCardNotesProvider
 ) : ViewModel() {
-    private val _expensesList = mutableStateListOf<ExpenseItem>()
-    val expensesList: List<ExpenseItem> = _expensesList
-    private val _expenseCategoriesList = mutableStateListOf<ExpenseCategory>()
-    val expenseCategoriesList: List<ExpenseCategory> = _expenseCategoriesList
-    private val _incomeList = mutableStateListOf<IncomeItem>()
-    val incomeList: List<IncomeItem> = _incomeList
-    private val _incomeCategoriesList = mutableStateListOf<IncomeCategory>()
-    val incomeCategoriesList: List<IncomeCategory> = _incomeCategoriesList
-
-    private val _isScrolledBelow = MutableStateFlow(value = false)
-    val isScrolledBelow = _isScrolledBelow.asStateFlow()
-
-    private val _expandedFinancialEntity: MutableStateFlow<FinancialEntity?> = MutableStateFlow(value = null)
-    val expandedFinancialEntity = _expandedFinancialEntity.asStateFlow()
-
-    private val _isExpenseLazyColumn = MutableStateFlow(value = true)
-    val isExpenseLazyColumn = _isExpenseLazyColumn.asStateFlow()
+    private val _financialLazyColumnState =
+        MutableStateFlow(
+            FinancialLazyColumnState(
+                isScrolledBelow = false,
+                expandedFinancialEntity = null,
+                isExpenseLazyColumn = true
+            )
+        )
+    val financialLazyColumnState = _financialLazyColumnState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            categoriesListRepositoryImpl.getCategoriesList().collect {
-                _expenseCategoriesList.clear()
-                _expenseCategoriesList.addAll(it)
+            expensesCategoriesListRepositoryImpl.getCategoriesList().collect { listOfExpenseCategories ->
+                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expenseCategoriesList = listOfExpenseCategories) }
             }
         }
         viewModelScope.launch {
-            getUserExpensesUseCase().collect {
-                _expensesList.clear()
-                _expensesList.addAll(it)
+            getUserExpensesUseCase().collect { listOfExpenses ->
+                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expensesList = listOfExpenses) }
             }
         }
         viewModelScope.launch {
-            getUserIncomesUseCase().collect {
-                _incomeList.clear()
-                _incomeList.addAll(it)
+            getUserIncomesUseCase().collect { incomeList ->
+                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomeList = incomeList) }
             }
         }
         viewModelScope.launch {
-            incomesCategoriesListRepositoryImpl.getCategoriesList().collect {
-                _incomeCategoriesList.clear()
-                _incomeCategoriesList.addAll(it)
+            incomesCategoriesListRepositoryImpl.getCategoriesList().collect { incomeCategoriesList ->
+                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomeCategoriesList = incomeCategoriesList) }
             }
         }
     }
 
     fun setExpandedExpenseCard(value: FinancialEntity?) {
-        _expandedFinancialEntity.update { value }
+        _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expandedFinancialEntity = value) }
     }
 
     fun setScrolledBelow(firstVisibleIndex: Int) {
-        if (isExpenseLazyColumn.value) {
-            _isScrolledBelow.update { firstVisibleIndex != 0 && _expensesList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE }
+        if (_financialLazyColumnState.value.isExpenseLazyColumn) {
+            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.expensesList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE) }
         } else {
-            _isScrolledBelow.update { firstVisibleIndex != 0 && _incomeList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE }
+            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.incomeList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE) }
         }
     }
 
     fun toggleIsExpenseLazyColumn() {
-        _isExpenseLazyColumn.value = !_isExpenseLazyColumn.value
+        _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isExpenseLazyColumn = !_financialLazyColumnState.value.isExpenseLazyColumn) }
+        //_isExpenseLazyColumn.value = !_isExpenseLazyColumn.value
     }
 
-    suspend fun deleteFinancialItem(financialEntity: FinancialEntity){
+    suspend fun deleteFinancialItem(financialEntity: FinancialEntity) {
         deleteFinancialItemUseCase(financialEntity)
     }
 
