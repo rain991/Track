@@ -77,6 +77,9 @@ class CurrenciesSettingsViewModel(
     }
 
     suspend fun onEvent(event: CurrenciesSettingsScreenEvent) {
+        if (_currenciesSettingsScreenState.value.error is CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse) {
+            clearErrorMessage()
+        }
         when (event) {
             is CurrenciesSettingsScreenEvent.SetPreferableCurrency -> {
                 setCurrency(currency = event.currency, position = CurrenciesOptions.PREFERABLE)
@@ -168,7 +171,7 @@ class CurrenciesSettingsViewModel(
         }
     }
 
-    fun clearErrorMessage() {
+    private fun clearErrorMessage() {
         _currenciesSettingsScreenState.update { _currenciesSettingsScreenState.value.copy(error = null) }
     }
 

@@ -216,5 +216,7 @@
     <string name="login_screen">Login Bildschirm</string>
     <string name="edit_personal_info">persönliche Informationen bearbeiten</string>
     <string name="delete_financial_item_CD">Finanzposten löschen</string>
+    <string name="currency_in_use_error">%1$s wird bereits verwendet</string>
+    <string name="changing_preferable_currency_error">Fehler beim Ändern der bevorzugten Währung</string>
 
 </resources>

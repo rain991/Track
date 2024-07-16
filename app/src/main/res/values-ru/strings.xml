@@ -178,4 +178,6 @@
     <string name="login_screen">Экран базовых настроек</string>
     <string name="edit_personal_info">Измени персональные данные</string>
     <string name="delete_financial_item_CD">Удали финансовые элемент</string>
+    <string name="currency_in_use_error">%1$s уже используется</string>
+    <string name="changing_preferable_currency_error">Ошибка при смене валюты</string>
 </resources>

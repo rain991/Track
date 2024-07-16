@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.domain.models.abstractLayer.CurrenciesOptions
+import com.savenko.track.presentation.other.composableTypes.errors.CurrenciesSettingsScreenErrors
 import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences.currenciesSettings.CurrenciesSettingsCurrencyPicker
 import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences.currenciesSettings.CurrenciesSettingsRow
 import com.savenko.track.presentation.screens.states.additional.settings.currenciesSettings.CurrenciesSettingsScreenEvent
@@ -158,6 +159,29 @@ fun CurrenciesSettingsScreenComponent(
                         }
                     }
                 }
+            }
+        }
+        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            when (state.error) {
+                is CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse -> {
+                    val errorTicker = state.error.relatedCurrencyTicker
+                    Text(
+                        text = stringResource(
+                            id = CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse(errorTicker).error,
+                            errorTicker
+                        ),
+                        style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error)
+                    )
+                }
+
+                is CurrenciesSettingsScreenErrors.IncorrectCurrencyConversion -> {
+                    Text(
+                        text = stringResource(id = CurrenciesSettingsScreenErrors.IncorrectCurrencyConversion.error),
+                        style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error)
+                    )
+                }
+
+                null -> {}
             }
         }
     }

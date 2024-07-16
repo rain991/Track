@@ -178,4 +178,6 @@
     <string name="login_screen">Ekran ustawień podstawowych</string>
     <string name="edit_personal_info">Zmień dane personalne</string>
     <string name="delete_financial_item_CD">Usuń pozycję finansową</string>
+    <string name="currency_in_use_error">%1$s jest już w użyciu</string>
+    <string name="changing_preferable_currency_error">Wystąpił błąd podczas zmiany preferowanej waluty</string>
 </resources>
