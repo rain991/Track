@@ -172,6 +172,7 @@
     <string name="aprox_month_income_login_screen">Aprox. month income</string>
     <string name="you_havent_added_incomes_yet_lazy_column">You haven\'t added incomes yet</string>
     <string name="add_expense">Add Expenses</string>
+    <string name="add_incomes">Add Incomes</string>
     <string name="add_new_expense">Add New Expense</string>
     <string name="create_new_category">Create new category</string>
     <string name="category_exist_warning_new_category_dialog">This category already exist</string>
@@ -215,5 +216,9 @@
     <string name="non_categorised_incomes_error_BS">Select grouping category for non-categorised incomes</string>
     <string name="login_screen">Login screen</string>
     <string name="edit_personal_info">edit personal info</string>
+    <string name="delete_financial_item_CD">Delete financial item</string>
+    <string name="currency_in_use_error">%1$s is already in use</string>
+    <string name="changing_preferable_currency_error">Error occured when changing preferable currency</string>
+    <string name="track_version" translatable="false">Track %1$s</string>
 
 </resources>

@@ -12,7 +12,6 @@ import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.screens.states.core.mainScreen.TrackInfoCardsState
 import kotlinx.coroutines.CoroutineStart
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -40,17 +39,17 @@ class TrackScreenInfoCardsViewModel(
         val startOfMonthDate = getStartOfMonthDate(todayDate)
         val endOfMonthDate = getEndOfTheMonth(todayDate)
         viewModelScope.launch(start = CoroutineStart.DEFAULT) {
-            async {
+            launch {
                 expensesCoreRepositoryImpl.getCurrentMonthSumOfExpense().collect {
                     setCurrentMonthExpensesSum(it)
                 }
             }
-            async {
+            launch {
                 currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect {
                     setPreferableCurrency(it)
                 }
             }
-            async {
+            launch {
                 expensesCoreRepositoryImpl.getCountOfExpensesInSpan(
                     startDate = startOfMonthDate,
                     endDate = endOfMonthDate
@@ -59,7 +58,7 @@ class TrackScreenInfoCardsViewModel(
                 }
 
             }
-            async {
+            launch {
                 incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
                     startOfSpan = startOfMonthDate,
                     endOfSpan = endOfMonthDate
@@ -67,7 +66,7 @@ class TrackScreenInfoCardsViewModel(
                     setCurrentMonthIncomesSum(it)
                 }
             }
-            async {
+            launch {
                 incomeCoreRepositoryImpl.getCountOfIncomesInSpan(
                     startDate = startOfMonthDate,
                     endDate = endOfMonthDate

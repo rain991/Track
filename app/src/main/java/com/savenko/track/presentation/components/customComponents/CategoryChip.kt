@@ -19,6 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
@@ -38,15 +39,16 @@ fun CategoryChip(
     chipScale: Float = 1.0f
 ) {
     val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
+    val buttonColor = parseColor(hexColor = category.colorId)
     Button(
         modifier = Modifier
             .wrapContentHeight()
             .scale(chipScale),
         onClick = { onSelect(category) },
         colors = ButtonColors(
-            containerColor = parseColor(hexColor = category.colorId),
+            containerColor = buttonColor,
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledContainerColor = parseColor(hexColor = category.colorId),
+            disabledContainerColor = buttonColor,
             disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         )
     ) {
@@ -60,7 +62,7 @@ fun CategoryChip(
                     imageVector = Icons.Filled.Check,
                     contentDescription = stringResource(R.string.checked_category_add_exp_CD),
                     modifier = Modifier.fillMaxHeight(),
-                    tint = MaterialTheme.colorScheme.onPrimary
+                    tint = Color.White
                 )
             }
             if (isSelected) Spacer(modifier = Modifier.width(4.dp))
@@ -74,13 +76,10 @@ fun CategoryChip(
                 } else {
                     category.note
                 },
-                style = if (category.note.length < 12) {
-                    textStyle
-                } else {
-                    MaterialTheme.typography.bodySmall
-                },
+                style = textStyle,
                 modifier = Modifier.fillMaxHeight(),
-                color = MaterialTheme.colorScheme.onPrimary,
+                color = Color.White
+                ,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Visible,
                 maxLines = 1

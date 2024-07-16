@@ -50,9 +50,10 @@ import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsVi
 import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
-import com.savenko.track.domain.usecases.crud.categoriesRelated.AddCategoryUseCase
+import com.savenko.track.domain.usecases.crud.categoriesRelated.CreateCategoryUseCase
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
+import com.savenko.track.domain.usecases.crud.financials.DeleteFinancialItemUseCase
 import com.savenko.track.domain.usecases.crud.ideasRelated.CreateIdeaUseCase
 import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
 import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
@@ -62,6 +63,7 @@ import com.savenko.track.domain.usecases.userData.financialEntities.specified.Ge
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
 import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
+import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -135,9 +137,10 @@ val domainModule = module {
     factory<UpdateUserDataUseCase> { UpdateUserDataUseCase(get()) }
     factory<AddExpenseItemUseCase> { AddExpenseItemUseCase(get()) }
     factory<AddIncomeItemUseCase> { AddIncomeItemUseCase(get()) }
-    factory<AddCategoryUseCase> { AddCategoryUseCase(get(), get()) }
-    factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get(), get()) }
+    factory<CreateCategoryUseCase> { CreateCategoryUseCase(get(), get()) }
     factory<CreateIdeaUseCase> { CreateIdeaUseCase(get()) }
+    factory<DeleteCategoryUseCase> { DeleteCategoryUseCase(get(), get()) }
+    factory<DeleteFinancialItemUseCase> { DeleteFinancialItemUseCase(get(), get()) }
 
     // User Data
     factory<GetUserExpensesUseCase> { GetUserExpensesUseCase(get()) }
@@ -146,6 +149,7 @@ val domainModule = module {
     factory<GetDesiredExpensesUseCase> { GetDesiredExpensesUseCase(get()) }
     factory<GetDesiredFinancialEntitiesUseCase> { GetDesiredFinancialEntitiesUseCase(get(), get()) }
     factory<GetUnfinishedIdeasUseCase> { GetUnfinishedIdeasUseCase(get()) }
+    factory<ChangePreferableCurrencyUseCase> { ChangePreferableCurrencyUseCase(get(), get(), get(), get()) }
 }
 
 val viewModelModule = module {
@@ -153,8 +157,8 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get(), get()) }
 
     // Settings related
-    viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
-    viewModel { IdeasSettingsScreenViewModel(get()) }
+    viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get()) }
+    viewModel { IdeasSettingsScreenViewModel(get(), get()) }
     viewModel { ThemePreferenceSettingsViewModel(get(), get()) }
     viewModel { CategoriesSettingsScreenViewModel(get(), get(), get()) }
     viewModel { NewCategoryViewModel(get()) }
@@ -163,14 +167,14 @@ val viewModelModule = module {
     viewModel { AdditionalPreferencesSettingsViewModel(get(), get(), get(), get()) }
 
     // Track main screen related
-    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get()) }
+    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
 
     // Statistics related
     viewModel { StatisticChartViewModel(get(), get()) }
     viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
 
     // Bottom sheets
-    viewModel { BottomSheetViewModel(get(), get(), get(), get(), get(),get()) }
+    viewModel { BottomSheetViewModel(get(), get(), get(), get(), get(), get()) }
 
     // Feed related
     viewModel { TrackScreenFeedViewModel(get(), get(), get()) }

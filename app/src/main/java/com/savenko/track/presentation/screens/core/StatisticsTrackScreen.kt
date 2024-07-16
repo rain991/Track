@@ -9,7 +9,7 @@ import com.savenko.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.presentation.components.screenRelated.Header
-import com.savenko.track.presentation.components.customComponents.ExtendedButtonExample
+import com.savenko.track.presentation.components.customComponents.MainScreenFloatingActionButton
 import com.savenko.track.presentation.screens.screenComponents.core.statisticsScreen.StatisticsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -24,7 +24,7 @@ fun StatisticsTrackScreen() {
             if (isPageNameVisible.value) Header(pageName = stringResource(R.string.statistic))
         },
         floatingActionButton = {
-            ExtendedButtonExample(isButtonExpanded = false, onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
+            MainScreenFloatingActionButton(isButtonExpanded = false, onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
         }
     ) { innerPadding ->
         StatisticsScreenComponent(innerPadding = innerPadding)

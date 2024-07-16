@@ -171,6 +171,7 @@
     <string name="aprox_month_income_login_screen">Ingreso mensual aprox.</string>
     <string name="you_havent_added_incomes_yet_lazy_column">Aún no has agregado ingresos</string>
     <string name="add_expense">Agregar gasto</string>
+    <string name="add_incomes">Añadir ingresos</string>
     <string name="add_new_expense">Agregar nuevo gasto</string>
     <string name="create_new_category">Crear nueva categoría</string>
     <string name="category_exist_warning_new_category_dialog">Esta categoría ya existe</string>
@@ -214,5 +215,8 @@
     <string name="non_categorised_incomes_error_BS">Seleccione categoría de agrupación para ingresos no categorizados</string>
     <string name="login_screen">Pantalla de inicio de sesión</string>
     <string name="edit_personal_info">editar información personal</string>
+    <string name="delete_financial_item_CD">Suprimir partida financiera</string>
+    <string name="currency_in_use_error">%1$s ya está en uso</string>
+    <string name="changing_preferable_currency_error">Se produjo un error al cambiar la moneda preferible</string>
 
 </resources>

@@ -133,6 +133,7 @@
     <string name="aprox_month_income_login_screen">Miesięczny dochód</string>
     <string name="you_havent_added_incomes_yet_lazy_column">Nie dodałeś jeszcze żadnego dochodu</string>
     <string name="add_expense">Dodaj wydatek</string>
+    <string name="add_incomes">Dodaj dochody</string>
     <string name="add_new_expense">Dodaj nowy wydatek</string>
     <string name="create_new_category">Stwórz kategorie</string>
     <string name="category_exist_warning_new_category_dialog">Ta kategoria już istnieje</string>
@@ -176,4 +177,7 @@
     <string name="non_categorised_incomes_error_BS">Wybierz kategorię grupowania dla dochodów niekategoryzowanych</string>
     <string name="login_screen">Ekran ustawień podstawowych</string>
     <string name="edit_personal_info">Zmień dane personalne</string>
+    <string name="delete_financial_item_CD">Usuń pozycję finansową</string>
+    <string name="currency_in_use_error">%1$s jest już w użyciu</string>
+    <string name="changing_preferable_currency_error">Wystąpił błąd podczas zmiany preferowanej waluty</string>
 </resources>

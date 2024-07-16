@@ -90,4 +90,9 @@ class CurrenciesRatesHandler(
             INCORRECT_CONVERSION_RESULT
         }
     }
+
+    override suspend fun getCurrencyByTicker(ticker: String?): Currency? {
+        if(ticker == null) return null
+        return currencyDao.getCurrencyByTicker(ticker)
+    }
 }

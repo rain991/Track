@@ -1,24 +1,40 @@
 package com.savenko.track.presentation.screens.additional.settingsScreens
 
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.savenko.track.R
-import com.savenko.track.presentation.screens.screenComponents.additional.CurrenciesSettingsScreenComponent
+import com.savenko.track.data.viewmodels.settingsScreen.currencies.CurrenciesSettingsViewModel
 import com.savenko.track.presentation.components.screenRelated.SettingsSpecifiedScreenHeader
 import com.savenko.track.presentation.navigation.Screen
+import com.savenko.track.presentation.screens.screenComponents.additional.CurrenciesSettingsScreenComponent
+import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun CurrenciesSettingsScreen(navController: NavHostController) {
-    androidx.compose.material3.Scaffold(modifier = Modifier.fillMaxSize(),
+    val coroutineScope = rememberCoroutineScope()
+    val currenciesSettingsScreenViewModel = koinViewModel<CurrenciesSettingsViewModel>()
+    val screenState = currenciesSettingsScreenViewModel.currenciesSettingsScreenState.collectAsState()
+    Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             SettingsSpecifiedScreenHeader(stringResource(id = R.string.currencies)) {
                 navController.navigate(Screen.MainScreen.route)
             }
         }
     ) {
-        CurrenciesSettingsScreenComponent(paddingValues = it)
+        CurrenciesSettingsScreenComponent(
+            paddingValues = it,
+            state = screenState.value
+        ) {
+            coroutineScope.launch {
+                currenciesSettingsScreenViewModel.onEvent(it)
+            }
+        }
     }
 }

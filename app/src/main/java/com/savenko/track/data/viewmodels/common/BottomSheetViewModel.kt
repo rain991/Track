@@ -61,7 +61,7 @@ class BottomSheetViewModel(
         .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
     private val fourthAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFourthAdditionalCurrency()
         .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
-    private val listOfCurrencies = listOf(
+    val listOfCurrencies = listOf(
         preferableCurrency,
         firstAdditionalCurrency,
         secondAdditionalCurrency,
@@ -219,6 +219,11 @@ class BottomSheetViewModel(
     fun toggleIsAddingExpense() {
         _bottomSheetViewState.value =
             bottomSheetViewState.value.copy(isAddingExpense = !_bottomSheetViewState.value.isAddingExpense)
+    }
+
+    fun setIsAddingExpense(value : Boolean) {
+        _bottomSheetViewState.value =
+            bottomSheetViewState.value.copy(isAddingExpense = value)
     }
 
     fun setDatePicked(neededDate: LocalDate) {

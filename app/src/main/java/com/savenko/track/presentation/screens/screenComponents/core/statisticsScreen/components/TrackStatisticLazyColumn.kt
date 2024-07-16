@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -126,10 +127,7 @@ fun TrackStatisticLazyColumn(
             EmptyStatisticLazyColumnPlacement()
         } else {
             LazyColumn(modifier = Modifier.fillMaxWidth(), state = listState) {
-                items(
-                    listOfFinancialEntities.size
-                ) { index: Int ->
-                    val currentFinancialEntity = listOfFinancialEntities[index]
+                items(items = listOfFinancialEntities, key = { item: FinancialEntity -> item.id }) { currentFinancialEntity ->
                     val currentFinancialCategory = if (currentFinancialEntity is ExpenseItem) {
                         listOfExpenseCategories.find { it.categoryId == currentFinancialEntity.categoryId }
                     } else {
@@ -168,15 +166,19 @@ fun TrackStatisticLazyColumn(
                             expanded = false,
                             preferableCurrency = state.value.preferableCurrency,
                             financialEntityMonthSummary = financialEntityMonthSummary,
-                            countOfFinancialEntities = countOfFinancialEntities
-                        ) {
-                            selectedFinancialEntity =
-                                if (currentFinancialEntity == selectedFinancialEntity) {
-                                    null
-                                } else {
-                                    currentFinancialEntity
-                                }
-                        }
+                            countOfFinancialEntities = countOfFinancialEntities,
+                            onDeleteFinancial = {
+
+                            },
+                            onClick = {
+                                selectedFinancialEntity =
+                                    if (currentFinancialEntity == selectedFinancialEntity) {
+                                        null
+                                    } else {
+                                        currentFinancialEntity
+                                    }
+                            }
+                        )
                         Spacer(modifier = Modifier.height(8.dp))
                     }
                 }

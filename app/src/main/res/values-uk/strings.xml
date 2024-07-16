@@ -133,6 +133,7 @@
     <string name="aprox_month_income_login_screen">Приблизний місячний дохід</string>
     <string name="you_havent_added_incomes_yet_lazy_column">Ви ще не добавили жодного доходу</string>
     <string name="add_expense">Добавити витрату</string>
+    <string name="add_incomes">Додайте доходи</string>
     <string name="add_new_expense">Добавити нову витрату</string>
     <string name="create_new_category">Створи нову категорію</string>
     <string name="category_exist_warning_new_category_dialog">Ця категорія вже існує</string>
@@ -176,4 +177,7 @@
     <string name="non_categorised_incomes_error_BS">Виберіть категорію групування для некатегоризованих доходів</string>
     <string name="login_screen">Екран базових налаштувань</string>
     <string name="edit_personal_info">Зміни персональні дані</string>
+    <string name="delete_financial_item_CD">Видали фінансовий елемент</string>
+    <string name="currency_in_use_error">%1$s уже використовується</string>
+    <string name="changing_preferable_currency_error">Сталася помилка при зміні валюти</string>
 </resources>

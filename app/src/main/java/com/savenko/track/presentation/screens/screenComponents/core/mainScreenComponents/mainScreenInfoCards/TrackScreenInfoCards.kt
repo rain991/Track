@@ -36,25 +36,23 @@ import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.data.viewmodels.mainScreen.feedCards.TrackScreenInfoCardsViewModel
-import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import org.koin.androidx.compose.koinViewModel
 
 /*  Contains 2 additional cards above lazy column in main screen. Those card show overall stats about expenses and income relatively.   */
 @Composable
 fun TrackScreenInfoCards(
+    isScrolledBelow: Boolean,
     isExpenseCardSelected: Boolean = true,
     onExpenseCardClick: () -> Unit,
     onIncomeCardClick: () -> Unit
 ) {
     val viewModel = koinViewModel<TrackScreenInfoCardsViewModel>()
     val screenState = viewModel.cardsState.collectAsState()
-    val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
-    val isScrolledBelow = financialsLazyColumnViewModel.isScrolledBelow.collectAsState()
     LaunchedEffect(key1 = Unit) {
         viewModel.initializeValues()
     }
-    AnimatedVisibility(visible = !isScrolledBelow.value) {
+    AnimatedVisibility(visible = !isScrolledBelow) {
         val gradientColor1 = MaterialTheme.colorScheme.primary
         val gradientColor2 = MaterialTheme.colorScheme.tertiary
         val borderBrush = remember {
@@ -90,7 +88,13 @@ fun TrackScreenInfoCards(
                     .height(120.dp)
                     .weight(0.5f)
                     .padding(start = 8.dp, end = 8.dp, top = 8.dp)
-                    .border(width = expenseCardBorderWidth.dp, borderBrush, RoundedCornerShape(8.dp))
+                    .then(
+                        if (expenseCardBorderWidth > 0) Modifier.border(
+                            width = expenseCardBorderWidth.dp,
+                            borderBrush,
+                            RoundedCornerShape(8.dp)
+                        ) else Modifier
+                    )
                     .clickable {
                         onExpenseCardClick()
                     },
@@ -171,7 +175,13 @@ fun TrackScreenInfoCards(
                     .height(120.dp)
                     .weight(0.5f)
                     .padding(start = 8.dp, end = 8.dp, top = 8.dp)
-                    .border(width = incomeCardBorderWidth.dp, borderBrush, RoundedCornerShape(8.dp))
+                    .then(
+                        if (incomeCardBorderWidth > 0.0f) Modifier.border(
+                            width = incomeCardBorderWidth.dp,
+                            borderBrush,
+                            RoundedCornerShape(8.dp)
+                        ) else Modifier
+                    )
                     .clickable {
                         onIncomeCardClick()
                     },
