@@ -127,7 +127,13 @@ fun TrackStatisticLazyColumn(
             EmptyStatisticLazyColumnPlacement()
         } else {
             LazyColumn(modifier = Modifier.fillMaxWidth(), state = listState) {
-                items(items = listOfFinancialEntities, key = { item: FinancialEntity -> item.id }) { currentFinancialEntity ->
+                items(items = listOfFinancialEntities, key = { item: FinancialEntity ->
+                    if (item is ExpenseItem) {
+                        item.id
+                    }else {
+                        -item.id
+                    }
+                }) { currentFinancialEntity ->
                     val currentFinancialCategory = if (currentFinancialEntity is ExpenseItem) {
                         listOfExpenseCategories.find { it.categoryId == currentFinancialEntity.categoryId }
                     } else {
