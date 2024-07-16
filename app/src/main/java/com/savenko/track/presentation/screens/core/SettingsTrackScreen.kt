@@ -1,6 +1,5 @@
 package com.savenko.track.presentation.screens.core
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -8,7 +7,6 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.navigation.NavHostController
 import com.savenko.track.R
@@ -29,7 +27,7 @@ fun SettingsTrackScreen(navHostController: NavHostController) {
     val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
-    val toastState = currenciesSettingsViewModel.toastStateFlow.collectAsState()
+//    val toastState = currenciesSettingsViewModel.toastStateFlow.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             if (isPageNameVisible.value) Header(pageName = stringResource(R.string.settings))
@@ -41,10 +39,10 @@ fun SettingsTrackScreen(navHostController: NavHostController) {
         }
     ) {
         BottomSheet(bottomSheetViewModel)
-        if (toastState.value.length > 1) {
-            Toast.makeText(LocalContext.current, toastState.value, Toast.LENGTH_SHORT).show()
-            currenciesSettingsViewModel.clearToastMessage()
-        }
+//        if (toastState.value.length > 1) {
+//            Toast.makeText(LocalContext.current, toastState.value, Toast.LENGTH_SHORT).show()
+//            currenciesSettingsViewModel.clearErrorMessage()
+//        }
         Box(
             modifier = Modifier
                 .padding(it)

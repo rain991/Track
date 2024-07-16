@@ -10,4 +10,5 @@ interface CurrenciesRatesHandler {
     suspend fun convertValueToBasicCurrency(value : Float, currencyTicker: String) : Float
     suspend fun getRateToPreferableCurrency(currency : Currency) : Float
     suspend fun getSumOfValuesIndependentlyFromRate(listOfFinancialEntities : List<FinancialEntity>) : Float
+    suspend fun getCurrencyByTicker(ticker : String?) : Currency?
 }
