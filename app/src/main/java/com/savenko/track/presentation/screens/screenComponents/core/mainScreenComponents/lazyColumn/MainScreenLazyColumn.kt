@@ -48,14 +48,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.savenko.track.R
-import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
 import com.savenko.track.data.other.converters.dates.areDatesSame
 import com.savenko.track.data.other.converters.dates.areYearsSame
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
-import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.other.getMonthResID
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
@@ -65,7 +63,6 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
-import org.koin.compose.koinInject
 import java.time.LocalDate
 
 /*  Contains lazy column used in expense screen. Also contains such private composable functions:
@@ -90,9 +87,6 @@ fun MainScreenLazyColumn(
     val isScrolledBelow = lazyColumnState.value.isScrolledBelow
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE } }
     var isScrollingUp by remember { mutableStateOf(false) }
-    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepository>()
-    val preferableCurrency =
-        currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Box {
         Box(
             modifier = Modifier
@@ -280,7 +274,7 @@ fun MainScreenLazyColumn(
                                         financialEntity = currentFinancialEntity,
                                         categoryEntity = currentFinancialCategory,
                                         expanded = (expandedItem == currentFinancialEntity),
-                                        preferableCurrency = preferableCurrency.value,
+                                        preferableCurrency = lazyColumnState.value.preferableCurrency,
                                         financialEntityMonthSummary = financialEntityMonthSummary,
                                         countOfFinancialEntities = countOfFinancialEntities,
                                         onDeleteFinancial = {
