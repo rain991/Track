@@ -2,13 +2,13 @@ package com.savenko.track.data.viewmodels.settingsScreen.additionalPreferences
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
 import com.savenko.track.data.other.constants.NON_CATEGORY_FINANCIALS_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
+import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
 import com.savenko.track.presentation.screens.states.additional.settings.additionalSettings.AdditionalSettingsState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 class AdditionalPreferencesSettingsViewModel(
     private val updateUserDataUseCase: UpdateUserDataUseCase,
     private val dataStoreManager: DataStoreManager,
-    private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
-    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl
+    private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepository,
+    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository
 ) : ViewModel() {
     private val _additionalPreferencesState =
         MutableStateFlow(

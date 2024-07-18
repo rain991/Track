@@ -1,9 +1,6 @@
 package com.savenko.track.data.core
 
 import android.util.Range
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeItem.IncomeListRepositoryImpl
 import com.savenko.track.data.other.converters.dates.areDatesSame
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
@@ -12,6 +9,9 @@ import com.savenko.track.data.other.converters.dates.getStartOfWeekDate
 import com.savenko.track.data.other.converters.dates.getStartOfYearDate
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.expenses.ExpensesListRepository
+import com.savenko.track.domain.repository.incomes.IncomeListRepository
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
 import com.savenko.track.presentation.other.composableTypes.provideDateRange
 import kotlinx.coroutines.flow.Flow
@@ -22,10 +22,10 @@ import java.util.Date
 
 // Transforms data to understandable for chart format
 class ChartDataProvider(
-    private val incomesListRepositoryImpl: IncomeListRepositoryImpl,
-    private val expensesListRepositoryImpl: ExpensesListRepositoryImpl,
+    private val incomesListRepositoryImpl: IncomeListRepository,
+    private val expensesListRepositoryImpl: ExpensesListRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) {
     suspend fun requestDataForChart(
         financialEntities: FinancialEntities,

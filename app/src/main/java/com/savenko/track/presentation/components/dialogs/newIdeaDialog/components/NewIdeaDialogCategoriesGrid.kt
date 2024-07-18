@@ -17,8 +17,8 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
 import com.savenko.track.presentation.components.customComponents.CategoryChip
 import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
 import org.koin.compose.koinInject
@@ -26,7 +26,7 @@ import org.koin.compose.koinInject
 @Composable
 fun NewIdeaDialogCategoriesGrid(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
-    val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepositoryImpl>()
+    val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepository>()
     val expenseCategoriesList =
         expenseCategoriesListRepositoryImpl.getCategoriesList().collectAsState(initial = listOf())
     val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()

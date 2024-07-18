@@ -1,12 +1,12 @@
 package com.savenko.track.data.core
 
 import com.savenko.track.data.database.currenciesRelated.CurrencyDao
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.models.incomes.IncomeItem
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.currencies.CurrenciesRatesHandler
 import kotlinx.coroutines.flow.first
 
@@ -14,7 +14,7 @@ import kotlinx.coroutines.flow.first
     IMPORTANT : if you use any of those functions remember to check correctness of conversation by checking if result ==  INCORRECT_CONVERSION_RESULT */
 class CurrenciesRatesHandler(
     private val currencyDao: CurrencyDao,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) : CurrenciesRatesHandler {
     override suspend fun convertValueToBasicCurrency(financialEntity: FinancialEntity): Float {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()

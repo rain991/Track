@@ -5,7 +5,7 @@ import com.savenko.track.domain.models.incomes.IncomeItem
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
-interface IncomesListRepository {
+interface IncomeListRepository {
     fun getIncomesList(): Flow<List<IncomeItem>>
     fun getSortedIncomesListDateAsc(): Flow<List<IncomeItem>>
     fun getSortedIncomesListDateDesc(): Flow<List<IncomeItem>>

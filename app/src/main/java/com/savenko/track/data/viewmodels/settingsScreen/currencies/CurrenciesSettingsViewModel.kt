@@ -3,11 +3,11 @@ package com.savenko.track.data.viewmodels.settingsScreen.currencies
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.CurrenciesRatesHandler
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.abstractLayer.CurrenciesOptions
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
 import com.savenko.track.presentation.other.composableTypes.currencies.CurrenciesPreferenceUI
 import com.savenko.track.presentation.other.composableTypes.errors.CurrenciesSettingsScreenErrors
@@ -20,8 +20,8 @@ import kotlinx.coroutines.launch
 
 class CurrenciesSettingsViewModel(
     private val changePreferableCurrencyUseCase: ChangePreferableCurrencyUseCase,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
-    private val currencyListRepositoryImpl: CurrencyListRepositoryImpl,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
+    private val currencyListRepositoryImpl: CurrencyListRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : ViewModel() {
     private val _currenciesSettingsScreenState = MutableStateFlow(

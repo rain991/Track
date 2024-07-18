@@ -3,20 +3,20 @@ package com.savenko.track.data.viewmodels.settingsScreen.category
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.other.constants.LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS
 import com.savenko.track.data.other.constants.LIST_OF_DEFAULT_INCOMES_CATEGORIES_IDS
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
+import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
 import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CategoriesSettingsScreenViewModel(
-    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
-    private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
+    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository,
+    private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepository,
     private val deleteCategoryUseCase: DeleteCategoryUseCase
 ) : ViewModel() {
     private val _listOfExpensesCategories = mutableStateListOf<ExpenseCategory>()

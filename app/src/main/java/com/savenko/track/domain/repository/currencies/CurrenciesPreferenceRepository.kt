@@ -12,10 +12,9 @@ interface CurrenciesPreferenceRepository {
     suspend fun setThirdAdditionalCurrency(currency: Currency?)
     suspend fun setFourthAdditionalCurrency(currency: Currency?)
 
-    fun getPreferableCurrency(): Flow<Currency?>
+    fun getPreferableCurrency(): Flow<Currency>
     fun getFirstAdditionalCurrency(): Flow<Currency?>
     fun getSecondAdditionalCurrency(): Flow<Currency?>
     fun getThirdAdditionalCurrency(): Flow<Currency?>
     fun getFourthAdditionalCurrency(): Flow<Currency?>
-
 }

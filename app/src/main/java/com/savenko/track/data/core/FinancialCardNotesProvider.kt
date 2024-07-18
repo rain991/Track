@@ -1,21 +1,21 @@
 package com.savenko.track.data.core
 
 import android.util.Range
-import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesCoreRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeItem.IncomeCoreRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
+import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
+import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import java.util.Date
 
 class FinancialCardNotesProvider(
-    private val expenseCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
-    private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl
+    private val expenseCoreRepositoryImpl: ExpensesCoreRepository,
+    private val incomeCoreRepositoryImpl: IncomeCoreRepository
 ) {
     suspend fun requestCountNotionForFinancialCard(
         financialEntity: FinancialEntity,

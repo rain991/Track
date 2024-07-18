@@ -7,13 +7,13 @@ import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
 import com.patrykandpatrick.vico.core.cartesian.data.lineSeries
 import com.patrykandpatrick.vico.core.common.data.ExtraStore
 import com.savenko.track.data.core.ChartDataProvider
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
 import com.savenko.track.presentation.screens.states.core.statisticScreen.StatisticChartState
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
@@ -23,7 +23,8 @@ import java.time.LocalDate
 
 class StatisticChartViewModel(
     private val chartDataProvider: ChartDataProvider,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
+    private val currencyListRepositoryImpl: CurrencyListRepository
 ) : ViewModel() {
     val modelProducer = CartesianChartModelProducer.build()
     val xToDateMapKey = ExtraStore.Key<Map<Float, LocalDate>>()
@@ -36,19 +37,25 @@ class StatisticChartViewModel(
                 preferableCurrency = CURRENCY_DEFAULT,
                 specifiedTimePeriod = null,
                 isTimePeriodDialogVisible = false,
-                isChartVisible = true
+                isChartVisible = true,
+                listOfCurrencies = listOf()
             )
         )
     val statisticChartState = _statisticChartState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            async {
+            launch {
                 initializeValues()
             }
-            async {
+            launch {
                 currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect {
                     setPreferableCurrency(it)
+                }
+            }
+            launch {
+                currencyListRepositoryImpl.getCurrencyList().collect { listOfCurrencies ->
+                    _statisticChartState.update { _statisticChartState.value.copy(listOfCurrencies = listOfCurrencies) }
                 }
             }
         }
@@ -129,24 +136,23 @@ class StatisticChartViewModel(
     }
 
     fun setFinancialEntity(value: FinancialEntities) {
-        _statisticChartState.value = _statisticChartState.value.copy(financialEntities = value)
+        _statisticChartState.update { _statisticChartState.value.copy(financialEntities = value) }
     }
 
     fun setTimePeriod(value: StatisticChartTimePeriod) {
-        _statisticChartState.value = _statisticChartState.value.copy(timePeriod = value)
+        _statisticChartState.update { _statisticChartState.value.copy(timePeriod = value) }
     }
 
     fun setSpecifiedTimePeriod(value: Range<LocalDate>?) {
-        _statisticChartState.value = _statisticChartState.value.copy(specifiedTimePeriod = value)
+        _statisticChartState.update { _statisticChartState.value.copy(specifiedTimePeriod = value) }
     }
 
     fun setTimePeriodDialogVisibility(value: Boolean) {
-        _statisticChartState.value =
-            _statisticChartState.value.copy(isTimePeriodDialogVisible = value)
+        _statisticChartState.update { _statisticChartState.value.copy(isTimePeriodDialogVisible = value) }
     }
 
     fun setChartVisibility(value: Boolean) {
-        _statisticChartState.value = _statisticChartState.value.copy(isChartVisible = value)
+        _statisticChartState.update { _statisticChartState.value.copy(isChartVisible = value) }
     }
 
     private fun setDataSet(data: Map<LocalDate, Float>) {
@@ -158,6 +164,6 @@ class StatisticChartViewModel(
     }
 
     private fun setPreferableCurrency(value: Currency) {
-        _statisticChartState.value = _statisticChartState.value.copy(preferableCurrency = value)
+        _statisticChartState.update { _statisticChartState.value.copy(preferableCurrency = value) }
     }
 }

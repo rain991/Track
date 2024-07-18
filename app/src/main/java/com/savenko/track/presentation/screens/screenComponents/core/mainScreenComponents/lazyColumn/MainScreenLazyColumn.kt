@@ -48,7 +48,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.savenko.track.R
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
 import com.savenko.track.data.other.converters.dates.areDatesSame
@@ -56,13 +55,13 @@ import com.savenko.track.data.other.converters.dates.areYearsSame
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.other.getMonthResID
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
 import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.mainScreenInfoCards.TrackScreenInfoCards
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
@@ -81,6 +80,7 @@ fun MainScreenLazyColumn(
     val listState = rememberLazyListState()
     val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
     val lazyColumnState = financialsLazyColumnViewModel.financialLazyColumnState.collectAsState()
+    val currenciesList = lazyColumnState.value.currenciesList
     val isExpenseLazyColumn = lazyColumnState.value.isExpenseLazyColumn
     val expensesList = lazyColumnState.value.expensesList
     val expenseCategoriesList = lazyColumnState.value.expenseCategoriesList
@@ -90,7 +90,7 @@ fun MainScreenLazyColumn(
     val isScrolledBelow = lazyColumnState.value.isScrolledBelow
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE } }
     var isScrollingUp by remember { mutableStateOf(false) }
-    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
+    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepository>()
     val preferableCurrency =
         currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     Box {
@@ -162,8 +162,8 @@ fun MainScreenLazyColumn(
                         expensesList
                     } else {
                         incomeList
-                    },  key = { index, item: FinancialEntity -> item.id }
-                    ) {  index, currentFinancialEntity ->
+                    }, key = { index, item: FinancialEntity -> item.id }
+                    ) { index, currentFinancialEntity ->
                         val currentFinancialCategory =
                             if (isExpenseLazyColumn) {
                                 expenseCategoriesList.find { it.categoryId == currentFinancialEntity.categoryId }
@@ -255,7 +255,7 @@ fun MainScreenLazyColumn(
                                     }
                                     var countOfFinancialEntities by remember { mutableIntStateOf(0) }
                                     LaunchedEffect(key1 = Unit, key2 = isExpenseLazyColumn) {
-                                        async {
+                                        launch {
                                             withContext(Dispatchers.IO) {
                                                 financialsLazyColumnViewModel.requestSummaryInMonthNotion(
                                                     financialEntity = currentFinancialEntity,
@@ -265,7 +265,7 @@ fun MainScreenLazyColumn(
                                                 }
                                             }
                                         }
-                                        async {
+                                        launch {
                                             withContext(Dispatchers.IO) {
                                                 financialsLazyColumnViewModel.requestCountInMonthNotion(
                                                     financialEntity = currentFinancialEntity,
@@ -288,6 +288,7 @@ fun MainScreenLazyColumn(
                                                 financialsLazyColumnViewModel.deleteFinancialItem(it)
                                             }
                                         },
+                                        currenciesList = currenciesList,
                                         onClick = {
                                             financialsLazyColumnViewModel.setExpandedExpenseCard(
                                                 if (expandedItem != currentFinancialEntity) {
@@ -299,6 +300,9 @@ fun MainScreenLazyColumn(
                                         }
                                     )
                                     if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
+                                    if ((isExpenseLazyColumn && index == expensesList.size - 1) || (!isExpenseLazyColumn && index == incomeList.size - 1)) {
+                                        Spacer(modifier = Modifier.height(80.dp))
+                                    }
                                 }
                             }
                         }

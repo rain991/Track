@@ -2,12 +2,12 @@ package com.savenko.track.data.viewmodels.login
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.savenko.track.data.other.constants.BUDGET_DEFAULT
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
 import com.savenko.track.presentation.screens.states.core.loginScreen.LoginScreenState
 import kotlinx.coroutines.CoroutineDispatcher
@@ -22,8 +22,8 @@ import kotlinx.coroutines.withContext
 class LoginViewModel(
     private val updateUserDataUseCase: UpdateUserDataUseCase,
     private val dataStoreManager: DataStoreManager,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
-    private val currencyListRepositoryImpl: CurrencyListRepositoryImpl
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
+    private val currencyListRepositoryImpl: CurrencyListRepository
 ) : ViewModel() {
     var currencyList = listOf<Currency>()
 

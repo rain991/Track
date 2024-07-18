@@ -2,11 +2,11 @@ package com.savenko.track.data.implementations.expenses.expenseItem
 
 import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.database.expensesRelated.ExpenseItemsDAO
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -16,7 +16,7 @@ import java.util.Date
 
 class ExpensesCoreRepositoryImpl(
     private val expenseItemsDao: ExpenseItemsDAO,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : ExpensesCoreRepository {
     override suspend fun getSumOfExpenses(start: Long, end: Long): Flow<Float> = channelFlow {

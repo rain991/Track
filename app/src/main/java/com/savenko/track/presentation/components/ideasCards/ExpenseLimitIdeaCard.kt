@@ -25,13 +25,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.idea.ExpenseLimits
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
 import com.savenko.track.presentation.screens.screenComponents.additional.CategorySettingsChip
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -40,7 +40,7 @@ import org.koin.compose.koinInject
 /*  Contains Card used in expense screen feed to show expense limit entity  */
 @Composable
 fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, preferableCurrency: Currency) {
-    val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepositoryImpl>()
+    val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepository>()
     val localContext = LocalContext.current
     Card(
         modifier = Modifier

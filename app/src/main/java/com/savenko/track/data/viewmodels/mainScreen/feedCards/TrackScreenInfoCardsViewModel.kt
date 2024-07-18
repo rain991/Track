@@ -2,14 +2,14 @@ package com.savenko.track.data.viewmodels.mainScreen.feedCards
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesCoreRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeItem.IncomeCoreRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
+import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import com.savenko.track.presentation.screens.states.core.mainScreen.TrackInfoCardsState
 import kotlinx.coroutines.CoroutineStart
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,9 +19,9 @@ import kotlinx.coroutines.launch
 import java.time.LocalDate
 
 class TrackScreenInfoCardsViewModel(
-    private val expensesCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
-    private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val expensesCoreRepositoryImpl: ExpensesCoreRepository,
+    private val incomeCoreRepositoryImpl: IncomeCoreRepository,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) : ViewModel() {
     private val _cardsState = MutableStateFlow(
         TrackInfoCardsState(

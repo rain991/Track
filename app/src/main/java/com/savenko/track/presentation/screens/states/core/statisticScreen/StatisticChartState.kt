@@ -10,6 +10,7 @@ data class StatisticChartState(
     val chartData: Map<LocalDate, Float> = mapOf(),
     val additionalChartData: Map<LocalDate, Float>? = mapOf(),
     val preferableCurrency: Currency,
+    val listOfCurrencies : List<Currency>,
     val financialEntities: FinancialEntities,
     val timePeriod: StatisticChartTimePeriod,
     val specifiedTimePeriod: Range<LocalDate>?,

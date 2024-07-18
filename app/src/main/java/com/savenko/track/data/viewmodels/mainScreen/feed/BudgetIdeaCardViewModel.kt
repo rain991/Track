@@ -2,10 +2,10 @@ package com.savenko.track.data.viewmodels.mainScreen.feed
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.implementations.ideas.BudgetIdeaCardRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.ideas.uiProviders.BudgetIdeaCardRepository
 import com.savenko.track.presentation.screens.states.additional.ideas.BudgetIdeaCardState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -13,8 +13,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
 class BudgetIdeaCardViewModel(
-    private val budgetIdeaCardRepositoryImpl: BudgetIdeaCardRepositoryImpl,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val budgetIdeaCardRepositoryImpl: BudgetIdeaCardRepository,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) : ViewModel() {
     private val _budgetCardState = MutableStateFlow(
         BudgetIdeaCardState(

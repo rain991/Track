@@ -4,6 +4,7 @@ import com.savenko.track.data.core.ChartDataProvider
 import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.core.FinancialCardNotesProvider
 import com.savenko.track.data.core.PersonalStatsProvider
+import com.savenko.track.data.core.WorkManagerHelper
 import com.savenko.track.data.database.currenciesRelated.CurrenciesPreferenceDao
 import com.savenko.track.data.database.currenciesRelated.CurrencyDao
 import com.savenko.track.data.database.db.ExpensesDB
@@ -50,6 +51,21 @@ import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsVi
 import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
+import com.savenko.track.domain.repository.charts.ChartsRepository
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.currencies.CurrencyListRepository
+import com.savenko.track.domain.repository.expenses.ExpenseItemRepository
+import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
+import com.savenko.track.domain.repository.expenses.ExpensesListRepository
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
+import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaItemRepository
+import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
+import com.savenko.track.domain.repository.ideas.uiProviders.BudgetIdeaCardRepository
+import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
+import com.savenko.track.domain.repository.incomes.IncomeItemRepository
+import com.savenko.track.domain.repository.incomes.IncomeListRepository
+import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
+import com.savenko.track.domain.repository.notes.NotesRepository
 import com.savenko.track.domain.usecases.crud.categoriesRelated.CreateCategoryUseCase
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
@@ -82,36 +98,36 @@ val coreModule = module {
     single<FinancialCardNotesProvider> { FinancialCardNotesProvider(get(), get()) }
     single<ChartDataProvider> { ChartDataProvider(get(), get(), get(), get()) }
     single<PersonalStatsProvider> { PersonalStatsProvider(get(), get(), get()) }
+    single<WorkManagerHelper> { WorkManagerHelper(get(), get()) }
 }
 
 val appModule = module {
     // Expense related
-    single<ExpenseItemRepositoryImpl> { ExpenseItemRepositoryImpl(get()) }
-    single<ExpensesCoreRepositoryImpl> { ExpensesCoreRepositoryImpl(get(), get(), get()) }
-    single<ExpensesListRepositoryImpl> { ExpensesListRepositoryImpl(get()) }
-    single<ExpensesCategoriesListRepositoryImpl> { ExpensesCategoriesListRepositoryImpl(get()) }
+    single<ExpenseItemRepository> { ExpenseItemRepositoryImpl(get()) }
+    single<ExpensesCoreRepository> { ExpensesCoreRepositoryImpl(get(), get(), get()) }
+    single<ExpensesListRepository> { ExpensesListRepositoryImpl(get()) }
+    single<ExpensesCategoriesListRepository> { ExpensesCategoriesListRepositoryImpl(get()) }
 
     // Income related
-    single<IncomeListRepositoryImpl> { IncomeListRepositoryImpl(get()) }
-    single<IncomesCategoriesListRepositoryImpl> { IncomesCategoriesListRepositoryImpl(get()) }
-    single<IncomeItemRepositoryImpl> { IncomeItemRepositoryImpl(get()) }
-    single<IncomeCoreRepositoryImpl> { IncomeCoreRepositoryImpl(get(), get(), get()) }
+    single<IncomeListRepository> { IncomeListRepositoryImpl(get()) }
+    single<IncomesCategoriesListRepository> { IncomesCategoriesListRepositoryImpl(get()) }
+    single<IncomeItemRepository> { IncomeItemRepositoryImpl(get()) }
+    single<IncomeCoreRepository> { IncomeCoreRepositoryImpl(get(), get(), get()) }
 
     // Currencies
-    single<CurrencyListRepositoryImpl> { CurrencyListRepositoryImpl(get()) }
-    single<CurrenciesPreferenceRepositoryImpl> { CurrenciesPreferenceRepositoryImpl(get()) }
+    single<CurrencyListRepository> { CurrencyListRepositoryImpl(get()) }
+    single<CurrenciesPreferenceRepository> { CurrenciesPreferenceRepositoryImpl(get()) }
 
     // Ideas
-    single<IdeaItemRepositoryImpl> { IdeaItemRepositoryImpl(get(), get(), get()) }
-    single<IdeaListRepositoryImpl> {
-        IdeaListRepositoryImpl(get(), get(), get(), get(), get(), get())
-    }
-    single<BudgetIdeaCardRepositoryImpl> { BudgetIdeaCardRepositoryImpl(get(), get()) }
+    single<IdeaItemRepository> { IdeaItemRepositoryImpl(get(), get(), get()) }
+    single<IdeaListRepository> { IdeaListRepositoryImpl(get(), get(), get(), get(), get(), get()) }
+    single<BudgetIdeaCardRepository> { BudgetIdeaCardRepositoryImpl(get(), get()) }
 
     // Statistic related
-    single<ChartsRepositoryImpl> { ChartsRepositoryImpl(get(), get(), get(), get()) }
-    single<NotesRepositoryImpl> { NotesRepositoryImpl(get(), get(), get(), get(), get(), get()) }
+    single<ChartsRepository> { ChartsRepositoryImpl(get(), get(), get(), get()) }
+    single<NotesRepository> { NotesRepositoryImpl(get(), get(), get(), get(), get(), get()) }
 }
+
 
 val databaseModule = module {
     // Income related
@@ -167,10 +183,10 @@ val viewModelModule = module {
     viewModel { AdditionalPreferencesSettingsViewModel(get(), get(), get(), get()) }
 
     // Track main screen related
-    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get(), get(), get()) }
 
     // Statistics related
-    viewModel { StatisticChartViewModel(get(), get()) }
+    viewModel { StatisticChartViewModel(get(), get(), get()) }
     viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
 
     // Bottom sheets
