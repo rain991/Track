@@ -4,10 +4,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.database.ideaRelated.SavingsDao
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.idea.Savings
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -20,7 +20,7 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 
 class AddToSavingIdeaDialogViewModel(
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val savingsDao: SavingsDao,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : ViewModel() {

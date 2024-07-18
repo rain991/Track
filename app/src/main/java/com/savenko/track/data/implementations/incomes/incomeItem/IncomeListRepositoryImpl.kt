@@ -3,11 +3,11 @@ package com.savenko.track.data.implementations.incomes.incomeItem
 import com.savenko.track.data.database.incomeRelated.IncomeDao
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
-import com.savenko.track.domain.repository.incomes.IncomesListRepository
+import com.savenko.track.domain.repository.incomes.IncomeListRepository
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
-class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomesListRepository {
+class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomeListRepository {
     override fun getIncomesList(): Flow<List<IncomeItem>> {
         return incomeDao.getAllIncomes()
     }

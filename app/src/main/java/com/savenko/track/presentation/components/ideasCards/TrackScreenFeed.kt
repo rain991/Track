@@ -16,7 +16,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FEED_CARD_DELAY_ADDITIONAL
 import com.savenko.track.data.other.constants.FEED_CARD_DELAY_FAST
@@ -27,6 +26,7 @@ import com.savenko.track.data.viewmodels.mainScreen.feed.TrackScreenFeedViewMode
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.presentation.components.dialogs.addToSavingIdeaDialog.AddToSavingDialog
 import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.feed.NewIdeaFeedCard
 import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.feed.TrackMainFeedCard
@@ -43,7 +43,7 @@ fun TrackScreenFeed() {
     val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
     val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val addToSavingIdeaDialogViewModel = koinViewModel<AddToSavingIdeaDialogViewModel>()
-    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
+    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepository>()
     val currentIndex = trackScreenFeedViewModel.cardIndex.collectAsState()
     val maxIndex = trackScreenFeedViewModel.maxPagerIndex.collectAsState()
     val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)

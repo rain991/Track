@@ -3,8 +3,6 @@ package com.savenko.track.data.implementations.notes
 import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.savenko.track.data.database.incomeRelated.IncomeDao
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.savenko.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
@@ -14,6 +12,8 @@ import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.data.other.converters.dates.getStartOfWeekDate
 import com.savenko.track.data.other.converters.dates.getStartOfYearDate
 import com.savenko.track.data.other.dataStore.DataStoreManager
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
 import com.savenko.track.domain.repository.notes.NotesRepository
 import kotlinx.coroutines.flow.first
 import java.time.LocalDate
@@ -24,8 +24,8 @@ class NotesRepositoryImpl(
     private val incomeDao: IncomeDao,
     private val expenseItemsDao: ExpenseItemsDAO,
     private val dataStoreManager: DataStoreManager,
-    private val ideaListRepositoryImpl: IdeaListRepositoryImpl,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
+    private val ideaListRepositoryImpl: IdeaListRepository,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : NotesRepository {
     override suspend fun requestSumOfExpensesMonthly(): Float {

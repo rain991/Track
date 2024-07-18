@@ -4,9 +4,9 @@ import android.content.Context
 import androidx.work.ListenableWorker
 import androidx.work.WorkerFactory
 import androidx.work.WorkerParameters
-import com.savenko.track.data.implementations.currencies.CurrencyListRepositoryImpl
+import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 
-class CurrenciesRatesWorkerFactory(private val currencyListRepositoryImpl: CurrencyListRepositoryImpl) : WorkerFactory() {
+class CurrenciesRatesWorkerFactory(private val currencyListRepositoryImpl: CurrencyListRepository) : WorkerFactory() {
     override fun createWorker(
         appContext: Context,
         workerClassName: String,

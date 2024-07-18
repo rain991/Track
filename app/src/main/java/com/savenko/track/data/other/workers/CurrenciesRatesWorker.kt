@@ -5,13 +5,13 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import com.savenko.track.BuildConfig
-import com.savenko.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.savenko.track.data.retrofit.RetrofitClient
+import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import kotlinx.coroutines.flow.first
 import org.koin.core.component.KoinComponent
 
 class CurrenciesRatesWorker(
-    private val currencyListRepositoryImpl: CurrencyListRepositoryImpl,
+    private val currencyListRepositoryImpl: CurrencyListRepository,
     workerContext: Context,
     workerParameters: WorkerParameters
 ) : CoroutineWorker(workerContext, workerParameters), KoinComponent {

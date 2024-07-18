@@ -3,10 +3,10 @@ package com.savenko.track.data.viewmodels.mainScreen.feed
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.implementations.ideas.IdeaItemRepositoryImpl
-import com.savenko.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.models.abstractLayer.createCompletedInstance
+import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaItemRepository
+import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
 import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -19,8 +19,8 @@ import kotlinx.coroutines.launch
 
 class TrackScreenFeedViewModel(
     private val getUnfinishedIdeasUseCase: GetUnfinishedIdeasUseCase,
-    private val ideaListRepositoryImpl: IdeaListRepositoryImpl,
-    private val ideaItemRepositoryImpl: IdeaItemRepositoryImpl
+    private val ideaListRepositoryImpl: IdeaListRepository,
+    private val ideaItemRepositoryImpl: IdeaItemRepository
 ) : ViewModel() {
     private val _ideaList = mutableStateListOf<Idea>()
     val ideaList: List<Idea> = _ideaList

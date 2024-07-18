@@ -34,7 +34,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -50,7 +49,6 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.R
-import com.savenko.track.data.implementations.currencies.CurrencyListRepositoryImpl
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
@@ -61,8 +59,6 @@ import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.colors.parseColor
-import kotlinx.coroutines.flow.first
-import org.koin.compose.koinInject
 import java.util.Calendar
 import java.util.Locale
 
@@ -75,6 +71,7 @@ fun FinancialItemCardTypeSimple(
     expanded: Boolean,
     financialEntityMonthSummary: Float,
     countOfFinancialEntities: Int,
+    currenciesList : List<Currency>,
     preferableCurrency: Currency,
     onClick: () -> Unit,
     onDeleteFinancial: (FinancialEntity) -> Unit
@@ -304,6 +301,7 @@ fun FinancialItemCardTypeSimple(
                 }
                 ExpenseValueCard(
                     financialEntity = financialEntity,
+                    listOfCurrencies = currenciesList,
                     currentCurrencyName = financialEntity.currencyTicker,
                     isExpanded = expanded
                 )
@@ -315,14 +313,10 @@ fun FinancialItemCardTypeSimple(
 @Composable
 private fun ExpenseValueCard(
     financialEntity: FinancialEntity,
+    listOfCurrencies : List<Currency>,
     currentCurrencyName: String,
     isExpanded: Boolean
 ) {
-    val currencyListRepositoryImpl = koinInject<CurrencyListRepositoryImpl>()
-    var listOfCurrencies = listOf<Currency>()
-    LaunchedEffect(key1 = Unit) {
-        listOfCurrencies = currencyListRepositoryImpl.getCurrencyList().first()
-    }
     val currentCurrency =
         listOfCurrencies.firstOrNull { it.ticker == financialEntity.currencyTicker }
     val currencyType = currentCurrency?.type

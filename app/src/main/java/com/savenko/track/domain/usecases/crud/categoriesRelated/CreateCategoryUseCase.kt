@@ -1,16 +1,16 @@
 package com.savenko.track.domain.usecases.crud.categoriesRelated
 
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
+import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class CreateCategoryUseCase(
-    private val categoriesListRepository: ExpensesCategoriesListRepositoryImpl,
-    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl
+    private val categoriesListRepository: ExpensesCategoriesListRepository,
+    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository
 ) {
     suspend operator fun invoke(category: CategoryEntity) {
         withContext(Dispatchers.IO) {

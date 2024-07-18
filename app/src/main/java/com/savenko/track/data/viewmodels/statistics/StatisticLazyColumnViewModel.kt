@@ -5,13 +5,13 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.FinancialCardNotesProvider
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
+import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredExpensesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
@@ -24,8 +24,8 @@ class StatisticLazyColumnViewModel(
     private val getDesiredIncomesUseCase: GetDesiredIncomesUseCase,
     private val getDesiredExpensesUseCase: GetDesiredExpensesUseCase,
     private val getDesiredFinancialEntitiesUseCase: GetDesiredFinancialEntitiesUseCase,
-    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
-    private val expensesCategoriesListRepository: ExpensesCategoriesListRepositoryImpl,
+    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository,
+    private val expensesCategoriesListRepository: ExpensesCategoriesListRepository,
     private val financialCardNotesProvider: FinancialCardNotesProvider
 ) : ViewModel() {
     private val _listOfFilteredFinancialEntities = mutableStateListOf<FinancialEntity>()

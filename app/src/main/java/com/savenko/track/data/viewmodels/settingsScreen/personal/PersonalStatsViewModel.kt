@@ -3,9 +3,9 @@ package com.savenko.track.data.viewmodels.settingsScreen.personal
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.PersonalStatsProvider
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.presentation.screens.states.additional.settings.personalSettings.PersonalStatsState
 import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,7 +15,7 @@ import kotlinx.coroutines.launch
 
 class PersonalStatsViewModel(
     private val personalStatsProvider: PersonalStatsProvider,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) : ViewModel() {
     private val _personalStatsState = MutableStateFlow(
         PersonalStatsState(

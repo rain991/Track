@@ -1,14 +1,14 @@
 package com.savenko.track.data.core
 
-import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesCoreRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeItem.IncomeCoreRepositoryImpl
 import com.savenko.track.data.other.dataStore.DataStoreManager
+import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
+import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 class PersonalStatsProvider(
-    private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl,
-    private val expensesCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
+    private val incomeCoreRepositoryImpl: IncomeCoreRepository,
+    private val expensesCoreRepositoryImpl: ExpensesCoreRepository,
     private val dataStoreManager: DataStoreManager
 ) {
     suspend fun provideAllTimeExpensesSum(): Flow<Float> {

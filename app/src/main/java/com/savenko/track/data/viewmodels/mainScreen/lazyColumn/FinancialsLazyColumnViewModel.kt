@@ -4,13 +4,16 @@ import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.FinancialCardNotesProvider
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
+import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
 import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.currencies.CurrencyListRepository
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
+import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.financials.DeleteFinancialItemUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserExpensesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserIncomesUseCase
@@ -27,16 +30,20 @@ class FinancialsLazyColumnViewModel(
     private val getUserExpensesUseCase: GetUserExpensesUseCase,
     private val getUserIncomesUseCase: GetUserIncomesUseCase,
     private val deleteFinancialItemUseCase: DeleteFinancialItemUseCase,
-    private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
-    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
+    private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepository,
+    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository,
+    private val currencyListRepositoryImpl: CurrencyListRepository,
+    private val currenciesPreferenceRepository: CurrenciesPreferenceRepository,
     private val financialCardNotesProvider: FinancialCardNotesProvider
 ) : ViewModel() {
     private val _financialLazyColumnState =
         MutableStateFlow(
             FinancialLazyColumnState(
+                currenciesList = listOf(),
                 isScrolledBelow = false,
                 expandedFinancialEntity = null,
-                isExpenseLazyColumn = true
+                isExpenseLazyColumn = true,
+                preferableCurrency = CURRENCY_DEFAULT
             )
         )
     val financialLazyColumnState = _financialLazyColumnState.asStateFlow()
@@ -62,6 +69,16 @@ class FinancialsLazyColumnViewModel(
                 _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomeCategoriesList = incomeCategoriesList) }
             }
         }
+        viewModelScope.launch {
+            currencyListRepositoryImpl.getCurrencyList().collect { currenciesList ->
+                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(currenciesList = currenciesList) }
+            }
+        }
+        viewModelScope.launch {
+            currenciesPreferenceRepository.getPreferableCurrency().collect { preferableCurrency ->
+                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(preferableCurrency = preferableCurrency) }
+            }
+        }
     }
 
     fun setExpandedExpenseCard(value: FinancialEntity?) {
@@ -78,7 +95,6 @@ class FinancialsLazyColumnViewModel(
 
     fun toggleIsExpenseLazyColumn() {
         _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isExpenseLazyColumn = !_financialLazyColumnState.value.isExpenseLazyColumn) }
-        //_isExpenseLazyColumn.value = !_isExpenseLazyColumn.value
     }
 
     suspend fun deleteFinancialItem(financialEntity: FinancialEntity) {

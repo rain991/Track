@@ -3,9 +3,6 @@ package com.savenko.track.data.viewmodels.common
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
 import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
@@ -18,6 +15,9 @@ import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
+import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
 import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
@@ -41,9 +41,9 @@ import java.time.LocalDate
 class BottomSheetViewModel(
     private val addExpenseItemUseCase: AddExpenseItemUseCase,
     private val addIncomeItemUseCase: AddIncomeItemUseCase,
-    private val categoryListRepositoryImpl: ExpensesCategoriesListRepositoryImpl,
-    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
+    private val categoryListRepositoryImpl: ExpensesCategoriesListRepository,
+    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val dataStoreManager: DataStoreManager
 ) : ViewModel() {
     private val _expenseCategoryList = mutableStateListOf<ExpenseCategory>()

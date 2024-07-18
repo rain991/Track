@@ -4,8 +4,6 @@ import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.database.ideaRelated.ExpenseLimitsDao
 import com.savenko.track.data.database.ideaRelated.IncomePlansDao
 import com.savenko.track.data.database.ideaRelated.SavingsDao
-import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesCoreRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeItem.IncomeCoreRepositoryImpl
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
 import com.savenko.track.domain.models.abstractLayer.Idea
@@ -13,7 +11,9 @@ import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
+import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
 import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
+import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -26,8 +26,8 @@ class IdeaListRepositoryImpl(
     private val expenseLimitsDao: ExpenseLimitsDao,
     private val incomePlansDao: IncomePlansDao,
     private val savingsDao: SavingsDao,
-    private val expensesCoreRepositoryImpl: ExpensesCoreRepositoryImpl,
-    private val incomeCoreRepositoryImpl: IncomeCoreRepositoryImpl,
+    private val expensesCoreRepositoryImpl: ExpensesCoreRepository,
+    private val incomeCoreRepositoryImpl: IncomeCoreRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : IdeaListRepository {
     override suspend fun getIncomesPlansList(context: CoroutineContext): Flow<List<IncomePlans>> {

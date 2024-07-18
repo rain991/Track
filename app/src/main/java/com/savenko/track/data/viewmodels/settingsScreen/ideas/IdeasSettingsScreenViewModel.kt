@@ -3,13 +3,13 @@ package com.savenko.track.data.viewmodels.settingsScreen.ideas
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
-import com.savenko.track.data.implementations.ideas.IdeaListRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
 import com.savenko.track.presentation.screens.states.additional.settings.ideasSettings.IdeasSettingsScreenState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -20,8 +20,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class IdeasSettingsScreenViewModel(
-    private val ideaListRepositoryImpl: IdeaListRepositoryImpl,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val ideaListRepositoryImpl: IdeaListRepository,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) : ViewModel() {
     private val _listOfAllIdeas = mutableStateListOf<Idea>()
     val listOfAllIdeas: List<Idea> = _listOfAllIdeas

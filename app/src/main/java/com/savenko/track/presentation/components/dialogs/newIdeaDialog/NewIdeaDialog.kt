@@ -38,9 +38,9 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import com.savenko.track.R
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.presentation.components.dialogs.newIdeaDialog.components.NewIdeaDialogInputField
 import com.savenko.track.presentation.components.dialogs.newIdeaDialog.components.dialogInputs.ExpenseLimitsDialogInputs
 import com.savenko.track.presentation.components.dialogs.newIdeaDialog.components.dialogInputs.IncomePlanDialogInputs
@@ -58,7 +58,7 @@ import org.koin.compose.koinInject
 @Composable
 fun NewIdeaDialog(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
     val newIdeaDialogState = newIdeaDialogViewModel.newIdeaDialogState.collectAsState()
-    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepositoryImpl>()
+    val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepository>()
     val coroutineScope = rememberCoroutineScope()
     val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
         .collectAsState(initial = CURRENCY_DEFAULT)

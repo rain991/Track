@@ -58,6 +58,7 @@ fun TrackStatisticLazyColumn(
     val listOfFinancialEntities = statisticLazyColumnViewModel.listOfFilteredFinancialEntities
     val listOfExpenseCategories = statisticLazyColumnViewModel.expenseCategoriesList
     val listOfIncomesCategories = statisticLazyColumnViewModel.incomeCategoriesList
+    val listOfCurrencies = state.value.listOfCurrencies
     val listState = rememberLazyListState()
     Column(modifier = modifier) {
         var text by remember { mutableStateOf("") }
@@ -127,7 +128,13 @@ fun TrackStatisticLazyColumn(
             EmptyStatisticLazyColumnPlacement()
         } else {
             LazyColumn(modifier = Modifier.fillMaxWidth(), state = listState) {
-                items(items = listOfFinancialEntities, key = { item: FinancialEntity -> item.id }) { currentFinancialEntity ->
+                items(items = listOfFinancialEntities, key = { item: FinancialEntity ->
+                    if (item is ExpenseItem) {
+                        item.id
+                    } else {
+                        -item.id
+                    }
+                }) { currentFinancialEntity ->
                     val currentFinancialCategory = if (currentFinancialEntity is ExpenseItem) {
                         listOfExpenseCategories.find { it.categoryId == currentFinancialEntity.categoryId }
                     } else {
@@ -167,9 +174,8 @@ fun TrackStatisticLazyColumn(
                             preferableCurrency = state.value.preferableCurrency,
                             financialEntityMonthSummary = financialEntityMonthSummary,
                             countOfFinancialEntities = countOfFinancialEntities,
-                            onDeleteFinancial = {
-
-                            },
+                            currenciesList = listOfCurrencies,
+                            onDeleteFinancial = { },
                             onClick = {
                                 selectedFinancialEntity =
                                     if (currentFinancialEntity == selectedFinancialEntity) {

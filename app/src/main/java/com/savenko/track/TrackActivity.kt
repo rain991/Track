@@ -1,26 +1,14 @@
 package com.savenko.track
 
-
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.work.Constraints
-import androidx.work.ExistingPeriodicWorkPolicy
-import androidx.work.ExistingWorkPolicy
-import androidx.work.NetworkType
-import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequestBuilder
-import androidx.work.WorkManager
-import androidx.work.workDataOf
-import com.savenko.track.data.implementations.currencies.CurrencyListRepositoryImpl
-import com.savenko.track.data.other.constants.ACCEPTABLE_EMPTY_CURRENCIES_RATES
-import com.savenko.track.data.other.constants.CURRENCIES_RATES_REQUEST_PERIOD
+import com.savenko.track.data.core.WorkManagerHelper
 import com.savenko.track.data.other.constants.PREFERABLE_THEME_DEFAULT
 import com.savenko.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
-import com.savenko.track.data.other.workers.CurrenciesRatesWorker
 import com.savenko.track.presentation.navigation.Navigation
 import com.savenko.track.presentation.themes.ThemeManager
 import com.savenko.track.presentation.themes.getThemeByName
@@ -29,41 +17,18 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import org.koin.android.ext.android.inject
-import java.util.concurrent.TimeUnit
 
 class TrackActivity : ComponentActivity() {
+    private val dataStoreManager: DataStoreManager by inject()
+    private val workManagerHelper: WorkManagerHelper by inject()
+    private var actualLoginCount = 0
+
     override fun onCreate(savedInstanceState: Bundle?) {
         installSplashScreen()
         super.onCreate(savedInstanceState)
-        val dataStoreManager: DataStoreManager by inject()
-        var actualLoginCount = 0
-        CoroutineScope(Dispatchers.IO).launch {
-            actualLoginCount = dataStoreManager.loginCountFlow.first()
-            if (actualLoginCount > 0) dataStoreManager.incrementLoginCount()
-        }
-        val constraints = Constraints.Builder()
-            .setRequiredNetworkType(NetworkType.CONNECTED)
-            .build()
-        val periodicRatesRequest = PeriodicWorkRequestBuilder<CurrenciesRatesWorker>(
-            repeatInterval = CURRENCIES_RATES_REQUEST_PERIOD, repeatIntervalTimeUnit = TimeUnit.DAYS
-        ).setConstraints(constraints).setInputData(workDataOf()).build()
-        val oneTimeRatesRequest =
-            OneTimeWorkRequestBuilder<CurrenciesRatesWorker>().setConstraints(constraints).setInputData(workDataOf())
-                .build()
-        WorkManager.getInstance(applicationContext).enqueueUniquePeriodicWork(
-            "currenciesRateRequest",
-            ExistingPeriodicWorkPolicy.KEEP,
-            periodicRatesRequest
-        )
-        val currencyListRepository: CurrencyListRepositoryImpl by inject()
-        CoroutineScope(Dispatchers.IO).launch {
-            val currencyList = currencyListRepository.getCurrencyList().first()
-            if (currencyList.filter { it.rate != null }.size < currencyList.size.times(ACCEPTABLE_EMPTY_CURRENCIES_RATES)) {
-                WorkManager.getInstance(applicationContext)
-                    .beginUniqueWork("additionalCurrenciesRateRequest", ExistingWorkPolicy.APPEND, oneTimeRatesRequest)
-                    .enqueue()
-            }
-        }
+        handleLoginCounter()
+        workManagerHelper.setupWorkManager()
+        workManagerHelper.checkAndUpdateCurrencyRates()
         setContent {
             val useSystemTheme = dataStoreManager.useSystemTheme.collectAsState(initial = USE_SYSTEM_THEME_DEFAULT)
             val preferableTheme =
@@ -74,6 +39,13 @@ class TrackActivity : ComponentActivity() {
             ) {
                 Navigation(actualLoginCount)
             }
+        }
+    }
+
+    private fun handleLoginCounter() {
+        CoroutineScope(Dispatchers.IO).launch {
+            actualLoginCount = dataStoreManager.loginCountFlow.first()
+            if (actualLoginCount > 0) dataStoreManager.incrementLoginCount()
         }
     }
 }

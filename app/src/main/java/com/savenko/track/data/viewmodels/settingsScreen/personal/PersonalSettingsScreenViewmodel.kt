@@ -2,12 +2,12 @@ package com.savenko.track.data.viewmodels.settingsScreen.personal
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.BUDGET_DEFAULT
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.NAME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -18,7 +18,7 @@ import kotlinx.coroutines.launch
 class PersonalSettingsScreenViewmodel(
     private val updateUserDataUseCase: UpdateUserDataUseCase,
     private val dataStoreManager: DataStoreManager,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) : ViewModel() {
     val userName = dataStoreManager.nameFlow.stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = NAME_DEFAULT)
     val budget = dataStoreManager.budgetFlow.stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = BUDGET_DEFAULT)

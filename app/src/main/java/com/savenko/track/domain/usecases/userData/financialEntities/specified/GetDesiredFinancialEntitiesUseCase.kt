@@ -1,16 +1,16 @@
 package com.savenko.track.domain.usecases.userData.financialEntities.specified
 
 import android.util.Range
-import com.savenko.track.data.implementations.expenses.expenseItem.ExpensesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeItem.IncomeListRepositoryImpl
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
+import com.savenko.track.domain.repository.expenses.ExpensesListRepository
+import com.savenko.track.domain.repository.incomes.IncomeListRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
 import java.util.Date
 
 class GetDesiredFinancialEntitiesUseCase(
-    private val incomeListRepositoryImpl: IncomeListRepositoryImpl,
-    private val expensesListRepositoryImpl: ExpensesListRepositoryImpl
+    private val incomeListRepositoryImpl: IncomeListRepository,
+    private val expensesListRepositoryImpl: ExpensesListRepository
 ) {
     suspend operator fun invoke(timePeriod: Range<Date>): Flow<MutableList<FinancialEntity>> {
         val expenseItemsFlow =

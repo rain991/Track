@@ -2,8 +2,8 @@ package com.savenko.track.data.implementations.incomes.incomeItem
 
 import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.database.incomeRelated.IncomeDao
-import com.savenko.track.data.implementations.currencies.CurrenciesPreferenceRepositoryImpl
 import com.savenko.track.data.other.constants.INCORRECT_CONVERSION_RESULT
+import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
@@ -12,7 +12,7 @@ import java.util.Date
 
 class IncomeCoreRepositoryImpl(
     private val incomeDao: IncomeDao,
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepositoryImpl,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : IncomeCoreRepository {
 
