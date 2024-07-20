@@ -18,7 +18,8 @@ const val INCOME_CATEGORY_GROUPING_ID_DEFAULT = 9
 
 
 // Entities defaults
-val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)
+val CURRENCY_DEFAULT =
+    Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)
 const val DEFAULT_EXPENSE_CATEGORIES_MAX_INDEX = 13
 const val DEFAULT_INCOME_CATEGORIES_MAX_INDEX = 9
 
@@ -29,7 +30,9 @@ const val NAME_MAX_LENGTH = 40
 const val FINANCIAL_NOTE_MAX_LENGTH = 25
 const val MAX_BUDGET_VALUE = Int.MAX_VALUE
 const val MAX_IDEA_VALUE = Int.MAX_VALUE
+const val MAX_FINANCIAL_VALUE = Float.MAX_VALUE
 const val CURRENCIES_RATES_REQUEST_PERIOD = 3L // days
+const val MAX_CIRCULAR_PROGRESS_VALUE = 999f
 
 /*  warning changing this parameter will not increase real max value,
  it is only limit for composables (needed migration in Room from categories IDs parameters to list of categories IDs) */

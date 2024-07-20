@@ -265,4 +265,3 @@ class BottomSheetViewModel(
         _bottomSheetViewState.value = _bottomSheetViewState.value.copy(warningMessage = message)
     }
 }
-

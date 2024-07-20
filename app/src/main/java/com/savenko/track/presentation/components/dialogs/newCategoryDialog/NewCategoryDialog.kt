@@ -41,13 +41,14 @@ import com.savenko.track.data.other.constants.CATEGORIES_NAME_MAX_LENGTH
 import com.savenko.track.domain.models.abstractLayer.CategoriesTypes
 import com.savenko.track.presentation.components.customComponents.GradientInputTextField
 import com.savenko.track.presentation.other.colors.generateRandomColor
+import com.savenko.track.presentation.other.composableTypes.errors.NewCategoryDialogErrors
 import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.themePreferences.CircleWithBorder
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun NewCategoryDialog(
-    categoryAlreadyExistError: Boolean = false,
+    error: NewCategoryDialogErrors? = null,
     onDismissRequest: () -> Unit,
     onAccept: (categoryName: String, categoryType: CategoriesTypes, rawCategoryColor: String) -> Unit
 ) {
@@ -71,7 +72,10 @@ fun NewCategoryDialog(
                     .padding(vertical = 8.dp, horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                    Text(text = stringResource(R.string.create_new_category), style = MaterialTheme.typography.headlineSmall)
+                    Text(
+                        text = stringResource(R.string.create_new_category),
+                        style = MaterialTheme.typography.headlineSmall
+                    )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(modifier = Modifier.fillMaxWidth()) {
@@ -90,7 +94,7 @@ fun NewCategoryDialog(
                                         selected = newCategoryType == categoryType
                                     ) {
                                         Text(
-                                            text = categoryType.name,
+                                            text = stringResource(id = categoryType.nameStringRes),
                                             style = MaterialTheme.typography.labelMedium,
                                             overflow = TextOverflow.Ellipsis
                                         )
@@ -101,8 +105,8 @@ fun NewCategoryDialog(
                         GradientInputTextField(value = newCategoryName, label = "Category name") {
                             if (it.length < CATEGORIES_NAME_MAX_LENGTH) newCategoryName = it
                         }
-                        if (categoryAlreadyExistError) {
-                            Text(text = stringResource(R.string.category_exist_warning_new_category_dialog), style = MaterialTheme.typography.labelSmall)
+                        if (error is NewCategoryDialogErrors.CategoryAlreadyExist) {
+                            Text(text = stringResource(error.error), style = MaterialTheme.typography.labelSmall)
                         }
                     }
                     Spacer(modifier = Modifier.width(16.dp))

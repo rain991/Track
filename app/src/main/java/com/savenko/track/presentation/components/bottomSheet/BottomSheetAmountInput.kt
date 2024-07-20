@@ -39,6 +39,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
+import com.savenko.track.data.other.constants.MAX_FINANCIAL_VALUE
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
@@ -56,7 +57,8 @@ fun BottomSheetAmountInput(
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     val currentInputValue = bottomSheetViewState.value.inputValue
     val listOfCurrencies = bottomSheetViewModel.listOfCurrencies.filter { it.value != null }
-    val currentSelectedCurrency = bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
+    val currentSelectedCurrency =
+        bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
@@ -79,13 +81,21 @@ fun BottomSheetAmountInput(
                 onValueChange = { newText ->
                     bottomSheetViewModel.setInputValue(
                         try {
-                            newText.toFloat()
+                            val newValue = newText.toFloat()
+                            if (newValue < MAX_FINANCIAL_VALUE) {
+                                newValue
+                            } else {
+                                0.0f
+                            }
                         } catch (e: NumberFormatException) {
                             currentInputValue ?: 0.0f
                         }
                     )
                 },
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number, imeAction = ImeAction.Done),
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
                 keyboardActions = KeyboardActions(
                     onDone = {
                         controller?.hide()
@@ -101,15 +111,20 @@ fun BottomSheetAmountInput(
             }
             if (listOfCurrencies.size > 1) {
                 Column(modifier = Modifier.fillMaxHeight()) {
-                    AnimatedContent(targetState = currentSelectedCurrency, label = "") { selectedCurrency ->
-                        val selectedIndex = listOfCurrencies.indexOfFirst { it.value == selectedCurrency.value }
+                    AnimatedContent(
+                        targetState = currentSelectedCurrency,
+                        label = ""
+                    ) { selectedCurrency ->
+                        val selectedIndex =
+                            listOfCurrencies.indexOfFirst { it.value == selectedCurrency.value }
                         when (selectedIndex) {
                             0 -> {
                                 Column(
                                     Modifier
                                         .fillMaxHeight()
                                         .padding(vertical = 12.dp)
-                                        .offset((-12).dp, 0.dp), verticalArrangement = Arrangement.Bottom
+                                        .offset((-12).dp, 0.dp),
+                                    verticalArrangement = Arrangement.Bottom
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowDown,
@@ -124,7 +139,8 @@ fun BottomSheetAmountInput(
                                     Modifier
                                         .fillMaxHeight()
                                         .padding(vertical = 12.dp)
-                                        .offset((-12).dp, 0.dp), verticalArrangement = Arrangement.Top
+                                        .offset((-12).dp, 0.dp),
+                                    verticalArrangement = Arrangement.Top
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowUp,
@@ -139,7 +155,8 @@ fun BottomSheetAmountInput(
                                     Modifier
                                         .fillMaxHeight()
                                         .padding(vertical = 12.dp)
-                                        .offset((-12).dp, 0.dp), verticalArrangement = Arrangement.Center
+                                        .offset((-12).dp, 0.dp),
+                                    verticalArrangement = Arrangement.Center
                                 ) {
                                     Icon(
                                         imageVector = Icons.Default.KeyboardArrowUp,

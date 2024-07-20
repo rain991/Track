@@ -180,4 +180,6 @@
     <string name="delete_financial_item_CD">Usuń pozycję finansową</string>
     <string name="currency_in_use_error">%1$s jest już w użyciu</string>
     <string name="changing_preferable_currency_error">Wystąpił błąd podczas zmiany preferowanej waluty</string>
+    <string name="income_category">Kategoria dochodów</string>
+    <string name="expense_category">Kategoria wydatków</string>
 </resources>

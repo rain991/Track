@@ -116,24 +116,24 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                                 guideline = null,
                                 valueFormatter = formatter,
                                 itemPlacer = AxisItemPlacer.Horizontal.default(
-                                    spacing =
-                                    when (chartState.value.timePeriod) {
-                                        is StatisticChartTimePeriod.Year -> {
-                                            4
-                                        }
-
-                                        is StatisticChartTimePeriod.Month -> {
-                                            4
-                                        }
-
-                                        is StatisticChartTimePeriod.Week -> {
-                                           4
-                                        }
-
-                                        else -> {
-                                            5
-                                        }
-                                    },
+//                                    spacing =
+//                                    when (chartState.value.timePeriod) {
+//                                        is StatisticChartTimePeriod.Year -> {
+//                                            4
+//                                        }
+//
+//                                        is StatisticChartTimePeriod.Month -> {
+//                                            4
+//                                        }
+//
+//                                        is StatisticChartTimePeriod.Week -> {
+//                                           4
+//                                        }
+//
+//                                        else -> {
+//                                            5
+//                                        }
+//                                    },
                                     offset = if (chartData.size > 6) {
                                         4
                                     } else {

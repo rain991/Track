@@ -13,7 +13,6 @@ import com.savenko.track.R
 import com.savenko.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
-import com.savenko.track.data.viewmodels.settingsScreen.currencies.CurrenciesSettingsViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
 import com.savenko.track.presentation.components.customComponents.MainScreenFloatingActionButton
 import com.savenko.track.presentation.components.screenRelated.Header
@@ -24,10 +23,8 @@ import org.koin.compose.koinInject
 @Composable
 fun SettingsTrackScreen(navHostController: NavHostController) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
-    val currenciesSettingsViewModel = koinViewModel<CurrenciesSettingsViewModel>()
     val settingsData = koinInject<DataStoreManager>()
     val isPageNameVisible = settingsData.isShowPageName.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
-//    val toastState = currenciesSettingsViewModel.toastStateFlow.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             if (isPageNameVisible.value) Header(pageName = stringResource(R.string.settings))
@@ -39,10 +36,6 @@ fun SettingsTrackScreen(navHostController: NavHostController) {
         }
     ) {
         BottomSheet(bottomSheetViewModel)
-//        if (toastState.value.length > 1) {
-//            Toast.makeText(LocalContext.current, toastState.value, Toast.LENGTH_SHORT).show()
-//            currenciesSettingsViewModel.clearErrorMessage()
-//        }
         Box(
             modifier = Modifier
                 .padding(it)

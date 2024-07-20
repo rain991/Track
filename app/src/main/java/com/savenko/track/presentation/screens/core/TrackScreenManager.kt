@@ -6,21 +6,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
-import org.koin.androidx.compose.koinViewModel
 
 /*
 Track screen manager is pager that handles navigation accross main Track screens : SettingsTrackScreen, MainTrackScreen, StatisticsTrackScreen
 */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TrackScreenManager(navHostController: NavHostController) {
-    val viewModel = koinViewModel<TrackScreenManagerViewModel>()
+fun TrackScreenManager(navHostController: NavHostController, viewModel: TrackScreenManagerViewModel) {
     val pagerValue = viewModel.pagerStateValue.collectAsState()
     val pagerState = rememberPagerState(initialPage = pagerValue.value) { 3 }
+
+    LaunchedEffect(pagerState.currentPage) {
+        viewModel.setPagerState(pagerState.currentPage)
+    }
 
     Column(
         modifier = Modifier.fillMaxSize()
@@ -37,5 +40,3 @@ fun TrackScreenManager(navHostController: NavHostController) {
         }
     }
 }
-
-

@@ -26,7 +26,7 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import com.savenko.track.data.other.constants.MAX_CIRCULAR_PROGRESS_VALUE
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
@@ -38,9 +38,9 @@ fun CustomCircularProgressIndicator(
     primaryColor: Color,
     secondaryColor: Color,
     minValue: Int = 0,
-    maxValue: Int = 100,
-    circleRadius: Float
+    maxValue: Int = 100
 ) {
+
     var circleCenter by remember {
         mutableStateOf(Offset.Zero)
     }
@@ -53,6 +53,7 @@ fun CustomCircularProgressIndicator(
         ) {
             val width = size.width
             val height = size.height
+            val circleRadius = (width / 2.5f).coerceAtMost(height / 2.5f)
             val circleThickness = width / 25f
             circleCenter = Offset(x = width / 2f, y = height / 2f)
 
@@ -98,7 +99,7 @@ fun CustomCircularProgressIndicator(
             )
 
             val outerRadius = circleRadius + circleThickness / 2f
-            val gap = 15f
+            val gap = outerRadius / 6
             for (i in 0..(maxValue - minValue)) {
                 val color =
                     if (i < initialValue - minValue) primaryColor else primaryColor.copy(alpha = 0.3f)
@@ -129,22 +130,21 @@ fun CustomCircularProgressIndicator(
                         strokeWidth = 1.dp.toPx()
                     )
                 }
-
             }
 
 
             drawContext.canvas.nativeCanvas.apply {
                 drawIntoCanvas {
-                    drawText(
-                        "$initialValue %",
+                    val textSize = circleRadius / 1.5f
+                    drawText(if (initialValue < MAX_CIRCULAR_PROGRESS_VALUE) {
+                        "$initialValue%"
+                    } else {
+                        "999%+"
+                    },
                         circleCenter.x,
-                        circleCenter.y + 36.dp.toPx() / 3f,  // 45.dp 3f
+                        circleCenter.y + textSize / 3f,
                         Paint().apply {
-                            textSize = if (initialValue.toString().length <= 2) {
-                                24.sp.toPx()
-                            } else {
-                                16.sp.toPx()
-                            }
+                            this.textSize = textSize
                             textAlign = Paint.Align.CENTER
                             color = Color.White.toArgb()
                             isFakeBoldText = true
@@ -163,9 +163,8 @@ fun Preview() {
         modifier = Modifier
             .size(250.dp)
             .background(MaterialTheme.colorScheme.background),
-        initialValue = 130,
+        initialValue = 1500,
         primaryColor = MaterialTheme.colorScheme.primary,
-        secondaryColor = MaterialTheme.colorScheme.secondary,
-        circleRadius = 230f
+        secondaryColor = MaterialTheme.colorScheme.secondary
     )
 }

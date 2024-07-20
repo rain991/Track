@@ -11,7 +11,6 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
 import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
-import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 
 class CategoriesSettingsScreenViewModel(
@@ -27,12 +26,12 @@ class CategoriesSettingsScreenViewModel(
 
     init {
         viewModelScope.launch {
-            async {
+            launch {
                 incomesCategoriesListRepositoryImpl.getCategoriesList().collect {
                     setListOfIncomesCategories(it)
                 }
             }
-            async {
+            launch {
                 expensesCategoriesListRepositoryImpl.getCategoriesList().collect {
                     setListOfExpensesCategories(it)
                 }

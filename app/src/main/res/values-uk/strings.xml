@@ -180,4 +180,6 @@
     <string name="delete_financial_item_CD">Видали фінансовий елемент</string>
     <string name="currency_in_use_error">%1$s уже використовується</string>
     <string name="changing_preferable_currency_error">Сталася помилка при зміні валюти</string>
+    <string name="income_category">Категорія доходів</string>
+    <string name="expense_category">Категорія витрат</string>
 </resources>
