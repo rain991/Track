@@ -218,5 +218,7 @@
     <string name="delete_financial_item_CD">Finanzposten löschen</string>
     <string name="currency_in_use_error">%1$s wird bereits verwendet</string>
     <string name="changing_preferable_currency_error">Fehler beim Ändern der bevorzugten Währung</string>
+    <string name="income_category">Einkommenskategorie</string>
+    <string name="expense_category">Ausgabenkategorie</string>
 
 </resources>

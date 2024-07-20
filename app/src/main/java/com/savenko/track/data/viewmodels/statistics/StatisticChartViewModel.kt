@@ -63,77 +63,86 @@ class StatisticChartViewModel(
 
     suspend fun initializeValues() {
         if (_statisticChartState.value.financialEntities !is FinancialEntities.Both) {
-            setAdditionalData(null)
-            chartDataProvider.requestDataForChart(
-                financialEntities = _statisticChartState.value.financialEntities,
-                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
-                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
-            ).collect { chartData ->
-                setDataSet(chartData)
-                val xToDates = chartData.keys.associateBy {
-                    try {
-                        it.toEpochDay().toFloat()
-                    } catch (exception: Exception) {
-                        0.0f
-                    }
+            initializeSeparateFinancialValues()
+        } else {
+            initializeGroupedFinancialValues()
+        }
+    }
+
+    private suspend fun initializeSeparateFinancialValues() {
+        setAdditionalData(null)
+        chartDataProvider.requestDataForChart(
+            financialEntities = _statisticChartState.value.financialEntities,
+            statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+            otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+        ).collect { chartData ->
+            setDataSet(chartData)
+            val xToDates = chartData.keys.associateBy {
+                try {
+                    it.toEpochDay().toFloat()
+                } catch (exception: Exception) {
+                    0.0f
                 }
-                modelProducer.tryRunTransaction {
-                    val listOfValues = _statisticChartState.value.chartData.map { it.value }
-                    if (listOfValues.isNotEmpty()) {
-                        lineSeries {
-                            series(
-                                xToDates.keys,
-                                _statisticChartState.value.chartData.map { it.value })
-                            updateExtras { it[xToDateMapKey] = xToDates }
-                        }
+            }
+            modelProducer.tryRunTransaction {
+                val listOfValues = _statisticChartState.value.chartData.map { it.value }
+                if (listOfValues.isNotEmpty()) {
+                    lineSeries {
+                        series(
+                            xToDates.keys,
+                            _statisticChartState.value.chartData.map { it.value })
+                        updateExtras { it[xToDateMapKey] = xToDates }
                     }
                 }
             }
-        } else {
-            val expenseFlow = chartDataProvider.requestDataForChart(
-                financialEntities = FinancialEntities.ExpenseFinancialEntity(),
-                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
-                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
-            )
-            val incomeFlow = chartDataProvider.requestDataForChart(
-                financialEntities = FinancialEntities.IncomeFinancialEntity(),
-                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
-                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
-            )
-            expenseFlow.combine(incomeFlow) { expenseChartData, incomeChartData ->
-                Pair(
-                    expenseChartData,
-                    incomeChartData
-                )
-            }.collect { pairOfChartData ->
-                val expenseChartData = pairOfChartData.first
-                val incomeChartData = pairOfChartData.second
-                setDataSet(expenseChartData)
-                setAdditionalData(incomeChartData)
-                val expenseXToDates =
-                    expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
-                val incomeXToDates =
-                    incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
-                modelProducer.tryRunTransaction {
-                    val expenseListOfValues = expenseChartData.map { it.value }
-                    val incomeListOfValues = incomeChartData.map { it.value }
+        }
+    }
 
-                    if (expenseListOfValues.isNotEmpty() || incomeListOfValues.isNotEmpty()) {
-                        lineSeries {
-                            if (expenseXToDates.size > 1) {
-                                series(expenseXToDates.keys, expenseChartData.map { it.value })
-                                updateExtras { it[xToDateMapKey] = expenseXToDates }
-                            }
-                            if (incomeXToDates.size > 1) {
-                                series(incomeXToDates.keys, incomeChartData.map { it.value })
-                                updateExtras { it[xToDateMapKey] = incomeXToDates }
-                            }
+    private suspend fun initializeGroupedFinancialValues() {
+        val expenseFlow = chartDataProvider.requestDataForChart(
+            financialEntities = FinancialEntities.ExpenseFinancialEntity(),
+            statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+            otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+        )
+        val incomeFlow = chartDataProvider.requestDataForChart(
+            financialEntities = FinancialEntities.IncomeFinancialEntity(),
+            statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+            otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+        )
+        expenseFlow.combine(incomeFlow) { expenseChartData, incomeChartData ->
+            Pair(
+                expenseChartData,
+                incomeChartData
+            )
+        }.collect { pairOfChartData ->
+            val expenseChartData = pairOfChartData.first
+            val incomeChartData = pairOfChartData.second
+            setDataSet(expenseChartData)
+            setAdditionalData(incomeChartData)
+            val expenseXToDates =
+                expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
+            val incomeXToDates =
+                incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
+            modelProducer.tryRunTransaction {
+                val expenseListOfValues = expenseChartData.map { it.value }
+                val incomeListOfValues = incomeChartData.map { it.value }
+
+                if (expenseListOfValues.isNotEmpty() || incomeListOfValues.isNotEmpty()) {
+                    lineSeries {
+                        if (expenseXToDates.size > 1) {
+                            series(expenseXToDates.keys, expenseChartData.map { it.value })
+                            updateExtras { it[xToDateMapKey] = expenseXToDates }
+                        }
+                        if (incomeXToDates.size > 1) {
+                            series(incomeXToDates.keys, incomeChartData.map { it.value })
+                            updateExtras { it[xToDateMapKey] = incomeXToDates }
                         }
                     }
                 }
             }
         }
     }
+
 
     fun setFinancialEntity(value: FinancialEntities) {
         _statisticChartState.update { _statisticChartState.value.copy(financialEntities = value) }

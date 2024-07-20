@@ -11,6 +11,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,7 +24,6 @@ import androidx.navigation.NavHostController
 import com.savenko.track.R
 import com.savenko.track.data.viewmodels.settingsScreen.category.CategoriesSettingsScreenViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.category.NewCategoryViewModel
-import com.savenko.track.domain.models.abstractLayer.CategoriesTypes
 import com.savenko.track.presentation.components.dialogs.newCategoryDialog.NewCategoryDialog
 import com.savenko.track.presentation.components.screenRelated.SettingsSpecifiedScreenHeader
 import com.savenko.track.presentation.navigation.Screen
@@ -34,11 +34,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CategoriesSettingsScreen(navController: NavHostController) {
     val viewModel = koinViewModel<CategoriesSettingsScreenViewModel>()
-    val listOfIncomeCategories = viewModel.listOfIncomesCategories
-    val listOfExpensesCategories = viewModel.listOfExpensesCategories
     val newCategoryViewModel = koinViewModel<NewCategoryViewModel>()
+    val newCategoryDialogState = newCategoryViewModel.newCategoryDialogState.collectAsState()
     var isAddingNewCategoryDialogVisible by remember { mutableStateOf(false) }
-    var categoryAlreadyExistDialogError by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -59,23 +57,14 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
         if (isAddingNewCategoryDialogVisible) {
             NewCategoryDialog(
                 onDismissRequest = { isAddingNewCategoryDialogVisible = false },
-                categoryAlreadyExistError = categoryAlreadyExistDialogError
+                error = newCategoryDialogState.value.dialogErrors
             ) { categoryName, categoryType, rawCategoryColor ->
-                val processedCategoryColor = rawCategoryColor.substring(4)
-                if ((categoryType is CategoriesTypes.ExpenseCategory && !listOfExpensesCategories.map { it.note }
-                        .contains(categoryName)) || (categoryType is CategoriesTypes.IncomeCategory && !listOfIncomeCategories.map { it.note }
-                        .contains(categoryName))) {
-                    categoryAlreadyExistDialogError = false
-                    coroutineScope.launch {
-                        newCategoryViewModel.addNewFinancialCategory(
-                            name = categoryName,
-                            categoryType = categoryType,
-                            processedColor = processedCategoryColor
-                        )
-                    }
-                    isAddingNewCategoryDialogVisible = false
-                } else {
-                    categoryAlreadyExistDialogError = true
+                coroutineScope.launch {
+                    newCategoryViewModel.addNewFinancialCategory(
+                        categoryName = categoryName,
+                        categoryType = categoryType,
+                        rawCategoryColor = rawCategoryColor
+                    )
                 }
             }
         }

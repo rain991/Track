@@ -1,6 +1,8 @@
 package com.savenko.track.domain.models.abstractLayer
 
-sealed class CategoriesTypes(val name: String) {
-    object IncomeCategory : CategoriesTypes(name = "Income category")
-    object ExpenseCategory : CategoriesTypes(name = "Expense category")
+import com.savenko.track.R
+
+sealed class CategoriesTypes(val nameStringRes: Int) {
+    data object IncomeCategory : CategoriesTypes(nameStringRes = R.string.income_category)
+    data object ExpenseCategory : CategoriesTypes(nameStringRes = R.string.expense_category)
 }

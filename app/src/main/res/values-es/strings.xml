@@ -218,5 +218,7 @@
     <string name="delete_financial_item_CD">Suprimir partida financiera</string>
     <string name="currency_in_use_error">%1$s ya está en uso</string>
     <string name="changing_preferable_currency_error">Se produjo un error al cambiar la moneda preferible</string>
+    <string name="income_category">Categoría de ingresos</string>
+    <string name="expense_category">Categoría de gastos</string>
 
 </resources>
