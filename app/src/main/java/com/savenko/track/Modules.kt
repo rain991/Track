@@ -205,7 +205,5 @@ val viewModelModule = module {
     viewModel { NewIdeaDialogViewModel(get()) }
 
     // Other
-    viewModel { (savedStateHandle: SavedStateHandle) ->
-        TrackScreenManagerViewModel(savedStateHandle)
-    }
+    viewModel { (savedStateHandle: SavedStateHandle) -> TrackScreenManagerViewModel(savedStateHandle) }
 }

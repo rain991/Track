@@ -18,7 +18,6 @@ Track screen manager is pager that handles navigation accross main Track screens
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackScreenManager(navHostController: NavHostController, viewModel: TrackScreenManagerViewModel) {
-  //  val viewModel: TrackScreenManagerViewModel = koinViewModel()
     val pagerValue = viewModel.pagerStateValue.collectAsState()
     val pagerState = rememberPagerState(initialPage = pagerValue.value) { 3 }
 

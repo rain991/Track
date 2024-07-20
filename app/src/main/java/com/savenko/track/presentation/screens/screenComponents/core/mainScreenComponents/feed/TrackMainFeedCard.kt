@@ -112,8 +112,7 @@ fun TrackMainFeedCard() {
                             .background(MaterialTheme.colorScheme.surfaceVariant),
                         initialValue = (state.value.budgetExpectancy * 100).toInt(),
                         primaryColor = MaterialTheme.colorScheme.primary,
-                        secondaryColor = MaterialTheme.colorScheme.secondary,
-                        circleRadius = circleHeight
+                        secondaryColor = MaterialTheme.colorScheme.secondary
                     )
                 }
             }
