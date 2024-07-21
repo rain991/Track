@@ -33,6 +33,7 @@ const val MAX_IDEA_VALUE = Int.MAX_VALUE
 const val MAX_FINANCIAL_VALUE = Float.MAX_VALUE
 const val CURRENCIES_RATES_REQUEST_PERIOD = 3L // days
 const val MAX_CIRCULAR_PROGRESS_VALUE = 999f
+const val FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE = 8
 
 /*  warning changing this parameter will not increase real max value,
  it is only limit for composables (needed migration in Room from categories IDs parameters to list of categories IDs) */

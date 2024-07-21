@@ -1,5 +1,6 @@
 package com.savenko.track.presentation.screens.screenComponents.core.statisticsScreen.components
 
+
 import android.graphics.Typeface
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -30,6 +31,7 @@ import com.patrykandpatrick.vico.compose.common.ProvideVicoTheme
 import com.patrykandpatrick.vico.compose.common.component.rememberTextComponent
 import com.patrykandpatrick.vico.compose.common.of
 import com.patrykandpatrick.vico.compose.common.shader.color
+
 import com.patrykandpatrick.vico.compose.m3.common.rememberM3VicoTheme
 import com.patrykandpatrick.vico.core.cartesian.Zoom
 import com.patrykandpatrick.vico.core.cartesian.axis.AxisItemPlacer
@@ -38,6 +40,7 @@ import com.patrykandpatrick.vico.core.cartesian.data.CartesianValueFormatter
 import com.patrykandpatrick.vico.core.common.Dimensions
 import com.patrykandpatrick.vico.core.common.shader.DynamicShader
 import com.savenko.track.R
+import com.savenko.track.data.other.converters.dates.hasDateInDifferentMonth
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
 import java.time.LocalDate
@@ -57,7 +60,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
             val xToDateMap = chartValues.model.extraStore[xToDateMapKey]
             val date = xToDateMap[x] ?: LocalDate.ofEpochDay(x.toLong())
             date.format(
-                if (chartState.value.timePeriod is StatisticChartTimePeriod.Year) {
+                if (chartState.value.timePeriod is StatisticChartTimePeriod.Year && chartData.keys.hasDateInDifferentMonth()) {
                     monthFormatter
                 } else {
                     dateTimeFormatter
@@ -116,24 +119,6 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                                 guideline = null,
                                 valueFormatter = formatter,
                                 itemPlacer = AxisItemPlacer.Horizontal.default(
-//                                    spacing =
-//                                    when (chartState.value.timePeriod) {
-//                                        is StatisticChartTimePeriod.Year -> {
-//                                            4
-//                                        }
-//
-//                                        is StatisticChartTimePeriod.Month -> {
-//                                            4
-//                                        }
-//
-//                                        is StatisticChartTimePeriod.Week -> {
-//                                           4
-//                                        }
-//
-//                                        else -> {
-//                                            5
-//                                        }
-//                                    },
                                     offset = if (chartData.size > 6) {
                                         4
                                     } else {

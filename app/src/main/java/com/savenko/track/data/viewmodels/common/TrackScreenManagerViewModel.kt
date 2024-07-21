@@ -12,9 +12,7 @@ class TrackScreenManagerViewModel(savedStateHandle: SavedStateHandle) : ViewMode
     val pagerStateValue = _pagerState.asStateFlow()
 
     init {
-        savedStateHandle["pagerState"] = {
-            _pagerState.value
-        }
+        savedStateHandle["pagerState"] = _pagerState.value
     }
 
     fun setPagerState(value: Int) {

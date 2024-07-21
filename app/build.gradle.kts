@@ -72,7 +72,7 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     //third-party libraries
-    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.21")
+    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.22")
 
     //koin DI
     implementation("io.insert-koin:koin-core:$koinVersion")

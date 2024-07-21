@@ -160,8 +160,8 @@
     <string name="selected_time_period_track_stats_options">Ausgewählter Zeitraum : %1$s - %2$s</string>
 
     <!-- Financial Cards -->
-    <string name="expenses_fin_item_card">%1$s Ausgaben: </string>
-    <string name="incomes_fin_item_card">%1$s Einnahmen: </string>
+    <string name="expenses_fin_item_card">"%1$s Ausgaben: "</string>
+    <string name="incomes_fin_item_card">"%1$s Einnahmen: "</string>
     <string name="operations_screen_info_cards">Operationen</string>
     <string name="warning_message_info_cards">0 Operationen in diesem Monat</string>
 
@@ -199,7 +199,7 @@
     <string name="add_to_adding_to_saving_idea_dialog">Hinzufügen zu</string>
     <string name="planned_adding_to_saving_idea_dialog">Geplant %1$s</string>
     <string name="completed_for_adding_to_saving_idea_dialog">Abgeschlossen für</string>
-    <string name="specified_category_fin_item_card">%1$s in %2$s:</string>
+    <string name="specified_category_fin_item_card">""%1$s in %2$s: "</string>
     <string name="each_month_limit_new_idea_dialog">Monatliches Limit</string>
     <string name="confirm">Bestätigen</string>
     <string name="cancel">Abbrechen</string>

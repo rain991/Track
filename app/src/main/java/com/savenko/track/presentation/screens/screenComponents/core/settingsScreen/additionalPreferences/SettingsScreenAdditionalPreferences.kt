@@ -57,7 +57,7 @@ fun SettingsScreenAdditionalPreferences() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Allow non-categorised expenses",
+                    text = stringResource(R.string.allow_non_categorised_expenses),
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                     textAlign = TextAlign.Start
                 )
@@ -72,7 +72,7 @@ fun SettingsScreenAdditionalPreferences() {
             if (state.value.nonCategorisedExpenses && !isExpenseCategorySelectionVisible && state.value.groupingExpensesCategoryId != GROUPING_CATEGORY_ID_DEFAULT && selectedExpenseCategory != null) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(
-                        text = "Show as",
+                        text = stringResource(R.string.show_as),
                         style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
@@ -103,7 +103,7 @@ fun SettingsScreenAdditionalPreferences() {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = "Allow non-categorised incomes",
+                    text = stringResource(R.string.allow_non_categorised_incomes),
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                     textAlign = TextAlign.Start
                 )
@@ -118,7 +118,7 @@ fun SettingsScreenAdditionalPreferences() {
             if (state.value.nonCategorisedIncomes && !isIncomeCategorySelectionVisible && state.value.groupingIncomeCategoryId != GROUPING_CATEGORY_ID_DEFAULT && selectedIncomeCategory != null) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                     Text(
-                        text = "Show as",
+                        text = stringResource(R.string.show_as),
                         style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                         textAlign = TextAlign.Center,
                         modifier = Modifier.align(Alignment.CenterVertically)

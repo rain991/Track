@@ -124,8 +124,8 @@
     <string name="hide_chart">Спрячь график</string>
     <string name="show_chart">Покажи график</string>
     <string name="selected_time_period_track_stats_options">Выбранное время: %1$s - %2$s</string>
-    <string name="expenses_fin_item_card">Расходов:</string>
-    <string name="incomes_fin_item_card">Доходов:</string>
+    <string name="expenses_fin_item_card">"Расходов: "</string>
+    <string name="incomes_fin_item_card">"Доходов: "</string>
     <string name="operations_screen_info_cards">" операция"</string>
     <string name="warning_message_info_cards">0 операций в этом месяце</string>
     <string name="add">Добавить</string>
