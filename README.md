@@ -31,8 +31,9 @@
    - Make plans of future incomes using **Income Plans**
 
  **Multi-Currency Support**
-   - Supports multiple currencies including 25+ fiat and crypto currencies (even more will be added soon)
+   - Supports multiple currencies including 40+ fiat and 15+ crypto currencies available
    - Seamlessly track and convert expenses and income in different currencies
+   - Add up to 5 currencies and use them across Track 
 
  **Secure and Private**
    - Track prioritizes security and privacy
