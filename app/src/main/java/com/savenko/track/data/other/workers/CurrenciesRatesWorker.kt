@@ -28,7 +28,7 @@ class CurrenciesRatesWorker(
             Result.success()
         } catch (e: Exception) {
             Log.d("MyLog", "doWork: ${e.message.toString()}")
-            Result.failure()
+            Result.retry()
         }
     }
 }
