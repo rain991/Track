@@ -1,6 +1,7 @@
 package com.savenko.track.presentation.components.customComponents
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -36,10 +37,12 @@ fun CategoryChip(
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     isSelected: Boolean,
     onSelect: (CategoryEntity) -> Unit,
+    borderColor: Color? = null,
     chipScale: Float = 1.0f
 ) {
     val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
     val buttonColor = parseColor(hexColor = category.colorId)
+
     Button(
         modifier = Modifier
             .wrapContentHeight()
@@ -50,7 +53,12 @@ fun CategoryChip(
             contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
             disabledContainerColor = buttonColor,
             disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
-        )
+        ),
+        border = if (borderColor != null) {
+            BorderStroke((1.5).dp, borderColor)
+        } else {
+            null
+        }
     ) {
         Row(
             modifier = Modifier.wrapContentWidth(),
@@ -78,8 +86,7 @@ fun CategoryChip(
                 },
                 style = textStyle,
                 modifier = Modifier.fillMaxHeight(),
-                color = Color.White
-                ,
+                color = Color.White,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Visible,
                 maxLines = 1

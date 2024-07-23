@@ -312,10 +312,10 @@ fun MainScreenLazyColumn(
 private fun Transactions(isExpenseLazyColumn: Boolean, toggleIsExpenseLazyColumn: () -> Unit) {
     val windowInfo = rememberWindowInfo()
     var text by remember { mutableStateOf("") }
-    if (isExpenseLazyColumn) {
-        text = stringResource(R.string.expenses_lazy_column)
+    text = if (isExpenseLazyColumn) {
+        stringResource(R.string.expenses_lazy_column)
     } else {
-        text = stringResource(R.string.incomes_lazy_column)
+        stringResource(R.string.incomes_lazy_column)
     }
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -363,7 +363,7 @@ private fun EmptyMainLazyColumnPlacement(isExpenseLazyColumn: Boolean) {
                 } else {
                     stringResource(R.string.you_havent_added_incomes_yet_lazy_column)
                 },
-                style = MaterialTheme.typography.titleMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Center
             )
             Text(
@@ -372,7 +372,7 @@ private fun EmptyMainLazyColumnPlacement(isExpenseLazyColumn: Boolean) {
                 } else {
                     stringResource(R.string.empty_incm_lazyColumn_additional1)
                 },
-                style = MaterialTheme.typography.bodyLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center
             )
         }
@@ -385,20 +385,16 @@ private fun ExpenseDayHeader(localDate: LocalDate, isPastSmallMarkupNeeded: Bool
     Row(verticalAlignment = Alignment.Bottom) {
         Text(
             text = "${localDate.dayOfMonth}",
-            style = MaterialTheme.typography.titleMedium.copy(
-                color = MaterialTheme.colorScheme.onPrimaryContainer
-            )
+            style = MaterialTheme.typography.titleMedium
         )
         if (isPastSmallMarkupNeeded) {
             Text(
                 text = ".",
-                style = MaterialTheme.typography.titleLarge.copy(
-                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                )
+                style = MaterialTheme.typography.titleLarge
             )
             Text(
                 text = "${localDate.month.value}",
-                style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+                style = MaterialTheme.typography.titleLarge
             )
         }
     }
@@ -411,7 +407,7 @@ private fun ExpenseMonthHeader(localDate: LocalDate) {
     Box {
         Text(
             text = month,
-            style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }
@@ -422,7 +418,7 @@ private fun ExpenseYearHeader(localDate: LocalDate) {
     Box {
         Text(
             text = year,
-            style = MaterialTheme.typography.titleLarge.copy(color = MaterialTheme.colorScheme.onPrimaryContainer)
+            style = MaterialTheme.typography.titleLarge
         )
     }
 }

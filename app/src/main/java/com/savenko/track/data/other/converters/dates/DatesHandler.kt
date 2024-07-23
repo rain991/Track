@@ -1,5 +1,6 @@
 package com.savenko.track.data.other.converters.dates
 
+import java.time.LocalDate
 import java.util.Calendar
 import java.util.Date
 
@@ -64,4 +65,12 @@ fun areYearsSame(date1: Date, date2: Date): Boolean {
     cal1.time = date1
     cal2.time = date2
     return (cal1[Calendar.YEAR] == cal2[Calendar.YEAR])
+}
+
+fun Set<LocalDate>.hasDateInDifferentMonth(): Boolean {
+    if (this.size <= 1) {
+        return false
+    }
+    val groupedByMonth = this.groupBy { it.year to it.month }
+    return groupedByMonth.size > 1
 }

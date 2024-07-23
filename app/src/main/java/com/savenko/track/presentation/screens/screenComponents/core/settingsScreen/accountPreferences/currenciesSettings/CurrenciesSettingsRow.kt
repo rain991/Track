@@ -31,7 +31,7 @@ fun CurrenciesSettingsRow(currency: Currency?, currenciesList: List<Currency>, o
         ) {
             Text(
                 text = stringResource(R.string.extra_currency_settings_screen),
-                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(start = 4.dp)
             )
             CurrenciesSettingsCurrencyPicker(

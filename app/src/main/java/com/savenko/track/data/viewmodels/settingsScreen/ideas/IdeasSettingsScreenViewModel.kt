@@ -44,7 +44,7 @@ class IdeasSettingsScreenViewModel(
         }
     }
 
-    suspend fun initializeValues() {
+    private suspend fun initializeValues() {
         viewModelScope.launch {
             launch {
                 ideaListRepositoryImpl.getIncomesPlansList().collect { newIncomePlans ->

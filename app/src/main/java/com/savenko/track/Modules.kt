@@ -1,6 +1,5 @@
 package com.savenko.track
 
-import androidx.lifecycle.SavedStateHandle
 import com.savenko.track.data.core.ChartDataProvider
 import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.core.FinancialCardNotesProvider
@@ -205,5 +204,5 @@ val viewModelModule = module {
     viewModel { NewIdeaDialogViewModel(get()) }
 
     // Other
-    viewModel { (savedStateHandle: SavedStateHandle) -> TrackScreenManagerViewModel(savedStateHandle) }
+    viewModel { TrackScreenManagerViewModel(get()) }
 }

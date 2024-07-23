@@ -124,8 +124,8 @@
     <string name="hide_chart">Ukryj wykres</string>
     <string name="show_chart">Pokaż wykres</string>
     <string name="selected_time_period_track_stats_options">Wybrany czas %1$s - %2$s</string>
-    <string name="expenses_fin_item_card">Wydatków:</string>
-    <string name="incomes_fin_item_card">Dochodów:</string>
+    <string name="expenses_fin_item_card">"Wydatków: "</string>
+    <string name="incomes_fin_item_card">"Dochodów: "</string>
     <string name="operations_screen_info_cards"> operacji</string>
     <string name="warning_message_info_cards">0 operacji w tym mięsiącu</string>
     <string name="add">Dodaj</string>
@@ -182,4 +182,7 @@
     <string name="changing_preferable_currency_error">Wystąpił błąd podczas zmiany preferowanej waluty</string>
     <string name="income_category">Kategoria dochodów</string>
     <string name="expense_category">Kategoria wydatków</string>
+    <string name="allow_non_categorised_expenses">Niekategoryzowane wydatki</string>
+    <string name="show_as">Pokaż jako</string>
+    <string name="allow_non_categorised_incomes">Niekategoryzowane dochody</string>
 </resources>

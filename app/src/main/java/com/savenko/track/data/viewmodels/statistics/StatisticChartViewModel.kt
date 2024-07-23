@@ -84,14 +84,14 @@ class StatisticChartViewModel(
                     0.0f
                 }
             }
-            modelProducer.tryRunTransaction {
+            modelProducer.runTransaction {
                 val listOfValues = _statisticChartState.value.chartData.map { it.value }
                 if (listOfValues.isNotEmpty()) {
                     lineSeries {
                         series(
                             xToDates.keys,
                             _statisticChartState.value.chartData.map { it.value })
-                        updateExtras { it[xToDateMapKey] = xToDates }
+                        extras { it[xToDateMapKey] = xToDates }
                     }
                 }
             }
@@ -123,19 +123,21 @@ class StatisticChartViewModel(
                 expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
             val incomeXToDates =
                 incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
-            modelProducer.tryRunTransaction {
+            modelProducer.runTransaction {
                 val expenseListOfValues = expenseChartData.map { it.value }
                 val incomeListOfValues = incomeChartData.map { it.value }
 
-                if (expenseListOfValues.isNotEmpty() || incomeListOfValues.isNotEmpty()) {
-                    lineSeries {
-                        if (expenseXToDates.size > 1) {
-                            series(expenseXToDates.keys, expenseChartData.map { it.value })
-                            updateExtras { it[xToDateMapKey] = expenseXToDates }
-                        }
-                        if (incomeXToDates.size > 1) {
-                            series(incomeXToDates.keys, incomeChartData.map { it.value })
-                            updateExtras { it[xToDateMapKey] = incomeXToDates }
+                if (expenseListOfValues.isNotEmpty() && incomeListOfValues.isNotEmpty()) {
+                    if (expenseXToDates.size > 1 || incomeXToDates.size > 1) {
+                        lineSeries {
+                            if (expenseXToDates.size > 1) {
+                                series(expenseXToDates.keys, expenseChartData.map { it.value })
+                                extras { it[xToDateMapKey] = expenseXToDates }
+                            }
+                            if (incomeXToDates.size > 1) {
+                                series(incomeXToDates.keys, incomeChartData.map { it.value })
+                                extras { it[xToDateMapKey] = incomeXToDates }
+                            }
                         }
                     }
                 }

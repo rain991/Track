@@ -124,8 +124,8 @@
     <string name="hide_chart">Спрячь график</string>
     <string name="show_chart">Покажи график</string>
     <string name="selected_time_period_track_stats_options">Выбранное время: %1$s - %2$s</string>
-    <string name="expenses_fin_item_card">Расходов:</string>
-    <string name="incomes_fin_item_card">Доходов:</string>
+    <string name="expenses_fin_item_card">"Расходов: "</string>
+    <string name="incomes_fin_item_card">"Доходов: "</string>
     <string name="operations_screen_info_cards">" операция"</string>
     <string name="warning_message_info_cards">0 операций в этом месяце</string>
     <string name="add">Добавить</string>
@@ -182,4 +182,7 @@
     <string name="changing_preferable_currency_error">Ошибка при смене валюты</string>
     <string name="income_category">Категория доходов</string>
     <string name="expense_category">Категория расходов</string>
+    <string name="allow_non_categorised_expenses">Разрешать некатегоризированные расходы</string>
+    <string name="show_as">Показывать как</string>
+    <string name="allow_non_categorised_incomes">Разрешать некатегоризированные доходы</string>
 </resources>

@@ -222,4 +222,7 @@
     <string name="track_version" translatable="false">Track %1$s</string>
     <string name="income_category">Income category</string>
     <string name="expense_category">Expense category</string>
+    <string name="allow_non_categorised_expenses">Allow non-categorised expenses</string>
+    <string name="show_as">Show as</string>
+    <string name="allow_non_categorised_incomes">Allow non-categorised incomes</string>
 </resources>

@@ -160,8 +160,8 @@
     <string name="selected_time_period_track_stats_options">Periodo de tiempo seleccionado: %1$s - %2$s</string>
 
     <!-- Financial Cards -->
-    <string name="expenses_fin_item_card">%1$s gastos:</string>
-    <string name="incomes_fin_item_card">%1$s ingresos:</string>
+    <string name="expenses_fin_item_card">"%1$s gastos: "</string>
+    <string name="incomes_fin_item_card">"%1$s ingresos: "</string>
     <string name="operations_screen_info_cards">operaciones</string>
     <string name="warning_message_info_cards">0 operaciones este mes</string>
 
@@ -199,7 +199,7 @@
     <string name="add_to_adding_to_saving_idea_dialog">Agregar a</string>
     <string name="planned_adding_to_saving_idea_dialog">Planificado %1$s</string>
     <string name="completed_for_adding_to_saving_idea_dialog">Completado para</string>
-    <string name="specified_category_fin_item_card">%1$s en %2$s:</string>
+    <string name="specified_category_fin_item_card">"%1$s en %2$s: "</string>
     <string name="each_month_limit_new_idea_dialog">Límite mensual</string>
     <string name="confirm">Confirmar</string>
     <string name="cancel">Cancelar</string>
@@ -220,5 +220,8 @@
     <string name="changing_preferable_currency_error">Se produjo un error al cambiar la moneda preferible</string>
     <string name="income_category">Categoría de ingresos</string>
     <string name="expense_category">Categoría de gastos</string>
+    <string name="allow_non_categorised_expenses">Permitir gastos no categorizados</string>
+    <string name="show_as">Mostrar como</string>
+    <string name="allow_non_categorised_incomes">Permitir ingresos no categorizados</string>
 
 </resources>

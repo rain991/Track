@@ -182,4 +182,7 @@
     <string name="changing_preferable_currency_error">Сталася помилка при зміні валюти</string>
     <string name="income_category">Категорія доходів</string>
     <string name="expense_category">Категорія витрат</string>
+    <string name="allow_non_categorised_expenses">Дозволяти некатегоризовані витрати</string>
+    <string name="show_as">Показуй як</string>
+    <string name="allow_non_categorised_incomes">Дозволяти некатегоризовані доходи</string>
 </resources>

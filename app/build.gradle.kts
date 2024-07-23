@@ -15,8 +15,8 @@ android {
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 34
-        versionCode = 22
-        versionName = "1.3.3"
+        versionCode = 24
+        versionName = "1.4.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -72,7 +72,7 @@ dependencies {
     ksp("androidx.room:room-compiler:$roomVersion")
 
     //third-party libraries
-    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.21")
+    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.22")
 
     //koin DI
     implementation("io.insert-koin:koin-core:$koinVersion")

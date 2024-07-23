@@ -101,7 +101,7 @@ private fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) 
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .wrapContentHeight()
+                        .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
                 ) {
                     Text(
                         text = stringResource(R.string.name_personal_settings_screen, name.value),

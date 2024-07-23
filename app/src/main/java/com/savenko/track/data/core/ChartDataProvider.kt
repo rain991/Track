@@ -21,12 +21,14 @@ import java.time.LocalDate
 import java.util.Date
 
 // Transforms data to understandable for chart format
+
 class ChartDataProvider(
     private val incomesListRepositoryImpl: IncomeListRepository,
     private val expensesListRepositoryImpl: ExpensesListRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) {
+
     suspend fun requestDataForChart(
         financialEntities: FinancialEntities,
         statisticChartTimePeriod: StatisticChartTimePeriod,
@@ -125,10 +127,10 @@ class ChartDataProvider(
                     ) && it != currentFinancialEntity
                 })
                 listOfFinItemsWithSameDate.forEach { sameDateFinancialEntities ->
-                    if (sameDateFinancialEntities.currencyTicker == preferableCurrency.ticker) {
-                        daySummary += sameDateFinancialEntities.value
+                    daySummary += if (sameDateFinancialEntities.currencyTicker == preferableCurrency.ticker) {
+                        sameDateFinancialEntities.value
                     } else {
-                        daySummary += currenciesRatesHandler.convertValueToBasicCurrency(sameDateFinancialEntities)
+                        currenciesRatesHandler.convertValueToBasicCurrency(sameDateFinancialEntities)
                     }
                 }
                 resultMap[currentFinEntityDate] = daySummary

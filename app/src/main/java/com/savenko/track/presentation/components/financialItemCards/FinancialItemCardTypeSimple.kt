@@ -8,7 +8,6 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.shrinkVertically
 import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
 import androidx.compose.foundation.background
@@ -51,6 +50,7 @@ import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
+import com.savenko.track.data.other.constants.FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE
 import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
@@ -71,7 +71,7 @@ fun FinancialItemCardTypeSimple(
     expanded: Boolean,
     financialEntityMonthSummary: Float,
     countOfFinancialEntities: Int,
-    currenciesList : List<Currency>,
+    currenciesList: List<Currency>,
     preferableCurrency: Currency,
     onClick: () -> Unit,
     onDeleteFinancial: (FinancialEntity) -> Unit
@@ -86,7 +86,7 @@ fun FinancialItemCardTypeSimple(
             .animateContentSize()
             .height(if (expanded) 150.dp else 100.dp)
             .padding(vertical = 8.dp)
-            .clickable { onClick()   /*expenseAndIncomeLazyColumnViewModel.setExpandedExpenseCard(if (expanded) null else financialEntity) */ },
+            .clickable { onClick() },
         shape = MaterialTheme.shapes.medium
     ) {
         Column(
@@ -114,12 +114,13 @@ fun FinancialItemCardTypeSimple(
                                 .align(Alignment.TopStart)
                                 .wrapContentHeight()
                         ) {
-                            AnimatedVisibility (visible = expanded) {
-                                 Box(modifier = Modifier
-                                            .wrapContentSize()
-                                            .clip(CircleShape)
-                                            .background(categoryColor)
-                                        ){
+                            AnimatedVisibility(visible = expanded) {
+                                Box(
+                                    modifier = Modifier
+                                        .wrapContentSize()
+                                        .clip(CircleShape)
+                                        .background(categoryColor)
+                                ) {
                                     Icon(
                                         imageVector = Icons.Default.Delete,
                                         contentDescription = stringResource(R.string.delete_financial_item_CD),
@@ -136,14 +137,18 @@ fun FinancialItemCardTypeSimple(
                         Row(
                             horizontalArrangement = Arrangement.Center,
                             modifier = Modifier
-                                .align(Alignment.Center) // Center the Row absolutely
+                                .align(Alignment.Center)
                                 .fillMaxWidth()
                                 .wrapContentHeight()
                         ) {
                             if (financialEntity.note.isNotEmpty()) {
-                                NoteCard(expenseItem = financialEntity)
+                                NoteCard(expenseItem = financialEntity, cardColor = categoryColor)
                             } else {
-                                CategoryCard(category = categoryEntity, containerColor = categoryColor)
+                                CategoryCard(
+                                    modifier = Modifier.wrapContentHeight(),
+                                    category = categoryEntity,
+                                    containerColor = categoryColor
+                                )
                             }
                         }
                     }
@@ -173,8 +178,8 @@ fun FinancialItemCardTypeSimple(
                             targetState = resultedNotion,
                             label = "horizontalTextChange",
                             transitionSpec = {
-                                slideInHorizontally { it } togetherWith slideOutHorizontally { -it }
-                            }) { resultedNotion ->
+                                slideInHorizontally { it } togetherWith fadeOut()
+                            }) { notion ->
                             val calendar = Calendar.getInstance().apply {
                                 time = financialEntity.date
                             }
@@ -183,7 +188,7 @@ fun FinancialItemCardTypeSimple(
                             Text(
                                 text = if (!expanded) {
                                     buildAnnotatedString {
-                                        append(resultedNotion.toString())
+                                        append(notion.toString())
                                     }
                                 } else {
                                     buildAnnotatedString {
@@ -203,13 +208,12 @@ fun FinancialItemCardTypeSimple(
                                                 stringResource(
                                                     R.string.specified_category_fin_item_card,
                                                     categoryName,
-                                                    monthName
+                                                    monthName ?: ""
                                                 )
                                             )
                                         }
                                         withStyle(
                                             style = SpanStyle(
-                                                color = MaterialTheme.colorScheme.onPrimaryContainer,
                                                 fontSize = 20.sp, fontWeight = FontWeight.SemiBold
                                             )
                                         ) {
@@ -217,13 +221,11 @@ fun FinancialItemCardTypeSimple(
                                         }
                                         withStyle(
                                             style = SpanStyle(
-                                                color = MaterialTheme.colorScheme.onPrimaryContainer,
                                                 fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                                 fontWeight = FontWeight.SemiBold
                                             )
                                         ) {
-                                            append(" ")
-                                            append(preferableCurrency.ticker)
+                                            append(" " + preferableCurrency.ticker)
                                         }
 
                                     }
@@ -281,7 +283,6 @@ fun FinancialItemCardTypeSimple(
                                     }
                                     withStyle(
                                         style = SpanStyle(
-                                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                                             fontSize = 20.sp,
                                             fontWeight = FontWeight.SemiBold
                                         )
@@ -313,16 +314,13 @@ fun FinancialItemCardTypeSimple(
 @Composable
 private fun ExpenseValueCard(
     financialEntity: FinancialEntity,
-    listOfCurrencies : List<Currency>,
+    listOfCurrencies: List<Currency>,
     currentCurrencyName: String,
     isExpanded: Boolean
 ) {
     val currentCurrency =
         listOfCurrencies.firstOrNull { it.ticker == financialEntity.currencyTicker }
     val currencyType = currentCurrency?.type
-
-
-
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 22.dp, focusedElevation = 14.dp),
         modifier = Modifier.padding(4.dp)
@@ -339,9 +337,7 @@ private fun ExpenseValueCard(
                     FIAT_DECIMAL_FORMAT.format(financialEntity.value)
                 } else {
                     CRYPTO_DECIMAL_FORMAT.format(financialEntity.value)
-                }, style = MaterialTheme.typography.bodyLarge.copy(
-                    color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 24.sp
-                )
+                }, style = MaterialTheme.typography.bodyLarge.copy( fontSize = 24.sp)
             )
             Text(text = currentCurrencyName, style = MaterialTheme.typography.bodyMedium)
         }
@@ -349,11 +345,11 @@ private fun ExpenseValueCard(
 }
 
 @Composable
-private fun CategoryCard(category: CategoryEntity, containerColor: Color) {
+private fun CategoryCard(modifier: Modifier, category: CategoryEntity, containerColor: Color) {
     val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
     Card(
+        modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
-        modifier = Modifier.wrapContentSize(),
         colors = CardColors(
             containerColor = containerColor,
             contentColor = MaterialTheme.colorScheme.onPrimary,
@@ -380,21 +376,21 @@ private fun CategoryCard(category: CategoryEntity, containerColor: Color) {
 }
 
 @Composable
-private fun NoteCard(expenseItem: FinancialEntity) {
+private fun NoteCard(expenseItem: FinancialEntity, cardColor : Color) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
         modifier = Modifier.wrapContentSize(),
         colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
+            containerColor = cardColor,
             contentColor = MaterialTheme.colorScheme.onPrimary,
-            disabledContainerColor = MaterialTheme.colorScheme.primary,
+            disabledContainerColor = cardColor,
             disabledContentColor = MaterialTheme.colorScheme.onPrimary
         ),
         shape = MaterialTheme.shapes.small
     ) {
         Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)) {
             Text(
-                text = if (expenseItem.note.length < 8) stringResource(
+                text = if (expenseItem.note.length < FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE) stringResource(
                     R.string.note_exp_list,
                     expenseItem.note
                 ) else expenseItem.note,
