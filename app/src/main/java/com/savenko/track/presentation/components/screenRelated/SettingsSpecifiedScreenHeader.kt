@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
@@ -52,6 +53,7 @@ fun SettingsSpecifiedScreenHeader(screenName: String, onBackPressed: () -> Unit)
         }
         Spacer(modifier = Modifier.weight(1f))
         Image(painter = painterResource(id = R.drawable.onlyicon), contentDescription = null, modifier = Modifier.size(36.dp))
+        Spacer(modifier = Modifier.width(2.dp))
         Text(
             text = screenName,
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
