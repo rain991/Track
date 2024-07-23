@@ -214,7 +214,6 @@ fun FinancialItemCardTypeSimple(
                                         }
                                         withStyle(
                                             style = SpanStyle(
-                                                color = MaterialTheme.colorScheme.onPrimaryContainer,
                                                 fontSize = 20.sp, fontWeight = FontWeight.SemiBold
                                             )
                                         ) {
@@ -222,7 +221,6 @@ fun FinancialItemCardTypeSimple(
                                         }
                                         withStyle(
                                             style = SpanStyle(
-                                                color = MaterialTheme.colorScheme.onPrimaryContainer,
                                                 fontSize = MaterialTheme.typography.bodySmall.fontSize,
                                                 fontWeight = FontWeight.SemiBold
                                             )
@@ -285,7 +283,6 @@ fun FinancialItemCardTypeSimple(
                                     }
                                     withStyle(
                                         style = SpanStyle(
-                                            color = MaterialTheme.colorScheme.onPrimaryContainer,
                                             fontSize = 20.sp,
                                             fontWeight = FontWeight.SemiBold
                                         )
@@ -340,9 +337,7 @@ private fun ExpenseValueCard(
                     FIAT_DECIMAL_FORMAT.format(financialEntity.value)
                 } else {
                     CRYPTO_DECIMAL_FORMAT.format(financialEntity.value)
-                }, style = MaterialTheme.typography.bodyLarge.copy(
-                    color = MaterialTheme.colorScheme.onPrimaryContainer, fontSize = 24.sp
-                )
+                }, style = MaterialTheme.typography.bodyLarge.copy( fontSize = 24.sp)
             )
             Text(text = currentCurrencyName, style = MaterialTheme.typography.bodyMedium)
         }

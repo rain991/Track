@@ -5,6 +5,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
+import com.savenko.track.presentation.navigation.Screen.MainScreen
 import com.savenko.track.presentation.screens.additional.settingsScreens.CategoriesSettingsScreen
 import com.savenko.track.presentation.screens.additional.settingsScreens.CurrenciesSettingsScreen
 import com.savenko.track.presentation.screens.additional.settingsScreens.IdeasListSettingsScreen
@@ -20,12 +21,12 @@ fun Navigation(currentLoginCount: Int) {
     NavHost(
         navController = navController,
         startDestination = if (currentLoginCount != 0) {
-            Screen.MainScreen.route
+            MainScreen.route
         } else {
             Screen.LoginScreen.route
         }
     ) {
-        composable(route = Screen.MainScreen.route) {
+        composable(route = MainScreen.route) {
             TrackScreenManager(navHostController = navController, viewModel = trackScreenManagerViewModel)
         }
         composable(route = Screen.LoginScreen.route) {

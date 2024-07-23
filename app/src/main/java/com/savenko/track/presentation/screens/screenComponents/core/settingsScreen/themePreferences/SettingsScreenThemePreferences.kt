@@ -30,28 +30,24 @@ import com.savenko.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.savenko.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
-import com.savenko.track.presentation.themes.BlueTheme.blue_dark_theme_color_onPrimary
-import com.savenko.track.presentation.themes.BlueTheme.blue_dark_theme_color_primary
-import com.savenko.track.presentation.themes.BlueTheme.blue_light_theme_color_onPrimary
-import com.savenko.track.presentation.themes.BlueTheme.blue_light_theme_color_primary
-import com.savenko.track.presentation.themes.PinkTheme.pink_dark_theme_onPrimary
-import com.savenko.track.presentation.themes.PinkTheme.pink_dark_theme_primary
-import com.savenko.track.presentation.themes.PinkTheme.pink_light_theme_onPrimary
-import com.savenko.track.presentation.themes.PinkTheme.pink_light_theme_primary
-import com.savenko.track.presentation.themes.PurpleTheme.purple_dark_theme_onPrimary
-import com.savenko.track.presentation.themes.PurpleTheme.purple_dark_theme_primary
-import com.savenko.track.presentation.themes.PurpleTheme.purple_light_theme_onPrimary
-import com.savenko.track.presentation.themes.PurpleTheme.purple_light_theme_primary
-import com.savenko.track.presentation.themes.RedTheme.red_dark_theme_onPrimary
-import com.savenko.track.presentation.themes.RedTheme.red_dark_theme_primary
-import com.savenko.track.presentation.themes.RedTheme.red_light_theme_onPrimary
-import com.savenko.track.presentation.themes.RedTheme.red_light_theme_primary
 import com.savenko.track.presentation.themes.Themes
-import com.savenko.track.presentation.themes.YellowTheme.yellow_dark_theme_onPrimary
-import com.savenko.track.presentation.themes.YellowTheme.yellow_dark_theme_primary
-import com.savenko.track.presentation.themes.YellowTheme.yellow_light_theme_onPrimary
-import com.savenko.track.presentation.themes.YellowTheme.yellow_light_theme_primary
+import com.savenko.track.presentation.themes.blueTheme.newBlueTheme_DarkColors
+import com.savenko.track.presentation.themes.blueTheme.newBlueTheme_LightColors
 import com.savenko.track.presentation.themes.getThemeByName
+import com.savenko.track.presentation.themes.pinkTheme.pink_dark_theme_onPrimary
+import com.savenko.track.presentation.themes.pinkTheme.pink_dark_theme_primary
+import com.savenko.track.presentation.themes.pinkTheme.pink_light_theme_onPrimary
+import com.savenko.track.presentation.themes.pinkTheme.pink_light_theme_primary
+import com.savenko.track.presentation.themes.purpleGreyTheme.purpleGreyNew_DarkColorScheme
+import com.savenko.track.presentation.themes.purpleGreyTheme.purpleGreyNew_LightColorScheme
+import com.savenko.track.presentation.themes.redTheme.red_dark_theme_onPrimary
+import com.savenko.track.presentation.themes.redTheme.red_dark_theme_primary
+import com.savenko.track.presentation.themes.redTheme.red_light_theme_onPrimary
+import com.savenko.track.presentation.themes.redTheme.red_light_theme_primary
+import com.savenko.track.presentation.themes.yellowTheme.yellow_dark_theme_onPrimary
+import com.savenko.track.presentation.themes.yellowTheme.yellow_dark_theme_primary
+import com.savenko.track.presentation.themes.yellowTheme.yellow_light_theme_onPrimary
+import com.savenko.track.presentation.themes.yellowTheme.yellow_light_theme_primary
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -59,9 +55,12 @@ import org.koin.androidx.compose.koinViewModel
 fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataStoreManager) {
     val coroutineScope = rememberCoroutineScope()
     val themePreferenceSettingsViewModel = koinViewModel<ThemePreferenceSettingsViewModel>()
-    val showPageNameChecked = themePreferenceSettingsViewModel.showPagesNameFlow.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
-    val useDeviceTheme = themePreferenceSettingsViewModel.useSystemTheme.collectAsState(initial = USE_SYSTEM_THEME_DEFAULT)
-    val preferableTheme = themePreferenceSettingsViewModel.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT.name)
+    val showPageNameChecked =
+        themePreferenceSettingsViewModel.showPagesNameFlow.collectAsState(initial = SHOW_PAGE_NAME_DEFAULT)
+    val useDeviceTheme =
+        themePreferenceSettingsViewModel.useSystemTheme.collectAsState(initial = USE_SYSTEM_THEME_DEFAULT)
+    val preferableTheme =
+        themePreferenceSettingsViewModel.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT.name)
     Box(modifier = modifier) {
         Column(Modifier.wrapContentHeight()) {
             Text(
@@ -72,7 +71,7 @@ fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataSto
             )
             Spacer(modifier = Modifier.height(12.dp))
             Column {
-                if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.S){
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -112,20 +111,20 @@ fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataSto
                             val darkMode = isSystemInDarkTheme()
                             CircleWithBorder(
                                 circleColor = if (darkMode) {
-                                    blue_light_theme_color_primary
+                                    purpleGreyNew_DarkColorScheme.primary
                                 } else {
-                                    blue_dark_theme_color_primary
+                                    purpleGreyNew_LightColorScheme.primary
                                 },
-                                isBorderEnabled = getThemeByName(preferableTheme.value) is Themes.BlueTheme,
+                                isBorderEnabled = getThemeByName(preferableTheme.value) is Themes.PurpleGreyTheme,
                                 borderColor = if (darkMode) {
-                                    blue_dark_theme_color_onPrimary
+                                    purpleGreyNew_DarkColorScheme.onPrimary
                                 } else {
-                                    blue_light_theme_color_onPrimary
+                                    purpleGreyNew_LightColorScheme.onPrimary
                                 },
                                 circleRadius = 32,
                                 onClick = {
                                     coroutineScope.launch {
-                                        themePreferenceSettingsViewModel.setPreferableTheme(Themes.BlueTheme)
+                                        themePreferenceSettingsViewModel.setPreferableTheme(Themes.PurpleGreyTheme)
                                     }
                                 }
                             )
@@ -189,20 +188,20 @@ fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataSto
                             )
                             CircleWithBorder(
                                 circleColor = if (darkMode) {
-                                    purple_light_theme_primary
+                                    newBlueTheme_LightColors.primary
                                 } else {
-                                    purple_dark_theme_primary
+                                    newBlueTheme_DarkColors.primary
                                 },
-                                isBorderEnabled = getThemeByName(preferableTheme.value) is Themes.PurpleTheme,
+                                isBorderEnabled = getThemeByName(preferableTheme.value) is Themes.BlueTheme,
                                 borderColor = if (darkMode) {
-                                    purple_dark_theme_onPrimary
+                                    newBlueTheme_LightColors.onPrimary
                                 } else {
-                                    purple_light_theme_onPrimary
+                                    newBlueTheme_DarkColors.onPrimary
                                 },
                                 circleRadius = 32,
                                 onClick = {
                                     coroutineScope.launch {
-                                        themePreferenceSettingsViewModel.setPreferableTheme(Themes.PurpleTheme)
+                                        themePreferenceSettingsViewModel.setPreferableTheme(Themes.BlueTheme)
                                     }
                                 }
                             )

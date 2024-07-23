@@ -48,7 +48,7 @@ fun NewIdeaDialogInputField(preferableCurrency: Currency) {
             textStyle = MaterialTheme.typography.titleMedium.copy(
                 fontSize = 44.sp,
                 letterSpacing = 1.2.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.primary
             ),
             value = currentInputValue.toString(),
             onValueChange = { newText ->

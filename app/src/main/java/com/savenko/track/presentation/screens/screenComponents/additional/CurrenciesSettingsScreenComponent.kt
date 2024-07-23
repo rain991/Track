@@ -60,7 +60,7 @@ fun CurrenciesSettingsScreenComponent(
         Row {
             Text(
                 text = stringResource(R.string.message_currencies_settings_screen),
-                color = MaterialTheme.colorScheme.onPrimaryContainer,
+               // color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
@@ -72,7 +72,7 @@ fun CurrenciesSettingsScreenComponent(
         ) {
             Text(
                 stringResource(R.string.preferable_currency_settings_screen),
-                style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimaryContainer),
+                style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(start = 4.dp)
             )
             CurrenciesSettingsCurrencyPicker(
