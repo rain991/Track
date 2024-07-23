@@ -37,7 +37,7 @@ fun YellowTheme(
 private val yellowTheme_lightColors = lightColorScheme(
     primary = yellow_light_theme_primary,
     onPrimary = yellow_light_theme_onPrimary,
-    primaryContainer = md_theme_light_primaryContainer,
+    primaryContainer = yellow_theme_light_primaryContainer,
     onPrimaryContainer = md_theme_light_onPrimaryContainer,
     secondary = md_theme_light_secondary,
     onSecondary = md_theme_light_onSecondary,

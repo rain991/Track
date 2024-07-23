@@ -210,7 +210,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = Color.White
+                contentColor = MaterialTheme.colorScheme.onPrimary
             ),
             shape = MaterialTheme.shapes.extraSmall
         ) {

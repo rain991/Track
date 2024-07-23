@@ -47,7 +47,7 @@ import com.savenko.track.presentation.themes.redTheme.red_light_theme_primary
 import com.savenko.track.presentation.themes.yellowTheme.yellow_dark_theme_onPrimary
 import com.savenko.track.presentation.themes.yellowTheme.yellow_dark_theme_primary
 import com.savenko.track.presentation.themes.yellowTheme.yellow_light_theme_onPrimary
-import com.savenko.track.presentation.themes.yellowTheme.yellow_light_theme_primary
+import com.savenko.track.presentation.themes.yellowTheme.yellow_theme_light_primaryContainer
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -130,9 +130,9 @@ fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataSto
                             )
                             CircleWithBorder(
                                 circleColor = if (darkMode) {
-                                    yellow_light_theme_primary
-                                } else {
                                     yellow_dark_theme_primary
+                                } else {
+                                    yellow_theme_light_primaryContainer
                                 },
                                 isBorderEnabled = getThemeByName(preferableTheme.value) is Themes.YellowTheme,
                                 borderColor = if (darkMode) {

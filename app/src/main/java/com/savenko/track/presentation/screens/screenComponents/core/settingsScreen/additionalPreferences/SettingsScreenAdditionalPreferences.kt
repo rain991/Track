@@ -80,6 +80,7 @@ fun SettingsScreenAdditionalPreferences() {
                         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                         category = selectedExpenseCategory,
                         isSelected = false,
+                        borderColor = MaterialTheme.colorScheme.primary,
                         onSelect = { isExpenseCategorySelectionVisible = true }
                     )
                 }
@@ -127,6 +128,7 @@ fun SettingsScreenAdditionalPreferences() {
                         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                         category = selectedIncomeCategory,
                         isSelected = false,
+                        borderColor = MaterialTheme.colorScheme.primary,
                         onSelect = { isIncomeCategorySelectionVisible = true }
                     )
                 }
