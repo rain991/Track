@@ -220,5 +220,8 @@
     <string name="changing_preferable_currency_error">Fehler beim Ändern der bevorzugten Währung</string>
     <string name="income_category">Einkommenskategorie</string>
     <string name="expense_category">Ausgabenkategorie</string>
+    <string name="allow_non_categorised_expenses">Nicht kategorisierte Ausgaben zulassen</string>
+    <string name="show_as">Zeigen als</string>
+    <string name="allow_non_categorised_incomes">Nicht kategorisierte Einkommen zulassen</string>
 
 </resources>

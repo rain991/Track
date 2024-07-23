@@ -31,8 +31,8 @@ import com.savenko.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
 import com.savenko.track.presentation.themes.Themes
-import com.savenko.track.presentation.themes.blueTheme.newBlueTheme_DarkColors
-import com.savenko.track.presentation.themes.blueTheme.newBlueTheme_LightColors
+import com.savenko.track.presentation.themes.blueTheme.blueThemeDarkColorScheme
+import com.savenko.track.presentation.themes.blueTheme.blueThemeLightColorScheme
 import com.savenko.track.presentation.themes.getThemeByName
 import com.savenko.track.presentation.themes.pinkTheme.pink_dark_theme_onPrimary
 import com.savenko.track.presentation.themes.pinkTheme.pink_dark_theme_primary
@@ -188,15 +188,15 @@ fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataSto
                             )
                             CircleWithBorder(
                                 circleColor = if (darkMode) {
-                                    newBlueTheme_LightColors.primary
+                                    blueThemeLightColorScheme.primary
                                 } else {
-                                    newBlueTheme_DarkColors.primary
+                                    blueThemeDarkColorScheme.primary
                                 },
                                 isBorderEnabled = getThemeByName(preferableTheme.value) is Themes.BlueTheme,
                                 borderColor = if (darkMode) {
-                                    newBlueTheme_LightColors.onPrimary
+                                    blueThemeLightColorScheme.onPrimary
                                 } else {
-                                    newBlueTheme_DarkColors.onPrimary
+                                    blueThemeDarkColorScheme.onPrimary
                                 },
                                 circleRadius = 32,
                                 onClick = {

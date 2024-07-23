@@ -220,5 +220,8 @@
     <string name="changing_preferable_currency_error">Se produjo un error al cambiar la moneda preferible</string>
     <string name="income_category">Categoría de ingresos</string>
     <string name="expense_category">Categoría de gastos</string>
+    <string name="allow_non_categorised_expenses">Permitir gastos no categorizados</string>
+    <string name="show_as">Mostrar como</string>
+    <string name="allow_non_categorised_incomes">Permitir ingresos no categorizados</string>
 
 </resources>

@@ -182,4 +182,7 @@
     <string name="changing_preferable_currency_error">Wystąpił błąd podczas zmiany preferowanej waluty</string>
     <string name="income_category">Kategoria dochodów</string>
     <string name="expense_category">Kategoria wydatków</string>
+    <string name="allow_non_categorised_expenses">Niekategoryzowane wydatki</string>
+    <string name="show_as">Pokaż jako</string>
+    <string name="allow_non_categorised_incomes">Niekategoryzowane dochody</string>
 </resources>

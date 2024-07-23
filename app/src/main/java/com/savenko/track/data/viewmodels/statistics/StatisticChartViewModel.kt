@@ -127,15 +127,17 @@ class StatisticChartViewModel(
                 val expenseListOfValues = expenseChartData.map { it.value }
                 val incomeListOfValues = incomeChartData.map { it.value }
 
-                if (expenseListOfValues.isNotEmpty() || incomeListOfValues.isNotEmpty()) {
-                    lineSeries {
-                        if (expenseXToDates.size > 1) {
-                            series(expenseXToDates.keys, expenseChartData.map { it.value })
-                            extras { it[xToDateMapKey] = expenseXToDates }
-                        }
-                        if (incomeXToDates.size > 1) {
-                            series(incomeXToDates.keys, incomeChartData.map { it.value })
-                            extras { it[xToDateMapKey] = incomeXToDates }
+                if (expenseListOfValues.isNotEmpty() && incomeListOfValues.isNotEmpty()) {
+                    if (expenseXToDates.size > 1 || incomeXToDates.size > 1) {
+                        lineSeries {
+                            if (expenseXToDates.size > 1) {
+                                series(expenseXToDates.keys, expenseChartData.map { it.value })
+                                extras { it[xToDateMapKey] = expenseXToDates }
+                            }
+                            if (incomeXToDates.size > 1) {
+                                series(incomeXToDates.keys, incomeChartData.map { it.value })
+                                extras { it[xToDateMapKey] = incomeXToDates }
+                            }
                         }
                     }
                 }

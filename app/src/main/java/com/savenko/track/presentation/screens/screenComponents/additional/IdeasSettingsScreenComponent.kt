@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.material3.Card
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -95,16 +96,22 @@ fun IdeasSettingsScreenComponent(
             ) {
                 Text(text = stringResource(R.string.sorted_date_idea_settings_screen))
                 Spacer(modifier = Modifier.width(8.dp))
-                TextButton(onClick = { ideasSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) }) {
-                    Text(
-                        text = if (screenState.value.isSortedDateDescending) {
-                            stringResource(R.string.newest_first_idea_settings_screen)
-                        } else {
-                            stringResource(R.string.oldest_first_idea_settings_screen)
-                        }, style = MaterialTheme.typography.bodyMedium
-                    )
+                Card {
+                    TextButton(
+                        onClick = { ideasSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) },
+                        modifier = Modifier.align(Alignment.CenterHorizontally)
+                    ) {
+                        Text(
+                            text = if (screenState.value.isSortedDateDescending) {
+                                stringResource(R.string.newest_first_idea_settings_screen)
+                            } else {
+                                stringResource(R.string.oldest_first_idea_settings_screen)
+                            }, style = MaterialTheme.typography.bodyMedium
+                        )
+                    }
                 }
             }
+            Spacer(modifier = Modifier.height(8.dp))
             LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
                 val filteredIdeas = if (screenState.value.isShowingCompletedIdeas) {
                     listOfAllIdeas

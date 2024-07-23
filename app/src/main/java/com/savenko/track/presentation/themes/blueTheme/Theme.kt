@@ -15,9 +15,9 @@ fun BlueTheme(
     content: @Composable () -> Unit
 ) {
     val colors = if (!useDarkTheme) {
-        newBlueTheme_LightColors
+        blueThemeLightColorScheme
     } else {
-        newBlueTheme_DarkColors
+        blueThemeDarkColorScheme
     }
     val view = LocalView.current
     if (!view.isInEditMode) {
