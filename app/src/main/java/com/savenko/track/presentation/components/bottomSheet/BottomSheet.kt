@@ -54,6 +54,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
@@ -307,7 +308,11 @@ private fun BottomSheetCategoriesGrid(categoryList: List<CategoryEntity>) {
                 val item = categoryList[index]
                 CategoryChip(
                     category = item,
-                    isSelected = (selected == item),
+                    isSelected = (selected == item), borderColor = if (selected == item) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        Color.Transparent
+                    },
                     onSelect = { bottomSheetViewModel.setCategoryPicked(item) })
             }
         }
@@ -321,9 +326,11 @@ private fun BottomSheetDateButton(text: String, isSelected: Boolean, date: Local
         modifier = Modifier.height(IntrinsicSize.Min)
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-            Column(modifier = Modifier
-                .wrapContentWidth()
-                .fillMaxHeight(), verticalArrangement = Arrangement.Center) {
+            Column(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .fillMaxHeight(), verticalArrangement = Arrangement.Center
+            ) {
                 AnimatedVisibility(visible = isSelected, exit = fadeOut()) {
                     Icon(
                         imageVector = Icons.Filled.Check,
@@ -333,10 +340,14 @@ private fun BottomSheetDateButton(text: String, isSelected: Boolean, date: Local
                     )
                 }
             }
-            if(isSelected) Spacer(modifier = Modifier.width(8.dp))
-            Column(modifier = Modifier
-                .wrapContentWidth()
-                .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+            if (isSelected) Spacer(modifier = Modifier.width(8.dp))
+            Column(
+                modifier = Modifier
+                    .wrapContentWidth()
+                    .fillMaxHeight(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Center
+            ) {
                 Text(
                     text = text,
                     style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
