@@ -1,6 +1,7 @@
 package com.savenko.track.presentation.components.dialogs.newCategoryDialog
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
@@ -69,7 +70,7 @@ fun NewCategoryDialog(
             Column(
                 Modifier
                     .wrapContentHeight()
-                    .padding(vertical = 8.dp, horizontal = 16.dp), verticalArrangement = Arrangement.spacedBy(16.dp)
+                    .padding(vertical = 16.dp, horizontal = 24.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Text(
@@ -102,8 +103,10 @@ fun NewCategoryDialog(
                                 }
                             }
                         }
-                        GradientInputTextField(value = newCategoryName, label = "Category name") {
-                            if (it.length < CATEGORIES_NAME_MAX_LENGTH) newCategoryName = it
+                        Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
+                            GradientInputTextField(value = newCategoryName, label = stringResource(R.string.category_name_new_category_dialog)) {
+                                if (it.length < CATEGORIES_NAME_MAX_LENGTH) newCategoryName = it
+                            }
                         }
                         if (error is NewCategoryDialogErrors.CategoryAlreadyExist) {
                             Text(text = stringResource(error.error), style = MaterialTheme.typography.labelSmall)
@@ -120,7 +123,7 @@ fun NewCategoryDialog(
                         CircleWithBorder(
                             circleColor = colorFromHex(newRawCategoryColor),
                             isBorderEnabled = true,
-                            borderColor = MaterialTheme.colorScheme.onPrimary,
+                            borderColor = MaterialTheme.colorScheme.primary,
                             circleRadius = 72
                         ) {
                             newRawCategoryColor = generateRandomColor()

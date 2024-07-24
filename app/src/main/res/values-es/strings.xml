@@ -230,5 +230,6 @@
     <string name="financial_operation_statistic_screen">Operaciones financieras</string>
     <string name="expense_operation_statistic_screen">Operaciones de gastos</string>
     <string name="income_operation_statistic_screen">Operaciones de renta</string>
+    <string name="category_name_new_category_dialog">Nombre de la categoría</string>
 
 </resources>

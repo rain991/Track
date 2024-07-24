@@ -232,4 +232,5 @@
     <string name="allow_non_categorised_expenses">Allow non-categorised expenses</string>
     <string name="show_as">Show as</string>
     <string name="allow_non_categorised_incomes">Allow non-categorised incomes</string>
+    <string name="category_name_new_category_dialog">Category name</string>
 </resources>

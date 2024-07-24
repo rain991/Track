@@ -229,5 +229,6 @@
     <string name="financial_operation_statistic_screen">Finanzoperationen</string>
     <string name="expense_operation_statistic_screen">Ausgabenvorgänge</string>
     <string name="income_operation_statistic_screen">Ertragsvorgänge</string>
+    <string name="category_name_new_category_dialog">Kategoriename</string>
 
 </resources>

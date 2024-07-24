@@ -193,4 +193,5 @@
     <string name="financial_operation_statistic_screen">Фінансові операції</string>
     <string name="expense_operation_statistic_screen">Операції видатків</string>
     <string name="income_operation_statistic_screen">Операції доходів</string>
+    <string name="category_name_new_category_dialog">Назва категорії</string>
 </resources>

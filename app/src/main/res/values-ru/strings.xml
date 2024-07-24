@@ -193,4 +193,5 @@
     <string name="financial_operation_statistic_screen">Финансовые операции</string>
     <string name="expense_operation_statistic_screen">Операции доходов</string>
     <string name="income_operation_statistic_screen">Операции доходов</string>
+    <string name="category_name_new_category_dialog">Название категории</string>
 </resources>
