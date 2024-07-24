@@ -124,7 +124,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                            CategorySettingsChip(category = currentCategory!!) { }
+                            CategorySettingsChip(category = currentCategory!!, borderColor = null) { }
                         }
                     }
                 }
@@ -137,7 +137,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                            CategorySettingsChip(category = currentCategory!!) { }
+                            CategorySettingsChip(category = currentCategory!!, borderColor = null) { }
                         }
                     }
                 }
@@ -150,7 +150,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                            CategorySettingsChip(category = currentCategory!!) { }
+                            CategorySettingsChip(category = currentCategory!!, borderColor = null) { }
                         }
                     }
                 }

@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.MaterialTheme
@@ -37,6 +38,7 @@ import com.savenko.track.domain.models.currency.Currency
 fun CurrenciesSettingsCurrencyPicker(
     currencyList: List<Currency>,
     selectedOption: Currency,
+    isElevated: Boolean,
     onSelect: (Currency) -> Unit
 ) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
@@ -47,7 +49,18 @@ fun CurrenciesSettingsCurrencyPicker(
             .padding(horizontal = 8.dp)
             .clickable {
                 isExpanded = true
-            }
+            }, elevation = if (isElevated) {
+            CardDefaults.cardElevation(
+                defaultElevation = 16.dp,
+                focusedElevation = 16.dp
+            )
+        } else {
+            CardDefaults.cardElevation(
+                defaultElevation = 0.dp,
+                focusedElevation = 0.dp
+            )
+        }
+
     ) {
         Box(
             modifier = Modifier
@@ -74,7 +87,8 @@ fun CurrenciesSettingsCurrencyPicker(
                             Column {
                                 Row(
                                     modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically
+                                    horizontalArrangement = Arrangement.SpaceBetween,
+                                    verticalAlignment = Alignment.CenterVertically
                                 ) {
                                     Text(
                                         text = selectionOption.name,

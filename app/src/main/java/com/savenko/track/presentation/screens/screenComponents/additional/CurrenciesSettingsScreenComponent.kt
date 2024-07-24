@@ -15,6 +15,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Add
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -60,30 +62,39 @@ fun CurrenciesSettingsScreenComponent(
         Row {
             Text(
                 text = stringResource(R.string.message_currencies_settings_screen),
-               // color = MaterialTheme.colorScheme.onPrimaryContainer,
                 style = MaterialTheme.typography.bodyMedium
             )
         }
         Spacer(modifier = Modifier.height(8.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Text(
-                stringResource(R.string.preferable_currency_settings_screen),
-                style = MaterialTheme.typography.bodyMedium,
-                modifier = Modifier.padding(start = 4.dp)
-            )
-            CurrenciesSettingsCurrencyPicker(
-                currencyList = state.currenciesList,
-                selectedOption = currenciesPreferenceUI.preferableCurrency
+
+        Card(modifier = Modifier.fillMaxWidth().padding(horizontal = 4.dp), shape = RoundedCornerShape(8.dp), colors = CardColors(
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary,
+            disabledContainerColor = MaterialTheme.colorScheme.primary,
+            disabledContentColor = MaterialTheme.colorScheme.onPrimary
+        )
+        ){
+            Row(
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp, vertical = 8.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                coroutineScope.launch {
-                    onAction(CurrenciesSettingsScreenEvent.SetPreferableCurrency(it))
+                Text(
+                    stringResource(R.string.preferable_currency_settings_screen),
+                    style = MaterialTheme.typography.bodyMedium
+                )
+                CurrenciesSettingsCurrencyPicker(
+                    currencyList = state.currenciesList,
+                    selectedOption = currenciesPreferenceUI.preferableCurrency,
+                    isElevated = true
+                ) {
+                    coroutineScope.launch {
+                        onAction(CurrenciesSettingsScreenEvent.SetPreferableCurrency(it))
+                    }
                 }
             }
         }
+
         for (currency in additionalCurrenciesPreferenceList) {
             CurrenciesSettingsRow(
                 currency = currency,
