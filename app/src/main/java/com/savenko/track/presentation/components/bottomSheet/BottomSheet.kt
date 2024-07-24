@@ -2,6 +2,7 @@ package com.savenko.track.presentation.components.bottomSheet
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.slideOutVertically
 import androidx.compose.animation.togetherWith
@@ -25,6 +26,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
@@ -43,6 +45,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -62,6 +65,7 @@ import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FINANCIAL_NOTE_MAX_LENGTH
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
+import com.savenko.track.data.other.converters.dates.formatDateAsNumeric
 import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
@@ -154,7 +158,12 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                             Column(modifier = Modifier.fillMaxHeight()) {
                                 AnimatedContent(targetState = bottomSheetViewState.value.isAddingExpense, label = "") {
                                     if (it) {
-                                        Column(Modifier.fillMaxHeight().padding(vertical = 8.dp).offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Bottom) {
+                                        Column(
+                                            Modifier
+                                                .fillMaxHeight()
+                                                .padding(vertical = 8.dp)
+                                                .offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Bottom
+                                        ) {
                                             Icon(
                                                 imageVector = Icons.Default.KeyboardArrowDown,
                                                 modifier = Modifier.scale(0.8f),
@@ -162,7 +171,12 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                                             )
                                         }
                                     } else {
-                                        Column(Modifier.fillMaxHeight().padding(vertical = 8.dp).offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Top) {
+                                        Column(
+                                            Modifier
+                                                .fillMaxHeight()
+                                                .padding(vertical = 8.dp)
+                                                .offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Top
+                                        ) {
                                             Icon(
                                                 imageVector = Icons.Default.KeyboardArrowUp,
                                                 modifier = Modifier.scale(0.8f),
@@ -181,8 +195,11 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                         Spacer(Modifier.weight(1f))
                         val text = bottomSheetViewState.value.note
                         Box(modifier = Modifier.padding(start = 8.dp)) {
-                            GradientInputTextField(value = text, label = stringResource(R.string.your_note_adding_exp)) {
-                                if(it.length < FINANCIAL_NOTE_MAX_LENGTH) bottomSheetViewModel.setNote(it)
+                            GradientInputTextField(
+                                value = text,
+                                label = stringResource(R.string.your_note_adding_exp)
+                            ) {
+                                if (it.length < FINANCIAL_NOTE_MAX_LENGTH) bottomSheetViewModel.setNote(it)
                             }
                         }
                         Spacer(Modifier.height(16.dp))
@@ -231,13 +248,19 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
 }
 
 @Composable
-private fun BottomSheetDatePicker(bottomSheetViewModel : BottomSheetViewModel) {
+private fun BottomSheetDatePicker(bottomSheetViewModel: BottomSheetViewModel) {
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     var text by remember { mutableStateOf(formatDateWithoutYear(convertLocalDateToDate(bottomSheetViewState.value.datePicked))) }
     text = if (!bottomSheetViewModel.isDateInOtherSpan(bottomSheetViewState.value.datePicked)) {
         stringResource(R.string.date)
     } else {
         formatDateWithoutYear(convertLocalDateToDate(bottomSheetViewState.value.datePicked))
+    }
+    val todayDate = remember {
+        derivedStateOf { LocalDate.now() }
+    }
+    val yesterdayDate = remember {
+        derivedStateOf { LocalDate.now().minusDays(1) }
     }
     Row(
         modifier = Modifier
@@ -246,11 +269,12 @@ private fun BottomSheetDatePicker(bottomSheetViewModel : BottomSheetViewModel) {
     ) {
         BottomSheetDateButton(
             text = stringResource(R.string.today),
-            isSelected = (bottomSheetViewState.value.todayButtonActiveState)
+            isSelected = (bottomSheetViewState.value.todayButtonActiveState), date = todayDate.value
         ) { bottomSheetViewModel.setDatePicked(LocalDate.now()) }
         BottomSheetDateButton(
             text = stringResource(R.string.yesterday),
-            isSelected = (bottomSheetViewState.value.yesterdayButtonActiveState)
+            isSelected = (bottomSheetViewState.value.yesterdayButtonActiveState),
+            date = yesterdayDate.value
         ) { bottomSheetViewModel.setDatePicked(LocalDate.now().minusDays(1)) }
         Button(onClick = { bottomSheetViewModel.togglePickerState() }) {
             Text(text = text, style = MaterialTheme.typography.bodyMedium)
@@ -291,26 +315,41 @@ private fun BottomSheetCategoriesGrid(categoryList: List<CategoryEntity>) {
 }
 
 @Composable
-private fun BottomSheetDateButton(text: String, isSelected: Boolean, onSelect: () -> Unit) {
+private fun BottomSheetDateButton(text: String, isSelected: Boolean, date: LocalDate, onSelect: () -> Unit) {
     Button(
-        onClick = onSelect
+        onClick = onSelect,
+        modifier = Modifier.height(IntrinsicSize.Min)
     ) {
-        Row(horizontalArrangement = Arrangement.SpaceBetween) {
-            AnimatedVisibility(visible = isSelected) {
-                Icon(
-                    imageVector = Icons.Filled.Check,
-                    contentDescription = stringResource(R.string.selected_date_add_exp),
-                    modifier = Modifier.height(22.dp),
-                    tint = MaterialTheme.colorScheme.onPrimary
-                )
+        Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
+            Column(modifier = Modifier
+                .wrapContentWidth()
+                .fillMaxHeight(), verticalArrangement = Arrangement.Center) {
+                AnimatedVisibility(visible = isSelected, exit = fadeOut()) {
+                    Icon(
+                        imageVector = Icons.Filled.Check,
+                        contentDescription = stringResource(R.string.selected_date_add_exp),
+                        modifier = Modifier.height(22.dp),
+                        tint = MaterialTheme.colorScheme.onPrimary
+                    )
+                }
             }
-            if (isSelected) Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = text,
-                style = MaterialTheme.typography.bodyMedium
-            )
+            if(isSelected) Spacer(modifier = Modifier.width(8.dp))
+            Column(modifier = Modifier
+                .wrapContentWidth()
+                .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally, verticalArrangement = Arrangement.Center) {
+                Text(
+                    text = text,
+                    style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
+                )
+                AnimatedVisibility(visible = isSelected) {
+                    Text(
+                        text = formatDateAsNumeric(convertLocalDateToDate(date)),
+                        style = MaterialTheme.typography.labelSmall,
+                        textAlign = TextAlign.Center
+                    )
+                }
+            }
         }
-
     }
 }
 

@@ -107,7 +107,6 @@ fun IdeasSettingsScreenComponent(
             ) {
                 Text(text = stringResource(R.string.sorted_date_idea_settings_screen))
                 Spacer(modifier = Modifier.width(8.dp))
-
                 Card {
                     TextButton(
                         onClick = { ideasSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) },
@@ -120,7 +119,6 @@ fun IdeasSettingsScreenComponent(
                         }
                     }
                 }
-
             }
             Spacer(modifier = Modifier.height(16.dp))
             LazyColumn(

@@ -15,6 +15,17 @@ fun formatDateWithoutYear(date: Date, isLongDayOfWeekName: Boolean = true): Stri
     return "$dayOfWeekName, $dayOfMonth $month"
 }
 
+fun formatDateAsNumeric(date: Date): String {
+    val locale = Locale.getDefault()
+    val calendar = Calendar.getInstance().apply {
+        time = date
+    }
+    val dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH)
+    val month = calendar.getDisplayName(Calendar.MONTH, Calendar.SHORT, locale)
+    return "$dayOfMonth $month"
+}
+
+
 fun formatDateWithYear(date: Date, isLongDayOfWeekName: Boolean = true): String {
     val locale = Locale.getDefault()
     val calendar = Calendar.getInstance().apply {
