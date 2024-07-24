@@ -24,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -152,7 +153,13 @@ fun TrackScreenInfoCards(
                                     fontSize = 14.sp, fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append(stringResource(R.string.operations_screen_info_cards))
+                                append(
+                                    pluralStringResource(
+                                        R.plurals.operations_screen_info_cards,
+                                        screenState.value.currentMonthExpensesCount,
+                                        screenState.value.currentMonthExpensesCount
+                                    )
+                                )
                             }
                         })
                     } else {
@@ -239,7 +246,14 @@ fun TrackScreenInfoCards(
                                     fontSize = 14.sp, fontWeight = FontWeight.Medium
                                 )
                             ) {
-                                append(" " + stringResource(R.string.operations_screen_info_cards))
+                                append(
+                                    " " +
+                                            pluralStringResource(
+                                                R.plurals.operations_screen_info_cards,
+                                                screenState.value.currentMonthIncomesCount,
+                                                screenState.value.currentMonthIncomesCount
+                                            )
+                                )
                             }
                         })
                     } else {

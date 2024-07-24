@@ -90,10 +90,15 @@
     <string name="delete">Delete</string>
     <string name="income_categories">Income categories</string>
 
+
     <!-- Lazy columns -->
     <string name="recent_lazy_column">Recent</string>
     <string name="expenses_lazy_column">Expenses</string>
     <string name="incomes_lazy_column">Incomes</string>
+    <plurals name="operations_screen_info_cards">
+        <item quantity="one">operation</item>
+        <item quantity="other">operations</item>
+    </plurals>
     <string name="operations_track_stats_lazycolumn">%1$s operations</string>
     <string name="warning_message_track_stats_lazycolumn">We have not found financial operations for specified filters</string>
 
@@ -163,7 +168,6 @@
     <!-- Financial Cards -->
     <string name="expenses_fin_item_card">"%1$s expenses: "</string>
     <string name="incomes_fin_item_card">"%1$s incomes: "</string>
-    <string name="operations_screen_info_cards">"operations"</string>
     <string name="warning_message_info_cards">0 operations this month</string>
 
     <!-- Other -->
@@ -180,6 +184,9 @@
     <string name="statistic">Statistic</string>
     <string name="add_it_button">Add it</string>
     <string name="financial">Financial</string>
+    <string name="financial_operation_statistic_screen">Financial operations</string>
+    <string name="expense_operation_statistic_screen">Expense operations</string>
+    <string name="income_operation_statistic_screen">Income operations</string>
     <string name="cd_add_new_category">Create new category</string>
     <string name="both">Both</string>
     <string name="week">Week</string>

@@ -93,7 +93,10 @@
     <string name="recent_lazy_column">Neueste</string>
     <string name="expenses_lazy_column">Ausgaben</string>
     <string name="incomes_lazy_column">Einnahmen</string>
-    <string name="operations_track_stats_lazycolumn">%1$s Operationen</string>
+    <plurals name="operations_screen_info_cards">
+        <item quantity="one">Operation</item>
+        <item quantity="other">Operationen</item>
+    </plurals>
     <string name="warning_message_track_stats_lazycolumn">Wir haben keine finanziellen Operationen für die angegebenen Filter gefunden</string>
 
     <!-- Ideas -->
@@ -162,7 +165,7 @@
     <!-- Financial Cards -->
     <string name="expenses_fin_item_card">"%1$s Ausgaben: "</string>
     <string name="incomes_fin_item_card">"%1$s Einnahmen: "</string>
-    <string name="operations_screen_info_cards">Operationen</string>
+    <string name="operations_track_stats_lazycolumn">%1$s Operationen</string>
     <string name="warning_message_info_cards">0 Operationen in diesem Monat</string>
 
     <!-- Other -->
@@ -223,5 +226,8 @@
     <string name="allow_non_categorised_expenses">Nicht kategorisierte Ausgaben zulassen</string>
     <string name="show_as">Zeigen als</string>
     <string name="allow_non_categorised_incomes">Nicht kategorisierte Einkommen zulassen</string>
+    <string name="financial_operation_statistic_screen">Finanzoperationen</string>
+    <string name="expense_operation_statistic_screen">Ausgabenvorgänge</string>
+    <string name="income_operation_statistic_screen">Ertragsvorgänge</string>
 
 </resources>

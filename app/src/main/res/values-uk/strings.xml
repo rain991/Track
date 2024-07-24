@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="logo_app_description">Легкий та зручний трекер витрат</string>
     <string name="currency">Валюта</string>
     <string name="error">Помилка</string>
@@ -73,7 +73,12 @@
     <string name="recent_lazy_column">Недавнє</string>
     <string name="expenses_lazy_column">Витрати</string>
     <string name="incomes_lazy_column">Доходи</string>
-    <string name="operations_track_stats_lazycolumn">%1$s</string>
+    <plurals name="operations_screen_info_cards">
+        <item quantity="one" tools:ignore="ImpliedQuantity">операція</item>
+        <item quantity="few">операції</item>
+        <item quantity="many">операцій</item>
+        <item quantity="other">операцій</item>
+    </plurals>
     <string name="warning_message_track_stats_lazycolumn">Ми не знайшли фінансових операцій для таких фільтрів</string>
     <string name="first_notion_new_idea_card">Ідеї це фінансові інструменти Track</string>
     <string name="second_notion_new_idea_card">Вам доступні : збереження, ліміти витрат та плани доходів</string>
@@ -126,7 +131,7 @@
     <string name="selected_time_period_track_stats_options">Вибраний час : %1$s - %2$s</string>
     <string name="expenses_fin_item_card">"Витрат: "</string>
     <string name="incomes_fin_item_card">"Доходів: "</string>
-    <string name="operations_screen_info_cards">"⠀операція"</string>
+    <string name="operations_track_stats_lazycolumn">%1$s⠀операція</string>
     <string name="warning_message_info_cards">0 операцій цього місяця</string>
     <string name="add">Додати</string>
     <string name="add_it">Додай</string>
@@ -185,4 +190,7 @@
     <string name="allow_non_categorised_expenses">Дозволяти некатегоризовані витрати</string>
     <string name="show_as">Показуй як</string>
     <string name="allow_non_categorised_incomes">Дозволяти некатегоризовані доходи</string>
+    <string name="financial_operation_statistic_screen">Фінансові операції</string>
+    <string name="expense_operation_statistic_screen">Операції видатків</string>
+    <string name="income_operation_statistic_screen">Операції доходів</string>
 </resources>
