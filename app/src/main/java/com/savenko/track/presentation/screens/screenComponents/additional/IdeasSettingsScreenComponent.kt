@@ -1,5 +1,6 @@
 package com.savenko.track.presentation.screens.screenComponents.additional
 
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -21,6 +22,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.remember
@@ -56,6 +58,15 @@ fun IdeasSettingsScreenComponent(
     val addToSavingIdeaDialogSavings = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
     val listOfAllIdeas = ideasSettingsScreenViewModel.listOfAllIdeas
     val preferableCurrency = screenState.value.preferableCurrency
+    val sortingButtonText = remember {
+        derivedStateOf {
+            if (screenState.value.isSortedDateDescending) {
+                R.string.newest_first_idea_settings_screen
+            } else {
+                R.string.oldest_first_idea_settings_screen
+            }
+        }
+    }
 
     if (addToSavingIdeaDialogSavings.value != null) {
         AddToSavingDialog(addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel)
@@ -101,18 +112,20 @@ fun IdeasSettingsScreenComponent(
                         onClick = { ideasSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) },
                         modifier = Modifier.align(Alignment.CenterHorizontally)
                     ) {
-                        Text(
-                            text = if (screenState.value.isSortedDateDescending) {
-                                stringResource(R.string.newest_first_idea_settings_screen)
-                            } else {
-                                stringResource(R.string.oldest_first_idea_settings_screen)
-                            }, style = MaterialTheme.typography.bodyMedium
-                        )
+                        AnimatedContent(targetState = sortingButtonText, label = "animatedButtonText") {
+                            Text(
+                                text = stringResource(id = it.value), style = MaterialTheme.typography.bodyMedium
+                            )
+                        }
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
+            Spacer(modifier = Modifier.height(16.dp))
+            LazyColumn(
+                state = listState, modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 4.dp)
+            ) {
                 val filteredIdeas = if (screenState.value.isShowingCompletedIdeas) {
                     listOfAllIdeas
                 } else {

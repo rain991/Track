@@ -45,7 +45,7 @@ import com.savenko.track.presentation.components.financialItemCards.FinancialIte
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
 import com.savenko.track.presentation.other.composableTypes.provideDateRange
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
+import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 @Composable
@@ -61,18 +61,18 @@ fun TrackStatisticLazyColumn(
     val listOfCurrencies = state.value.listOfCurrencies
     val listState = rememberLazyListState()
     Column(modifier = modifier) {
-        var text by remember { mutableStateOf("") }
-        text = when (state.value.financialEntities) {
+        var lazyColumnHeader by remember { mutableStateOf("") }
+        lazyColumnHeader = when (state.value.financialEntities) {
             is FinancialEntities.Both -> {
-                stringResource(R.string.financial)
+                stringResource(R.string.financial_operation_statistic_screen)
             }
 
             is FinancialEntities.ExpenseFinancialEntity -> {
-                stringResource(R.string.expenses)
+                stringResource(R.string.expense_operation_statistic_screen)
             }
 
             is FinancialEntities.IncomeFinancialEntity -> {
-                stringResource(R.string.incomes)
+                stringResource(R.string.income_operation_statistic_screen)
             }
         }
         Row(
@@ -83,13 +83,13 @@ fun TrackStatisticLazyColumn(
             verticalAlignment = Alignment.CenterVertically
         ) {
             AnimatedContent(
-                targetState = text,
+                targetState = lazyColumnHeader,
                 label = "verticalTextChange",
                 transitionSpec = {
                     slideInVertically { it } togetherWith slideOutVertically { -it }
                 }) { text ->
                 Text(
-                    text = stringResource(R.string.operations_track_stats_lazycolumn, text),
+                    text = text,
                     style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
                     color = MaterialTheme.colorScheme.primary
                 )
@@ -144,7 +144,7 @@ fun TrackStatisticLazyColumn(
                     var countOfFinancialEntities by remember { mutableIntStateOf(0) }
                     if (currentFinancialCategory != null) {
                         LaunchedEffect(key1 = Unit, key2 = state) {
-                            async {
+                            launch {
                                 withContext(Dispatchers.IO) {
                                     statisticLazyColumnViewModel.requestSummaryInDateRangeNotion(
                                         financialEntity = currentFinancialEntity,
@@ -155,7 +155,7 @@ fun TrackStatisticLazyColumn(
                                     }
                                 }
                             }
-                            async {
+                            launch {
                                 withContext(Dispatchers.IO) {
                                     statisticLazyColumnViewModel.requestCountInDateRangeNotion(
                                         financialEntity = currentFinancialEntity,

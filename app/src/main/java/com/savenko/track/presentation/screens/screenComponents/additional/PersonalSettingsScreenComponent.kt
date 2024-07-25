@@ -54,6 +54,7 @@ fun PersonalSettingsScreenComponent() {
     val personalStatsViewmodel = koinViewModel<PersonalStatsViewModel>()
     val trackVersion = BuildConfig.VERSION_NAME
     Column(modifier = Modifier.fillMaxSize()) {
+        Spacer(Modifier.height(8.dp))
         PersonalSettingsContent(personalSettingsScreenViewmodel)
         Spacer(Modifier.height(16.dp))
         PersonalSettingsStatistics(personalStatsViewmodel)

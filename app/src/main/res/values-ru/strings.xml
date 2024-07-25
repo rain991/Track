@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="logo_app_description">Лёгкий и удобный трекер расходов</string>
     <string name="currency">Валюта</string>
     <string name="error">Ошибка</string>
@@ -73,7 +73,12 @@
     <string name="recent_lazy_column">Последнее</string>
     <string name="expenses_lazy_column">Расходы</string>
     <string name="incomes_lazy_column">Доходы</string>
-    <string name="operations_track_stats_lazycolumn">%1$s</string>
+    <plurals name="operations_screen_info_cards">
+        <item quantity="one" tools:ignore="ImpliedQuantity">операция</item>
+        <item quantity="few">операции</item>
+        <item quantity="many">операций</item>
+        <item quantity="other">операции</item>
+    </plurals>
     <string name="warning_message_track_stats_lazycolumn">Мы не нашли финансовых операций для таких фильтров</string>
     <string name="first_notion_new_idea_card">Идеи это финансовые инструменты Track</string>
     <string name="second_notion_new_idea_card">Вам доступны: сбережения, лимиты расходов и планы доходов</string>
@@ -126,7 +131,7 @@
     <string name="selected_time_period_track_stats_options">Выбранное время: %1$s - %2$s</string>
     <string name="expenses_fin_item_card">"Расходов: "</string>
     <string name="incomes_fin_item_card">"Доходов: "</string>
-    <string name="operations_screen_info_cards">" операция"</string>
+    <string name="operations_track_stats_lazycolumn">%1$s операция</string>
     <string name="warning_message_info_cards">0 операций в этом месяце</string>
     <string name="add">Добавить</string>
     <string name="add_it">Добавь</string>
@@ -185,4 +190,8 @@
     <string name="allow_non_categorised_expenses">Разрешать некатегоризированные расходы</string>
     <string name="show_as">Показывать как</string>
     <string name="allow_non_categorised_incomes">Разрешать некатегоризированные доходы</string>
+    <string name="financial_operation_statistic_screen">Финансовые операции</string>
+    <string name="expense_operation_statistic_screen">Операции доходов</string>
+    <string name="income_operation_statistic_screen">Операции доходов</string>
+    <string name="category_name_new_category_dialog">Название категории</string>
 </resources>

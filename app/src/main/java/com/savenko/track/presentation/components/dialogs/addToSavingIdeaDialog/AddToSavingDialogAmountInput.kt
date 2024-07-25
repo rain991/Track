@@ -50,7 +50,7 @@ fun AddToSavingDialogAmountInput(
             textStyle = MaterialTheme.typography.titleMedium.copy(
                 fontSize = 38.sp,
                 letterSpacing = 1.3.sp,
-                color = MaterialTheme.colorScheme.onPrimaryContainer
+                color = MaterialTheme.colorScheme.primary
             ),
             value = currentValue.toString(),
             onValueChange = { newText: String ->

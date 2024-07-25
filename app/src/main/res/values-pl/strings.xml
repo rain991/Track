@@ -73,7 +73,12 @@
     <string name="recent_lazy_column">Ostatnie</string>
     <string name="expenses_lazy_column">Wydatki</string>
     <string name="incomes_lazy_column">Dochody</string>
-    <string name="operations_track_stats_lazycolumn">%1$s</string>
+    <plurals name="operations_screen_info_cards">
+        <item quantity="one">operacja</item>
+        <item quantity="few">operacje</item>
+        <item quantity="many">operacji</item>
+        <item quantity="other">operacji</item>
+    </plurals>
     <string name="warning_message_track_stats_lazycolumn">Nie znaleźliśmy transakcji finansowych dla takich filtrów</string>
     <string name="first_notion_new_idea_card">Idea to instrumenty finansowe Track</string>
     <string name="second_notion_new_idea_card">Dostępne są: oszczędności, limity wydatków i plany dochodów</string>
@@ -126,7 +131,7 @@
     <string name="selected_time_period_track_stats_options">Wybrany czas %1$s - %2$s</string>
     <string name="expenses_fin_item_card">"Wydatków: "</string>
     <string name="incomes_fin_item_card">"Dochodów: "</string>
-    <string name="operations_screen_info_cards"> operacji</string>
+    <string name="operations_track_stats_lazycolumn">%1$s operacji</string>
     <string name="warning_message_info_cards">0 operacji w tym mięsiącu</string>
     <string name="add">Dodaj</string>
     <string name="add_it">Dodaj</string>
@@ -185,4 +190,8 @@
     <string name="allow_non_categorised_expenses">Niekategoryzowane wydatki</string>
     <string name="show_as">Pokaż jako</string>
     <string name="allow_non_categorised_incomes">Niekategoryzowane dochody</string>
+    <string name="financial_operation_statistic_screen">Operacje finansowe</string>
+    <string name="expense_operation_statistic_screen">Operacje wydatków</string>
+    <string name="income_operation_statistic_screen">Operacje dochodowe</string>
+    <string name="category_name_new_category_dialog">Nazwa kategorii</string>
 </resources>

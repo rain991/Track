@@ -93,7 +93,11 @@
     <string name="recent_lazy_column">Reciente</string>
     <string name="expenses_lazy_column">Gastos</string>
     <string name="incomes_lazy_column">Ingresos</string>
-    <string name="operations_track_stats_lazycolumn">%1$s operaciones</string>
+    <plurals name="operations_screen_info_cards">
+        <item quantity="one">operación</item>
+        <item quantity="many">operaciones</item>
+        <item quantity="other">operaciones</item>
+    </plurals>
     <string name="warning_message_track_stats_lazycolumn">No hemos encontrado operaciones financieras para los filtros especificados</string>
 
     <!-- Ideas -->
@@ -162,7 +166,7 @@
     <!-- Financial Cards -->
     <string name="expenses_fin_item_card">"%1$s gastos: "</string>
     <string name="incomes_fin_item_card">"%1$s ingresos: "</string>
-    <string name="operations_screen_info_cards">operaciones</string>
+    <string name="operations_track_stats_lazycolumn">%1$s operaciones</string>
     <string name="warning_message_info_cards">0 operaciones este mes</string>
 
     <!-- Other -->
@@ -223,5 +227,9 @@
     <string name="allow_non_categorised_expenses">Permitir gastos no categorizados</string>
     <string name="show_as">Mostrar como</string>
     <string name="allow_non_categorised_incomes">Permitir ingresos no categorizados</string>
+    <string name="financial_operation_statistic_screen">Operaciones financieras</string>
+    <string name="expense_operation_statistic_screen">Operaciones de gastos</string>
+    <string name="income_operation_statistic_screen">Operaciones de renta</string>
+    <string name="category_name_new_category_dialog">Nombre de la categoría</string>
 
 </resources>

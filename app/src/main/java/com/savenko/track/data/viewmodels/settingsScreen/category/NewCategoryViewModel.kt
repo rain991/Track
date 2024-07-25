@@ -81,7 +81,7 @@ class NewCategoryViewModel(
         _newCategoryDialogState.update { _newCategoryDialogState.value.copy(dialogErrors = value) }
     }
 
-    private fun setDialogVisibility(value : Boolean){
+    fun setDialogVisibility(value : Boolean){
         _newCategoryDialogState.update { _newCategoryDialogState.value.copy(isDialogVisible = value) }
     }
 }

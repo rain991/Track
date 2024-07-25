@@ -32,7 +32,7 @@ fun CircleWithBorder(
             val radius = canvasWidth.coerceAtMost(canvasHeight) / 2
             val centerX = canvasWidth / 2
             val centerY = canvasHeight / 2
-            val borderWidth = circleRadius / 6;
+            val borderWidth = circleRadius / 8;
             drawCircle(color = circleColor, radius = radius, center = Offset(centerX, centerY))
             if (isBorderEnabled) {
                 drawCircle(

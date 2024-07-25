@@ -12,11 +12,7 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
@@ -36,7 +32,6 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
     val viewModel = koinViewModel<CategoriesSettingsScreenViewModel>()
     val newCategoryViewModel = koinViewModel<NewCategoryViewModel>()
     val newCategoryDialogState = newCategoryViewModel.newCategoryDialogState.collectAsState()
-    var isAddingNewCategoryDialogVisible by remember { mutableStateOf(false) }
     val coroutineScope = rememberCoroutineScope()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
@@ -47,16 +42,16 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
         floatingActionButton = {
             ExtendedFloatingActionButton(
                 expanded = false,
-                onClick = { isAddingNewCategoryDialogVisible = true },
+                onClick = { newCategoryViewModel.setDialogVisibility(true) },
                 icon = { Icon(Icons.Filled.Add, stringResource(R.string.cd_add_new_category)) },
                 text = { Text(text = stringResource(R.string.cd_add_new_category)) },
                 modifier = Modifier.padding(end = 16.dp, bottom = 16.dp)
             )
         }
     ) { paddingValues ->
-        if (isAddingNewCategoryDialogVisible) {
+        if (newCategoryDialogState.value.isDialogVisible) {
             NewCategoryDialog(
-                onDismissRequest = { isAddingNewCategoryDialogVisible = false },
+                onDismissRequest = { newCategoryViewModel.setDialogVisibility(false) },
                 error = newCategoryDialogState.value.dialogErrors
             ) { categoryName, categoryType, rawCategoryColor ->
                 coroutineScope.launch {

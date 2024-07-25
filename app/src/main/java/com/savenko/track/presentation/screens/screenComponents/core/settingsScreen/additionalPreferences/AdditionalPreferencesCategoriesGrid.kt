@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
@@ -34,6 +35,11 @@ fun AdditionalPreferencesCategoriesGrid(
                 CategoryChip(
                     category = item,
                     isSelected = (selectedCategory == item),
+                    borderColor = if (item == selectedCategory) {
+                        MaterialTheme.colorScheme.primary
+                    } else {
+                        null
+                    },
                     onSelect = { onCategorySelect(item) })
             }
         }

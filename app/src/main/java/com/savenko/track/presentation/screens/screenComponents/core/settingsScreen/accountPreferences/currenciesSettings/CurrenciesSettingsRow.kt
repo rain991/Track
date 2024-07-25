@@ -18,6 +18,7 @@ import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.currency.Currency
 
+// Used for non-preferable currency settings
 @Composable
 fun CurrenciesSettingsRow(currency: Currency?, currenciesList: List<Currency>, onMenuSelect: (Currency) -> Unit) {
     if (currency != null) {
@@ -37,6 +38,7 @@ fun CurrenciesSettingsRow(currency: Currency?, currenciesList: List<Currency>, o
             CurrenciesSettingsCurrencyPicker(
                 currencyList = currenciesList,
                 selectedOption = currency ?: CURRENCY_DEFAULT,
+                isElevated = false,
                 onSelect = {
                     onMenuSelect(it)
                 })

@@ -55,7 +55,7 @@ fun CategoryChip(
             disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
         ),
         border = if (borderColor != null) {
-            BorderStroke((1.5).dp, borderColor)
+            BorderStroke((1).dp, borderColor)
         } else {
             null
         }

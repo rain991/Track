@@ -28,11 +28,6 @@ fun SettingsTrackScreen(navHostController: NavHostController) {
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             if (isPageNameVisible.value) Header(pageName = stringResource(R.string.settings))
-        },
-        floatingActionButton = {
-            MainScreenFloatingActionButton(
-                isButtonExpanded = false,
-                onClick = { bottomSheetViewModel.setBottomSheetExpanded(true) })
         }
     ) {
         BottomSheet(bottomSheetViewModel)

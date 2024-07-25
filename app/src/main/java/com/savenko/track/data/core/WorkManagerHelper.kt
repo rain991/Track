@@ -1,15 +1,18 @@
 package com.savenko.track.data.core
 
 import android.content.Context
+import androidx.work.BackoffPolicy
 import androidx.work.Constraints
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
+import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.savenko.track.data.other.constants.ACCEPTABLE_EMPTY_CURRENCIES_RATES
 import com.savenko.track.data.other.constants.CURRENCIES_RATES_REQUEST_PERIOD
+import com.savenko.track.data.other.constants.FLEX_TIME_INTERVAL
 import com.savenko.track.data.other.workers.CurrenciesRatesWorker
 import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import kotlinx.coroutines.CoroutineScope
@@ -24,8 +27,15 @@ class WorkManagerHelper(private val context: Context, private val currencyListRe
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
         val periodicRatesRequest = PeriodicWorkRequestBuilder<CurrenciesRatesWorker>(
-            repeatInterval = CURRENCIES_RATES_REQUEST_PERIOD, repeatIntervalTimeUnit = TimeUnit.DAYS
-        ).setConstraints(constraints).build()
+            repeatInterval = CURRENCIES_RATES_REQUEST_PERIOD,
+            repeatIntervalTimeUnit = TimeUnit.DAYS,
+            flexTimeInterval = FLEX_TIME_INTERVAL,
+            flexTimeIntervalUnit = TimeUnit.MINUTES
+        ).setConstraints(constraints).setBackoffCriteria(
+            BackoffPolicy.EXPONENTIAL,
+            PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
+            TimeUnit.MILLISECONDS
+        ).build()
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             "currenciesRateRequest",

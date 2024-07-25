@@ -54,6 +54,7 @@ import com.savenko.track.data.other.converters.dates.areYearsSame
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
+import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.other.getMonthResID
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
@@ -156,7 +157,13 @@ fun MainScreenLazyColumn(
                         expensesList
                     } else {
                         incomeList
-                    }, key = { index, item: FinancialEntity -> item.id }
+                    }, key = { _, item: FinancialEntity ->
+                        if (item is ExpenseItem) {
+                            item.id
+                        } else {
+                            -item.id
+                        }
+                    }
                     ) { index, currentFinancialEntity ->
                         val currentFinancialCategory =
                             if (isExpenseLazyColumn) {
@@ -200,9 +207,11 @@ fun MainScreenLazyColumn(
                             }
                         }
                         Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                            if (isScrollingUp) LaunchedEffect(listState) {
-                                listState.animateScrollToItem(index = 0)
-                                isScrollingUp = false
+                            if (isScrollingUp) {
+                                LaunchedEffect(listState) {
+                                    listState.animateScrollToItem(index = 0)
+                                    isScrollingUp = false
+                                }
                             }
                             Column {
                                 if (currentFinancialCategory != null) {

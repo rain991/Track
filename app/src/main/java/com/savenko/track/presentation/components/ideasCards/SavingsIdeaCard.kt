@@ -17,12 +17,10 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
@@ -32,7 +30,6 @@ import com.savenko.track.domain.models.idea.Savings
 
 @Composable
 fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel) {
-    val localContext = LocalContext.current
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -57,8 +54,7 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                         .fillMaxHeight(), verticalArrangement = Arrangement.SpaceEvenly
                 ) {
                     Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
+                        modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {

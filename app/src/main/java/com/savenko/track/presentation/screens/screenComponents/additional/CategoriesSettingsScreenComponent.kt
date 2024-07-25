@@ -1,5 +1,6 @@
 package com.savenko.track.presentation.screens.screenComponents.additional
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -90,7 +91,10 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     listOfExpensesCategories.forEach { currentExpenseCategory ->
-                        CategorySettingsChip(category = currentExpenseCategory) {
+                        CategorySettingsChip(
+                            category = currentExpenseCategory,
+                            borderColor = MaterialTheme.colorScheme.primary
+                        ) {
                             isContextMenuVisible = true
                             currentSelectedCategory = currentExpenseCategory
                         }
@@ -139,7 +143,10 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
                     verticalArrangement = Arrangement.spacedBy(4.dp)
                 ) {
                     listOfIncomeCategories.forEach { currentIncomeCategory ->
-                        CategorySettingsChip(category = currentIncomeCategory) {
+                        CategorySettingsChip(
+                            category = currentIncomeCategory,
+                            borderColor = MaterialTheme.colorScheme.primary
+                        ) {
                             isContextMenuVisible = true
                             currentSelectedCategory = currentIncomeCategory
                         }
@@ -172,6 +179,7 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
 @Composable
 fun CategorySettingsChip(
     category: CategoryEntity,
+    borderColor: Color?,
     onSelect: (CategoryEntity) -> Unit
 ) {
     val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
@@ -185,7 +193,11 @@ fun CategorySettingsChip(
             contentColor = Color.White,
             disabledContainerColor = parseColor(hexColor = category.colorId),
             disabledContentColor = Color.White
-        )
+        ), border = if (borderColor != null) {
+            BorderStroke((1.5).dp, borderColor)
+        } else {
+            null
+        }
     ) {
         Row(
             modifier = Modifier.wrapContentWidth(),
