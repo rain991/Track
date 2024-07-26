@@ -7,7 +7,6 @@ import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.ExistingWorkPolicy
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
-import androidx.work.PeriodicWorkRequest
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
 import com.savenko.track.data.other.constants.ACCEPTABLE_EMPTY_CURRENCIES_RATES
@@ -30,16 +29,16 @@ class WorkManagerHelper(private val context: Context, private val currencyListRe
             repeatInterval = CURRENCIES_RATES_REQUEST_PERIOD,
             repeatIntervalTimeUnit = TimeUnit.DAYS,
             flexTimeInterval = FLEX_TIME_INTERVAL,
-            flexTimeIntervalUnit = TimeUnit.MINUTES
+            flexTimeIntervalUnit = TimeUnit.HOURS
         ).setConstraints(constraints).setBackoffCriteria(
             BackoffPolicy.EXPONENTIAL,
-            PeriodicWorkRequest.MIN_PERIODIC_FLEX_MILLIS,
-            TimeUnit.MILLISECONDS
+            1,
+            TimeUnit.HOURS
         ).build()
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             "currenciesRateRequest",
-            ExistingPeriodicWorkPolicy.KEEP,
+            ExistingPeriodicWorkPolicy.UPDATE,
             periodicRatesRequest
         )
     }
