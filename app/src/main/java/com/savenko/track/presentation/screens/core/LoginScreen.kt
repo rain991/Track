@@ -1,9 +1,7 @@
 package com.savenko.track.presentation.screens.core
 
-
 import android.app.Activity
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -19,13 +17,14 @@ import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -66,7 +65,6 @@ import com.savenko.track.data.other.constants.NAME_MAX_LENGTH
 import com.savenko.track.data.viewmodels.login.LoginViewModel
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.navigation.Screen
-
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -100,7 +98,8 @@ fun LoginScreen(navController: NavController) {
 private fun LoginContent(loginViewModel: LoginViewModel, navController: NavController) {
     val focusManager = LocalFocusManager.current
     val controller = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
+    val nameFocusRequester = remember { FocusRequester() }
+    val budgetFocusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
     val screenState = loginViewModel.loginScreenState.collectAsState()
     Column(
@@ -121,7 +120,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             Spacer(modifier = Modifier.width(8.dp))
             BasicTextField(
                 modifier = Modifier
-                    .focusRequester(focusRequester)
+                    .focusRequester(nameFocusRequester)
                     .width(IntrinsicSize.Min)
                     .padding(start = 8.dp),
                 textStyle = MaterialTheme.typography.displaySmall.copy(
@@ -159,7 +158,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
             )
             BasicTextField(
                 modifier = Modifier
-                    .focusRequester(focusRequester)
+                    .focusRequester(budgetFocusRequester)
                     .width(IntrinsicSize.Min)
                     .padding(start = 12.dp),
                 textStyle = MaterialTheme.typography.displaySmall.copy(
@@ -190,11 +189,13 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                 )
             )
             Spacer(modifier = Modifier.width(8.dp))
-            LoginScreenCurrencyPicker(currencyList = loginViewModel.currencyList,
+            LoginScreenCurrencyPicker(
+                currencyList = loginViewModel.currencyList,
                 selectedOption = screenState.value.currency,
                 onSelect = {
                     loginViewModel.setCurrencyStateFlow(it)
-                })
+                }
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -212,7 +213,7 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
                 containerColor = MaterialTheme.colorScheme.primary,
                 contentColor = MaterialTheme.colorScheme.onPrimary
             ),
-            shape = MaterialTheme.shapes.extraSmall
+            shape = RoundedCornerShape(16.dp)
         ) {
             Text(
                 text = stringResource(R.string.lets_start),
@@ -221,7 +222,6 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
         }
     }
 }
-
 
 @Composable
 private fun LoginHeader() {
@@ -265,37 +265,45 @@ private fun LoginHeader() {
     }
 }
 
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun LoginScreenCurrencyPicker(
+inline fun LoginScreenCurrencyPicker(
     currencyList: List<Currency>,
     selectedOption: Currency,
-    onSelect: (Currency) -> Unit
+    crossinline onSelect: (Currency) -> Unit
 ) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
     var isExpanded by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
+
     ExposedDropdownMenuBox(
         expanded = isExpanded,
         onExpandedChange = {
             isExpanded = !isExpanded
+            if (isExpanded) {
+                focusRequester.requestFocus()
+            } else {
+                focusManager.clearFocus()
+            }
         }, modifier = Modifier
             .wrapContentWidth()
             .focusRequester(focusRequester)
-            .wrapContentSize()
     ) {
-        BasicTextField(
-            value = selectedOption.ticker,
-            readOnly = true,
-            modifier = Modifier
-                .menuAnchor()
-                .width(IntrinsicSize.Min)
-                .clickable { isExpanded = !isExpanded }, onValueChange = {
-            },
-            textStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.primary)
-        )
-
+        Card(
+            modifier = Modifier.menuAnchor(),
+            shape = RoundedCornerShape(8.dp)
+        ) {
+            BasicTextField(
+                value = selectedOption.ticker,
+                readOnly = true,
+                modifier = Modifier
+                    .width(IntrinsicSize.Min)
+                    .padding(8.dp),
+                onValueChange = {},
+                textStyle = MaterialTheme.typography.titleSmall.copy(color = MaterialTheme.colorScheme.primary)
+            )
+        }
         ExposedDropdownMenu(
             modifier = Modifier.width(IntrinsicSize.Min),
             expanded = isExpanded,
@@ -309,6 +317,7 @@ fun LoginScreenCurrencyPicker(
                     onClick = {
                         onSelect(selectionOption)
                         isExpanded = false
+                        focusManager.clearFocus()
                     },
                     trailingIcon = {
                         Text(text = selectionOption.ticker, color = uiColor)
@@ -318,3 +327,4 @@ fun LoginScreenCurrencyPicker(
         }
     }
 }
+
