@@ -108,4 +108,5 @@ dependencies {
 
     //other
     implementation("androidx.work:work-runtime-ktx:$workVersion")
+    androidTestImplementation("androidx.work:work-testing:$workVersion")
 }

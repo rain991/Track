@@ -9,6 +9,7 @@ import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
+import androidx.work.workDataOf
 import com.savenko.track.data.other.constants.ACCEPTABLE_EMPTY_CURRENCIES_RATES
 import com.savenko.track.data.other.constants.CURRENCIES_RATES_REQUEST_PERIOD
 import com.savenko.track.data.other.constants.FLEX_TIME_INTERVAL
@@ -21,23 +22,26 @@ import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
 class WorkManagerHelper(private val context: Context, private val currencyListRepository: CurrencyListRepository) {
-    fun setupWorkManager() {
-        val constraints = Constraints.Builder()
+    companion object {
+        val networkConnectedWorkerConstraints = Constraints.Builder()
             .setRequiredNetworkType(NetworkType.CONNECTED)
             .build()
+    }
+
+    fun setupWorkManager() {
         val periodicRatesRequest = PeriodicWorkRequestBuilder<CurrenciesRatesWorker>(
             repeatInterval = CURRENCIES_RATES_REQUEST_PERIOD,
             repeatIntervalTimeUnit = TimeUnit.DAYS,
             flexTimeInterval = FLEX_TIME_INTERVAL,
-            flexTimeIntervalUnit = TimeUnit.HOURS
-        ).setConstraints(constraints).setBackoffCriteria(
+            flexTimeIntervalUnit = TimeUnit.DAYS
+        ).setConstraints(networkConnectedWorkerConstraints).setBackoffCriteria(
             BackoffPolicy.EXPONENTIAL,
             1,
             TimeUnit.HOURS
         ).build()
 
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
-            "currenciesRateRequest",
+            CurrenciesRatesWorker.PERIODIC_CURRENCY_REQUEST_NAME,
             ExistingPeriodicWorkPolicy.UPDATE,
             periodicRatesRequest
         )
@@ -48,10 +52,15 @@ class WorkManagerHelper(private val context: Context, private val currencyListRe
             val currencyList = currencyListRepository.getCurrencyList().first()
             if (currencyList.filter { it.rate != null }.size < currencyList.size.times(ACCEPTABLE_EMPTY_CURRENCIES_RATES)) {
                 val oneTimeRatesRequest = OneTimeWorkRequestBuilder<CurrenciesRatesWorker>()
-                    .setConstraints(Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build())
+                    .setConstraints(networkConnectedWorkerConstraints)
+                    .setInputData(workDataOf())
                     .build()
                 WorkManager.getInstance(context)
-                    .beginUniqueWork("additionalCurrenciesRateRequest", ExistingWorkPolicy.APPEND, oneTimeRatesRequest)
+                    .beginUniqueWork(
+                        CurrenciesRatesWorker.ONE_TIME_CURRENCY_REQUEST_NAME,
+                        ExistingWorkPolicy.REPLACE,
+                        oneTimeRatesRequest
+                    )
                     .enqueue()
             }
         }
