@@ -35,7 +35,7 @@ fun CurrenciesSettingsRow(currency: Currency?, currenciesList: List<Currency>, o
                 style = MaterialTheme.typography.bodyMedium,
                 modifier = Modifier.padding(start = 4.dp)
             )
-            CurrenciesSettingsCurrencyPicker(
+            CurrenciesSettingsCurrencyCard(
                 currencyList = currenciesList,
                 selectedOption = currency ?: CURRENCY_DEFAULT,
                 isElevated = false,

@@ -20,7 +20,8 @@ import org.koin.androidx.compose.koinViewModel
 fun CurrenciesSettingsScreen(navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()
     val currenciesSettingsScreenViewModel = koinViewModel<CurrenciesSettingsViewModel>()
-    val screenState = currenciesSettingsScreenViewModel.currenciesSettingsScreenState.collectAsState()
+    val screenState = currenciesSettingsScreenViewModel.selectedCurrenciesSettingsState.collectAsState()
+    val filteredCurrencies = currenciesSettingsScreenViewModel.filteredCurrencies.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
             SettingsSpecifiedScreenHeader(stringResource(id = R.string.currencies)) {
@@ -30,7 +31,8 @@ fun CurrenciesSettingsScreen(navController: NavHostController) {
     ) {
         CurrenciesSettingsScreenComponent(
             paddingValues = it,
-            state = screenState.value
+            state = screenState.value,
+            filteredLazyListCurrencies = filteredCurrencies.value
         ) {
             coroutineScope.launch {
                 currenciesSettingsScreenViewModel.onEvent(it)

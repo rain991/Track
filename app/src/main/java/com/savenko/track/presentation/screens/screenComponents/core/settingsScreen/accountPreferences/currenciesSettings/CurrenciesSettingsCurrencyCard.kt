@@ -35,7 +35,7 @@ import com.savenko.track.domain.models.currency.Currency
 
 
 @Composable
-fun CurrenciesSettingsCurrencyPicker(
+fun CurrenciesSettingsCurrencyCard(
     currencyList: List<Currency>,
     selectedOption: Currency,
     isElevated: Boolean,

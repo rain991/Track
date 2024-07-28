@@ -34,7 +34,7 @@ import java.time.LocalDate
 
 // Along code is always used to name as BudgetIdeaCard
 @Composable
-fun TrackMainFeedCard() {
+fun BudgetFeedCard() {
     val budgetIdeaCardViewModel = koinViewModel<BudgetIdeaCardViewModel>()
     val state = budgetIdeaCardViewModel.budgetCardState.collectAsState()
     LaunchedEffect(key1 = Unit) {
@@ -72,7 +72,6 @@ fun TrackMainFeedCard() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    // Box(modifier = Modifier.weight(1f)) {
                     Text(
                         text = stringResource(
                             R.string.planned_main_track_screen,
