@@ -112,8 +112,8 @@
     <string name="income_categories_Grants">Премии или гранты</string>
     <string name="income_categories_Royalties">Дополнительный доход</string>
     <string name="expense_limit">Лимиты расходов</string>
-    <string name="planned_value_expense_limit_card">Запланировано %1$s %2$s</string>
-    <string name="already_spent_expense_limit_card">Уже потрачено %1$s %2$s</string>
+    <string name="planned_value_expense_limit_card">Запланировано</string>
+    <string name="already_spent_expense_limit_card">Уже потрачено</string>
     <string name="categories_message_expense_limit_card">Категории:</string>
     <string name="related_to_all_categories_expense_limit_card">" Относится ко всем категориям"</string>
     <string name="saving">Сбережения</string>
@@ -158,8 +158,8 @@
     <string name="optional">опционально</string>
     <string name="saving_for">Коплю на</string>
     <string name="budget">бюджет</string>
-    <string name="planned_main_track_screen">Запланировано %1$s %2$s</string>
-    <string name="spent_main_track_screen">Потрачено %1$s %2$s</string>
+    <string name="planned_main_track_screen">Запланировано</string>
+    <string name="spent_main_track_screen">Потрачено</string>
     <string name="scroll_up_CD">Пролистай вверх</string>
     <string name="budget_main_feed_card">%1$s</string>
     <string name="empty_incm_lazyColumn_additional1">Попробуй добавить новый используя кнопку в нижней часть экрана</string>

@@ -23,7 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
@@ -42,43 +47,93 @@ import org.koin.compose.koinInject
 fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, preferableCurrency: Currency) {
     val expenseCategoriesListRepositoryImpl = koinInject<ExpensesCategoriesListRepository>()
     val localContext = LocalContext.current
+    var plannedText by remember { mutableStateOf(buildAnnotatedString { }) }
+    var alreadySpentText by remember { mutableStateOf(buildAnnotatedString { }) }
+    LaunchedEffect(preferableCurrency, expenseLimit.goal, completedValue) {
+        plannedText = buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    fontSize = 16.sp
+                )
+            ) {
+                append(
+                    localContext.getString(R.string.planned_value_expense_limit_card)
+                )
+            }
+            withStyle(
+                style = SpanStyle(
+                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                )
+            ) {
+                append(
+                    " " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                        FIAT_DECIMAL_FORMAT.format(expenseLimit.goal)
+                    } else {
+                        CRYPTO_DECIMAL_FORMAT.format(expenseLimit.goal)
+                    }
+                )
+            }
+            withStyle(
+                style = SpanStyle(
+                    fontSize = 16.sp
+                )
+            ) {
+                append(
+                    " " + preferableCurrency.ticker
+                )
+            }
+        }
+        alreadySpentText = buildAnnotatedString {
+            withStyle(
+                style = SpanStyle(
+                    fontSize = 16.sp
+                )
+            ) {
+                append(
+                    localContext.getString(R.string.already_spent_expense_limit_card)
+                )
+            }
+            withStyle(
+                style = SpanStyle(
+                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                )
+            ) {
+                append(
+                    " " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                        FIAT_DECIMAL_FORMAT.format(completedValue)
+                    } else {
+                        CRYPTO_DECIMAL_FORMAT.format(completedValue)
+                    }
+                )
+            }
+            withStyle(
+                style = SpanStyle(
+                    fontSize = 16.sp
+                )
+            ) {
+                append(
+                    " " + preferableCurrency.ticker
+                )
+            }
+        }
+    }
     Card(
         modifier = Modifier
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), horizontalArrangement = Arrangement.Center) {
             Text(
                 text = stringResource(R.string.expense_limit),
                 style = MaterialTheme.typography.headlineSmall
             )
         }
-        Spacer(Modifier.height(8.dp))
+        if(!expenseLimit.isRelatedToAllCategories) Spacer(Modifier.height(8.dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(horizontal = 8.dp, vertical = 2.dp), verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            var plannedText by remember { mutableStateOf("") }
-            var alreadySpentText by remember { mutableStateOf("") }
-            LaunchedEffect(preferableCurrency, expenseLimit.goal, completedValue) {
-                plannedText = localContext.getString(
-                    R.string.planned_value_expense_limit_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                        FIAT_DECIMAL_FORMAT.format(expenseLimit.goal)
-                    } else {
-                        CRYPTO_DECIMAL_FORMAT.format(expenseLimit.goal)
-                    }, preferableCurrency.ticker
-                )
-
-                alreadySpentText = localContext.getString(
-                    R.string.already_spent_expense_limit_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                        FIAT_DECIMAL_FORMAT.format(completedValue)
-                    } else {
-                        CRYPTO_DECIMAL_FORMAT.format(completedValue)
-                    }, preferableCurrency.ticker
-                )
-            }
-
             if (expenseLimit.isRelatedToAllCategories) {
                 Text(text = plannedText)
                 Spacer(Modifier.height(8.dp))
@@ -108,7 +163,6 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                 )
             }
-
             Spacer(modifier = Modifier.height(4.dp))
             Row(
                 modifier = Modifier
@@ -119,7 +173,8 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
                     LaunchedEffect(key1 = Unit) {
                         withContext(Dispatchers.IO) {
-                            currentCategory = expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.firstRelatedCategoryId)
+                            currentCategory =
+                                expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.firstRelatedCategoryId)
                         }
                     }
                     if (currentCategory != null) {
@@ -132,7 +187,8 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
                     LaunchedEffect(key1 = Unit) {
                         withContext(Dispatchers.IO) {
-                            currentCategory = expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.secondRelatedCategoryId)
+                            currentCategory =
+                                expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.secondRelatedCategoryId)
                         }
                     }
                     if (currentCategory != null) {
@@ -145,7 +201,8 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
                     LaunchedEffect(key1 = Unit) {
                         withContext(Dispatchers.IO) {
-                            currentCategory = expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.thirdRelatedCategoryId)
+                            currentCategory =
+                                expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.thirdRelatedCategoryId)
                         }
                     }
                     if (currentCategory != null) {

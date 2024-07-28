@@ -138,8 +138,8 @@
 
     <!-- Expense limit -->
     <string name="expense_limit">Ausgabenlimit</string>
-    <string name="planned_value_expense_limit_card">Geplant %1$s %2$s</string>
-    <string name="already_spent_expense_limit_card">Bereits ausgegeben %1$s %2$s</string>
+    <string name="planned_value_expense_limit_card">Geplant</string>
+    <string name="already_spent_expense_limit_card">Bereits ausgegeben</string>
     <string name="categories_message_expense_limit_card">Kategorien:</string>
     <string name="related_to_all_categories_expense_limit_card">Bezieht sich auf alle Kategorien</string>
 
@@ -194,8 +194,8 @@
     <string name="optional">Optional</string>
     <string name="saving_for">Sparen für</string>
     <string name="budget">Budget</string>
-    <string name="planned_main_track_screen">Geplant %1$s %2$s</string>
-    <string name="spent_main_track_screen">Ausgegeben %1$s %2$s</string>
+    <string name="planned_main_track_screen">Geplant</string>
+    <string name="spent_main_track_screen">Ausgegeben</string>
     <string name="scroll_up_CD">nach oben scrollen</string>
     <string name="budget_main_feed_card">%1$s Budget</string>
     <string name="empty_incm_lazyColumn_additional1">Probieren Sie es mit dem Knopf in der rechten unteren Ecke aus, er ist in jedem App-Bildschirm verfügbar</string>
