@@ -120,8 +120,8 @@
     <string name="planned_savings_idea_card">Planowane</string>
     <string name="completed_for_savings_idea_card">Wykonane na</string>
     <string name="income_plan">Plan dochodów</string>
-    <string name="planned_income_plan_card">Planowane</string>
-    <string name="completed_for_income_plan_card">Wykonane na</string>
+    <string name="planned">Planowane</string>
+    <string name="completed_for">Wykonane na</string>
     <string name="preferable_period_income_plan_card">Okres %1$s - %2$s</string>
     <string name="other">Inne</string>
     <string name="income">Dochód</string>
@@ -194,4 +194,7 @@
     <string name="expense_operation_statistic_screen">Operacje wydatków</string>
     <string name="income_operation_statistic_screen">Operacje dochodowe</string>
     <string name="category_name_new_category_dialog">Nazwa kategorii</string>
+    <string name="filter_currencies">Filtruj waluty</string>
+    <string name="hide_additional_currencies">Ukryj dodatkowe waluty</string>
+    <string name="show_additional_currencies">Zusätzliche Währungen anzeigen</string>
 </resources>

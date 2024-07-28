@@ -19,6 +19,7 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
@@ -94,48 +95,59 @@ fun SelectedCurrenciesComponent(
                 }
             }
         }
-
-        for (currency in additionalCurrenciesPreferenceList) {
-            CurrenciesSettingsRow(
-                currency = currency,
-                currenciesList = state.allCurrenciesList
-            ) { newCurrency ->
-                when (currency) {
-                    currenciesPreferenceUI.firstAdditionalCurrency -> {
-                        coroutineScope.launch {
-                            onAction(CurrenciesSettingsScreenEvent.SetFirstAdditionalCurrency(newCurrency))
+       if(state.isAdditionalCurrenciesVisible) {
+            for (currency in additionalCurrenciesPreferenceList) {
+                CurrenciesSettingsRow(
+                    currency = currency,
+                    currenciesList = state.allCurrenciesList
+                ) { newCurrency ->
+                    when (currency) {
+                        currenciesPreferenceUI.firstAdditionalCurrency -> {
+                            coroutineScope.launch {
+                                onAction(CurrenciesSettingsScreenEvent.SetFirstAdditionalCurrency(newCurrency))
+                            }
                         }
-                    }
 
-                    currenciesPreferenceUI.secondAdditionalCurrency -> {
-                        coroutineScope.launch {
-                            onAction(CurrenciesSettingsScreenEvent.SetSecondAdditionalCurrency(newCurrency))
+                        currenciesPreferenceUI.secondAdditionalCurrency -> {
+                            coroutineScope.launch {
+                                onAction(CurrenciesSettingsScreenEvent.SetSecondAdditionalCurrency(newCurrency))
+                            }
                         }
-                    }
 
-                    currenciesPreferenceUI.thirdAdditionalCurrency -> {
-                        coroutineScope.launch {
-                            onAction(CurrenciesSettingsScreenEvent.SetThirdAdditionalCurrency(newCurrency))
+                        currenciesPreferenceUI.thirdAdditionalCurrency -> {
+                            coroutineScope.launch {
+                                onAction(CurrenciesSettingsScreenEvent.SetThirdAdditionalCurrency(newCurrency))
+                            }
                         }
-                    }
 
-                    currenciesPreferenceUI.fourthAdditionalCurrency -> {
-                        coroutineScope.launch {
-                            onAction(CurrenciesSettingsScreenEvent.SetFourthAdditionalCurrency(newCurrency))
+                        currenciesPreferenceUI.fourthAdditionalCurrency -> {
+                            coroutineScope.launch {
+                                onAction(CurrenciesSettingsScreenEvent.SetFourthAdditionalCurrency(newCurrency))
+                            }
                         }
                     }
                 }
             }
+            if (currenciesPreferenceUI.fourthAdditionalCurrency != null) {
+                Spacer(modifier = Modifier.height(8.dp))
+            }
         }
-        if (currenciesPreferenceUI.fourthAdditionalCurrency != null) {
-            Spacer(modifier = Modifier.height(8.dp))
-        }
+
         Row(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp, vertical = 8.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            OutlinedButton(onClick = { onAction(CurrenciesSettingsScreenEvent.SwitchAdditionalCurrenciesVisibility) }) {
+                Text(
+                    text = if (state.isAdditionalCurrenciesVisible) {
+                        stringResource(R.string.hide_additional_currencies)
+                    } else {
+                        stringResource(R.string.show_additional_currencies)
+                    }
+                )
+            }
             Spacer(modifier = Modifier.weight(1f))
             AnimatedVisibility(visible = additionalCurrenciesPreferenceList.any { it == null }) {
                 CurrenciesPlusTextButton {

@@ -57,7 +57,7 @@ fun SavingsIdeaCard(
                     .padding(top = 4.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(text = savings.label, style = MaterialTheme.typography.headlineSmall)
+                Text(text = savings.label, style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold))
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 Text(text = stringResource(R.string.saving), style = MaterialTheme.typography.titleMedium)
@@ -82,7 +82,7 @@ fun SavingsIdeaCard(
                                     )
                                 ) {
                                     append(
-                                        localContext.getString(R.string.planned_savings_idea_card)
+                                        localContext.getString(R.string.planned)
                                     )
                                 }
                                 withStyle(
@@ -125,7 +125,7 @@ fun SavingsIdeaCard(
                                     )
                                 ) {
                                     append(
-                                        localContext.getString(R.string.completed_for_savings_idea_card)
+                                        localContext.getString(R.string.completed_for)
                                     )
                                 }
                                 withStyle(

@@ -18,16 +18,5 @@ data class Currency(
 
 
 fun Currency.matchesSearchQuery(searchQuery: String): Boolean {
-    val firstLetterName = try {
-        name.first()
-    } catch (_: NoSuchElementException) {
-        ' '
-    }
-    val firstLetterTicker = try {
-        ticker.first()
-    } catch (_: NoSuchElementException) {
-        ' '
-    }
-    val matchingCombinations = listOf(name, ticker, "$name$ticker", "$firstLetterName", "$firstLetterTicker")
-    return matchingCombinations.any { combination -> combination.contains(searchQuery) }
+    return name.contains(searchQuery, ignoreCase = true) || ticker.contains(searchQuery, ignoreCase = true)
 }

@@ -153,8 +153,8 @@
 
     <!-- Income plan -->
     <string name="income_plan">Income plan</string>
-    <string name="planned_income_plan_card">Planned</string>
-    <string name="completed_for_income_plan_card">Completed for</string>
+    <string name="planned">Planned</string>
+    <string name="completed_for">Completed for</string>
     <string name="preferable_period_income_plan_card">Preferable period: %1$s - %2$s</string>
     <string name="other">Other</string>
     <string name="income">Income</string>
@@ -233,4 +233,7 @@
     <string name="show_as">Show as</string>
     <string name="allow_non_categorised_incomes">Allow non-categorised incomes</string>
     <string name="category_name_new_category_dialog">Category name</string>
+    <string name="filter_currencies">Filter currencies</string>
+    <string name="hide_additional_currencies">Hide additional currencies</string>
+    <string name="show_additional_currencies">Show additional currencies</string>
 </resources>

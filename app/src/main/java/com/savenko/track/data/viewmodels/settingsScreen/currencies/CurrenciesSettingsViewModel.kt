@@ -38,6 +38,7 @@ class CurrenciesSettingsViewModel(
                 thirdAdditionalCurrency = null,
                 fourthAdditionalCurrency = null
             ),
+            isAdditionalCurrenciesVisible = true,
             error = null
         )
     )
@@ -59,7 +60,11 @@ class CurrenciesSettingsViewModel(
         viewModelScope.launch {
             launch {
                 currencyListRepositoryImpl.getCurrencyList().collect { listOfCurrencies ->
-                    _selectedCurrenciesSettingsState.update { _selectedCurrenciesSettingsState.value.copy(allCurrenciesList = listOfCurrencies) }
+                    _selectedCurrenciesSettingsState.update {
+                        _selectedCurrenciesSettingsState.value.copy(
+                            allCurrenciesList = listOfCurrencies
+                        )
+                    }
                     listOfAllCurrencies.update { listOfCurrencies }
                 }
             }
@@ -119,6 +124,7 @@ class CurrenciesSettingsViewModel(
             }
 
             is CurrenciesSettingsScreenEvent.SetCurrencyAsRandomNotUsed -> {
+                setAdditionalCurrenciesVisibility(true)
                 when (event.currenciesOptions) {
                     CurrenciesOptions.FIRST_ADDITIONAL -> {
                         setCurrency(
@@ -151,9 +157,11 @@ class CurrenciesSettingsViewModel(
                     else -> {}
                 }
             }
+
             is CurrenciesSettingsScreenEvent.SetFilteringText -> {
-                setSearchText(value =  event.text)
+                setSearchText(value = event.text)
             }
+
             CurrenciesSettingsScreenEvent.ClearErrorMessage -> {
                 clearErrorMessage()
             }
@@ -161,11 +169,23 @@ class CurrenciesSettingsViewModel(
             CurrenciesSettingsScreenEvent.SetLatestCurrencyAsNull -> {
                 setLatestCurrencyAsNull()
             }
+
+            CurrenciesSettingsScreenEvent.SwitchAdditionalCurrenciesVisibility -> {
+                setAdditionalCurrenciesVisibility(!_selectedCurrenciesSettingsState.value.isAdditionalCurrenciesVisible)
+            }
         }
     }
 
     private fun setSearchText(value: String) {
         _searchText.value = value
+    }
+
+    private fun setAdditionalCurrenciesVisibility(value: Boolean) {
+        _selectedCurrenciesSettingsState.update {
+            _selectedCurrenciesSettingsState.value.copy(
+                isAdditionalCurrenciesVisible = value
+            )
+        }
     }
 
 

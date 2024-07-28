@@ -120,8 +120,8 @@
     <string name="planned_savings_idea_card">Заплановано</string>
     <string name="completed_for_savings_idea_card">Виконано на</string>
     <string name="income_plan">План доходів</string>
-    <string name="planned_income_plan_card">Заплановано</string>
-    <string name="completed_for_income_plan_card">Виконано на</string>
+    <string name="planned">Заплановано</string>
+    <string name="completed_for">Виконано на</string>
     <string name="preferable_period_income_plan_card">Період %1$s - %2$s</string>
     <string name="other">Інше</string>
     <string name="income">Дохід</string>
@@ -194,4 +194,7 @@
     <string name="expense_operation_statistic_screen">Операції видатків</string>
     <string name="income_operation_statistic_screen">Операції доходів</string>
     <string name="category_name_new_category_dialog">Назва категорії</string>
+    <string name="filter_currencies">Фільтруй валюти</string>
+    <string name="hide_additional_currencies">Сховай додаткові валюти</string>
+    <string name="show_additional_currencies">Покажи додаткові валюти</string>
 </resources>

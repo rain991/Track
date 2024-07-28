@@ -150,8 +150,8 @@
 
     <!-- Income plan -->
     <string name="income_plan">Einkommensplan</string>
-    <string name="planned_income_plan_card">Geplant</string>
-    <string name="completed_for_income_plan_card">Abgeschlossen für</string>
+    <string name="planned">Geplant</string>
+    <string name="completed_for">Abgeschlossen für</string>
     <string name="preferable_period_income_plan_card">Bevorzugter Zeitraum: %1$s - %2$s</string>
     <string name="other">Andere</string>
     <string name="income">Einkommen</string>
@@ -230,5 +230,8 @@
     <string name="expense_operation_statistic_screen">Ausgabenvorgänge</string>
     <string name="income_operation_statistic_screen">Ertragsvorgänge</string>
     <string name="category_name_new_category_dialog">Kategoriename</string>
+    <string name="filter_currencies">Währungen filtern</string>
+    <string name="hide_additional_currencies">Zusätzliche Währungen ausblenden</string>
+    <string name="show_additional_currencies">Zusätzliche Währungen anzeigen</string>
 
 </resources>

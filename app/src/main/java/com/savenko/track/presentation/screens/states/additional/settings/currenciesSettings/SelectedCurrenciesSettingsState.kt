@@ -7,5 +7,6 @@ import com.savenko.track.presentation.other.composableTypes.errors.CurrenciesSet
 data class SelectedCurrenciesSettingsState(
     val allCurrenciesList: List<Currency>,
     val currenciesPreferenceUI: CurrenciesPreferenceUI,
+    val isAdditionalCurrenciesVisible : Boolean,
     val error: CurrenciesSettingsScreenErrors?
 )

@@ -13,4 +13,5 @@ sealed interface CurrenciesSettingsScreenEvent {
     data class SetCurrencyAsRandomNotUsed(val currenciesOptions: CurrenciesOptions): CurrenciesSettingsScreenEvent
     data object ClearErrorMessage : CurrenciesSettingsScreenEvent
     data object SetLatestCurrencyAsNull : CurrenciesSettingsScreenEvent
+    data object SwitchAdditionalCurrenciesVisibility : CurrenciesSettingsScreenEvent
 }

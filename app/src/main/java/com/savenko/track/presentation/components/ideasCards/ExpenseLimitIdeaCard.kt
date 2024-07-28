@@ -57,7 +57,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                 )
             ) {
                 append(
-                    localContext.getString(R.string.planned_value_expense_limit_card)
+                    localContext.getString(R.string.planned)
                 )
             }
             withStyle(
@@ -127,7 +127,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
             .padding(top = 4.dp), horizontalArrangement = Arrangement.Center) {
             Text(
                 text = stringResource(R.string.expense_limit),
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold)
             )
         }
         if (!expenseLimit.isRelatedToAllCategories) Spacer(Modifier.height(8.dp))
@@ -142,8 +142,8 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                 Text(text = alreadySpentText)
             } else {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Text(text = plannedText)
-                    Text(text = alreadySpentText)
+                    Text(text = plannedText, maxLines = 1)
+                    Text(text = alreadySpentText, maxLines = 1)
                 }
             }
             Spacer(Modifier.height(8.dp))

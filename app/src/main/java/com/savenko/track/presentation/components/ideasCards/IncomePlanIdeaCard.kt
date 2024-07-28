@@ -62,7 +62,7 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
                         )
                     ) {
                         append(
-                            stringResource(id = R.string.planned_income_plan_card)
+                            stringResource(id = R.string.planned)
                         )
                     }
                     withStyle(
@@ -96,7 +96,7 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
                     )
                 ) {
                     append(
-                        stringResource(id = R.string.completed_for_income_plan_card)
+                        stringResource(id = R.string.completed_for)
                     )
                 }
                 withStyle(
