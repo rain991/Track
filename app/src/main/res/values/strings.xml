@@ -148,13 +148,13 @@
 
     <!-- Savings -->
     <string name="saving">Saving</string>
-    <string name="planned_savings_idea_card">Planned %1$s %2$s</string>
+    <string name="planned_savings_idea_card">Planned</string>
     <string name="completed_for_savings_idea_card">Completed for</string>
 
     <!-- Income plan -->
     <string name="income_plan">Income plan</string>
-    <string name="planned_income_plan_card">Planned %1$s %2$s</string>
-    <string name="completed_for_income_plan_card">Completed for %1$s %2$s</string>
+    <string name="planned_income_plan_card">Planned</string>
+    <string name="completed_for_income_plan_card">Completed for</string>
     <string name="preferable_period_income_plan_card">Preferable period: %1$s - %2$s</string>
     <string name="other">Other</string>
     <string name="income">Income</string>

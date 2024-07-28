@@ -30,6 +30,7 @@ import com.savenko.track.data.other.constants.MAX_CIRCULAR_PROGRESS_VALUE
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
+import android.graphics.Typeface as AndroidTypeface
 
 @Composable
 fun CustomCircularProgressIndicator(
@@ -151,6 +152,7 @@ fun CustomCircularProgressIndicator(
                             this.textSize = textSize
                             textAlign = Paint.Align.CENTER
                             color = Color.White.toArgb()
+                            typeface = AndroidTypeface.create(AndroidTypeface.DEFAULT, AndroidTypeface.BOLD)
                         }
                     )
                 }

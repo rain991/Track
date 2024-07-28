@@ -117,11 +117,11 @@
     <string name="categories_message_expense_limit_card">Kategorie:</string>
     <string name="related_to_all_categories_expense_limit_card">" Należy do wszystkich kategorii"</string>
     <string name="saving">Oszczędności</string>
-    <string name="planned_savings_idea_card">Planowane %1$s %2$s</string>
+    <string name="planned_savings_idea_card">Planowane</string>
     <string name="completed_for_savings_idea_card">Wykonane na</string>
     <string name="income_plan">Plan dochodów</string>
-    <string name="planned_income_plan_card">Planowane %1$s %2$s</string>
-    <string name="completed_for_income_plan_card">Wykonane na %1$s %2$s</string>
+    <string name="planned_income_plan_card">Planowane</string>
+    <string name="completed_for_income_plan_card">Wykonane na</string>
     <string name="preferable_period_income_plan_card">Okres %1$s - %2$s</string>
     <string name="other">Inne</string>
     <string name="income">Dochód</string>

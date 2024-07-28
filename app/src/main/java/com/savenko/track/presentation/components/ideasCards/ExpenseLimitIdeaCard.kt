@@ -37,7 +37,7 @@ import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
-import com.savenko.track.presentation.screens.screenComponents.additional.CategorySettingsChip
+import com.savenko.track.presentation.components.customComponents.CategoryChip
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
@@ -122,13 +122,15 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp), horizontalArrangement = Arrangement.Center) {
+        Row(modifier = Modifier
+            .fillMaxWidth()
+            .padding(top = 4.dp), horizontalArrangement = Arrangement.Center) {
             Text(
                 text = stringResource(R.string.expense_limit),
                 style = MaterialTheme.typography.headlineSmall
             )
         }
-        if(!expenseLimit.isRelatedToAllCategories) Spacer(Modifier.height(8.dp))
+        if (!expenseLimit.isRelatedToAllCategories) Spacer(Modifier.height(8.dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -167,7 +169,6 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
             Row(
                 modifier = Modifier
                     .wrapContentHeight()
-                    .padding(bottom = 4.dp)
             ) {
                 if (expenseLimit.firstRelatedCategoryId != null) {
                     var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
@@ -179,7 +180,12 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                            CategorySettingsChip(category = currentCategory!!, borderColor = null) { }
+                            CategoryChip(
+                                category = currentCategory!!,
+                                borderColor = null,
+                                isSelected = false,
+                                chipScale = 0.8f,
+                                onSelect = {})
                         }
                     }
                 }
@@ -193,7 +199,12 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                            CategorySettingsChip(category = currentCategory!!, borderColor = null) { }
+                            CategoryChip(
+                                category = currentCategory!!,
+                                borderColor = null,
+                                isSelected = false,
+                                chipScale = 0.8f,
+                                onSelect = {})
                         }
                     }
                 }
@@ -207,7 +218,12 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                     if (currentCategory != null) {
                         Box(modifier = Modifier.weight(0.3f)) {
-                            CategorySettingsChip(category = currentCategory!!, borderColor = null) { }
+                            CategoryChip(
+                                category = currentCategory!!,
+                                borderColor = null,
+                                isSelected = false,
+                                chipScale = 0.8f,
+                                onSelect = {})
                         }
                     }
                 }

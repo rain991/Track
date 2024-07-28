@@ -17,9 +17,15 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
@@ -29,7 +35,12 @@ import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.idea.Savings
 
 @Composable
-fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel) {
+fun SavingsIdeaCard(
+    savings: Savings,
+    preferableCurrency: Currency,
+    addToSavingIdeaDialogViewModel: AddToSavingIdeaDialogViewModel
+) {
+    val localContext = LocalContext.current
     Card(
         modifier = Modifier
             .height(140.dp)
@@ -40,7 +51,12 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                 .fillMaxSize()
                 .padding(horizontal = 8.dp)
         ) {
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 4.dp),
+                horizontalArrangement = Arrangement.Center
+            ) {
                 Text(text = savings.label, style = MaterialTheme.typography.headlineSmall)
             }
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
@@ -59,13 +75,39 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = stringResource(
-                                R.string.planned_savings_idea_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                                    FIAT_DECIMAL_FORMAT.format(savings.goal)
-                                } else {
-                                    CRYPTO_DECIMAL_FORMAT.format(savings.goal)
-                                }, preferableCurrency.ticker
-                            ),
+                            text = buildAnnotatedString {
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 16.sp
+                                    )
+                                ) {
+                                    append(
+                                        localContext.getString(R.string.planned_savings_idea_card)
+                                    )
+                                }
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                                    )
+                                ) {
+                                    append(
+                                        " " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                                            FIAT_DECIMAL_FORMAT.format(savings.goal)
+                                        } else {
+                                            CRYPTO_DECIMAL_FORMAT.format(savings.goal)
+                                        }
+                                    )
+                                }
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 16.sp
+                                    )
+                                ) {
+                                    append(
+                                        " " + preferableCurrency.ticker
+                                    )
+                                }
+                            },
                             textAlign = TextAlign.Center
                         )
                     }
@@ -76,20 +118,48 @@ fun SavingsIdeaCard(savings: Savings, preferableCurrency: Currency, addToSavingI
                         verticalAlignment = Alignment.CenterVertically
                     ) {
                         Text(
-                            text = stringResource(R.string.completed_for_savings_idea_card) + " ${
-                                if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                                    FIAT_DECIMAL_FORMAT.format(savings.value)
-                                } else {
-                                    CRYPTO_DECIMAL_FORMAT.format(savings.value)
+                            text = buildAnnotatedString {
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 16.sp
+                                    )
+                                ) {
+                                    append(
+                                        localContext.getString(R.string.completed_for_savings_idea_card)
+                                    )
                                 }
-                            } ${preferableCurrency.ticker}", textAlign = TextAlign.Center
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                                    )
+                                ) {
+                                    append(
+                                        " " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                                            FIAT_DECIMAL_FORMAT.format(savings.value)
+                                        } else {
+                                            CRYPTO_DECIMAL_FORMAT.format(savings.value)
+                                        }
+                                    )
+                                }
+                                withStyle(
+                                    style = SpanStyle(
+                                        fontSize = 16.sp
+                                    )
+                                ) {
+                                    append(
+                                        " " + preferableCurrency.ticker
+                                    )
+                                }
+                            }, textAlign = TextAlign.Center
                         )
                     }
                 }
                 Column(
                     modifier = Modifier
                         .weight(0.36f)
-                        .fillMaxHeight(), verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally
+                        .fillMaxHeight(),
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Button(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(savings) }) {
                         Text(text = stringResource(id = R.string.add))

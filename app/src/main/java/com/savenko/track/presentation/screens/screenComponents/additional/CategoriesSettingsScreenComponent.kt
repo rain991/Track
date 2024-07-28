@@ -1,6 +1,5 @@
 package com.savenko.track.presentation.screens.screenComponents.additional
 
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,12 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.DropdownMenu
@@ -30,20 +25,15 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.viewmodels.settingsScreen.category.CategoriesSettingsScreenViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
-import com.savenko.track.presentation.other.colors.parseColor
+import com.savenko.track.presentation.components.customComponents.CategorySettingsChip
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -176,48 +166,3 @@ fun CategoriesSettingsScreenComponent(viewModel: CategoriesSettingsScreenViewMod
 }
 
 
-@Composable
-fun CategorySettingsChip(
-    category: CategoryEntity,
-    borderColor: Color?,
-    onSelect: (CategoryEntity) -> Unit
-) {
-    val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
-    Button(
-        modifier = Modifier
-            .wrapContentHeight()
-            .scale(0.9f),
-        onClick = { onSelect(category) },
-        colors = ButtonColors(
-            containerColor = parseColor(hexColor = category.colorId),
-            contentColor = Color.White,
-            disabledContainerColor = parseColor(hexColor = category.colorId),
-            disabledContentColor = Color.White
-        ), border = if (borderColor != null) {
-            BorderStroke((1.5).dp, borderColor)
-        } else {
-            null
-        }
-    ) {
-        Row(
-            modifier = Modifier.wrapContentWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.Center
-        ) {
-            Text(
-                text = if (category.isDefault()) {
-                    stringResource(
-                        id = databaseStringResourcesProvider.provideDefaultCategoriesStringResource(
-                            category
-                        )
-                    )
-                } else {
-                    category.note
-                },
-                style = MaterialTheme.typography.bodyMedium,
-                textAlign = TextAlign.Center,
-                maxLines = 1
-            )
-        }
-    }
-}

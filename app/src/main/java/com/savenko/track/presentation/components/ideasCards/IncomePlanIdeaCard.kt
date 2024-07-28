@@ -15,7 +15,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
@@ -33,35 +38,90 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
     ) {
-        Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp), horizontalArrangement = Arrangement.Center
+        ) {
             Text(
                 text = stringResource(R.string.income_plan),
-                style = MaterialTheme.typography.headlineSmall
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold)
             )
         }
         Spacer(Modifier.height(8.dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 8.dp, vertical = 2.dp), verticalArrangement = Arrangement.SpaceEvenly
+                .padding(horizontal = 8.dp), verticalArrangement = Arrangement.SpaceEvenly
         ) {
             Text(
-                text = stringResource(
-                    R.string.planned_income_plan_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                        FIAT_DECIMAL_FORMAT.format(incomePlans.goal)
-                    } else {
-                        CRYPTO_DECIMAL_FORMAT.format(incomePlans.goal)
-                    }, preferableCurrency.ticker
-                )
+                text = buildAnnotatedString {
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 16.sp
+                        )
+                    ) {
+                        append(
+                            stringResource(id = R.string.planned_income_plan_card)
+                        )
+                    }
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                        )
+                    ) {
+                        append(
+                            " " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                                FIAT_DECIMAL_FORMAT.format(incomePlans.goal)
+                            } else {
+                                CRYPTO_DECIMAL_FORMAT.format(incomePlans.goal)
+                            }
+                        )
+                    }
+                    withStyle(
+                        style = SpanStyle(
+                            fontSize = 16.sp
+                        )
+                    ) {
+                        append(
+                            " " + preferableCurrency.ticker
+                        )
+                    }
+                }
             )
-            Text(
-                text = stringResource(
-                    R.string.completed_for_income_plan_card, if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                        FIAT_DECIMAL_FORMAT.format(completionValue)
-                    } else {
-                        CRYPTO_DECIMAL_FORMAT.format(completionValue)
-                    }, preferableCurrency.ticker
-                )
+            Text(text = buildAnnotatedString {
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 16.sp
+                    )
+                ) {
+                    append(
+                        stringResource(id = R.string.completed_for_income_plan_card)
+                    )
+                }
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                    )
+                ) {
+                    append(
+                        " " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                            FIAT_DECIMAL_FORMAT.format(completionValue)
+                        } else {
+                            CRYPTO_DECIMAL_FORMAT.format(completionValue)
+                        }
+                    )
+                }
+                withStyle(
+                    style = SpanStyle(
+                        fontSize = 16.sp
+                    )
+                ) {
+                    append(
+                        " " + preferableCurrency.ticker
+                    )
+                }
+            }
             )
             if (incomePlans.endDate != null) {
                 Text(

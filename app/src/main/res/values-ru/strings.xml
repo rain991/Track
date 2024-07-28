@@ -117,11 +117,11 @@
     <string name="categories_message_expense_limit_card">Категории:</string>
     <string name="related_to_all_categories_expense_limit_card">" Относится ко всем категориям"</string>
     <string name="saving">Сбережения</string>
-    <string name="planned_savings_idea_card">Запланировано %1$s %2$s</string>
+    <string name="planned_savings_idea_card">Запланировано</string>
     <string name="completed_for_savings_idea_card">Выполнено на</string>
     <string name="income_plan">План доходов</string>
-    <string name="planned_income_plan_card">Запланировано %1$s %2$s</string>
-    <string name="completed_for_income_plan_card">Выполнено на %1$s %2$s</string>
+    <string name="planned_income_plan_card">Запланировано</string>
+    <string name="completed_for_income_plan_card">Выполнено на</string>
     <string name="preferable_period_income_plan_card">Период %1$s - %2$s</string>
     <string name="other">Другое</string>
     <string name="income">Доход</string>
