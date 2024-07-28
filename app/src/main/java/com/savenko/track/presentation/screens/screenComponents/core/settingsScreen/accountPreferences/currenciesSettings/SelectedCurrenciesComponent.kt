@@ -95,37 +95,40 @@ fun SelectedCurrenciesComponent(
                 }
             }
         }
-       if(state.isAdditionalCurrenciesVisible) {
-            for (currency in additionalCurrenciesPreferenceList) {
-                CurrenciesSettingsRow(
-                    currency = currency,
-                    currenciesList = state.allCurrenciesList
-                ) { newCurrency ->
-                    when (currency) {
-                        currenciesPreferenceUI.firstAdditionalCurrency -> {
-                            coroutineScope.launch {
-                                onAction(CurrenciesSettingsScreenEvent.SetFirstAdditionalCurrency(newCurrency))
+        AnimatedVisibility(state.isAdditionalCurrenciesVisible) {
+            Column {
+                for (currency in additionalCurrenciesPreferenceList) {
+                    CurrenciesSettingsRow(
+                        currency = currency,
+                        currenciesList = state.allCurrenciesList
+                    ) { newCurrency ->
+                        when (currency) {
+                            currenciesPreferenceUI.firstAdditionalCurrency -> {
+                                coroutineScope.launch {
+                                    onAction(CurrenciesSettingsScreenEvent.SetFirstAdditionalCurrency(newCurrency))
+                                }
                             }
-                        }
 
-                        currenciesPreferenceUI.secondAdditionalCurrency -> {
-                            coroutineScope.launch {
-                                onAction(CurrenciesSettingsScreenEvent.SetSecondAdditionalCurrency(newCurrency))
+                            currenciesPreferenceUI.secondAdditionalCurrency -> {
+                                coroutineScope.launch {
+                                    onAction(CurrenciesSettingsScreenEvent.SetSecondAdditionalCurrency(newCurrency))
+                                }
                             }
-                        }
 
-                        currenciesPreferenceUI.thirdAdditionalCurrency -> {
-                            coroutineScope.launch {
-                                onAction(CurrenciesSettingsScreenEvent.SetThirdAdditionalCurrency(newCurrency))
+                            currenciesPreferenceUI.thirdAdditionalCurrency -> {
+                                coroutineScope.launch {
+                                    onAction(CurrenciesSettingsScreenEvent.SetThirdAdditionalCurrency(newCurrency))
+                                }
                             }
-                        }
 
-                        currenciesPreferenceUI.fourthAdditionalCurrency -> {
-                            coroutineScope.launch {
-                                onAction(CurrenciesSettingsScreenEvent.SetFourthAdditionalCurrency(newCurrency))
+                            currenciesPreferenceUI.fourthAdditionalCurrency -> {
+                                coroutineScope.launch {
+                                    onAction(CurrenciesSettingsScreenEvent.SetFourthAdditionalCurrency(newCurrency))
+                                }
                             }
                         }
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
             if (currenciesPreferenceUI.fourthAdditionalCurrency != null) {
