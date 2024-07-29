@@ -27,7 +27,7 @@ class LoginViewModel(
 ) : ViewModel() {
     var currencyList = listOf<Currency>()
 
-    private val _loginScreenState = MutableStateFlow(LoginScreenState(name = "User", budget = 1000.0f, currency = CURRENCY_DEFAULT))
+    private val _loginScreenState = MutableStateFlow(LoginScreenState(name = "", budget = 1000.0f, currency = CURRENCY_DEFAULT))
     val loginScreenState = _loginScreenState.asStateFlow()
 
     init {

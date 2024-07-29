@@ -236,4 +236,5 @@
     <string name="filter_currencies">Filter currencies</string>
     <string name="hide_additional_currencies">Hide additional currencies</string>
     <string name="show_additional_currencies">Show additional currencies</string>
+    <string name="user">User</string>
 </resources>

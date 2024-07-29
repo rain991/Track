@@ -197,4 +197,5 @@
     <string name="filter_currencies">Фільтруй валюти</string>
     <string name="hide_additional_currencies">Сховай додаткові валюти</string>
     <string name="show_additional_currencies">Покажи додаткові валюти</string>
+    <string name="user">Користувач</string>
 </resources>

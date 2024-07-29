@@ -233,5 +233,6 @@
     <string name="filter_currencies">Währungen filtern</string>
     <string name="hide_additional_currencies">Zusätzliche Währungen ausblenden</string>
     <string name="show_additional_currencies">Zusätzliche Währungen anzeigen</string>
+    <string name="user">User</string>
 
 </resources>

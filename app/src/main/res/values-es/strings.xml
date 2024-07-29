@@ -234,5 +234,6 @@
     <string name="filter_currencies">Filtrar monedas</string>
     <string name="hide_additional_currencies">Ocultar monedas adicionales</string>
     <string name="show_additional_currencies">Mostrar monedas adicionales</string>
+    <string name="user">Usuario</string>
 
 </resources>

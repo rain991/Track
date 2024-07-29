@@ -15,8 +15,8 @@ android {
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 34
-        versionCode = 26
-        versionName = "1.4.1.1"
+        versionCode = 27
+        versionName = "1.4.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
