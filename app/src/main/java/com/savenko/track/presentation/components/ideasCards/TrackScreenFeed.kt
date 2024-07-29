@@ -29,7 +29,7 @@ import com.savenko.track.domain.models.idea.Savings
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.presentation.components.dialogs.addToSavingIdeaDialog.AddToSavingDialog
 import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.feed.NewIdeaFeedCard
-import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.feed.TrackMainFeedCard
+import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.feed.BudgetFeedCard
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -91,7 +91,7 @@ fun TrackScreenFeed() {
         contentPadding = PaddingValues(horizontal = 2.dp)
     ) { index ->
         when (index) {
-            0 -> TrackMainFeedCard()
+            0 -> BudgetFeedCard()
             maxIndex.value -> NewIdeaFeedCard(newIdeaDialogViewModel = newIdeaDialogViewModel)
             else -> when (ideaList[index - 1]) {
                 is Savings -> SavingsIdeaCard(

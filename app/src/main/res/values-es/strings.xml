@@ -139,20 +139,20 @@
 
     <!-- Expense limit -->
     <string name="expense_limit">Límite de gastos</string>
-    <string name="planned_value_expense_limit_card">Planificado %1$s %2$s</string>
-    <string name="already_spent_expense_limit_card">Ya gastado %1$s %2$s</string>
+    <string name="planned_value_expense_limit_card">Planificado</string>
+    <string name="already_spent_expense_limit_card">Ya gastado</string>
     <string name="categories_message_expense_limit_card">Categorías:</string>
     <string name="related_to_all_categories_expense_limit_card">Relacionado con todas las categorías</string>
 
     <!-- Savings -->
     <string name="saving">Ahorro</string>
-    <string name="planned_savings_idea_card">Planificado %1$s %2$s</string>
+    <string name="planned_savings_idea_card">Planificado</string>
     <string name="completed_for_savings_idea_card">Completado para</string>
 
     <!-- Income plan -->
     <string name="income_plan">Plan de ingresos</string>
-    <string name="planned_income_plan_card">Planificado %1$s %2$s</string>
-    <string name="completed_for_income_plan_card">Completado para %1$s %2$s</string>
+    <string name="planned">Planificado</string>
+    <string name="completed_for">Completado para</string>
     <string name="preferable_period_income_plan_card">Periodo preferido: %1$s - %2$s</string>
     <string name="other">Otro</string>
     <string name="income">Ingreso</string>
@@ -195,8 +195,8 @@
     <string name="optional">opcional</string>
     <string name="saving_for">Ahorro para</string>
     <string name="budget">presupuesto</string>
-    <string name="planned_main_track_screen">Planificado %1$s %2$s</string>
-    <string name="spent_main_track_screen">Gastado %1$s %2$s</string>
+    <string name="planned_main_track_screen">Planificado</string>
+    <string name="spent_main_track_screen">Gastado</string>
     <string name="scroll_up_CD">desplazar hacia arriba</string>
     <string name="budget_main_feed_card">%1$s presupuesto</string>
     <string name="empty_incm_lazyColumn_additional1">Inténtalo usando el botón en la esquina inferior derecha, está disponible en todas las pantallas de la aplicación</string>
@@ -231,5 +231,9 @@
     <string name="expense_operation_statistic_screen">Operaciones de gastos</string>
     <string name="income_operation_statistic_screen">Operaciones de renta</string>
     <string name="category_name_new_category_dialog">Nombre de la categoría</string>
+    <string name="filter_currencies">Filtrar monedas</string>
+    <string name="hide_additional_currencies">Ocultar monedas adicionales</string>
+    <string name="show_additional_currencies">Mostrar monedas adicionales</string>
+    <string name="user">Usuario</string>
 
 </resources>

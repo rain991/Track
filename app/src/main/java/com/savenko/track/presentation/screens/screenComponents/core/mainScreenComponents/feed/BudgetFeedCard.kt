@@ -20,8 +20,13 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
@@ -32,9 +37,8 @@ import com.savenko.track.presentation.other.getMonthResID
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
-// Along code is always used to name as BudgetIdeaCard
 @Composable
-fun TrackMainFeedCard() {
+fun BudgetFeedCard() {
     val budgetIdeaCardViewModel = koinViewModel<BudgetIdeaCardViewModel>()
     val state = budgetIdeaCardViewModel.budgetCardState.collectAsState()
     LaunchedEffect(key1 = Unit) {
@@ -54,7 +58,7 @@ fun TrackMainFeedCard() {
             val currentMonth = stringResource(id = getMonthResID(localDate = LocalDate.now()))
             Text(
                 text = stringResource(R.string.budget_main_feed_card, currentMonth),
-                style = MaterialTheme.typography.headlineSmall,
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -72,30 +76,77 @@ fun TrackMainFeedCard() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    // Box(modifier = Modifier.weight(1f)) {
                     Text(
-                        text = stringResource(
-                            R.string.planned_main_track_screen,
-                            if (state.value.currency.type == CurrencyTypes.FIAT) {
-                                FIAT_DECIMAL_FORMAT.format(state.value.budget)
-                            } else {
-                                CRYPTO_DECIMAL_FORMAT.format(state.value.budget)
-                            },
-                            state.value.currency.ticker
-                        ),
+                        text = buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 16.sp
+                                )
+                            ) {
+                                append(
+                                    stringResource(id = R.string.planned_main_track_screen)
+                                )
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                                )
+                            ) {
+                                append(
+                                    " " + if (state.value.currency.type == CurrencyTypes.FIAT) {
+                                        FIAT_DECIMAL_FORMAT.format(state.value.budget)
+                                    } else {
+                                        CRYPTO_DECIMAL_FORMAT.format(state.value.budget)
+                                    }
+                                )
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 16.sp
+                                )
+                            ) {
+                                append(
+                                    " " + state.value.currency.ticker
+                                )
+                            }
+                        },
                         maxLines = 1
                     )
 
                     Text(
-                        text = stringResource(
-                            R.string.spent_main_track_screen,
-                            if (state.value.currency.type == CurrencyTypes.FIAT) {
-                                FIAT_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
-                            } else {
-                                CRYPTO_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
-                            },
-                            state.value.currency.ticker
-                        ),
+                        text =buildAnnotatedString {
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 16.sp
+                                )
+                            ) {
+                                append(
+                                    stringResource(id = R.string.spent_main_track_screen)
+                                )
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                                )
+                            ) {
+                                append(
+                                    " " + if (state.value.currency.type == CurrencyTypes.FIAT) {
+                                        FIAT_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
+                                    } else {
+                                        CRYPTO_DECIMAL_FORMAT.format(state.value.currentExpensesSum)
+                                    }
+                                )
+                            }
+                            withStyle(
+                                style = SpanStyle(
+                                    fontSize = 16.sp
+                                )
+                            ) {
+                                append(
+                                    " " + state.value.currency.ticker
+                                )
+                            }
+                        },
                         maxLines = 1
                     )
 

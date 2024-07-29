@@ -32,6 +32,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -47,6 +48,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.platform.LocalView
@@ -70,7 +72,11 @@ import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun LoginScreen(navController: NavController) {
+    val localContext = LocalContext.current
     val loginViewModel = koinViewModel<LoginViewModel>()
+    LaunchedEffect(key1 = Unit) {
+        loginViewModel.setFirstNameStateFlow(localContext.getString(R.string.user))
+    }
     Surface(modifier = Modifier.fillMaxSize()) {
         val useDarkTheme = isSystemInDarkTheme()
         val view = LocalView.current

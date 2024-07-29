@@ -112,16 +112,16 @@
     <string name="income_categories_Grants">Премії або гранти</string>
     <string name="income_categories_Royalties">Додатковий дохід</string>
     <string name="expense_limit">Ліміт витрат</string>
-    <string name="planned_value_expense_limit_card">Заплановано %1$s %2$s</string>
-    <string name="already_spent_expense_limit_card">Вже витрачено %1$s %2$s</string>
+    <string name="planned_value_expense_limit_card">Заплановано</string>
+    <string name="already_spent_expense_limit_card">Вже витрачено</string>
     <string name="categories_message_expense_limit_card">Категорії:</string>
     <string name="related_to_all_categories_expense_limit_card">" Відноситься до всіх категорій"</string>
     <string name="saving">Заощадження</string>
-    <string name="planned_savings_idea_card">Заплановано %1$s %2$s</string>
+    <string name="planned_savings_idea_card">Заплановано</string>
     <string name="completed_for_savings_idea_card">Виконано на</string>
     <string name="income_plan">План доходів</string>
-    <string name="planned_income_plan_card">Заплановано %1$s %2$s</string>
-    <string name="completed_for_income_plan_card">Виконано на %1$s %2$s</string>
+    <string name="planned">Заплановано</string>
+    <string name="completed_for">Виконано на</string>
     <string name="preferable_period_income_plan_card">Період %1$s - %2$s</string>
     <string name="other">Інше</string>
     <string name="income">Дохід</string>
@@ -158,8 +158,8 @@
     <string name="optional">опціонально</string>
     <string name="saving_for">Зберігаю на</string>
     <string name="budget">бюджет</string>
-    <string name="planned_main_track_screen">Заплановано %1$s %2$s</string>
-    <string name="spent_main_track_screen">Витрачено %1$s %2$s</string>
+    <string name="planned_main_track_screen">Заплановано</string>
+    <string name="spent_main_track_screen">Витрачено</string>
     <string name="scroll_up_CD">Прогортай вгору</string>
     <string name="budget_main_feed_card">%1$s</string>
     <string name="empty_incm_lazyColumn_additional1">Спробуй додати новий використовуючи кнопку в нижній частина екрану</string>
@@ -194,4 +194,8 @@
     <string name="expense_operation_statistic_screen">Операції видатків</string>
     <string name="income_operation_statistic_screen">Операції доходів</string>
     <string name="category_name_new_category_dialog">Назва категорії</string>
+    <string name="filter_currencies">Фільтруй валюти</string>
+    <string name="hide_additional_currencies">Сховай додаткові валюти</string>
+    <string name="show_additional_currencies">Покажи додаткові валюти</string>
+    <string name="user">Користувач</string>
 </resources>

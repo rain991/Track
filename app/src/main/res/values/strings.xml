@@ -141,20 +141,20 @@
 
     <!-- Expense limit -->
     <string name="expense_limit">Expense limit</string>
-    <string name="planned_value_expense_limit_card">Planned %1$s %2$s</string>
-    <string name="already_spent_expense_limit_card">Already spent %1$s %2$s</string>
+    <string name="planned_value_expense_limit_card">Planned</string>
+    <string name="already_spent_expense_limit_card">Already spent</string>
     <string name="categories_message_expense_limit_card">Categories:</string>
     <string name="related_to_all_categories_expense_limit_card">" Related to all categories"</string>
 
     <!-- Savings -->
     <string name="saving">Saving</string>
-    <string name="planned_savings_idea_card">Planned %1$s %2$s</string>
+    <string name="planned_savings_idea_card">Planned</string>
     <string name="completed_for_savings_idea_card">Completed for</string>
 
     <!-- Income plan -->
     <string name="income_plan">Income plan</string>
-    <string name="planned_income_plan_card">Planned %1$s %2$s</string>
-    <string name="completed_for_income_plan_card">Completed for %1$s %2$s</string>
+    <string name="planned">Planned</string>
+    <string name="completed_for">Completed for</string>
     <string name="preferable_period_income_plan_card">Preferable period: %1$s - %2$s</string>
     <string name="other">Other</string>
     <string name="income">Income</string>
@@ -199,8 +199,8 @@
     <string name="optional">optional</string>
     <string name="saving_for">Saving for</string>
     <string name="budget">budget</string>
-    <string name="planned_main_track_screen">Planned %1$s %2$s</string>
-    <string name="spent_main_track_screen">Spent %1$s %2$s</string>
+    <string name="planned_main_track_screen">Planned</string>
+    <string name="spent_main_track_screen">Spent</string>
     <string name="scroll_up_CD">scroll up</string>
     <string name="budget_main_feed_card">%1$s budget</string>
     <string name="empty_incm_lazyColumn_additional1">Try it out using button in right bottom corner, it is available in every app screen</string>
@@ -233,4 +233,8 @@
     <string name="show_as">Show as</string>
     <string name="allow_non_categorised_incomes">Allow non-categorised incomes</string>
     <string name="category_name_new_category_dialog">Category name</string>
+    <string name="filter_currencies">Filter currencies</string>
+    <string name="hide_additional_currencies">Hide additional currencies</string>
+    <string name="show_additional_currencies">Show additional currencies</string>
+    <string name="user">User</string>
 </resources>

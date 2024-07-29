@@ -30,6 +30,7 @@ import com.savenko.track.data.other.constants.MAX_CIRCULAR_PROGRESS_VALUE
 import kotlin.math.PI
 import kotlin.math.cos
 import kotlin.math.sin
+import android.graphics.Typeface as AndroidTypeface
 
 @Composable
 fun CustomCircularProgressIndicator(
@@ -135,7 +136,11 @@ fun CustomCircularProgressIndicator(
 
             drawContext.canvas.nativeCanvas.apply {
                 drawIntoCanvas {
-                    val textSize = circleRadius / 1.5f
+                    val textSize = if (initialValue < MAX_CIRCULAR_PROGRESS_VALUE) {
+                        circleRadius / 1.5f
+                    } else {
+                        circleRadius / 2f
+                    }
                     drawText(if (initialValue < MAX_CIRCULAR_PROGRESS_VALUE) {
                         "$initialValue%"
                     } else {
@@ -147,7 +152,7 @@ fun CustomCircularProgressIndicator(
                             this.textSize = textSize
                             textAlign = Paint.Align.CENTER
                             color = Color.White.toArgb()
-                            isFakeBoldText = true
+                            typeface = AndroidTypeface.create(AndroidTypeface.DEFAULT, AndroidTypeface.BOLD)
                         }
                     )
                 }

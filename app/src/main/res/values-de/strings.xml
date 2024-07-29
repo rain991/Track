@@ -138,20 +138,20 @@
 
     <!-- Expense limit -->
     <string name="expense_limit">Ausgabenlimit</string>
-    <string name="planned_value_expense_limit_card">Geplant %1$s %2$s</string>
-    <string name="already_spent_expense_limit_card">Bereits ausgegeben %1$s %2$s</string>
+    <string name="planned_value_expense_limit_card">Geplant</string>
+    <string name="already_spent_expense_limit_card">Bereits ausgegeben</string>
     <string name="categories_message_expense_limit_card">Kategorien:</string>
     <string name="related_to_all_categories_expense_limit_card">Bezieht sich auf alle Kategorien</string>
 
     <!-- Savings -->
     <string name="saving">Sparen</string>
-    <string name="planned_savings_idea_card">Geplant %1$s %2$s</string>
+    <string name="planned_savings_idea_card">Geplant</string>
     <string name="completed_for_savings_idea_card">Abgeschlossen für</string>
 
     <!-- Income plan -->
     <string name="income_plan">Einkommensplan</string>
-    <string name="planned_income_plan_card">Geplant %1$s %2$s</string>
-    <string name="completed_for_income_plan_card">Abgeschlossen für %1$s %2$s</string>
+    <string name="planned">Geplant</string>
+    <string name="completed_for">Abgeschlossen für</string>
     <string name="preferable_period_income_plan_card">Bevorzugter Zeitraum: %1$s - %2$s</string>
     <string name="other">Andere</string>
     <string name="income">Einkommen</string>
@@ -194,8 +194,8 @@
     <string name="optional">Optional</string>
     <string name="saving_for">Sparen für</string>
     <string name="budget">Budget</string>
-    <string name="planned_main_track_screen">Geplant %1$s %2$s</string>
-    <string name="spent_main_track_screen">Ausgegeben %1$s %2$s</string>
+    <string name="planned_main_track_screen">Geplant</string>
+    <string name="spent_main_track_screen">Ausgegeben</string>
     <string name="scroll_up_CD">nach oben scrollen</string>
     <string name="budget_main_feed_card">%1$s Budget</string>
     <string name="empty_incm_lazyColumn_additional1">Probieren Sie es mit dem Knopf in der rechten unteren Ecke aus, er ist in jedem App-Bildschirm verfügbar</string>
@@ -230,5 +230,9 @@
     <string name="expense_operation_statistic_screen">Ausgabenvorgänge</string>
     <string name="income_operation_statistic_screen">Ertragsvorgänge</string>
     <string name="category_name_new_category_dialog">Kategoriename</string>
+    <string name="filter_currencies">Währungen filtern</string>
+    <string name="hide_additional_currencies">Zusätzliche Währungen ausblenden</string>
+    <string name="show_additional_currencies">Zusätzliche Währungen anzeigen</string>
+    <string name="user">User</string>
 
 </resources>

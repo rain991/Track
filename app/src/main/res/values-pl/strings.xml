@@ -112,16 +112,16 @@
     <string name="income_categories_Grants">Premia</string>
     <string name="income_categories_Royalties">Dodatkowy dochód</string>
     <string name="expense_limit">Ograniczenie wydatków</string>
-    <string name="planned_value_expense_limit_card">Planowane %1$s %2$s</string>
-    <string name="already_spent_expense_limit_card">Wydane %1$s %2$s</string>
+    <string name="planned_value_expense_limit_card">Planowane</string>
+    <string name="already_spent_expense_limit_card">Wydane</string>
     <string name="categories_message_expense_limit_card">Kategorie:</string>
     <string name="related_to_all_categories_expense_limit_card">" Należy do wszystkich kategorii"</string>
     <string name="saving">Oszczędności</string>
-    <string name="planned_savings_idea_card">Planowane %1$s %2$s</string>
+    <string name="planned_savings_idea_card">Planowane</string>
     <string name="completed_for_savings_idea_card">Wykonane na</string>
     <string name="income_plan">Plan dochodów</string>
-    <string name="planned_income_plan_card">Planowane %1$s %2$s</string>
-    <string name="completed_for_income_plan_card">Wykonane na %1$s %2$s</string>
+    <string name="planned">Planowane</string>
+    <string name="completed_for">Wykonane na</string>
     <string name="preferable_period_income_plan_card">Okres %1$s - %2$s</string>
     <string name="other">Inne</string>
     <string name="income">Dochód</string>
@@ -156,10 +156,10 @@
     <string name="savings_planned">Zaplanowane oszczędności</string>
     <string name="add_idea">Dodaj idea</string>
     <string name="optional">opcjonalnie</string>
-    <string name="saving_for">Zbieram na</string>
+    <string name="saving_for">Oszczędzam na</string>
     <string name="budget">budżet</string>
-    <string name="planned_main_track_screen">Planowane %1$s %2$s</string>
-    <string name="spent_main_track_screen">Wydane %1$s %2$s</string>
+    <string name="planned_main_track_screen">Planowane</string>
+    <string name="spent_main_track_screen">Wydane</string>
     <string name="scroll_up_CD">Przewiń w górę</string>
     <string name="budget_main_feed_card">%1$s</string>
     <string name="empty_incm_lazyColumn_additional1">Spróbuj dodać nowy za pomocą przycisku u dołu ekranu</string>
@@ -194,4 +194,8 @@
     <string name="expense_operation_statistic_screen">Operacje wydatków</string>
     <string name="income_operation_statistic_screen">Operacje dochodowe</string>
     <string name="category_name_new_category_dialog">Nazwa kategorii</string>
+    <string name="filter_currencies">Filtruj waluty</string>
+    <string name="hide_additional_currencies">Ukryj dodatkowe waluty</string>
+    <string name="show_additional_currencies">Zusätzliche Währungen anzeigen</string>
+    <string name="user">Użytkownik</string>
 </resources>

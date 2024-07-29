@@ -204,5 +204,5 @@ val viewModelModule = module {
     viewModel { NewIdeaDialogViewModel(get()) }
 
     // Other
-    viewModel { TrackScreenManagerViewModel(get()) }
+    viewModel { TrackScreenManagerViewModel(get(), get()) }
 }
