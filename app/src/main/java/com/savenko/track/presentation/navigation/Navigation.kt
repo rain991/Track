@@ -1,9 +1,11 @@
 package com.savenko.track.presentation.navigation
 
+import android.util.Log
 import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.savenko.track.data.other.constants.TAG
 import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.savenko.track.presentation.navigation.Screen.MainScreen
 import com.savenko.track.presentation.screens.additional.settingsScreens.CategoriesSettingsScreen
@@ -18,6 +20,7 @@ import org.koin.androidx.compose.koinViewModel
 fun Navigation(currentLoginCount: Int) {
     val navController = rememberNavController()
     val trackScreenManagerViewModel = koinViewModel<TrackScreenManagerViewModel>()
+    Log.d(TAG, "Navigation: $currentLoginCount")
     NavHost(
         navController = navController,
         startDestination = if (currentLoginCount != 0) {
