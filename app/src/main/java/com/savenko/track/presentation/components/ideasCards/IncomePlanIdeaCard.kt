@@ -39,6 +39,7 @@ import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.idea.IncomePlans
+import com.savenko.track.presentation.themes.purpleGreyTheme.purpleGreyNew_DarkColorScheme
 
 /*  Contains Card used in expense screen feed to show income plan entity  */
 @Composable
@@ -126,9 +127,9 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
         ) {
             Card(colors = CardColors(
                 containerColor = incomePlanSpecificColor,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant,
                 disabledContainerColor = incomePlanSpecificColor,
-                disabledContentColor = MaterialTheme.colorScheme.onPrimary
+                disabledContentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant
             ),modifier = Modifier.scale(0.8f)
             ) {
                 Text(

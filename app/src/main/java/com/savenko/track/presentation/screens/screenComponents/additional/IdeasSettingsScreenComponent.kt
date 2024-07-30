@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -31,6 +32,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
@@ -81,46 +83,61 @@ fun IdeasSettingsScreenComponent(
                 .fillMaxSize()
                 .padding(top = 16.dp)
         ) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-                    .wrapContentHeight(),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = stringResource(R.string.show_completed_ideas_idea_settings_screen))
-                Switch(
-                    checked = screenState.value.isShowingCompletedIdeas,
-                    onCheckedChange = {
-                        coroutineScope.launch {
-                            ideasSettingsScreenViewModel.setIsShowingCompletedIdeas(it)
-                        }
-                    })
-            }
-            Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp)
-                    .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
-            ) {
-                Text(text = stringResource(R.string.sorted_date_idea_settings_screen))
-                Spacer(modifier = Modifier.width(8.dp))
-                Card {
-                    TextButton(
-                        onClick = { ideasSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) },
-                        modifier = Modifier.align(Alignment.CenterHorizontally)
+            Card(modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)) {
+                Column(modifier = Modifier.padding(8.dp)) {
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                            .wrapContentHeight(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
                     ) {
-                        AnimatedContent(targetState = sortingButtonText, label = "animatedButtonText") {
-                            Text(
-                                text = stringResource(id = it.value), style = MaterialTheme.typography.bodyMedium
-                            )
+                        Text(text = stringResource(R.string.show_completed_ideas_idea_settings_screen))
+                        Switch(
+                            checked = screenState.value.isShowingCompletedIdeas,
+                            onCheckedChange = {
+                                coroutineScope.launch {
+                                    ideasSettingsScreenViewModel.setIsShowingCompletedIdeas(it)
+                                }
+                            })
+                    }
+                    Spacer(modifier = Modifier.height(8.dp))
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = 8.dp)
+                            .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Text(text = stringResource(R.string.sorted_date_idea_settings_screen))
+                        Spacer(modifier = Modifier.width(8.dp))
+                        Card(elevation = CardDefaults.cardElevation(
+                            defaultElevation = 12.dp,
+                            focusedElevation = 12.dp
+                        )) {
+                            TextButton(
+                                onClick = { ideasSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) },
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            ) {
+                                AnimatedContent(targetState = sortingButtonText, label = "animatedButtonText") {
+                                    Text(
+                                        text = stringResource(id = it.value), style = MaterialTheme.typography.bodyMedium
+                                    )
+                                }
+                            }
                         }
                     }
                 }
             }
             Spacer(modifier = Modifier.height(16.dp))
+            Text(
+                text = stringResource(R.string.your_ideas_setting_screen),
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
+                modifier = Modifier.padding(start = 8.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
             LazyColumn(
                 state = listState, modifier = Modifier
                     .fillMaxWidth()
@@ -208,8 +225,8 @@ fun IdeasSettingsScreenComponent(
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    if(index == sortedIdeas.size - 1){
+                    Spacer(modifier = Modifier.height(12.dp))
+                    if (index == sortedIdeas.size - 1) {
                         Spacer(modifier = Modifier.height(24.dp))
                     }
                 }

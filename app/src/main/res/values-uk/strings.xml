@@ -198,4 +198,6 @@
     <string name="hide_additional_currencies">Сховай додаткові валюти</string>
     <string name="show_additional_currencies">Покажи додаткові валюти</string>
     <string name="user">Користувач</string>
+    <string name="plan_started_income_plan_card">Початок плану: %1$s</string>
+    <string name="your_ideas_setting_screen">Твої Ідеї</string>
 </resources>

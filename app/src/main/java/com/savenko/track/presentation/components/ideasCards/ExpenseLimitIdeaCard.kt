@@ -41,6 +41,7 @@ import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
 import com.savenko.track.presentation.components.customComponents.CategoryChip
+import com.savenko.track.presentation.themes.purpleGreyTheme.purpleGreyNew_DarkColorScheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import org.koin.compose.koinInject
@@ -127,12 +128,13 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
     ) {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 4.dp).scale(0.75f), horizontalArrangement = Arrangement.Center) {
+            .padding(top = 4.dp)
+            .scale(0.75f), horizontalArrangement = Arrangement.Center) {
             Card(colors = CardColors(
                 containerColor = expenseLimitSpecificColor,
-                contentColor = MaterialTheme.colorScheme.onPrimary,
+                contentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant,
                 disabledContainerColor = expenseLimitSpecificColor,
-                disabledContentColor = MaterialTheme.colorScheme.onPrimary
+                disabledContentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant
             ),modifier = Modifier
             ) {
                 Text(
@@ -240,6 +242,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     }
                 }
             }
+            Spacer(modifier = Modifier.height(2.dp))
         }
     }
 }

@@ -36,6 +36,7 @@ import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogVi
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.idea.Savings
+import com.savenko.track.presentation.themes.purpleGreyTheme.purpleGreyNew_DarkColorScheme
 
 @Composable
 fun SavingsIdeaCard(
@@ -71,9 +72,9 @@ fun SavingsIdeaCard(
                 Card(
                     colors = CardColors(
                         containerColor = savingsSpecificColor,
-                        contentColor = MaterialTheme.colorScheme.onPrimary,
+                        contentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant,
                         disabledContainerColor = savingsSpecificColor,
-                        disabledContentColor = MaterialTheme.colorScheme.onPrimary
+                        disabledContentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant
                     ), modifier = Modifier
                 ) {
                     Text(

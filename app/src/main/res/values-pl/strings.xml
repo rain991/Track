@@ -198,4 +198,6 @@
     <string name="hide_additional_currencies">Ukryj dodatkowe waluty</string>
     <string name="show_additional_currencies">Zusätzliche Währungen anzeigen</string>
     <string name="user">Użytkownik</string>
+    <string name="plan_started_income_plan_card">Rozpoczęcie planu: %1$s</string>
+    <string name="your_ideas_setting_screen">Twoje Idea</string>
 </resources>

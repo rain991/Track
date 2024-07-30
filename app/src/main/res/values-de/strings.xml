@@ -234,5 +234,7 @@
     <string name="hide_additional_currencies">Zusätzliche Währungen ausblenden</string>
     <string name="show_additional_currencies">Zusätzliche Währungen anzeigen</string>
     <string name="user">User</string>
+    <string name="plan_started_income_plan_card">Plan gestartet : %1$s</string>
+    <string name="your_ideas_setting_screen">Ihre Ideen</string>
 
 </resources>
