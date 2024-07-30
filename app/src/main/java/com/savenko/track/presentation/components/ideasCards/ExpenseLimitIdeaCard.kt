@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -32,6 +34,7 @@ import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
+import com.savenko.track.data.other.constants.expenseLimitSpecificColor
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
@@ -124,13 +127,22 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
     ) {
         Row(modifier = Modifier
             .fillMaxWidth()
-            .padding(top = 4.dp), horizontalArrangement = Arrangement.Center) {
-            Text(
-                text = stringResource(R.string.expense_limit),
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold)
-            )
+            .padding(top = 4.dp).scale(0.75f), horizontalArrangement = Arrangement.Center) {
+            Card(colors = CardColors(
+                containerColor = expenseLimitSpecificColor,
+                contentColor = MaterialTheme.colorScheme.onPrimary,
+                disabledContainerColor = expenseLimitSpecificColor,
+                disabledContentColor = MaterialTheme.colorScheme.onPrimary
+            ),modifier = Modifier
+            ) {
+                Text(
+                    text = stringResource(R.string.expense_limit),
+                    style = MaterialTheme.typography.headlineSmall/*.copy(fontWeight = FontWeight.SemiBold)*/,
+                    modifier = Modifier.padding(4.dp)
+                )
+            }
         }
-        if (!expenseLimit.isRelatedToAllCategories) Spacer(Modifier.height(8.dp))
+        if (expenseLimit.isRelatedToAllCategories) Spacer(Modifier.height(8.dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()

@@ -26,7 +26,7 @@ import com.savenko.track.presentation.screens.screenComponents.additional.IdeasS
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun IdeasListSettingsScreen(navController: NavHostController) {
+fun IdeasSettingsScreen(navController: NavHostController) {
     val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val addToSavingIdeaDialogViewModel = koinViewModel<AddToSavingIdeaDialogViewModel>()
     val ideasSettingsScreenViewModel = koinViewModel<IdeasSettingsScreenViewModel>()

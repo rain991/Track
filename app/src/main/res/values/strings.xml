@@ -237,4 +237,5 @@
     <string name="hide_additional_currencies">Hide additional currencies</string>
     <string name="show_additional_currencies">Show additional currencies</string>
     <string name="user">User</string>
+    <string name="plan_started_income_plan_card">Plan started : %1$s</string>
 </resources>

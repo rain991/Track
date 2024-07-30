@@ -209,6 +209,9 @@ fun IdeasSettingsScreenComponent(
                         }
                     }
                     Spacer(modifier = Modifier.height(8.dp))
+                    if(index == sortedIdeas.size - 1){
+                        Spacer(modifier = Modifier.height(24.dp))
+                    }
                 }
             }
         }

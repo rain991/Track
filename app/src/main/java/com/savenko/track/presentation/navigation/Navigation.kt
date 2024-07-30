@@ -10,7 +10,7 @@ import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.savenko.track.presentation.navigation.Screen.MainScreen
 import com.savenko.track.presentation.screens.additional.settingsScreens.CategoriesSettingsScreen
 import com.savenko.track.presentation.screens.additional.settingsScreens.CurrenciesSettingsScreen
-import com.savenko.track.presentation.screens.additional.settingsScreens.IdeasListSettingsScreen
+import com.savenko.track.presentation.screens.additional.settingsScreens.IdeasSettingsScreen
 import com.savenko.track.presentation.screens.additional.settingsScreens.PersonalSettingsScreen
 import com.savenko.track.presentation.screens.core.LoginScreen
 import com.savenko.track.presentation.screens.core.TrackScreenManager
@@ -39,7 +39,7 @@ fun Navigation(currentLoginCount: Int) {
             CurrenciesSettingsScreen(navController)
         }
         composable(route = Screen.IdeasListSettingsScreen.route) {
-            IdeasListSettingsScreen(navController)
+            IdeasSettingsScreen(navController)
         }
         composable(route = Screen.PersonalSettingsScreen.route) {
             PersonalSettingsScreen(navController)

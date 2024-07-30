@@ -1,5 +1,6 @@
 package com.savenko.track.data.other.constants
 
+import androidx.compose.ui.graphics.Color
 import java.text.DecimalFormat
 
 // Retrofit
@@ -15,6 +16,11 @@ const val MIN_SUPPORTED_YEAR = 2000
 const val INCORRECT_CONVERSION_RESULT = -1f
 val LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS = (1..13).toList()
 val LIST_OF_DEFAULT_INCOMES_CATEGORIES_IDS = (1..9).toList()
+
+// Ideas specific colors
+val incomePlanSpecificColor = Color(0xFFFFBF00)
+val expenseLimitSpecificColor = Color(0xFFFF2400)
+val savingsSpecificColor = Color(0xFF38CB82)
 
 // ideas feed
 const val FEED_CARD_DELAY_SLOW = 4500L
@@ -33,3 +39,4 @@ val PERCENTAGE_DECIMAL_FORMAT = DecimalFormat("#.##")
 // Other constants
 const val CURRENCIES_PREFERENCE_ID = 1
 const val TAG = "Track_Log"
+
