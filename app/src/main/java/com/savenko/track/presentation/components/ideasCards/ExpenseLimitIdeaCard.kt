@@ -1,7 +1,6 @@
 package com.savenko.track.presentation.components.ideasCards
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -53,6 +53,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
     val localContext = LocalContext.current
     var plannedText by remember { mutableStateOf(buildAnnotatedString { }) }
     var alreadySpentText by remember { mutableStateOf(buildAnnotatedString { }) }
+    val listOfRelatedCategories = remember { mutableListOf<ExpenseCategory>() }
     LaunchedEffect(preferableCurrency, expenseLimit.goal, completedValue) {
         plannedText = buildAnnotatedString {
             withStyle(
@@ -121,21 +122,41 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
             }
         }
     }
+    LaunchedEffect(key1 = Unit) {
+        withContext(Dispatchers.IO) {
+            val categories = mutableListOf<ExpenseCategory>()
+            if (expenseLimit.firstRelatedCategoryId != null) {
+                categories.add(expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.firstRelatedCategoryId))
+            }
+            if (expenseLimit.secondRelatedCategoryId != null) {
+                categories.add(expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.secondRelatedCategoryId))
+            }
+            if (expenseLimit.thirdRelatedCategoryId != null) {
+                categories.add(expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.thirdRelatedCategoryId))
+            }
+            withContext(Dispatchers.Main) {
+                listOfRelatedCategories.addAll(categories)
+            }
+        }
+    }
     Card(
         modifier = Modifier
             .height(140.dp)
             .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
     ) {
-        Row(modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 4.dp)
-            .scale(0.75f), horizontalArrangement = Arrangement.Center) {
-            Card(colors = CardColors(
-                containerColor = expenseLimitSpecificColor,
-                contentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant,
-                disabledContainerColor = expenseLimitSpecificColor,
-                disabledContentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant
-            ),modifier = Modifier
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = 4.dp)
+                .scale(0.75f), horizontalArrangement = Arrangement.Center
+        ) {
+            Card(
+                colors = CardColors(
+                    containerColor = expenseLimitSpecificColor,
+                    contentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant,
+                    disabledContainerColor = expenseLimitSpecificColor,
+                    disabledContentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant
+                ), modifier = Modifier
             ) {
                 Text(
                     text = stringResource(R.string.expense_limit),
@@ -144,105 +165,64 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                 )
             }
         }
-        if (expenseLimit.isRelatedToAllCategories) Spacer(Modifier.height(8.dp))
+        if (expenseLimit.isRelatedToAllCategories) Spacer(Modifier.height(4.dp))
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = 8.dp, vertical = 2.dp), verticalArrangement = Arrangement.SpaceEvenly
+                .padding(horizontal = 8.dp, vertical = 4.dp), verticalArrangement = Arrangement.SpaceAround
         ) {
             if (expenseLimit.isRelatedToAllCategories) {
-                Text(text = plannedText)
-                Spacer(Modifier.height(8.dp))
-                Text(text = alreadySpentText)
+                RelatedToAllCategoriesCardContent(plannedText = plannedText, alreadySpentText = alreadySpentText)
             } else {
-                Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceEvenly) {
-                    Text(text = plannedText, maxLines = 1)
-                    Text(text = alreadySpentText, maxLines = 1)
-                }
-            }
-            Spacer(Modifier.height(8.dp))
-            Row(
-                modifier = Modifier.padding(
-                    start =
-                    if (expenseLimit.isRelatedToAllCategories) {
-                        0.dp
-                    } else {
-                        24.dp
-                    }
-                )
-            ) {
-                Text(
-                    text = stringResource(R.string.categories_message_expense_limit_card) + if (expenseLimit.isRelatedToAllCategories) {
-                        stringResource(R.string.related_to_all_categories_expense_limit_card)
-                    } else {
-                        ""
-                    }
+                SpecifiedCategoriesCardContent(
+                    listOfRelatedCategories = listOfRelatedCategories,
+                    plannedText = plannedText,
+                    alreadySpentText = alreadySpentText
                 )
             }
-            Spacer(modifier = Modifier.height(4.dp))
-            Row(
-                modifier = Modifier
-                    .wrapContentHeight()
-            ) {
-                if (expenseLimit.firstRelatedCategoryId != null) {
-                    var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
-                    LaunchedEffect(key1 = Unit) {
-                        withContext(Dispatchers.IO) {
-                            currentCategory =
-                                expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.firstRelatedCategoryId)
-                        }
-                    }
-                    if (currentCategory != null) {
-                        Box(modifier = Modifier.weight(0.3f)) {
-                            CategoryChip(
-                                category = currentCategory!!,
-                                borderColor = null,
-                                isSelected = false,
-                                chipScale = 0.8f,
-                                onSelect = {})
-                        }
-                    }
-                }
-                if (expenseLimit.secondRelatedCategoryId != null) {
-                    var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
-                    LaunchedEffect(key1 = Unit) {
-                        withContext(Dispatchers.IO) {
-                            currentCategory =
-                                expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.secondRelatedCategoryId)
-                        }
-                    }
-                    if (currentCategory != null) {
-                        Box(modifier = Modifier.weight(0.3f)) {
-                            CategoryChip(
-                                category = currentCategory!!,
-                                borderColor = null,
-                                isSelected = false,
-                                chipScale = 0.8f,
-                                onSelect = {})
-                        }
-                    }
-                }
-                if (expenseLimit.thirdRelatedCategoryId != null) {
-                    var currentCategory by remember { mutableStateOf<ExpenseCategory?>(null) }
-                    LaunchedEffect(key1 = Unit) {
-                        withContext(Dispatchers.IO) {
-                            currentCategory =
-                                expenseCategoriesListRepositoryImpl.getCategoryById(expenseLimit.thirdRelatedCategoryId)
-                        }
-                    }
-                    if (currentCategory != null) {
-                        Box(modifier = Modifier.weight(0.3f)) {
-                            CategoryChip(
-                                category = currentCategory!!,
-                                borderColor = null,
-                                isSelected = false,
-                                chipScale = 0.8f,
-                                onSelect = {})
-                        }
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.height(2.dp))
+        }
+    }
+}
+
+@Composable
+private fun RelatedToAllCategoriesCardContent(
+    plannedText: AnnotatedString,
+    alreadySpentText: AnnotatedString
+) {
+    Text(text = plannedText)
+    Text(text = alreadySpentText)
+    Text(
+        text = stringResource(R.string.categories_message_expense_limit_card) + stringResource(R.string.related_to_all_categories_expense_limit_card)
+    )
+}
+
+@Composable
+private fun SpecifiedCategoriesCardContent(
+    listOfRelatedCategories: List<ExpenseCategory>,
+    plannedText: AnnotatedString,
+    alreadySpentText: AnnotatedString
+) {
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceAround) {
+        Text(text = plannedText, maxLines = 1)
+        Text(text = alreadySpentText, maxLines = 1)
+    }
+    Spacer(Modifier.height(4.dp))
+    Row(modifier = Modifier.padding(start = 24.dp)) {
+        Text(text = stringResource(R.string.categories_message_expense_limit_card))
+    }
+    Spacer(modifier = Modifier.height(4.dp))
+    Row(
+        modifier = Modifier
+            .wrapContentHeight()
+    ) {
+        listOfRelatedCategories.forEach { expenseCategory ->
+            CategoryChip(
+                category = expenseCategory,
+                borderColor = null,
+                isSelected = false,
+                chipScale = 0.8f,
+                onSelect = {})
+
         }
     }
 }
