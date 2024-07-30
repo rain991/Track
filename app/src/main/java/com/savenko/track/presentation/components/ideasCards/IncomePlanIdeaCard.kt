@@ -23,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
@@ -125,16 +126,17 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
                 .fillMaxWidth()
                 .padding(top = 4.dp), horizontalArrangement = Arrangement.Center
         ) {
-            Card(colors = CardColors(
-                containerColor = incomePlanSpecificColor,
-                contentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant,
-                disabledContainerColor = incomePlanSpecificColor,
-                disabledContentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant
-            ),modifier = Modifier.scale(0.8f)
+            Card(
+                colors = CardColors(
+                    containerColor = incomePlanSpecificColor,
+                    contentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant,
+                    disabledContainerColor = incomePlanSpecificColor,
+                    disabledContentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant
+                ), modifier = Modifier.scale(0.8f)
             ) {
                 Text(
                     text = stringResource(R.string.income_plan),
-                    style = MaterialTheme.typography.headlineSmall/*.copy(fontWeight = FontWeight.SemiBold)*/,
+                    style = MaterialTheme.typography.headlineSmall,
                     modifier = Modifier.padding(4.dp)
                 )
             }
@@ -147,40 +149,68 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
 
         ) {
             if (incomePlans.endDate != null) {
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(8.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    Text(
-                        text = plannedText
-                    )
-                    Text(
-                        text = completedText
-                    )
-                }
-                Text(
-                    text = stringResource(
-                        R.string.preferable_period_income_plan_card,
-                        formatDateWithoutYear(incomePlans.startDate),
-                        formatDateWithoutYear(incomePlans.endDate)
-                    ), textAlign = TextAlign.Center
+                SpecifiedEndDateContent(
+                    incomePlans = incomePlans,
+                    plannedText = plannedText,
+                    completedText = completedText
                 )
             } else {
-                Text(
-                    text = plannedText
-                )
-                Text(
-                    text = completedText
-                )
-                Text(
-                    text = stringResource(
-                        R.string.plan_started_income_plan_card,
-                        formatDateWithYear(incomePlans.startDate)
-                    ), textAlign = TextAlign.Center
+                NonSpecifiedEndDateContent(
+                    incomePlans = incomePlans,
+                    plannedText = plannedText,
+                    completedText = completedText
                 )
             }
         }
     }
+}
+
+@Composable
+private fun SpecifiedEndDateContent(
+    incomePlans: IncomePlans,
+    plannedText: AnnotatedString,
+    completedText: AnnotatedString
+) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(8.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = plannedText
+        )
+        Text(
+            text = completedText
+        )
+    }
+    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+        Text(
+            text = stringResource(
+                R.string.preferable_period_income_plan_card,
+                formatDateWithoutYear(incomePlans.startDate),
+                formatDateWithoutYear(incomePlans.endDate!!)
+            ), textAlign = TextAlign.Center
+        )
+    }
+}
+
+@Composable
+private fun NonSpecifiedEndDateContent(
+    incomePlans: IncomePlans,
+    plannedText: AnnotatedString,
+    completedText: AnnotatedString
+) {
+    Text(
+        text = plannedText
+    )
+    Text(
+        text = completedText
+    )
+    Text(
+        text = stringResource(
+            R.string.plan_started_income_plan_card,
+            formatDateWithYear(incomePlans.startDate)
+        ), textAlign = TextAlign.Center
+    )
 }

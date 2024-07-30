@@ -63,7 +63,8 @@ fun SavingsIdeaCard(
             ) {
                 Text(
                     text = savings.label,
-                    style = MaterialTheme.typography.headlineSmall//.copy(fontWeight = FontWeight.SemiBold)
+                    style = MaterialTheme.typography.headlineSmall,
+                    maxLines = 1
                 )
             }
             Row(modifier = Modifier
