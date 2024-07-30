@@ -1,3 +1,4 @@
+
 # Track: Your Ultimate Financial Tracker
 ![trackNewHeader](https://github.com/user-attachments/assets/6e858b43-3bb6-404d-a6c7-5c1dbb4aa9cc)
 ## Introduction
@@ -47,8 +48,8 @@
 
 ## Get Started with Track
 
-Track is currently on closed alpha test. Expected to be available on Play Market store by the end of July
-
+- Android : Track is available in Play Market Store -  [Link](https://play.google.com/store/apps/details?id=com.savenko.track)
+- IOS : Track has long term plans to be available on Apple devices
 ## Used Technologies
 - Kotlin
 - Jetpack compose
