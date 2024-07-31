@@ -236,5 +236,10 @@
     <string name="user">User</string>
     <string name="plan_started_income_plan_card">Plan gestartet : %1$s</string>
     <string name="your_ideas_setting_screen">Ihre Ideen</string>
+    <string name="set_as_preferable_currency_currencies_settings">Als bevorzugte Währung festlegen</string>
+    <string name="set_as_first_priority_additional">Als erste Priorität festlegen zusätzlich</string>
+    <string name="set_as_second_priority_additional">Als zweite Priorität zusätzlich festlegen</string>
+    <string name="set_as_third_priority_additional">Als dritte Priorität zusätzlich festlegen</string>
+    <string name="set_as_fourth_priority_additional">Als vierte Priorität zusätzlich festlegen</string>
 
 </resources>

@@ -18,6 +18,10 @@ class DatabaseStringResourcesProvider(private val context: Context) {
         return currencyStringResources[ticker] ?: R.string.unknown
     }
 
+    fun getCurrencyLocalizedName(ticker : String) : String{
+        return context.getString(getCurrencyStringResource(ticker))
+    }
+
     private val expenseCategoryStringResources = mapOf(
         1 to R.string.expense_categories_groceries,
         2 to R.string.expense_categories_Utilities,

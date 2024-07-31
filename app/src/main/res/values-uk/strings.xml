@@ -200,4 +200,9 @@
     <string name="user">Користувач</string>
     <string name="plan_started_income_plan_card">Початок плану: %1$s</string>
     <string name="your_ideas_setting_screen">Твої Ідеї</string>
+    <string name="set_as_preferable_currency_currencies_settings">Зміни улюблену валюту</string>
+    <string name="set_as_first_priority_additional">Додаткова валюта першого пріоритету</string>
+    <string name="set_as_second_priority_additional">Додаткова валюта другого пріоритету</string>
+    <string name="set_as_third_priority_additional">Додаткова валюта третього пріоритету</string>
+    <string name="set_as_fourth_priority_additional">Додаткова валюта четвертого пріоритету</string>
 </resources>

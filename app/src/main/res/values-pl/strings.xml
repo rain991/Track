@@ -200,4 +200,9 @@
     <string name="user">Użytkownik</string>
     <string name="plan_started_income_plan_card">Rozpoczęcie planu: %1$s</string>
     <string name="your_ideas_setting_screen">Twoje Idea</string>
+    <string name="set_as_preferable_currency_currencies_settings">Ustaw jako preferowaną walutę</string>
+    <string name="set_as_first_priority_additional">Dodatkowa pierwszego priorytetu</string>
+    <string name="set_as_second_priority_additional">Dodatkowa drugiego priorytetu</string>
+    <string name="set_as_third_priority_additional">Dodatkowa trzeciego priorytetu</string>
+    <string name="set_as_fourth_priority_additional">Dodatkowa czwartego priorytetu</string>
 </resources>
