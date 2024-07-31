@@ -87,7 +87,8 @@ fun SelectedCurrenciesComponent(
                 CurrenciesSettingsCurrencyCard(
                     currencyList = state.allCurrenciesList,
                     selectedOption = currenciesPreferenceUI.preferableCurrency,
-                    isElevated = true
+                    isElevated = true,
+                    containsName = true
                 ) {
                     coroutineScope.launch {
                         onAction(CurrenciesSettingsScreenEvent.SetPreferableCurrency(it))
