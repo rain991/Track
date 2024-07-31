@@ -23,9 +23,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
@@ -57,17 +59,18 @@ fun AddToSavingDialog(
             modifier = Modifier
                 .fillMaxWidth(0.8f)
                 .wrapContentHeight(),
-            shape = RoundedCornerShape(8.dp),
+            shape = RoundedCornerShape(12.dp),
         ) {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = 16.dp, vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
+                    .padding(horizontal = 24.dp, vertical = 16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Text(
                         text = stringResource(R.string.add_to_adding_to_saving_idea_dialog) + " " + currentSaving.value?.label,
-                        style = MaterialTheme.typography.titleMedium
+                        style = MaterialTheme.typography.titleMedium,
+                        textAlign = TextAlign.Center
                     )
                 }
                 Spacer(modifier = Modifier.height(8.dp))
@@ -82,13 +85,15 @@ fun AddToSavingDialog(
                 Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = stringResource(
-                        R.string.planned_adding_to_saving_idea_dialog, if (preferableCurrency.value.type == CurrencyTypes.FIAT) {
+                        R.string.planned_adding_to_saving_idea_dialog,
+                        if (preferableCurrency.value.type == CurrencyTypes.FIAT) {
                             FIAT_DECIMAL_FORMAT.format(currentSaving.value?.goal)
                         } else {
                             CRYPTO_DECIMAL_FORMAT.format(currentSaving.value?.goal)
                         }
                     ) + preferableCurrency.value.ticker,
-                    style = MaterialTheme.typography.bodySmall
+                    style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1
                 )
                 Text(
                     text = stringResource(R.string.completed_for_adding_to_saving_idea_dialog) + " ${
@@ -103,10 +108,14 @@ fun AddToSavingDialog(
                                 currentSaving.value?.goal ?: 1.0f
                             )?.times(100)
                         )
-                    }%)", style = MaterialTheme.typography.bodySmall
+                    }%)", style = MaterialTheme.typography.bodyMedium,
+                    maxLines = 1
                 )
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                    OutlinedButton(onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(null) }) {
+                    OutlinedButton(
+                        onClick = { addToSavingIdeaDialogViewModel.setCurrentSaving(null) },
+                        modifier = Modifier.scale(0.9f)
+                    ) {
                         Text(text = stringResource(id = R.string.decline))
                     }
                     Spacer(modifier = Modifier.width(8.dp))
@@ -114,7 +123,7 @@ fun AddToSavingDialog(
                         coroutineScope.launch {
                             addToSavingIdeaDialogViewModel.addToSaving(inputValue)
                         }
-                    }) {
+                    }, modifier = Modifier.scale(0.9f)) {
                         Text(text = stringResource(id = R.string.add))
                     }
                 }
