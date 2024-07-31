@@ -104,7 +104,7 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                     horizontalArrangement = Arrangement.Start,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    SingleChoiceSegmentedButtonRow(modifier = Modifier.scale(0.8f)) {
+                    SingleChoiceSegmentedButtonRow(modifier = Modifier.scale(0.84f)) {
                         timeSpanSelectionItems.forEachIndexed { index, timeSpan ->
                             SegmentedButton(
                                 shape = SegmentedButtonDefaults.itemShape(
@@ -134,7 +134,7 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
             }
             Column(
                 modifier = Modifier
-                    .weight(0.25f),
+                    .wrapContentWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.Center
             ) {
@@ -142,7 +142,7 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                     onClick = { chartViewModel.setChartVisibility(!chartState.value.isChartVisible) },
                     modifier = Modifier
                         .scale(0.75f)
-                        .width(IntrinsicSize.Max)
+                        .wrapContentWidth()
                         .height(IntrinsicSize.Min)
                 ) {
                     Column(
@@ -162,7 +162,12 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
                                 stringResource(R.string.hide_chart)
                             } else {
                                 stringResource(R.string.show_chart)
-                            }, textAlign = TextAlign.Center, maxLines = 2
+                            },
+                            textAlign = TextAlign.Center,
+                            maxLines = 2,
+                            minLines = 2,
+                            overflow = TextOverflow.Ellipsis,
+                            modifier = Modifier.width(IntrinsicSize.Min)
                         )
                     }
                 }

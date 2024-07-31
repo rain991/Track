@@ -31,8 +31,11 @@ import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import org.koin.compose.koinInject
 
 
 @Composable
@@ -46,6 +49,7 @@ fun CurrenciesSettingsCurrencyCard(
     val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
     var isExpanded by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
+    val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp)
@@ -86,7 +90,13 @@ fun CurrenciesSettingsCurrencyCard(
                     style = MaterialTheme.typography.titleMedium
                 )
                 if (containsName) {
-                    Text(text = selectedOption.name, style = MaterialTheme.typography.bodySmall)
+                    Text(
+                        text = stringResource(
+                            id = databaseStringResourcesProvider.getCurrencyStringResource(
+                                selectedOption.ticker
+                            )
+                        ), style = MaterialTheme.typography.bodySmall
+                    )
                 }
             }
             DropdownMenu(

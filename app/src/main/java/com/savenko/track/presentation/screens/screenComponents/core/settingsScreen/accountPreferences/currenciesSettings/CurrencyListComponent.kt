@@ -34,18 +34,23 @@ import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCIES_FILTER_MAX_LENGTH
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import org.koin.compose.koinInject
 
 @Composable
 fun CurrencyListComponent(filteredCurrenciesList: List<Currency>, onTextChange: (String) -> Unit) {
     val listState = rememberLazyListState()
     var inputTextFilter by remember { mutableStateOf("") }
+    val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     Column(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 8.dp)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(start = 4.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 4.dp),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -77,13 +82,13 @@ fun CurrencyListComponent(filteredCurrenciesList: List<Currency>, onTextChange: 
         LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
             itemsIndexed(items = filteredCurrenciesList, key = { _: Int, item: Currency ->
                 item.name
-            }) { index, item ->
+            }) { _, item ->
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(8.dp), horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    Text(text = item.name)
+                    Text(text = stringResource(id = databaseStringResourcesProvider.getCurrencyStringResource(item.ticker)))
                     Text(text = item.ticker)
                 }
                 Spacer(modifier = Modifier.height(8.dp))

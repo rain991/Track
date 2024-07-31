@@ -41,8 +41,8 @@
     <string name="currency_ukrainian_hryvnia">Ukrainian Hryvnia</string>
     <string name="currency_united_states_dollar">United States Dollar</string>
     <string name="currency_south_african_rand">South African Rand</string>
-    <string name="currency_cardano" translatable="false">Cardano</string>
-    <string name="currency_bitcoin_cash" translatable="false">Bitcoin Cash</string>
+    <string name="currency_cardano">Cardano</string>
+    <string name="currency_bitcoin_cash">Bitcoin Cash</string>
     <string name="currency_binance_coin" translatable="false">Binance Coin</string>
     <string name="currency_bitcoin" translatable="false">Bitcoin</string>
     <string name="currency_binance_usd" translatable="false">Binance USD</string>
