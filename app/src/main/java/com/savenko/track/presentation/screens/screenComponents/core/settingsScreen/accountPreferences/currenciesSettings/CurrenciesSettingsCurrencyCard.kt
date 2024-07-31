@@ -47,14 +47,14 @@ fun CurrenciesSettingsCurrencyCard(
     onSelect: (Currency) -> Unit
 ) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
-    var isExpanded by remember { mutableStateOf(false) }
+    var isFocused by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
     val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp)
             .clickable {
-                isExpanded = true
+                isFocused = true
             }, elevation = if (isElevated) {
             CardDefaults.cardElevation(
                 defaultElevation = 16.dp,
@@ -100,8 +100,8 @@ fun CurrenciesSettingsCurrencyCard(
                 }
             }
             DropdownMenu(
-                expanded = isExpanded,
-                onDismissRequest = { isExpanded = false },
+                expanded = isFocused,
+                onDismissRequest = { isFocused = false },
                 modifier = Modifier
                     .width(IntrinsicSize.Min)
                     .wrapContentHeight()
@@ -136,7 +136,7 @@ fun CurrenciesSettingsCurrencyCard(
                         },
                         onClick = {
                             onSelect(selectionOption)
-                            isExpanded = false
+                            isFocused = false
                         }
                     )
                 }

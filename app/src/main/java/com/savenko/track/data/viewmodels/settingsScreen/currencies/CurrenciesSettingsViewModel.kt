@@ -38,7 +38,7 @@ class CurrenciesSettingsViewModel(
                 thirdAdditionalCurrency = null,
                 fourthAdditionalCurrency = null
             ),
-            isAdditionalCurrenciesVisible = true,
+            isAdditionalCurrenciesVisible = false,
             error = null
         )
     )

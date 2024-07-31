@@ -39,7 +39,7 @@ fun CurrenciesSettingsScreenComponent(
             additionalCurrenciesPreferenceList = additionalCurrenciesPreferenceList
         )
         Spacer(modifier = Modifier.height(8.dp))
-        CurrencyListComponent(filteredCurrenciesList = filteredLazyListCurrencies) {
+        CurrencyListComponent(filteredCurrenciesList = filteredLazyListCurrencies, onAction = onAction) {
             onAction(CurrenciesSettingsScreenEvent.SetFilteringText(it))
         }
     }
