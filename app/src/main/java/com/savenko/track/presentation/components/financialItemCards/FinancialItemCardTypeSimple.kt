@@ -59,6 +59,7 @@ import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.colors.parseColor
+import org.koin.compose.koinInject
 import java.util.Calendar
 import java.util.Locale
 
@@ -79,7 +80,7 @@ fun FinancialItemCardTypeSimple(
     val locale = Locale.getDefault()
     val density = LocalDensity.current
     val categoryColor = parseColor(categoryEntity.colorId)
-    val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
+    val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -346,7 +347,7 @@ private fun ExpenseValueCard(
 
 @Composable
 private fun CategoryCard(modifier: Modifier, category: CategoryEntity, containerColor: Color) {
-    val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
+    val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),

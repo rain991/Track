@@ -1,10 +1,11 @@
 package com.savenko.track.presentation.UiText
 
+import android.content.Context
 import com.savenko.track.R
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 
-class DatabaseStringResourcesProvider {
+class DatabaseStringResourcesProvider(private val context: Context) {
     fun provideDefaultCategoriesStringResource(category: CategoryEntity): Int {
         return if (category is ExpenseCategory) {
             expenseCategoryStringResources[category.categoryId] ?: R.string.unknown

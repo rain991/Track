@@ -19,6 +19,7 @@ import androidx.compose.ui.zIndex
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.colors.parseColor
+import org.koin.compose.koinInject
 
 @Composable
 fun CategorySettingsChip(
@@ -26,7 +27,7 @@ fun CategorySettingsChip(
     borderColor: Color?,
     onSelect: (CategoryEntity) -> Unit
 ) {
-    val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
+    val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     Button(
         modifier = Modifier
             .wrapContentHeight()

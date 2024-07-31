@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="currency_uae_dirham">Дирхам ОАЭ</string>
+    <string name="currency_argentine_peso">Аргентинское песо</string>
+    <string name="currency_australian_dollar">Австралийский доллар</string>
+    <string name="currency_brazilian_real">Бразильский реал</string>
+    <string name="currency_canadian_dollar">Канадский доллар</string>
+    <string name="currency_swiss_franc">Швейцарский франк</string>
+    <string name="currency_chilean_peso">Чилийское песо</string>
+    <string name="currency_chinese_yuan">Китайский юань</string>
+    <string name="currency_colombian_peso">Колумбийское песо</string>
+    <string name="currency_czech_koruna">Чешская крона</string>
+    <string name="currency_danish_krone">Датская крона</string>
+    <string name="currency_egyptian_pound">Египетский фунт</string>
+    <string name="currency_euro">Евро</string>
+    <string name="currency_british_pound_sterling">Британский фунт стерлингов</string>
+    <string name="currency_hong_kong_dollar">Гонконгский доллар</string>
+    <string name="currency_hungarian_forint">Венгерский форинт</string>
+    <string name="currency_indonesian_rupiah">Индонезийская рупия</string>
+    <string name="currency_israeli_new_shekel">Израильский новый шекель</string>
+    <string name="currency_indian_rupee">Индийская рупия</string>
+    <string name="currency_japanese_yen">Японская иена</string>
+    <string name="currency_south_korean_won">Южнокорейская вона</string>
+    <string name="currency_mexican_peso">Мексиканское песо</string>
+    <string name="currency_malaysian_ringgit">Малайзийский ринггит</string>
+    <string name="currency_nigerian_naira">Нигерийская найра</string>
+    <string name="currency_norwegian_krone">Норвежская крона</string>
+    <string name="currency_new_zealand_dollar">Новозеландский доллар</string>
+    <string name="currency_peruvian_sol">Перуанский соль</string>
+    <string name="currency_philippine_peso">Филиппинское песо</string>
+    <string name="currency_pakistani_rupee">Пакистанская рупия</string>
+    <string name="currency_polish_zloty">Польский злотый</string>
+    <string name="currency_russian_ruble">Российский рубль</string>
+    <string name="currency_saudi_riyal">Саудовский риял</string>
+    <string name="currency_swedish_krona">Шведская крона</string>
+    <string name="currency_singapore_dollar">Сингапурский доллар</string>
+    <string name="currency_thai_baht">Тайский бат</string>
+    <string name="currency_turkish_lira">Турецкая лира</string>
+    <string name="currency_new_taiwan_dollar">Новый тайваньский доллар</string>
+    <string name="currency_ukrainian_hryvnia">Украинская гривна</string>
+    <string name="currency_united_states_dollar">Доллар США</string>
+    <string name="currency_south_african_rand">Южноафриканский ранд</string>
+    <string name="currency_cardano" translatable="false">Cardano</string>
+    <string name="currency_bitcoin_cash" translatable="false">Bitcoin Cash</string>
+    <string name="currency_binance_coin" translatable="false">Binance Coin</string>
+    <string name="currency_bitcoin" translatable="false">Bitcoin</string>
+    <string name="currency_binance_usd" translatable="false">Binance USD</string>
+    <string name="currency_dogecoin" translatable="false">Dogecoin</string>
+    <string name="currency_polkadot" translatable="false">Polkadot</string>
+    <string name="currency_ethereum" translatable="false">Ethereum</string>
+    <string name="currency_litecoin" translatable="false">Litecoin</string>
+    <string name="currency_shiba_inu" translatable="false">Shiba Inu</string>
+    <string name="currency_solana" translatable="false">Solana</string>
+    <string name="currency_tron" translatable="false">TRON</string>
+    <string name="currency_usd_coin" translatable="false">USD Coin</string>
+    <string name="currency_tether" translatable="false">Tether</string>
+    <string name="currency_ripple" translatable="false">Ripple</string>
+    <string name="currency_gold">Золото</string>
+    <string name="currency_silver">Серебро</string>
+</resources>
