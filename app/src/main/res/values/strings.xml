@@ -75,7 +75,7 @@
     <string name="message_currencies_settings_screen">You can switch currencies by touching their ticker in cards. Your preferable currency is used as basic in most parts of the Track.</string>
     <string name="name_personal_settings_screen">Name : %1$s</string>
     <string name="budget_personal_settings_screen">Budget : %1$s %2$s</string>
-    <string name="new_budget_personal_settings_screen">New budget in %1$s</string>
+    <string name="new_budget_personal_settings_screen">New budget</string>
     <string name="new_name_personal_settings_screen">New name</string>
     <string name="decline">Decline</string>
     <string name="save">Save</string>

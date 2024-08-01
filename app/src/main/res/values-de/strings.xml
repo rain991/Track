@@ -74,7 +74,7 @@
     <string name="message_currencies_settings_screen">Sie können Währungen durch Antippen ihrer Kennzeichen in den Karten wechseln. Ihre bevorzugte Währung wird in den meisten Teilen von Track als Basis verwendet.</string>
     <string name="name_personal_settings_screen">Name : %1$s</string>
     <string name="budget_personal_settings_screen">Budget : %1$s %2$s</string>
-    <string name="new_budget_personal_settings_screen">Neues Budget in %1$s</string>
+    <string name="new_budget_personal_settings_screen">Neues Budgets</string>
     <string name="new_name_personal_settings_screen">Neuer Name</string>
     <string name="decline">Ablehnen</string>
     <string name="save">Speichern</string>
