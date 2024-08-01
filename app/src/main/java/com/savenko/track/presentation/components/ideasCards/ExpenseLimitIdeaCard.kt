@@ -67,7 +67,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     CRYPTO_DECIMAL_FORMAT.format(expenseLimit.goal)
                 })
             }
-            withStyle(style = SpanStyle(fontSize = 16.sp)) {
+            withStyle(style = SpanStyle(fontSize = 14.sp)) {
                 append(" " + preferableCurrency.ticker)
             }
         }
@@ -82,7 +82,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                     CRYPTO_DECIMAL_FORMAT.format(completedValue)
                 })
             }
-            withStyle(style = SpanStyle(fontSize = 16.sp)) {
+            withStyle(style = SpanStyle(fontSize = 14.sp)) {
                 append(" " + preferableCurrency.ticker)
             }
         }

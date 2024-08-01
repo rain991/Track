@@ -14,11 +14,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
+import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
+import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsViewModel
+import com.savenko.track.domain.models.currency.CurrencyTypes
 
 @Composable
 fun PersonalSettingsStatistics(viewModel: PersonalStatsViewModel) {
@@ -41,30 +46,48 @@ fun PersonalSettingsStatistics(viewModel: PersonalStatsViewModel) {
                 )
             }
             if (statsState.value.allTimeExpensesCount == 0) {
-                Text(text = stringResource(R.string.not_added_any_expenses_yet_personal_settings_screen))
+                Text(
+                    text = stringResource(R.string.not_added_any_expenses_yet_personal_settings_screen),
+                    textAlign = TextAlign.Center
+                )
             } else {
                 Text(
                     text = stringResource(
                         R.string.you_have_already_added_expenses_worth_of,
                         statsState.value.allTimeExpensesCount,
-                        statsState.value.allTimeExpensesSum,
+                        if (statsState.value.preferableCurrency.type == CurrencyTypes.FIAT) {
+                            FIAT_DECIMAL_FORMAT.format(statsState.value.allTimeExpensesSum)
+                        } else {
+                            CRYPTO_DECIMAL_FORMAT.format(statsState.value.allTimeExpensesSum)
+                        },
                         statsState.value.preferableCurrency.ticker
-                    )
+                    ), textAlign = TextAlign.Center
                 )
             }
             if (statsState.value.allTimeIncomesCount == 0) {
-                Text(text = stringResource(R.string.not_added_any_incomes_yet_personal_settings_screen))
+                Text(
+                    text = stringResource(R.string.not_added_any_incomes_yet_personal_settings_screen),
+                    textAlign = TextAlign.Center
+                )
             } else {
                 Text(
                     text = stringResource(
                         R.string.you_have_already_added_incomes_worth_of,
                         statsState.value.allTimeIncomesCount,
-                        statsState.value.allTimeIncomesSum,
+                        if (statsState.value.preferableCurrency.type == CurrencyTypes.FIAT) {
+                            FIAT_DECIMAL_FORMAT.format(statsState.value.allTimeIncomesSum)
+                        } else {
+                            CRYPTO_DECIMAL_FORMAT.format(statsState.value.allTimeIncomesSum)
+                        },
                         statsState.value.preferableCurrency.ticker
-                    )
+                    ), textAlign = TextAlign.Center
                 )
             }
-            HorizontalDivider(modifier = Modifier.fillMaxWidth(0.9f))
+            HorizontalDivider(
+                modifier = Modifier
+                    .fillMaxWidth(0.9f)
+                    .align(Alignment.CenterHorizontally)
+            )
             Text(
                 text = stringResource(
                     R.string.login_message_personal_settings_screen,

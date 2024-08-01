@@ -69,7 +69,7 @@ fun AddToSavingDialog(
                 Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                     Text(
                         text = stringResource(R.string.add_to_adding_to_saving_idea_dialog) + " " + currentSaving.value?.label,
-                        style = MaterialTheme.typography.titleMedium,
+                        style = MaterialTheme.typography.headlineMedium,
                         textAlign = TextAlign.Center
                     )
                 }
