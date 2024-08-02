@@ -244,4 +244,6 @@
     <string name="set_as_second_priority_additional">Set as second priority additional</string>
     <string name="set_as_third_priority_additional">Set as third priority additional</string>
     <string name="set_as_fourth_priority_additional">Set as fourth priority additional</string>
+    <string name="list_categories_settings_view_option">List</string>
+    <string name="cards_categories_settings_view_option">Cards</string>
 </resources>

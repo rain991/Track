@@ -1,6 +1,5 @@
 package com.savenko.track.data.viewmodels.settingsScreen.category
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS
@@ -11,6 +10,11 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
 import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
+import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenState
+import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenViewOptions
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CategoriesSettingsScreenViewModel(
@@ -18,24 +22,20 @@ class CategoriesSettingsScreenViewModel(
     private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepository,
     private val deleteCategoryUseCase: DeleteCategoryUseCase
 ) : ViewModel() {
-    private val _listOfExpensesCategories = mutableStateListOf<ExpenseCategory>()
-    val listOfExpensesCategories: List<ExpenseCategory> = _listOfExpensesCategories
-
-    private val _listOfIncomesCategories = mutableStateListOf<IncomeCategory>()
-    val listOfIncomesCategories: List<IncomeCategory> = _listOfIncomesCategories
+    private val _screenState = MutableStateFlow(
+        CategoriesSettingsScreenState(
+            viewOption = CategoriesSettingsScreenViewOptions.CardsView,
+            filterOnlyCustomCategories = false,
+            nameFilter = "",
+            listOfExpenseCategories = listOf(),
+            listOfIncomeCategories = listOf()
+        )
+    )
+    val screenState = _screenState.asStateFlow()
 
     init {
         viewModelScope.launch {
-            launch {
-                incomesCategoriesListRepositoryImpl.getCategoriesList().collect {
-                    setListOfIncomesCategories(it)
-                }
-            }
-            launch {
-                expensesCategoriesListRepositoryImpl.getCategoriesList().collect {
-                    setListOfExpensesCategories(it)
-                }
-            }
+            initializeCategories()
         }
     }
 
@@ -48,13 +48,61 @@ class CategoriesSettingsScreenViewModel(
         }
     }
 
+    fun setFilterOnlyCustomCategories(value: Boolean) {
+        _screenState.update { _screenState.value.copy(filterOnlyCustomCategories = value) }
+        initializeCategories()
+    }
+
+    fun setNameFilter(value: String) {
+        _screenState.update { _screenState.value.copy(nameFilter = value) }
+    }
+
+    private fun initializeCategories() {
+        viewModelScope.launch {
+            launch {
+                expensesCategoriesListRepositoryImpl.getCategoriesList().collect { unfilteredExpenseCategories ->
+                    val filteredExpenseCategories = unfilteredExpenseCategories.filter {
+                        if (_screenState.value.filterOnlyCustomCategories) {
+                            !LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS.contains(it.categoryId)
+                        } else {
+                            true
+                        }
+                    }.filter {
+                        if (_screenState.value.nameFilter != "") {
+                            it.note.contains(_screenState.value.nameFilter)
+                        } else {
+                            true
+                        }
+                    }
+                    setListOfExpensesCategories(filteredExpenseCategories)
+                }
+            }
+            launch {
+                incomesCategoriesListRepositoryImpl.getCategoriesList().collect { unfilteredIncomeCategories ->
+                    val filteredIncomeCategories = unfilteredIncomeCategories.filter {
+                        if (_screenState.value.filterOnlyCustomCategories) {
+                            !LIST_OF_DEFAULT_INCOMES_CATEGORIES_IDS.contains(it.categoryId)
+                        } else {
+                            true
+                        }
+                    }.filter {
+                        if (_screenState.value.nameFilter != "") {
+                            it.note.contains(_screenState.value.nameFilter)
+                        } else {
+                            true
+                        }
+                    }
+                    setListOfIncomesCategories(filteredIncomeCategories)
+                }
+            }
+        }
+    }
+
     private fun setListOfExpensesCategories(list: List<ExpenseCategory>) {
-        _listOfExpensesCategories.clear()
-        _listOfExpensesCategories.addAll(list)
+        _screenState.update { _screenState.value.copy(listOfExpenseCategories = list) }
     }
 
     private fun setListOfIncomesCategories(list: List<IncomeCategory>) {
-        _listOfIncomesCategories.clear()
-        _listOfIncomesCategories.addAll(list)
+        _screenState.update { _screenState.value.copy(listOfIncomeCategories = list) }
     }
 }

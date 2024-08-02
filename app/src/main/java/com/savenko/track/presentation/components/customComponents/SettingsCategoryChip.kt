@@ -1,5 +1,6 @@
 package com.savenko.track.presentation.components.customComponents
 
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -9,6 +10,7 @@ import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
@@ -24,10 +26,18 @@ import org.koin.compose.koinInject
 @Composable
 fun CategorySettingsChip(
     category: CategoryEntity,
+    isSelected: Boolean,
     borderColor: Color?,
     onSelect: (CategoryEntity) -> Unit
 ) {
     val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
+    val categoryChipBorder: Float by animateFloatAsState(
+        targetValue = if (isSelected) {
+            2.0f
+        } else {
+            0.0f
+        }, label = "categoriesSettingsChip"
+    )
     Button(
         modifier = Modifier
             .wrapContentHeight()
@@ -39,14 +49,16 @@ fun CategorySettingsChip(
             disabledContainerColor = parseColor(hexColor = category.colorId),
             disabledContentColor = Color.White
         ), border = if (borderColor != null) {
-            BorderStroke((1.5).dp, borderColor)
+            BorderStroke((categoryChipBorder).dp, borderColor)
         } else {
             null
         }
     ) {
-        Box(modifier = Modifier
-            .zIndex(1f)
-            .wrapContentSize()) {
+        Box(
+            modifier = Modifier
+                .zIndex(1f)
+                .wrapContentSize()
+        ) {
             Text(
                 text = if (category.isDefault()) {
                     stringResource(
