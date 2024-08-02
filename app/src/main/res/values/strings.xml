@@ -246,4 +246,8 @@
     <string name="set_as_fourth_priority_additional">Set as fourth priority additional</string>
     <string name="list_categories_settings_view_option">List</string>
     <string name="cards_categories_settings_view_option">Cards</string>
+    <string name="show_only_custom_categories_settings">Show only custom categories</string>
+    <string name="filter_categories_categories_screen">Filter categories</string>
+    <string name="no_categories_for_specified_filters_categories_settings">No categories for specified filters</string>
+    <string name="shows_as_categories_settings">Shows as</string>
 </resources>

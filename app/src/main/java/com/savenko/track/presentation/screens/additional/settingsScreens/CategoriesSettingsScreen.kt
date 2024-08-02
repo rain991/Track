@@ -30,6 +30,7 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun CategoriesSettingsScreen(navController: NavHostController) {
     val viewModel = koinViewModel<CategoriesSettingsScreenViewModel>()
+    val screenState = viewModel.screenState.collectAsState()
     val newCategoryViewModel = koinViewModel<NewCategoryViewModel>()
     val newCategoryDialogState = newCategoryViewModel.newCategoryDialogState.collectAsState()
     val coroutineScope = rememberCoroutineScope()
@@ -69,7 +70,9 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
             verticalArrangement = Arrangement.spacedBy(8.dp)
         )
         {
-            CategoriesSettingsScreenComponent(viewModel)
+            CategoriesSettingsScreenComponent(screenState = screenState.value){
+                viewModel.onAction(it)
+            }
         }
     }
 }

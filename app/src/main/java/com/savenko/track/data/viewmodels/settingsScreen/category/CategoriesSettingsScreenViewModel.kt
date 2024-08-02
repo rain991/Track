@@ -10,6 +10,7 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
 import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
+import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenEvent
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenState
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenViewOptions
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -27,6 +28,7 @@ class CategoriesSettingsScreenViewModel(
             viewOption = CategoriesSettingsScreenViewOptions.CardsView,
             filterOnlyCustomCategories = false,
             nameFilter = "",
+            selectedCategory = null,
             listOfExpenseCategories = listOf(),
             listOfIncomeCategories = listOf()
         )
@@ -39,22 +41,68 @@ class CategoriesSettingsScreenViewModel(
         }
     }
 
-    suspend fun deleteCategory(category: CategoryEntity) {
-        if (category is ExpenseCategory && !LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS.contains(category.categoryId)) {
-            deleteCategoryUseCase(category)
-        }
-        if (category is IncomeCategory && !LIST_OF_DEFAULT_INCOMES_CATEGORIES_IDS.contains(category.categoryId)) {
-            deleteCategoryUseCase(category)
+    fun onAction(action: CategoriesSettingsScreenEvent) {
+        when (action) {
+            is CategoriesSettingsScreenEvent.SetFilterOnlyCustomCategories -> {
+                setFilterOnlyCustomCategories(action.value)
+            }
+
+            is CategoriesSettingsScreenEvent.SetFilteringText -> {
+                setNameFilter(action.value)
+            }
+
+            is CategoriesSettingsScreenEvent.SetViewOption -> {
+                setViewOption(action.viewOption)
+            }
+
+            is CategoriesSettingsScreenEvent.DeleteCategory -> {
+                deleteCategory(action.category)
+            }
+
+            is CategoriesSettingsScreenEvent.SetSelectedCategory -> {
+
+            }
         }
     }
 
-    fun setFilterOnlyCustomCategories(value: Boolean) {
+    private fun deleteCategory(category: CategoryEntity) {
+        if (category is ExpenseCategory && !LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS.contains(category.categoryId)) {
+            viewModelScope.launch {
+                deleteCategoryUseCase(category)
+            }
+        }
+        if (category is IncomeCategory && !LIST_OF_DEFAULT_INCOMES_CATEGORIES_IDS.contains(category.categoryId)) {
+            viewModelScope.launch {
+                deleteCategoryUseCase(category)
+            }
+        }
+    }
+
+    private fun setFilterOnlyCustomCategories(value: Boolean) {
         _screenState.update { _screenState.value.copy(filterOnlyCustomCategories = value) }
         initializeCategories()
     }
 
-    fun setNameFilter(value: String) {
+    private fun setViewOption(value: CategoriesSettingsScreenViewOptions) {
+        _screenState.update { _screenState.value.copy(viewOption = value) }
+        initializeCategories()
+    }
+
+    private fun setNameFilter(value: String) {
         _screenState.update { _screenState.value.copy(nameFilter = value) }
+        initializeCategories()
+    }
+
+    private fun setListOfExpensesCategories(list: List<ExpenseCategory>) {
+        _screenState.update { _screenState.value.copy(listOfExpenseCategories = list) }
+    }
+
+    private fun setListOfIncomesCategories(list: List<IncomeCategory>) {
+        _screenState.update { _screenState.value.copy(listOfIncomeCategories = list) }
+    }
+
+    private fun setSelectedCategory(value : CategoryEntity){
+        _screenState.update { _screenState.value.copy(selectedCategory = value) }
     }
 
     private fun initializeCategories() {
@@ -96,13 +144,5 @@ class CategoriesSettingsScreenViewModel(
                 }
             }
         }
-    }
-
-    private fun setListOfExpensesCategories(list: List<ExpenseCategory>) {
-        _screenState.update { _screenState.value.copy(listOfExpenseCategories = list) }
-    }
-
-    private fun setListOfIncomesCategories(list: List<IncomeCategory>) {
-        _screenState.update { _screenState.value.copy(listOfIncomeCategories = list) }
     }
 }
