@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -24,6 +23,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
@@ -46,7 +46,7 @@ fun CategoriesSettingsCardViewContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 8.dp)
             .verticalScroll(rememberScrollState())
     ) {
         CategoriesCard<ExpenseCategory>(
@@ -55,7 +55,6 @@ fun CategoriesSettingsCardViewContent(
             onSelectCategory = { onSelectCategory(it) }) {
             onDeleteCategory(it)
         }
-        Spacer(modifier = Modifier.height(8.dp))
         CategoriesCard<IncomeCategory>(
             categoriesList = listOfIncomeCategories,
             currentSelectedCategoryEntity = currentSelectedCategory,
@@ -82,7 +81,7 @@ private inline fun <reified T : CategoryEntity> CategoriesCard(
             defaultElevation = 8.dp,
             focusedElevation = 8.dp
         ),
-        modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp)
+        modifier = Modifier.padding(horizontal = 8.dp, vertical = 16.dp).scale(0.96f)
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Row(

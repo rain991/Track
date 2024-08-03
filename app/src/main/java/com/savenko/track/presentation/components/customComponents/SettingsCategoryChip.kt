@@ -31,6 +31,7 @@ fun CategorySettingsChip(
     onSelect: (CategoryEntity) -> Unit
 ) {
     val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
+    val categoryColor = parseColor(hexColor = category.colorId)
     val categoryChipBorder: Float by animateFloatAsState(
         targetValue = if (isSelected) {
             2.0f
@@ -44,9 +45,9 @@ fun CategorySettingsChip(
             .scale(0.9f),
         onClick = { onSelect(category) },
         colors = ButtonColors(
-            containerColor = parseColor(hexColor = category.colorId),
+            containerColor = categoryColor,
             contentColor = Color.White,
-            disabledContainerColor = parseColor(hexColor = category.colorId),
+            disabledContainerColor = categoryColor,
             disabledContentColor = Color.White
         ), border = if (borderColor != null) {
             BorderStroke((categoryChipBorder).dp, borderColor)

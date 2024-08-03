@@ -188,7 +188,7 @@ private fun CurrencyFocusableRow(
                 .focusRequester(focusRequester)
         ) {
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                Text(text = stringResource(id = databaseStringResourcesProvider.getCurrencyStringResource(currency.ticker)))
+                Text(text = stringResource(id = databaseStringResourcesProvider.provideCurrencyStringResource(currency.ticker)))
                 Text(text = currency.ticker)
             }
             DropdownMenu(

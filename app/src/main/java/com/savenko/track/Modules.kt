@@ -178,7 +178,7 @@ val viewModelModule = module {
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
     viewModel { IdeasSettingsScreenViewModel(get(), get()) }
     viewModel { ThemePreferenceSettingsViewModel(get(), get()) }
-    viewModel { CategoriesSettingsScreenViewModel(get(), get(), get()) }
+    viewModel { CategoriesSettingsScreenViewModel(get(), get(), get(),get()) }
     viewModel { NewCategoryViewModel(get(), get(), get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get(), get()) }
     viewModel { PersonalStatsViewModel(get(), get()) }

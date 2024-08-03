@@ -92,7 +92,7 @@ fun CurrenciesSettingsCurrencyCard(
                 if (containsName) {
                     Text(
                         text = stringResource(
-                            id = databaseStringResourcesProvider.getCurrencyStringResource(
+                            id = databaseStringResourcesProvider.provideCurrencyStringResource(
                                 selectedOption.ticker
                             )
                         ), style = MaterialTheme.typography.bodySmall

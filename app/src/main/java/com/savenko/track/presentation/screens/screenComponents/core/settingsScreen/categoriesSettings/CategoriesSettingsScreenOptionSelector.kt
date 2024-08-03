@@ -7,14 +7,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
-import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
 import androidx.compose.material3.SingleChoiceSegmentedButtonRow
@@ -25,13 +20,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.other.constants.CATEGORIES_NAME_MAX_LENGTH
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenEvent
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenState
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenViewOptions
@@ -47,9 +38,10 @@ fun CategoriesScreenOptionsSelector(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(8.dp).scale(0.94f)
     ) {
-        Column(modifier = Modifier.padding(vertical = 8.dp, horizontal = 16.dp)) {
+        Column(modifier = Modifier.padding(8.dp)) {
+
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly,
@@ -89,34 +81,7 @@ fun CategoriesScreenOptionsSelector(
                     onAction(CategoriesSettingsScreenEvent.SetFilterOnlyCustomCategories(it))
                 })
             }
-            Spacer(modifier = Modifier.height(8.dp))
-            CategoriesFilterInputField(nameFilter = screenState.nameFilter) {
-                if (it.length < CATEGORIES_NAME_MAX_LENGTH) {
-                    onAction(CategoriesSettingsScreenEvent.SetFilteringText(it))
-                }
-            }
         }
     }
 }
 
-@Composable
-private fun CategoriesFilterInputField(nameFilter: String, onFilterChange: (String) -> Unit) {
-    Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-        OutlinedTextField(
-            value = nameFilter,
-            onValueChange = {
-                onFilterChange(it)
-            },
-            suffix = { Icons.Filled.Search },
-            placeholder = { Text(text = stringResource(R.string.filter_categories_categories_screen)) },
-            maxLines = 1,
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Text,
-                imeAction = ImeAction.Done
-            ),
-            modifier = Modifier
-                .scale(0.8f)
-                .widthIn(1.dp, Dp.Infinity)
-        )
-    }
-}

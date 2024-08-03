@@ -10,6 +10,7 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
 import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
+import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenEvent
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenState
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenViewOptions
@@ -21,7 +22,8 @@ import kotlinx.coroutines.launch
 class CategoriesSettingsScreenViewModel(
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository,
     private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepository,
-    private val deleteCategoryUseCase: DeleteCategoryUseCase
+    private val deleteCategoryUseCase: DeleteCategoryUseCase,
+    private val databaseStringResourcesProvider: DatabaseStringResourcesProvider
 ) : ViewModel() {
     private val _screenState = MutableStateFlow(
         CategoriesSettingsScreenState(
@@ -60,7 +62,7 @@ class CategoriesSettingsScreenViewModel(
             }
 
             is CategoriesSettingsScreenEvent.SetSelectedCategory -> {
-
+                setSelectedCategory(action.category)
             }
         }
     }
@@ -101,7 +103,7 @@ class CategoriesSettingsScreenViewModel(
         _screenState.update { _screenState.value.copy(listOfIncomeCategories = list) }
     }
 
-    private fun setSelectedCategory(value : CategoryEntity){
+    private fun setSelectedCategory(value: CategoryEntity?) {
         _screenState.update { _screenState.value.copy(selectedCategory = value) }
     }
 
@@ -117,7 +119,9 @@ class CategoriesSettingsScreenViewModel(
                         }
                     }.filter {
                         if (_screenState.value.nameFilter != "") {
-                            it.note.contains(_screenState.value.nameFilter)
+                            it.note.contains(_screenState.value.nameFilter) || databaseStringResourcesProvider.getCategoryLocalizedName(
+                                it
+                            ).contains(_screenState.value.nameFilter)
                         } else {
                             true
                         }
@@ -135,7 +139,9 @@ class CategoriesSettingsScreenViewModel(
                         }
                     }.filter {
                         if (_screenState.value.nameFilter != "") {
-                            it.note.contains(_screenState.value.nameFilter)
+                            it.note.contains(_screenState.value.nameFilter) || databaseStringResourcesProvider.getCategoryLocalizedName(
+                                it
+                            ).contains(_screenState.value.nameFilter)
                         } else {
                             true
                         }
