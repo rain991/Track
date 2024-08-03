@@ -48,7 +48,7 @@ fun AddToSavingDialogAmountInput(
                 .width(IntrinsicSize.Min)
                 .padding(start = 12.dp),
             textStyle = MaterialTheme.typography.titleMedium.copy(
-                fontSize = 38.sp,
+                fontSize = 48.sp,
                 letterSpacing = 1.3.sp,
                 color = MaterialTheme.colorScheme.primary
             ),

@@ -13,7 +13,6 @@ abstract class Idea {
     abstract val endDate: Date?
 }
 
-
 fun Idea.createCompletedInstance(): Idea {
     return when (this) {
         is ExpenseLimits -> ExpenseLimits(

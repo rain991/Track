@@ -67,7 +67,7 @@ fun SettingsScreenThemePreferences(modifier: Modifier, dataStoreManager: DataSto
                 text = stringResource(R.string.theme_settings_screen),
                 style = MaterialTheme.typography.titleMedium.copy(fontSize = 20.sp, fontWeight = FontWeight.Bold),
                 color = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.padding(start = 4.dp)
+                modifier = Modifier.padding(start = 8.dp)
             )
             Spacer(modifier = Modifier.height(12.dp))
             Column {

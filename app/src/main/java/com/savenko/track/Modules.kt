@@ -80,6 +80,7 @@ import com.savenko.track.domain.usecases.userData.financialEntities.specified.Ge
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
 import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
 import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
+import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -99,6 +100,7 @@ val coreModule = module {
     single<ChartDataProvider> { ChartDataProvider(get(), get(), get(), get()) }
     single<PersonalStatsProvider> { PersonalStatsProvider(get(), get(), get()) }
     single<WorkManagerHelper> { WorkManagerHelper(get(), get()) }
+    single<DatabaseStringResourcesProvider> { DatabaseStringResourcesProvider(get()) }
 }
 
 val appModule = module {
@@ -173,10 +175,10 @@ val viewModelModule = module {
     viewModel { LoginViewModel(get(), get(), get(), get()) }
 
     // Settings related
-    viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get()) }
+    viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
     viewModel { IdeasSettingsScreenViewModel(get(), get()) }
     viewModel { ThemePreferenceSettingsViewModel(get(), get()) }
-    viewModel { CategoriesSettingsScreenViewModel(get(), get(), get()) }
+    viewModel { CategoriesSettingsScreenViewModel(get(), get(), get(),get()) }
     viewModel { NewCategoryViewModel(get(), get(), get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get(), get()) }
     viewModel { PersonalStatsViewModel(get(), get()) }

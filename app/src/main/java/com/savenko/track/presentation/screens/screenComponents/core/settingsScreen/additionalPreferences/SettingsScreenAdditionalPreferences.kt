@@ -37,7 +37,7 @@ fun SettingsScreenAdditionalPreferences() {
     var isExpenseCategorySelectionVisible by remember { mutableStateOf(false) }
     var isIncomeCategorySelectionVisible by remember { mutableStateOf(false) }
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(modifier = Modifier.padding(start = 4.dp)) {
+        Row(modifier = Modifier.padding(start = 8.dp)) {
             Text(
                 text = stringResource(R.string.additional),
                 style = MaterialTheme.typography.titleMedium.copy(

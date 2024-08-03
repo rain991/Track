@@ -13,7 +13,7 @@ import androidx.navigation.NavHostController
 import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
 
 /*
-Track screen manager is pager that handles navigation accross main Track screens : SettingsTrackScreen, MainTrackScreen, StatisticsTrackScreen
+Track screen manager is pager that handles navigation across main Track screens : SettingsTrackScreen, MainTrackScreen, StatisticsTrackScreen
 */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable

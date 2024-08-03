@@ -75,7 +75,7 @@
     <string name="message_currencies_settings_screen">You can switch currencies by touching their ticker in cards. Your preferable currency is used as basic in most parts of the Track.</string>
     <string name="name_personal_settings_screen">Name : %1$s</string>
     <string name="budget_personal_settings_screen">Budget : %1$s %2$s</string>
-    <string name="new_budget_personal_settings_screen">New budget in %1$s</string>
+    <string name="new_budget_personal_settings_screen">New budget</string>
     <string name="new_name_personal_settings_screen">New name</string>
     <string name="decline">Decline</string>
     <string name="save">Save</string>
@@ -225,7 +225,7 @@
     <string name="edit_personal_info">edit personal info</string>
     <string name="delete_financial_item_CD">Delete financial item</string>
     <string name="currency_in_use_error">%1$s is already in use</string>
-    <string name="changing_preferable_currency_error">Error occured when changing preferable currency</string>
+    <string name="changing_preferable_currency_error">Error occurred when changing preferable currency</string>
     <string name="track_version" translatable="false">Track %1$s</string>
     <string name="income_category">Income category</string>
     <string name="expense_category">Expense category</string>
@@ -237,4 +237,18 @@
     <string name="hide_additional_currencies">Hide additional currencies</string>
     <string name="show_additional_currencies">Show additional currencies</string>
     <string name="user">User</string>
+    <string name="plan_started_income_plan_card">Plan started : %1$s</string>
+    <string name="your_ideas_setting_screen">Your Ideas</string>
+    <string name="set_as_preferable_currency_currencies_settings">Set as preferable currency</string>
+    <string name="set_as_first_priority_additional">Set as first priority additional</string>
+    <string name="set_as_second_priority_additional">Set as second priority additional</string>
+    <string name="set_as_third_priority_additional">Set as third priority additional</string>
+    <string name="set_as_fourth_priority_additional">Set as fourth priority additional</string>
+    <string name="list_categories_settings_view_option">List</string>
+    <string name="cards_categories_settings_view_option">Card</string>
+    <string name="show_only_custom_categories_settings">Show only custom categories</string>
+    <string name="filter_categories_categories_screen">Find categories</string>
+    <string name="no_categories_for_specified_filters_categories_settings">No categories for specified filters</string>
+    <string name="shows_as_categories_settings">Shows as</string>
+    <string name="find_your_category_CD">Find your category</string>
 </resources>

@@ -30,6 +30,7 @@ import com.savenko.track.R
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.colors.parseColor
+import org.koin.compose.koinInject
 
 @Composable
 fun CategoryChip(
@@ -40,7 +41,7 @@ fun CategoryChip(
     borderColor: Color? = null,
     chipScale: Float = 1.0f
 ) {
-    val databaseStringResourcesProvider = DatabaseStringResourcesProvider()
+    val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     val buttonColor = parseColor(hexColor = category.colorId)
 
     Button(

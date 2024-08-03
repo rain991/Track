@@ -33,7 +33,7 @@ class WorkManagerHelper(private val context: Context, private val currencyListRe
             repeatInterval = CURRENCIES_RATES_REQUEST_PERIOD,
             repeatIntervalTimeUnit = TimeUnit.DAYS,
             flexTimeInterval = FLEX_TIME_INTERVAL,
-            flexTimeIntervalUnit = TimeUnit.DAYS
+            flexTimeIntervalUnit = TimeUnit.HOURS
         ).setConstraints(networkConnectedWorkerConstraints).setBackoffCriteria(
             BackoffPolicy.EXPONENTIAL,
             1,

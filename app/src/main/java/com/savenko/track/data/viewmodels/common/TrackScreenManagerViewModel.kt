@@ -10,14 +10,17 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
-class TrackScreenManagerViewModel(private val savedStateHandle: SavedStateHandle, private val dataStoreManager: DataStoreManager) :
+class TrackScreenManagerViewModel(
+    private val savedStateHandle: SavedStateHandle,
+    private val dataStoreManager: DataStoreManager
+) :
     ViewModel() {
     private val _pagerState = MutableStateFlow(
         savedStateHandle.get<Int>("pagerState") ?: 1
     )
     val pagerStateValue = _pagerState.asStateFlow()
 
-    private val _loginCountState = MutableStateFlow(savedStateHandle.get<Int>("loginCount") ?: 0)
+    private val _loginCountState = MutableStateFlow(savedStateHandle.get<Int>("loginCount") ?: -1)
     val loginCountValue = _loginCountState.asStateFlow()
 
     init {

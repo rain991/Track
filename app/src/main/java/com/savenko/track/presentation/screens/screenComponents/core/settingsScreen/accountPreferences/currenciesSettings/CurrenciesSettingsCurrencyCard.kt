@@ -27,11 +27,15 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import org.koin.compose.koinInject
 
 
 @Composable
@@ -39,16 +43,18 @@ fun CurrenciesSettingsCurrencyCard(
     currencyList: List<Currency>,
     selectedOption: Currency,
     isElevated: Boolean,
+    containsName: Boolean = false,
     onSelect: (Currency) -> Unit
 ) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
-    var isExpanded by remember { mutableStateOf(false) }
+    var isFocused by remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
+    val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     Card(
         modifier = Modifier
             .padding(horizontal = 8.dp)
             .clickable {
-                isExpanded = true
+                isFocused = true
             }, elevation = if (isElevated) {
             CardDefaults.cardElevation(
                 defaultElevation = 16.dp,
@@ -67,16 +73,35 @@ fun CurrenciesSettingsCurrencyCard(
                 .wrapContentSize()
                 .focusRequester(focusRequester)
         ) {
-            Text(
-                text = selectedOption.ticker,
-                style = MaterialTheme.typography.titleMedium,
-                modifier = Modifier
-                    .align(alignment = Alignment.Center)
-                    .padding(12.dp)
-            )
+            val columnWithNameModifier = Modifier
+                .padding(8.dp)
+                .scale(0.8f)
+            val columnWithoutNameModifier = Modifier.padding(12.dp)
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally,
+                modifier = if (containsName) {
+                    columnWithNameModifier
+                } else {
+                    columnWithoutNameModifier
+                }
+            ) {
+                Text(
+                    text = selectedOption.ticker,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                if (containsName) {
+                    Text(
+                        text = stringResource(
+                            id = databaseStringResourcesProvider.provideCurrencyStringResource(
+                                selectedOption.ticker
+                            )
+                        ), style = MaterialTheme.typography.bodySmall
+                    )
+                }
+            }
             DropdownMenu(
-                expanded = isExpanded,
-                onDismissRequest = { isExpanded = false },
+                expanded = isFocused,
+                onDismissRequest = { isFocused = false },
                 modifier = Modifier
                     .width(IntrinsicSize.Min)
                     .wrapContentHeight()
@@ -111,7 +136,7 @@ fun CurrenciesSettingsCurrencyCard(
                         },
                         onClick = {
                             onSelect(selectionOption)
-                            isExpanded = false
+                            isFocused = false
                         }
                     )
                 }

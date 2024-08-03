@@ -34,13 +34,13 @@ class TrackScreenFeedViewModel(
             getUnfinishedIdeasUseCase().collect { allIdeas ->
                 _ideaList.clear()
                 _ideaList.addAll(allIdeas)
-                checkListOfIdeasCompletitionState()
+                checkListOfIdeasCompletionState()
                 setMaxPagerIndex(_ideaList.size + 1)
             }
         }
     }
 
-    suspend fun checkListOfIdeasCompletitionState() {
+    suspend fun checkListOfIdeasCompletionState() {
         val ideasToUpdate = mutableListOf<Idea>()
         _ideaList.forEach { currentIdea ->
             if (!currentIdea.completed) {

@@ -56,7 +56,7 @@
     <string name="message_currencies_settings_screen">Вы можете переключать валюту нажимая на ее название. Приоритетная валюта всегда будет показываться первой</string>
     <string name="name_personal_settings_screen">Имя: %1$s</string>
     <string name="budget_personal_settings_screen">Бюджет : %1$s %2$s</string>
-    <string name="new_budget_personal_settings_screen">Новый бюджет в %1$s</string>
+    <string name="new_budget_personal_settings_screen">Новый бюджет</string>
     <string name="new_name_personal_settings_screen">Новое имя</string>
     <string name="decline">Отменить</string>
     <string name="save">Сохранить</string>
@@ -198,4 +198,18 @@
     <string name="hide_additional_currencies">Спрячь дополнительные валюты</string>
     <string name="show_additional_currencies">Покажи дополнительные валюты</string>
     <string name="user">Пользователь</string>
+    <string name="plan_started_income_plan_card">Начало плана: %1$s</string>
+    <string name="your_ideas_setting_screen">Твои Идеи</string>
+    <string name="set_as_preferable_currency_currencies_settings">Новая приоритетная валюта</string>
+    <string name="set_as_first_priority_additional">Дополнительная валюта первого приоритета</string>
+    <string name="set_as_second_priority_additional">Дополнительная валюта второго приоритета</string>
+    <string name="set_as_third_priority_additional">Дополнительная валюта третьего приоритета</string>
+    <string name="set_as_fourth_priority_additional">Дополнительная валюта четвертого приоритета</string>
+    <string name="list_categories_settings_view_option">Список</string>
+    <string name="cards_categories_settings_view_option">Карты</string>
+    <string name="show_only_custom_categories_settings">Показывать только пользовательские категории</string>
+    <string name="filter_categories_categories_screen">Поиск категорий</string>
+    <string name="no_categories_for_specified_filters_categories_settings">Нет категорий для указанных фильтров</string>
+    <string name="shows_as_categories_settings">Показывай как</string>
+    <string name="find_your_category_CD">Найдите свою категорию</string>
 </resources>

@@ -21,7 +21,7 @@ import com.savenko.track.presentation.navigation.Screen
 @Composable
 fun SettingsScreenAccountPreferences(navHostController: NavHostController) {
     Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Row(modifier = Modifier.padding(start = 4.dp)) {
+        Row(modifier = Modifier.padding(start = 8.dp)) {
             Text(
                 text = stringResource(R.string.account),
                 style = MaterialTheme.typography.titleMedium.copy(

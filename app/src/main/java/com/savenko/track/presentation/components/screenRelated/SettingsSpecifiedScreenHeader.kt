@@ -47,7 +47,7 @@ fun SettingsSpecifiedScreenHeader(screenName: String, onBackPressed: () -> Unit)
                 contentDescription = stringResource(R.string.back_to_settings_screen_CD),
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .scale(0.9f),
+                    .scale(0.8f),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }

@@ -12,11 +12,13 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -29,10 +31,12 @@ import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
+import com.savenko.track.data.other.constants.savingsSpecificColor
 import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.idea.Savings
+import com.savenko.track.presentation.themes.purpleGreyTheme.purpleGreyNew_DarkColorScheme
 
 @Composable
 fun SavingsIdeaCard(
@@ -57,10 +61,28 @@ fun SavingsIdeaCard(
                     .padding(top = 4.dp),
                 horizontalArrangement = Arrangement.Center
             ) {
-                Text(text = savings.label, style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold))
+                Text(
+                    text = savings.label,
+                    style = MaterialTheme.typography.headlineSmall,
+                    maxLines = 1
+                )
             }
-            Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                Text(text = stringResource(R.string.saving), style = MaterialTheme.typography.titleMedium)
+            Row(modifier = Modifier
+                .fillMaxWidth()
+                .scale(0.8f), horizontalArrangement = Arrangement.Center) {
+                Card(
+                    colors = CardColors(
+                        containerColor = savingsSpecificColor,
+                        contentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant,
+                        disabledContainerColor = savingsSpecificColor,
+                        disabledContentColor = purpleGreyNew_DarkColorScheme.onSurfaceVariant
+                    ), modifier = Modifier
+                ) {
+                    Text(
+                        text = stringResource(R.string.saving), style = MaterialTheme.typography.titleMedium,
+                        modifier = Modifier.padding(4.dp)
+                    )
+                }
             }
             Row(modifier = Modifier.fillMaxWidth()) {
                 Column(

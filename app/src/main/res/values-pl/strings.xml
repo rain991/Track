@@ -56,7 +56,7 @@
     <string name="message_currencies_settings_screen">Możesz zmienić walutę, klikając jej nazwę. Waluta priorytetowa zawsze będzie wyświetlana jako pierwsza</string>
     <string name="name_personal_settings_screen">Imie : %1$s</string>
     <string name="budget_personal_settings_screen">Budżet : %1$s %2$s</string>
-    <string name="new_budget_personal_settings_screen">Nowy budżet w %1$s</string>
+    <string name="new_budget_personal_settings_screen">Nowy budżet</string>
     <string name="new_name_personal_settings_screen">Nowe imie</string>
     <string name="decline">Odrzuć</string>
     <string name="save">Potwierdź</string>
@@ -196,6 +196,20 @@
     <string name="category_name_new_category_dialog">Nazwa kategorii</string>
     <string name="filter_currencies">Filtruj waluty</string>
     <string name="hide_additional_currencies">Ukryj dodatkowe waluty</string>
-    <string name="show_additional_currencies">Zusätzliche Währungen anzeigen</string>
+    <string name="show_additional_currencies">Pokaż dodatkowe waluty</string>
     <string name="user">Użytkownik</string>
+    <string name="plan_started_income_plan_card">Rozpoczęcie planu: %1$s</string>
+    <string name="your_ideas_setting_screen">Twoje Idea</string>
+    <string name="set_as_preferable_currency_currencies_settings">Ustaw jako preferowaną walutę</string>
+    <string name="set_as_first_priority_additional">Dodatkowa pierwszego priorytetu</string>
+    <string name="set_as_second_priority_additional">Dodatkowa drugiego priorytetu</string>
+    <string name="set_as_third_priority_additional">Dodatkowa trzeciego priorytetu</string>
+    <string name="set_as_fourth_priority_additional">Dodatkowa czwartego priorytetu</string>
+    <string name="list_categories_settings_view_option">Lista</string>
+    <string name="cards_categories_settings_view_option">Kartki</string>
+    <string name="show_only_custom_categories_settings">Pokaż tylko kategorie niestandardowe</string>
+    <string name="filter_categories_categories_screen">Znajdź kategorie</string>
+    <string name="no_categories_for_specified_filters_categories_settings">Brak kategorii dla określonych filtrów</string>
+    <string name="shows_as_categories_settings">Pokazuje jako</string>
+    <string name="find_your_category_CD">Znajdź swoją kategorię</string>
 </resources>

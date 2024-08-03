@@ -28,8 +28,8 @@ import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.presentation.components.dialogs.addToSavingIdeaDialog.AddToSavingDialog
-import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.feed.NewIdeaFeedCard
 import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.feed.BudgetFeedCard
+import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.feed.NewIdeaFeedCard
 import kotlinx.coroutines.delay
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
@@ -77,7 +77,7 @@ fun TrackScreenFeed() {
         pagerState.animateScrollToPage(currentIndex.value)
     }
     LaunchedEffect(key1 = Unit) {
-        trackScreenFeedViewModel.checkListOfIdeasCompletitionState()
+        trackScreenFeedViewModel.checkListOfIdeasCompletionState()
     }
     if (currentSavingAddingDialogState.value != null) {
         AddToSavingDialog(addToSavingIdeaDialogViewModel)
