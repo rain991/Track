@@ -205,4 +205,11 @@
     <string name="set_as_second_priority_additional">Додаткова валюта другого пріоритету</string>
     <string name="set_as_third_priority_additional">Додаткова валюта третього пріоритету</string>
     <string name="set_as_fourth_priority_additional">Додаткова валюта четвертого пріоритету</string>
+    <string name="list_categories_settings_view_option">Список</string>
+    <string name="cards_categories_settings_view_option">Картки</string>
+    <string name="show_only_custom_categories_settings">Покажи тільки мої категорії</string>
+    <string name="filter_categories_categories_screen">Пошук категорій</string>
+    <string name="no_categories_for_specified_filters_categories_settings">Немає категорій для таких фільтрів</string>
+    <string name="shows_as_categories_settings">Показуй як</string>
+    <string name="find_your_category_CD">Знайди свою категорію</string>
 </resources>

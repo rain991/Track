@@ -242,5 +242,12 @@
     <string name="set_as_second_priority_additional">Establecer como segunda prioridad adicional</string>
     <string name="set_as_third_priority_additional">Establecer como tercera prioridad adicional</string>
     <string name="set_as_fourth_priority_additional">Establecer como cuarta prioridad adicional</string>
+    <string name="list_categories_settings_view_option">Lista</string>
+    <string name="cards_categories_settings_view_option">Tarjetas</string>
+    <string name="show_only_custom_categories_settings">Mostrar solo categorías personalizadas</string>
+    <string name="filter_categories_categories_screen">Find categories</string>
+    <string name="no_categories_for_specified_filters_categories_settings">No hay categorías para los filtros especificados</string>
+    <string name="shows_as_categories_settings">Mostrar como</string>
+    <string name="find_your_category_CD">Encuentra tu categoría</string>
 
 </resources>

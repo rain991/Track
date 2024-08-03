@@ -119,9 +119,11 @@ class CategoriesSettingsScreenViewModel(
                         }
                     }.filter {
                         if (_screenState.value.nameFilter != "") {
-                            it.note.contains(_screenState.value.nameFilter) || databaseStringResourcesProvider.getCategoryLocalizedName(
-                                it
-                            ).contains(_screenState.value.nameFilter)
+                            val localizedName = databaseStringResourcesProvider.getCategoryLocalizedName(it)
+                            it.note.contains(
+                                _screenState.value.nameFilter,
+                                ignoreCase = true
+                            ) || localizedName.contains(_screenState.value.nameFilter, ignoreCase = true)
                         } else {
                             true
                         }
@@ -139,9 +141,15 @@ class CategoriesSettingsScreenViewModel(
                         }
                     }.filter {
                         if (_screenState.value.nameFilter != "") {
-                            it.note.contains(_screenState.value.nameFilter) || databaseStringResourcesProvider.getCategoryLocalizedName(
-                                it
-                            ).contains(_screenState.value.nameFilter)
+                            if (_screenState.value.nameFilter != "") {
+                                val localizedName = databaseStringResourcesProvider.getCategoryLocalizedName(it)
+                                it.note.contains(
+                                    _screenState.value.nameFilter,
+                                    ignoreCase = true
+                                ) || localizedName.contains(_screenState.value.nameFilter, ignoreCase = true)
+                            } else {
+                                true
+                            }
                         } else {
                             true
                         }

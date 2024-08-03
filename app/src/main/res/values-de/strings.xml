@@ -241,5 +241,12 @@
     <string name="set_as_second_priority_additional">Als zweite Priorität zusätzlich festlegen</string>
     <string name="set_as_third_priority_additional">Als dritte Priorität zusätzlich festlegen</string>
     <string name="set_as_fourth_priority_additional">Als vierte Priorität zusätzlich festlegen</string>
+    <string name="list_categories_settings_view_option">Liste</string>
+    <string name="cards_categories_settings_view_option">Netzwerkkarten</string>
+    <string name="show_only_custom_categories_settings">Nur benutzerdefinierte Kategorien anzeigen</string>
+    <string name="filter_categories_categories_screen">Kategorien finden</string>
+    <string name="no_categories_for_specified_filters_categories_settings">Keine Kategorien für bestimmte Filter</string>
+    <string name="shows_as_categories_settings">Zeigt als</string>
+    <string name="find_your_category_CD">Finden Sie Ihre Kategorie</string>
 
 </resources>

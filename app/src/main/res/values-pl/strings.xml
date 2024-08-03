@@ -205,4 +205,11 @@
     <string name="set_as_second_priority_additional">Dodatkowa drugiego priorytetu</string>
     <string name="set_as_third_priority_additional">Dodatkowa trzeciego priorytetu</string>
     <string name="set_as_fourth_priority_additional">Dodatkowa czwartego priorytetu</string>
+    <string name="list_categories_settings_view_option">Lista</string>
+    <string name="cards_categories_settings_view_option">Kartki</string>
+    <string name="show_only_custom_categories_settings">Pokaż tylko kategorie niestandardowe</string>
+    <string name="filter_categories_categories_screen">Znajdź kategorie</string>
+    <string name="no_categories_for_specified_filters_categories_settings">Brak kategorii dla określonych filtrów</string>
+    <string name="shows_as_categories_settings">Pokazuje jako</string>
+    <string name="find_your_category_CD">Znajdź swoją kategorię</string>
 </resources>

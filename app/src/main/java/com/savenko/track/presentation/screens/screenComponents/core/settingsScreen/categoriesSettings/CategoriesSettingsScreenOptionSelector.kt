@@ -43,8 +43,8 @@ fun CategoriesScreenOptionsSelector(
         Column(modifier = Modifier.padding(8.dp)) {
 
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier.fillMaxWidth().padding(4.dp),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(text = stringResource(R.string.shows_as_categories_settings))
