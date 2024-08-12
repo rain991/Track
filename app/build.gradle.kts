@@ -57,17 +57,17 @@ android {
 
 
 dependencies {
-    val workVersion = "2.9.0"
+    val workVersion = "2.9.1"
     val koinVersion = "3.5.3"
     val retrofitVersion = "2.9.0"
     val roomVersion = "2.6.1"
 
     //android
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
 
     //data related
-    implementation("androidx.datastore:datastore-preferences:1.0.0") // newer dataStore version could cause crash
+    implementation("androidx.datastore:datastore-preferences:1.0.0") // newer dataStore version could lead unexpected crashes
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 
