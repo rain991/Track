@@ -43,7 +43,7 @@ import com.savenko.track.domain.models.abstractLayer.CategoriesTypes
 import com.savenko.track.presentation.components.customComponents.GradientInputTextField
 import com.savenko.track.presentation.other.colors.generateRandomColor
 import com.savenko.track.presentation.other.composableTypes.errors.NewCategoryDialogErrors
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.themePreferences.CircleWithBorder
+import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.themePreferences.CircleWithBorder
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)

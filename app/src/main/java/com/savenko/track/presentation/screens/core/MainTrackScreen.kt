@@ -17,8 +17,8 @@ import com.savenko.track.presentation.components.dialogs.newIdeaDialog.NewIdeaDi
 import com.savenko.track.presentation.components.screenRelated.Header
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
-import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.MainTrackScreenCompactComponent
-import com.savenko.track.presentation.screens.screenComponents.core.mainScreenComponents.MainTrackScreenExpandedComponent
+import com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.MainTrackScreenCompactComponent
+import com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.MainTrackScreenExpandedComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 

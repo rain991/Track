@@ -22,8 +22,8 @@ import com.savenko.track.BuildConfig
 import com.savenko.track.R
 import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalSettingsScreenViewmodel
 import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsViewModel
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.personalPreferences.PersonalSettingsContent
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.personalPreferences.PersonalSettingsStatistics
+import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.personalPreferences.PersonalSettingsContent
+import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.personalPreferences.PersonalSettingsStatistics
 import org.koin.androidx.compose.koinViewModel
 
 @Composable

@@ -16,7 +16,7 @@ fun convertLocalDateToDate(localDate: LocalDate): Date {
     return Date.from(instant)
 }
 
-fun LocalDate.toDate(): Date {
+fun LocalDate.toDate():Date {
     return Date.from(this.atStartOfDay(ZoneId.systemDefault()).toInstant())
 }
 
