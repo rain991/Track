@@ -24,10 +24,10 @@ class CurrenciesRatesWorker(
     }
 
     override suspend fun doWork(): Result {
-        val allCurrenciesList = currencyListRepositoryImpl.getCurrencyList().first()
-        val allTickersList = allCurrenciesList.map { it.ticker }
-        val symbols = allTickersList.joinToString(separator = ", ")
         return withContext(Dispatchers.IO) {
+            val allCurrenciesList = currencyListRepositoryImpl.getCurrencyList().first()
+            val allTickersList = allCurrenciesList.map { it.ticker }
+            val symbols = allTickersList.joinToString(separator = ", ")
             try {
                 val response = RetrofitClient.api.getLatestRates(API_KEY, symbols)
                 response.rates.forEach { (currency, rate) ->

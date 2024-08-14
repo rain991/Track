@@ -45,7 +45,7 @@ fun PersonalSettingsScreenComponent() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Image(
-                painter = painterResource(id = R.drawable.onlyicon),
+                painter = painterResource(id = R.drawable.track_new_icon),
                 contentDescription = null,
                 modifier = Modifier.height(16.dp)
             )

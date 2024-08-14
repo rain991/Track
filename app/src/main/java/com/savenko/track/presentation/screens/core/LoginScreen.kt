@@ -245,7 +245,7 @@ private fun LoginHeader() {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Image(
                     modifier = Modifier.size(64.dp),
-                    painter = painterResource(id = R.drawable.onlyicon),
+                    painter = painterResource(id = R.drawable.track_new_icon),
                     contentDescription = stringResource(id = R.string.app_logo)
                 )
                 Spacer(modifier = Modifier.width(16.dp))

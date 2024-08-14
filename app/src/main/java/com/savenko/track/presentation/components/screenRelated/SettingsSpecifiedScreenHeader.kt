@@ -52,7 +52,7 @@ fun SettingsSpecifiedScreenHeader(screenName: String, onBackPressed: () -> Unit)
             )
         }
         Spacer(modifier = Modifier.weight(1f))
-        Image(painter = painterResource(id = R.drawable.onlyicon), contentDescription = null, modifier = Modifier.size(36.dp))
+        Image(painter = painterResource(id = R.drawable.track_new_icon), contentDescription = null, modifier = Modifier.size(36.dp))
         Spacer(modifier = Modifier.width(2.dp))
         Text(
             text = screenName,

@@ -25,7 +25,6 @@ class TrackActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
         workManagerHelper.setupWorkManager()
         workManagerHelper.checkAndUpdateCurrencyRates()
-
         setContent {
             val loginCountState = trackScreenManagerViewModel.loginCountValue.collectAsState(initial = -1)
             splashScreen.setKeepOnScreenCondition {
