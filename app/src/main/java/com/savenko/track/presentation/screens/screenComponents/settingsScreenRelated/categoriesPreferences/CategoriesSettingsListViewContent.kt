@@ -173,10 +173,10 @@ private fun DefaultCard() {
             defaultElevation = 8.dp,
             focusedElevation = 8.dp
         ), colors = CardColors(
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimaryContainer,
-            disabledContainerColor = MaterialTheme.colorScheme.primary,
-            disabledContentColor = MaterialTheme.colorScheme.onPrimaryContainer
+            containerColor = MaterialTheme.colorScheme.tertiary,
+            contentColor = MaterialTheme.colorScheme.onTertiary,
+            disabledContainerColor = MaterialTheme.colorScheme.tertiary,
+            disabledContentColor = MaterialTheme.colorScheme.onTertiary
         )
     ) {
         Text(text = "Default", modifier = Modifier.padding(8.dp))
