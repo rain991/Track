@@ -99,6 +99,7 @@ class StatisticChartViewModel(
     }
 
     private suspend fun initializeGroupedFinancialValues() {
+        setAdditionalData(null)
         val expenseFlow = chartDataProvider.requestDataForChart(
             financialEntities = FinancialEntities.ExpenseFinancialEntity(),
             statisticChartTimePeriod = _statisticChartState.value.timePeriod,
@@ -139,11 +140,12 @@ class StatisticChartViewModel(
                         if (expenseXToDates.isNotEmpty()) {
                             series(expenseXToDates.keys, expenseChartData.map { it.value })
                         }
-                        if(expenseXToDates.size > incomeXToDates.size){
-                            extras { it[xToDateMapKey] = expenseXToDates }
-                        }else{
-                            extras { it[xToDateMapKey] = incomeXToDates }
-                        }
+                        extras { it[xToDateMapKey] = (expenseXToDates + incomeXToDates) }
+//                        if(expenseXToDates.size > incomeXToDates.size){
+//                            extras { it[xToDateMapKey] = expenseXToDates }
+//                        }else{
+//                            extras { it[xToDateMapKey] = incomeXToDates }
+//                        }
                     }
                 }
 
