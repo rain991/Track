@@ -1,6 +1,7 @@
 package com.savenko.track.presentation.components.ideasCards
 
 /*  Contains Card used in expense screen feed to show expense limit entity  */
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -103,7 +104,8 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
     Card(
         modifier = Modifier
             .height(140.dp)
-            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
+            .padding(horizontal = 8.dp) , border = BorderStroke((1.2).dp, expenseLimitSpecificColor
+    ), shape = RoundedCornerShape(8.dp)
     ) {
         Row(
             modifier = Modifier

@@ -90,6 +90,9 @@ fun CategoriesSettingsListViewContent(
                 CategoryRowCategoriesSettingsScreen(categoryEntity = category) {
                     onDeleteCategory(it)
                 }
+                if(index == listOfAllCategories.size -1){
+                    Spacer(modifier = Modifier.height(48.dp))
+                }
             }
         }
     }

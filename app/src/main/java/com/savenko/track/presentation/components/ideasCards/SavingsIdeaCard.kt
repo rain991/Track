@@ -1,5 +1,6 @@
 package com.savenko.track.presentation.components.ideasCards
 
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -48,7 +49,8 @@ fun SavingsIdeaCard(
     Card(
         modifier = Modifier
             .height(140.dp)
-            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
+            .padding(horizontal = 8.dp)  ,border = BorderStroke((1.2).dp, savingsSpecificColor
+    ), shape = RoundedCornerShape(8.dp)
     ) {
         Column(
             modifier = Modifier

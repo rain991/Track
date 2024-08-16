@@ -153,12 +153,12 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                                 guideline = null,
                                 horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
                                 label =  rememberTextComponent(
-                                    color = MaterialTheme.colorScheme.onPrimary,
+                                    color = MaterialTheme.colorScheme.onSecondary,
                                     padding = Dimensions.of(2.dp),
                                     margins = Dimensions.of(start = 3.dp),
                                     background = ShapeComponent(
                                         shape = Shape.Companion.rounded(4.dp),
-                                        color = MaterialTheme.colorScheme.primary.toArgb()
+                                        color = MaterialTheme.colorScheme.secondary.toArgb()
                                     ),
                                     typeface = Typeface.MONOSPACE,
                                 ),
