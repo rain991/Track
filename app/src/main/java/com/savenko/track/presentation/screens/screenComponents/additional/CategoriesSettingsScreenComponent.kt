@@ -1,6 +1,5 @@
 package com.savenko.track.presentation.screens.screenComponents.additional
 
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -14,8 +13,6 @@ import androidx.compose.foundation.layout.widthIn
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -31,9 +28,9 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.categoriesSettings.CategoriesScreenOptionsSelector
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.categoriesSettings.CategoriesSettingsCardViewContent
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.categoriesSettings.CategoriesSettingsListViewContent
+import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.categoriesPreferences.CategoriesScreenOptionsSelector
+import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.categoriesPreferences.CategoriesSettingsCardViewContent
+import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.categoriesPreferences.CategoriesSettingsListViewContent
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenEvent
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenState
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenViewOptions
@@ -48,33 +45,12 @@ fun CategoriesSettingsScreenComponent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = 4.dp)
+            .padding()
     )
     {
         CategoriesScreenOptionsSelector(screenState = screenState, onAction = { onAction(it) })
         Spacer(modifier = Modifier.height(8.dp))
         if (screenState.viewOption is CategoriesSettingsScreenViewOptions.CardsView) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(end = 8.dp), horizontalArrangement = Arrangement.End
-            ) {
-                AnimatedContent(targetState = isSearchInputFieldVisible, label = "searchInputFieldAppearance") {
-                    if (!it) {
-                        IconButton(onClick = { isSearchInputFieldVisible = true }) {
-                            Icon(
-                                imageVector = Icons.Filled.Search,
-                                contentDescription = stringResource(R.string.find_your_category_CD)
-                            )
-                        }
-                    } else {
-                        CategoriesFilterInputField(nameFilter = screenState.nameFilter) {
-                            onAction(CategoriesSettingsScreenEvent.SetFilteringText(it))
-                        }
-                    }
-                }
-            }
-            Spacer(modifier = Modifier.height(4.dp))
             CategoriesSettingsCardViewContent(
                 listOfExpenseCategories = screenState.listOfExpenseCategories,
                 listOfIncomeCategories = screenState.listOfIncomeCategories,

@@ -39,10 +39,9 @@ class WorkManagerHelper(private val context: Context, private val currencyListRe
             1,
             TimeUnit.HOURS
         ).build()
-
         WorkManager.getInstance(context).enqueueUniquePeriodicWork(
             CurrenciesRatesWorker.PERIODIC_CURRENCY_REQUEST_NAME,
-            ExistingPeriodicWorkPolicy.UPDATE,
+            ExistingPeriodicWorkPolicy.KEEP,
             periodicRatesRequest
         )
     }

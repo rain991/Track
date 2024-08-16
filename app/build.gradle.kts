@@ -1,5 +1,3 @@
-import java.util.Properties
-
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -15,16 +13,12 @@ android {
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 34
-        versionCode = 28
-        versionName = "1.5.0"
-
+        versionCode = 31
+        versionName = "1.5.2"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-        val properties = Properties()
-        properties.load(project.rootProject.file("local.properties").inputStream())
-        buildConfigField("String", "API_KEY", "\"${properties.getProperty("API_KEY")}\"")
     }
     buildTypes {
         release {
@@ -57,17 +51,17 @@ android {
 
 
 dependencies {
-    val workVersion = "2.9.0"
+    val workVersion = "2.9.1"
     val koinVersion = "3.5.3"
     val retrofitVersion = "2.9.0"
     val roomVersion = "2.6.1"
 
     //android
     implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.3")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.4")
 
     //data related
-    implementation("androidx.datastore:datastore-preferences:1.0.0") // newer dataStore version could cause crash
+    implementation("androidx.datastore:datastore-preferences:1.0.0") // newer dataStore version could lead unexpected crashes
     implementation("androidx.room:room-ktx:$roomVersion")
     ksp("androidx.room:room-compiler:$roomVersion")
 

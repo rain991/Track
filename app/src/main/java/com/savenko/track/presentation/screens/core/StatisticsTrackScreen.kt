@@ -10,7 +10,7 @@ import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.presentation.components.screenRelated.Header
 import com.savenko.track.presentation.components.customComponents.MainScreenFloatingActionButton
-import com.savenko.track.presentation.screens.screenComponents.core.statisticsScreen.StatisticsScreenComponent
+import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.StatisticsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 /*  Statistic screen shows user achievments and useful stats for specific period of time. Also shows chart  */

@@ -51,7 +51,7 @@ class ChartDataProvider(
                 }
 
                 is StatisticChartTimePeriod.Year -> {
-                    val range = StatisticChartTimePeriod.Week().provideDateRange()
+                    val range = StatisticChartTimePeriod.Year().provideDateRange()
                     incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(range.lower, range.upper).collect { listOfIncomes ->
                         send(summarizeFinancialValuesByDays(listOfIncomes))
                     }

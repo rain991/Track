@@ -26,7 +26,7 @@ fun Header(pageName: String) {
             .padding(8.dp),
         verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center
     ) {
-        Image(painter = painterResource(id = R.drawable.onlyicon), contentDescription = null)
+        Image(painter = painterResource(id = R.drawable.track_new_icon), contentDescription = null)
         Text(
             text = pageName,
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),

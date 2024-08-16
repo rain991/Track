@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.savenko.track.domain.models.currency.Currency
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences.currenciesSettings.CurrencyListComponent
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.accountPreferences.currenciesSettings.SelectedCurrenciesComponent
+import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.accountPreferences.currenciesSettings.CurrencyListComponent
+import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.accountPreferences.currenciesSettings.SelectedCurrenciesComponent
 import com.savenko.track.presentation.screens.states.additional.settings.currenciesSettings.CurrenciesSettingsScreenEvent
 import com.savenko.track.presentation.screens.states.additional.settings.currenciesSettings.SelectedCurrenciesSettingsState
 

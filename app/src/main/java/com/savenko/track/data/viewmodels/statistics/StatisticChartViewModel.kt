@@ -99,6 +99,7 @@ class StatisticChartViewModel(
     }
 
     private suspend fun initializeGroupedFinancialValues() {
+        setAdditionalData(null)
         val expenseFlow = chartDataProvider.requestDataForChart(
             financialEntities = FinancialEntities.ExpenseFinancialEntity(),
             statisticChartTimePeriod = _statisticChartState.value.timePeriod,
@@ -127,20 +128,27 @@ class StatisticChartViewModel(
                 val expenseListOfValues = expenseChartData.map { it.value }
                 val incomeListOfValues = incomeChartData.map { it.value }
 
-                if (expenseListOfValues.isNotEmpty() && incomeListOfValues.isNotEmpty()) {
-                    if (expenseXToDates.size > 1 || incomeXToDates.size > 1) {
-                        lineSeries {
-                            if (expenseXToDates.size > 1) {
-                                series(expenseXToDates.keys, expenseChartData.map { it.value })
-                                extras { it[xToDateMapKey] = expenseXToDates }
-                            }
-                            if (incomeXToDates.size > 1) {
-                                series(incomeXToDates.keys, incomeChartData.map { it.value })
-                                extras { it[xToDateMapKey] = incomeXToDates }
-                            }
+                if (expenseListOfValues.size > 1 && incomeListOfValues.size > 1) {
+
+                }
+
+                if (expenseXToDates.size > 1 || incomeXToDates.size > 1) {
+                    lineSeries {
+                        if (incomeXToDates.isNotEmpty()) {
+                            series(incomeXToDates.keys, incomeChartData.map { it.value })
                         }
+                        if (expenseXToDates.isNotEmpty()) {
+                            series(expenseXToDates.keys, expenseChartData.map { it.value })
+                        }
+                        extras { it[xToDateMapKey] = (expenseXToDates + incomeXToDates) }
+//                        if(expenseXToDates.size > incomeXToDates.size){
+//                            extras { it[xToDateMapKey] = expenseXToDates }
+//                        }else{
+//                            extras { it[xToDateMapKey] = incomeXToDates }
+//                        }
                     }
                 }
+
             }
         }
     }

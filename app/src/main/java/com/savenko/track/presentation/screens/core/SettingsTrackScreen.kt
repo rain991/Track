@@ -14,9 +14,8 @@ import com.savenko.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
-import com.savenko.track.presentation.components.customComponents.MainScreenFloatingActionButton
 import com.savenko.track.presentation.components.screenRelated.Header
-import com.savenko.track.presentation.screens.screenComponents.core.settingsScreen.SettingsScreenComponent
+import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.SettingsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
