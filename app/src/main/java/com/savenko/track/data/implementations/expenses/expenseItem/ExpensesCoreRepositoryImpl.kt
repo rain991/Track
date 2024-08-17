@@ -34,6 +34,7 @@ class ExpensesCoreRepositoryImpl(
                 if (convertedValue != INCORRECT_CONVERSION_RESULT) {
                     sumOfExpensesInPreferableCurrency += convertedValue
                 }
+                // could be broadcast for insufficient currencies rates
             }
             send(sumOfExpensesInPreferableCurrency)
         }

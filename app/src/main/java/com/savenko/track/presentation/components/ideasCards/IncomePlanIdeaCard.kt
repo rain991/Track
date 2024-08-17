@@ -49,7 +49,7 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
     val localContext = LocalContext.current
     var plannedText by remember { mutableStateOf(buildAnnotatedString { }) }
     var completedText by remember { mutableStateOf(buildAnnotatedString { }) }
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = preferableCurrency, key2 = incomePlans.goal, key3 = completionValue) {
         plannedText = buildAnnotatedString {
             withStyle(
                 style = SpanStyle(

@@ -15,7 +15,6 @@ class IncomeCoreRepositoryImpl(
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : IncomeCoreRepository {
-
     // Sum of incomes
     override suspend fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
@@ -24,14 +23,17 @@ class IncomeCoreRepositoryImpl(
             end = endOfSpan.time
         ).collect { foundedIncomeItems ->
             var sumOfIncomesInPreferableCurrency = 0.0f
-            val listOfIncomesInPreferableCurrency = foundedIncomeItems.filter { it.currencyTicker == preferableCurrency.ticker }
-            val listOfIncomesNotInPreferableCurrency = foundedIncomeItems.filter { it.currencyTicker != preferableCurrency.ticker }
+            val listOfIncomesInPreferableCurrency =
+                foundedIncomeItems.filter { it.currencyTicker == preferableCurrency.ticker }
+            val listOfIncomesNotInPreferableCurrency =
+                foundedIncomeItems.filter { it.currencyTicker != preferableCurrency.ticker }
             listOfIncomesInPreferableCurrency.forEach { it -> sumOfIncomesInPreferableCurrency += it.value }
             listOfIncomesNotInPreferableCurrency.forEach { it ->
                 val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
                 if (convertedValue != INCORRECT_CONVERSION_RESULT) {
                     sumOfIncomesInPreferableCurrency += convertedValue
                 }
+                // could be broadcast for insufficient currencies rates
             }
             send(sumOfIncomesInPreferableCurrency)
         }
@@ -48,8 +50,10 @@ class IncomeCoreRepositoryImpl(
             end = endOfSpan.time, categoriesIds = categoriesIds
         ).collect { foundedIncomeItems ->
             var sumOfIncomesInPreferableCurrency = 0.0f
-            val listOfIncomesInPreferableCurrency = foundedIncomeItems.filter { it.currencyTicker == preferableCurrency.ticker }
-            val listOfIncomesNotInPreferableCurrency = foundedIncomeItems.filter { it.currencyTicker != preferableCurrency.ticker }
+            val listOfIncomesInPreferableCurrency =
+                foundedIncomeItems.filter { it.currencyTicker == preferableCurrency.ticker }
+            val listOfIncomesNotInPreferableCurrency =
+                foundedIncomeItems.filter { it.currencyTicker != preferableCurrency.ticker }
             listOfIncomesInPreferableCurrency.forEach { sumOfIncomesInPreferableCurrency += it.value }
             listOfIncomesNotInPreferableCurrency.forEach {
                 val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
@@ -66,9 +70,13 @@ class IncomeCoreRepositoryImpl(
         return incomeDao.getCountOfIncomesInTimeSpan(start = startDate.time, end = endDate.time)
     }
 
-    override suspend fun getCountOfIncomesInSpanByCategoriesIds(startDate: Date, endDate: Date, categoriesIds: List<Int>): Flow<Int> {
+    override suspend fun getCountOfIncomesInSpanByCategoriesIds(
+        startDate: Date,
+        endDate: Date,
+        categoriesIds: List<Int>
+    ): Flow<Int> {
         return incomeDao.getCountOfIncomesInTimeSpanByCategoriesIds(
-            start = startDate.time,
+            start = startDate.time.apply { this.minus(1) },
             end = endDate.time,
             categoriesIds = categoriesIds
         )

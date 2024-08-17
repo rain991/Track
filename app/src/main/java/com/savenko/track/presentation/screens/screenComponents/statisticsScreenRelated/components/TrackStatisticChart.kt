@@ -199,7 +199,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 32.dp), horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(start = 24.dp,end = 12.dp), horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     chartData.keys.sorted().forEachIndexed { index, entry ->
                         when (chartState.value.timePeriod) {

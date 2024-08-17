@@ -1,5 +1,6 @@
 package com.savenko.track.presentation.screens.screenComponents.additional
 
+import android.util.Log
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +36,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
+import com.savenko.track.data.other.constants.TAG
 import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.ideas.IdeasSettingsScreenViewModel
 import com.savenko.track.domain.models.idea.ExpenseLimits
@@ -46,7 +48,9 @@ import com.savenko.track.presentation.components.ideasCards.IncomePlanIdeaCard
 import com.savenko.track.presentation.components.ideasCards.SavingsIdeaCard
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 @Composable
 fun IdeasSettingsScreenComponent(
@@ -155,16 +159,17 @@ fun IdeasSettingsScreenComponent(
                     filteredIdeas.sortedBy { it.startDate }
                 }
                 items(sortedIdeas.size) { index: Int ->
+                    val boxModifier = Modifier.padding(
+                        horizontal = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+                            24.dp
+                        } else {
+                            0.dp
+                        }
+                    )
                     when (val currentIdea = sortedIdeas[index]) {
                         is Savings -> {
                             Box(
-                                modifier = Modifier.padding(
-                                    horizontal = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
-                                        24.dp
-                                    } else {
-                                        0.dp
-                                    }
-                                )
+                                modifier = boxModifier
                             ) {
                                 SavingsIdeaCard(
                                     savings = currentIdea,
@@ -177,19 +182,15 @@ fun IdeasSettingsScreenComponent(
                         is ExpenseLimits -> {
                             var completionValue by remember { mutableFloatStateOf(0.0f) }
                             LaunchedEffect(key1 = Unit) {
-                                ideasSettingsScreenViewModel.getCompletionValue(currentIdea)
-                                    .collect {
+                                withContext(Dispatchers.IO){
+                                    ideasSettingsScreenViewModel.getCompletionValue(currentIdea).collect{
+                                        Log.d(TAG, "IdeasSettingsScreenComponent: exp completionValue = $it")
                                         completionValue = it
                                     }
+                                }
                             }
                             Box(
-                                modifier = Modifier.padding(
-                                    horizontal = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
-                                        24.dp
-                                    } else {
-                                        0.dp
-                                    }
-                                )
+                                modifier = boxModifier
                             ) {
                                 ExpenseLimitIdeaCard(
                                     expenseLimit = currentIdea,
@@ -203,19 +204,15 @@ fun IdeasSettingsScreenComponent(
                         is IncomePlans -> {
                             var completionValue by remember { mutableFloatStateOf(0.0f) }
                             LaunchedEffect(key1 = Unit) {
-                                ideasSettingsScreenViewModel.getCompletionValue(currentIdea)
-                                    .collect {
-                                        completionValue = it
+                                withContext(Dispatchers.IO){
+                                   ideasSettingsScreenViewModel.getCompletionValue(currentIdea).collect{
+                                       Log.d(TAG, "IdeasSettingsScreenComponent: inc completionValue = $it")
+                                       completionValue = it
                                     }
+                                }
                             }
                             Box(
-                                modifier = Modifier.padding(
-                                    horizontal = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
-                                        24.dp
-                                    } else {
-                                        0.dp
-                                    }
-                                )
+                                modifier = boxModifier
                             ) {
                                 IncomePlanIdeaCard(
                                     incomePlans = currentIdea,

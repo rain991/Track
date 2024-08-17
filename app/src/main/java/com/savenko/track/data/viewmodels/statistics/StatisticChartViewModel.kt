@@ -134,18 +134,13 @@ class StatisticChartViewModel(
 
                 if (expenseXToDates.size > 1 || incomeXToDates.size > 1) {
                     lineSeries {
-                        if (incomeXToDates.isNotEmpty()) {
-                            series(incomeXToDates.keys, incomeChartData.map { it.value })
-                        }
                         if (expenseXToDates.isNotEmpty()) {
                             series(expenseXToDates.keys, expenseChartData.map { it.value })
                         }
+                        if (incomeXToDates.isNotEmpty()) {
+                            series(incomeXToDates.keys, incomeChartData.map { it.value })
+                        }
                         extras { it[xToDateMapKey] = (expenseXToDates + incomeXToDates) }
-//                        if(expenseXToDates.size > incomeXToDates.size){
-//                            extras { it[xToDateMapKey] = expenseXToDates }
-//                        }else{
-//                            extras { it[xToDateMapKey] = incomeXToDates }
-//                        }
                     }
                 }
 

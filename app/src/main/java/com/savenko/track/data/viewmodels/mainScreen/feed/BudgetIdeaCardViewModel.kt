@@ -7,7 +7,6 @@ import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.ideas.uiProviders.BudgetIdeaCardRepository
 import com.savenko.track.presentation.screens.states.additional.ideas.BudgetIdeaCardState
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
@@ -27,22 +26,22 @@ class BudgetIdeaCardViewModel(
     val budgetCardState = _budgetCardState.asStateFlow()
     suspend fun initializeStates() {
         viewModelScope.launch {
-            async {
+            launch {
                 budgetIdeaCardRepositoryImpl.requestCurrentMonthExpenses().collect {
                     setCurrentExpenseSum(it)
                 }
             }
-            async {
+            launch {
                 budgetIdeaCardRepositoryImpl.requestBudgetExpectancy().collect {
                     setBudgetExpectancy(it)
                 }
             }
-            async {
+            launch {
                 budgetIdeaCardRepositoryImpl.requestMonthBudget().collect {
                     setBudget(it)
                 }
             }
-            async {
+            launch {
                 currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect {
                     setCurrency(it)
                 }
