@@ -3,6 +3,7 @@ package com.savenko.track.data.other.workers
 import android.content.Context
 import android.util.Log
 import androidx.work.CoroutineWorker
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.savenko.track.data.other.constants.TAG
 import com.savenko.track.data.retrofit.API_KEY
@@ -19,10 +20,13 @@ class CurrenciesRatesWorker(
     workerParameters: WorkerParameters
 ) : CoroutineWorker(workerContext, workerParameters), KoinComponent {
     companion object {
-        const val PERIODIC_CURRENCY_REQUEST_NAME = "currenciesRateRequest"
+        const val PERIODIC_CURRENCY_REQUEST_NAME = "periodicCurrenciesRateRequest"
         const val ONE_TIME_CURRENCY_REQUEST_NAME = "additionalCurrenciesRateRequest"
     }
 
+    override suspend fun getForegroundInfo(): ForegroundInfo {
+        return super.getForegroundInfo()
+    }
     override suspend fun doWork(): Result {
         return withContext(Dispatchers.IO) {
             val allCurrenciesList = currencyListRepositoryImpl.getCurrencyList().first()
@@ -36,11 +40,11 @@ class CurrenciesRatesWorker(
                         currencyTicker = currency
                     )
                 }
-                Log.d(TAG, "doWork: currencyResponse recieved")
+                Log.d(TAG, "doWork: currencyResponse received")
                 Result.success()
             } catch (e: Exception) {
-                Log.d(TAG, "doWork: ${e.message.toString()}")
-                Result.retry()
+                Log.d(TAG, "doWork: currencyResponse is not received - ${e.message.toString()}")
+                Result.failure()
             }
         }
     }

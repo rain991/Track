@@ -99,7 +99,7 @@ val coreModule = module {
     single<FinancialCardNotesProvider> { FinancialCardNotesProvider(get(), get()) }
     single<ChartDataProvider> { ChartDataProvider(get(), get(), get(), get()) }
     single<PersonalStatsProvider> { PersonalStatsProvider(get(), get(), get()) }
-    single<WorkManagerHelper> { WorkManagerHelper(get(), get()) }
+    single<WorkManagerHelper> { WorkManagerHelper(androidContext(), get()) }
     single<DatabaseStringResourcesProvider> { DatabaseStringResourcesProvider(get()) }
 }
 

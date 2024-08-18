@@ -199,67 +199,17 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 24.dp,end = 12.dp), horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(start = 24.dp, end = 12.dp), horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    chartData.keys.sorted().forEachIndexed { index, entry ->
-                        when (chartState.value.timePeriod) {
-                            is StatisticChartTimePeriod.Week -> {
-                                Text(
-                                    text = dateTimeFormatter.format(entry),
-                                    style = MaterialTheme.typography.bodySmall
-                                )
-                            }
+                    val maxTextCount = 5
+                    val valuesStep = if (chartData.size <= maxTextCount) 1 else chartData.size / maxTextCount
 
-                            is StatisticChartTimePeriod.Month -> {
-                                if (chartData.size < 5) {
-                                    Text(
-                                        text = dateTimeFormatter.format(entry),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                } else {
-                                    val valuesStep = chartData.keys.size / 5
-                                    if (index % valuesStep == 0 || index == 0) {
-                                        Text(
-                                            text = dateTimeFormatter.format(entry),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    }
-                                }
-                            }
-
-                            is StatisticChartTimePeriod.Year -> {
-                                if (chartData.size < 5) {
-                                    Text(
-                                        text = dateTimeFormatter.format(entry),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                } else {
-                                    val valuesStep = chartData.keys.size / 5
-                                    if (index % valuesStep == 0 || index == 0) {
-                                        Text(
-                                            text = dateTimeFormatter.format(entry),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    }
-                                }
-                            }
-
-                            is StatisticChartTimePeriod.Other -> {
-                                if (chartData.size < 5) {
-                                    Text(
-                                        text = dateTimeFormatter.format(entry),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                } else {
-                                    val valuesStep = chartData.keys.size / 5
-                                    if (index % valuesStep == 0 || index == 0) {
-                                        Text(
-                                            text = dateTimeFormatter.format(entry),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    }
-                                }
-                            }
+                    chartData.entries.forEachIndexed { index, entry ->
+                        if (index % valuesStep == 0 || index == 0 || index == chartData.size - 1) {
+                            Text(
+                                text = dateTimeFormatter.format(entry.key),
+                                style = MaterialTheme.typography.bodySmall
+                            )
                         }
                     }
                 }

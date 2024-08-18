@@ -23,6 +23,7 @@ class TrackActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
+        workManagerHelper.setupPeriodicRequest()
         workManagerHelper.checkAndUpdateCurrencyRates()
         setContent {
             val loginCountState = trackScreenManagerViewModel.loginCountValue.collectAsState(initial = -1)
@@ -41,10 +42,5 @@ class TrackActivity : ComponentActivity() {
                 }
             }
         }
-    }
-
-    override fun onResume() {
-        super.onResume()
-        workManagerHelper.setupWorkManager()
     }
 }
