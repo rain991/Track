@@ -28,11 +28,11 @@
     <string name="yesterday">Вчера</string>
     <string name="selected_date_add_exp">Другая дата</string>
     <string name="your_note_adding_exp">Заметка</string>
-    <string name="checked_category_add_exp_CD">Выбраная категория</string>
+    <string name="checked_category_add_exp_CD">Выбранная категория</string>
     <string name="note_exp_list">Заметка: %1$s</string>
     <string name="warning_bottom_sheet_exp">Выбери категорию</string>
     <string name="empty_exp_lazyColumn_title">Вы еще не добавили расходов</string>
-    <string name="empty_exp_lazyColumn_additional1">Попробуйте добавить новые используя кнопку в нижней части екрана</string>
+    <string name="empty_exp_lazyColumn_additional1">Попробуйте добавить новые, используя кнопку в нижней части экрана</string>
     <string name="account">Аккаунт</string>
     <string name="personal">Персональное</string>
     <string name="ideas">Идеи</string>
@@ -62,10 +62,10 @@
     <string name="save">Сохранить</string>
     <string name="your_stats_personal_settings_screen">Твоя статистика</string>
     <string name="not_added_any_expenses_yet_personal_settings_screen">Вы еще не добавили ни одного расхода</string>
-    <string name="you_have_already_added_expenses_worth_of">Ты уже добавил %1$s расходов, суммарно на %2$s %3$s</string>
+    <string name="you_have_already_added_expenses_worth_of">Вы уже добавил %1$s расходов, суммарно на %2$s %3$s</string>
     <string name="not_added_any_incomes_yet_personal_settings_screen">Вы еще не добавили ни одного дохода</string>
-    <string name="you_have_already_added_incomes_worth_of">Ты уже добавил %1$s доходов, суммарно на %2$s %3$s</string>
-    <string name="login_message_personal_settings_screen">Вы зайшли в Track %1$s раз</string>
+    <string name="you_have_already_added_incomes_worth_of">Вы уже добавили %1$s доходов, суммарно на %2$s %3$s</string>
+    <string name="login_message_personal_settings_screen">Вы зашли в Track %1$s раз</string>
     <string name="message_categories_settings_screen">Создавай, ищи или удаляй категории. Базовые категории не могуть быть удалены</string>
     <string name="expense_categories_categories_settings_screen">Категории расходов</string>
     <string name="delete">Удалить</string>
@@ -86,7 +86,7 @@
     <string name="goal">Цель</string>
     <string name="date">Дата</string>
     <string name="limit_end_date_ideas">Ограничить конечную дату</string>
-    <string name="plan_end_date_ideas">Запланированая дата</string>
+    <string name="plan_end_date_ideas">Запланированная дата</string>
     <string name="related_to_all_categories_ideas">Относится ко всем категориям</string>
     <string name="new_idea_main_screen_feed">Новая идея</string>
     <string name="add_new_idea">Добавить новую идею</string>
@@ -162,7 +162,7 @@
     <string name="spent_main_track_screen">Потрачено</string>
     <string name="scroll_up_CD">Пролистай вверх</string>
     <string name="budget_main_feed_card">%1$s</string>
-    <string name="empty_incm_lazyColumn_additional1">Попробуй добавить новый используя кнопку в нижней часть экрана</string>
+    <string name="empty_incm_lazyColumn_additional1">Попробуйте добавить новые, используя кнопку в нижней части экрана</string>
     <string name="add_to_adding_to_saving_idea_dialog">Добавить к</string>
     <string name="planned_adding_to_saving_idea_dialog">Запланировано %1$s</string>
     <string name="completed_for_adding_to_saving_idea_dialog">Выполнено на</string>
@@ -191,7 +191,7 @@
     <string name="show_as">Показывать как</string>
     <string name="allow_non_categorised_incomes">Разрешать некатегоризированные доходы</string>
     <string name="financial_operation_statistic_screen">Финансовые операции</string>
-    <string name="expense_operation_statistic_screen">Операции доходов</string>
+    <string name="expense_operation_statistic_screen">Операции расходов</string>
     <string name="income_operation_statistic_screen">Операции доходов</string>
     <string name="category_name_new_category_dialog">Название категории</string>
     <string name="filter_currencies">Фильтруй валюты</string>

@@ -37,7 +37,7 @@ fun SettingsSpecifiedScreenHeader(screenName: String, onBackPressed: () -> Unit)
     ) {
         Box(
             modifier = Modifier
-                .size(36.dp)
+                .size(32.dp)
                 .clip(CircleShape)
                 .background(MaterialTheme.colorScheme.primary)
                 .clickable { onBackPressed() }
@@ -47,7 +47,7 @@ fun SettingsSpecifiedScreenHeader(screenName: String, onBackPressed: () -> Unit)
                 contentDescription = stringResource(R.string.back_to_settings_screen_CD),
                 modifier = Modifier
                     .align(Alignment.Center)
-                    .scale(0.8f),
+                    .scale(0.75f),
                 tint = MaterialTheme.colorScheme.onPrimary
             )
         }

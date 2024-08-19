@@ -152,7 +152,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                             startAxis = rememberStartAxis(
                                 guideline = null,
                                 horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
-                                label =  rememberTextComponent(
+                                label = rememberTextComponent(
                                     color = MaterialTheme.colorScheme.onSecondary,
                                     padding = Dimensions.of(2.dp),
                                     margins = Dimensions.of(start = 3.dp),
@@ -199,12 +199,11 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = 24.dp, end = 12.dp), horizontalArrangement = Arrangement.SpaceBetween
+                        .padding(start = 32.dp, end = 12.dp), horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    val maxTextCount = 5
+                    val maxTextCount = 3
                     val valuesStep = if (chartData.size <= maxTextCount) 1 else chartData.size / maxTextCount
-
-                    chartData.entries.forEachIndexed { index, entry ->
+                    chartData.entries.sortedBy { it.key }.forEachIndexed { index, entry ->
                         if (index % valuesStep == 0 || index == 0 || index == chartData.size - 1) {
                             Text(
                                 text = dateTimeFormatter.format(entry.key),

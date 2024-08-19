@@ -60,13 +60,13 @@
     <string name="new_name_personal_settings_screen">Нове ім\'я</string>
     <string name="decline">Відмінити</string>
     <string name="save">Зберегти</string>
-    <string name="your_stats_personal_settings_screen">Твоя статистика</string>
-    <string name="not_added_any_expenses_yet_personal_settings_screen">Ти ще не додав жодної витрати</string>
-    <string name="you_have_already_added_expenses_worth_of">Ти вже додав %1$s витрат, сумарно на %2$s %3$s</string>
-    <string name="not_added_any_incomes_yet_personal_settings_screen">Ти ще не додав жодного доходу</string>
-    <string name="you_have_already_added_incomes_worth_of">Ти вже додав %1$s доходів, сумарно на %2$s %3$s</string>
+    <string name="your_stats_personal_settings_screen">Ваша статистика</string>
+    <string name="not_added_any_expenses_yet_personal_settings_screen">Ви ще не додали жодної витрати</string>
+    <string name="you_have_already_added_expenses_worth_of">Ви вже додали %1$s витрат, сумарно на %2$s %3$s</string>
+    <string name="not_added_any_incomes_yet_personal_settings_screen">Ви ще не додали жодного доходу</string>
+    <string name="you_have_already_added_incomes_worth_of">Ви вже додали %1$s доходів, сумарно на %2$s %3$s</string>
     <string name="login_message_personal_settings_screen">Ви зайшли в Track %1$s разів</string>
-    <string name="message_categories_settings_screen">Створюй, шукай та видаляй категорії. Базові категорії не можуть бути видаленими</string>
+    <string name="message_categories_settings_screen">Створюйте, шукайте та видаляйте категорії. Базові категорії не можуть бути видаленими</string>
     <string name="expense_categories_categories_settings_screen">Категорії витрат</string>
     <string name="delete">Видалити</string>
     <string name="income_categories">Категорії доходів</string>
@@ -81,7 +81,7 @@
     </plurals>
     <string name="warning_message_track_stats_lazycolumn">Ми не знайшли фінансових операцій для таких фільтрів</string>
     <string name="first_notion_new_idea_card">Ідеї це фінансові інструменти Track</string>
-    <string name="second_notion_new_idea_card">Вам доступні : збереження, ліміти витрат та плани доходів</string>
+    <string name="second_notion_new_idea_card">Вам доступні збереження, ліміти витрат та плани доходів</string>
     <string name="third_notion_new_idea_card">Ідеї покажуть ваші фінансові результати</string>
     <string name="goal">Ціль</string>
     <string name="date">Дата</string>
@@ -199,7 +199,7 @@
     <string name="show_additional_currencies">Покажи додаткові валюти</string>
     <string name="user">Користувач</string>
     <string name="plan_started_income_plan_card">Початок плану: %1$s</string>
-    <string name="your_ideas_setting_screen">Твої Ідеї</string>
+    <string name="your_ideas_setting_screen">Ідеї</string>
     <string name="set_as_preferable_currency_currencies_settings">Зміни улюблену валюту</string>
     <string name="set_as_first_priority_additional">Додаткова валюта першого пріоритету</string>
     <string name="set_as_second_priority_additional">Додаткова валюта другого пріоритету</string>
