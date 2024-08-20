@@ -54,7 +54,7 @@ class FinancialCardNotesProvider(
                 expenseCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
                     start = startDate.time,
                     end = endDate.time,
-                    listOfCategories = listOf(financialCategory.categoryId)
+                    categoriesIds = listOf(financialCategory.categoryId)
                 )
             return result
         }

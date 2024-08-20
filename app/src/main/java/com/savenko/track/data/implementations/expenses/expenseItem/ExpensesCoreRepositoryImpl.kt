@@ -40,11 +40,11 @@ class ExpensesCoreRepositoryImpl(
         }
     }
 
-    override suspend fun getSumOfExpensesByCategoriesInTimeSpan(start: Long, end: Long, listOfCategories: List<Int>): Flow<Float> = channelFlow {
+    override suspend fun getSumOfExpensesByCategoriesInTimeSpan(start: Long, end: Long, categoriesIds: List<Int>): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         expenseItemsDao.getExpensesByCategoriesIdInTimeSpan(
             start = start,
-            end = end, listOfCategoriesId = listOfCategories
+            end = end, listOfCategoriesId = categoriesIds
         ).collect { foundedExpenseItems ->
             var sumOfExpensesInPreferableCurrency = 0.0f
             val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
@@ -70,7 +70,7 @@ class ExpensesCoreRepositoryImpl(
         return getSumOfExpensesByCategoriesInTimeSpan(
             start = getStartOfMonthDate(todayDate).time,
             end = getEndOfMonthDate(todayDate).time,
-            listOfCategories = listOfCategoriesId
+            categoriesIds = listOfCategoriesId
         )
     }
 

@@ -8,9 +8,10 @@ import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
 import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
-import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialTypes
+import com.savenko.track.domain.models.expenses.ExpenseItem
+import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
@@ -19,8 +20,8 @@ import com.savenko.track.domain.usecases.crud.financials.DeleteFinancialItemUseC
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserExpensesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserIncomesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetPeriodSummaryUseCase
+import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialCardNotion
 import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialLazyColumnState
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
@@ -47,6 +48,8 @@ class FinancialsLazyColumnViewModel(
                 isScrolledBelow = false,
                 expandedFinancialEntity = null,
                 isExpenseLazyColumn = true,
+                expensesFinancialSummary = mapOf(),
+                incomesFinancialSummary = mapOf(),
                 preferableCurrency = CURRENCY_DEFAULT
             )
         )
@@ -54,20 +57,24 @@ class FinancialsLazyColumnViewModel(
 
     init {
         viewModelScope.launch {
+            getUserExpensesUseCase().collect { listOfExpenses ->
+                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expensesList = listOfExpenses) }
+                initializeExpenseListFinancialNotions(listOfExpenses)
+            }
+        }
+        viewModelScope.launch {
+            getUserIncomesUseCase().collect { listOfIncomes ->
+                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomeList = listOfIncomes) }
+                initializeIncomeListFinancialNotions(listOfIncomes)
+            }
+        }
+
+        viewModelScope.launch {
             expensesCategoriesListRepositoryImpl.getCategoriesList().collect { listOfExpenseCategories ->
                 _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expenseCategoriesList = listOfExpenseCategories) }
             }
         }
-        viewModelScope.launch {
-            getUserExpensesUseCase().collect { listOfExpenses ->
-                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expensesList = listOfExpenses) }
-            }
-        }
-        viewModelScope.launch {
-            getUserIncomesUseCase().collect { incomeList ->
-                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomeList = incomeList) }
-            }
-        }
+
         viewModelScope.launch {
             incomesCategoriesListRepositoryImpl.getCategoriesList().collect { incomeCategoriesList ->
                 _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomeCategoriesList = incomeCategoriesList) }
@@ -105,43 +112,36 @@ class FinancialsLazyColumnViewModel(
         deleteFinancialItemUseCase(financialEntity)
     }
 
-
-    suspend fun requestCountInMonthNotion(
-        financialEntity: FinancialEntity,
-        financialCategory: CategoryEntity
-    ): Flow<Int> {
-        val currentMonthDateRange = Range(
-            getStartOfMonthDate(Date(financialEntity.date.time)),
-            getEndOfMonthDate(Date(System.currentTimeMillis()))
-        )
-        return financialCardNotesProvider.requestCountNotionForFinancialCard(
-            financialEntity,
-            financialCategory,
-            currentMonthDateRange
-        )
+    private suspend fun initializeExpenseListFinancialNotions(listOfExpenses: List<ExpenseItem>) {
+        val map = listOfExpenses.associate {expenseItem ->
+            expenseItem.id to getPeriodSummaryUseCase.getPeriodSummaryById(
+                dateRange = Range(
+                    getStartOfMonthDate(expenseItem.date), getEndOfMonthDate(expenseItem.date)
+                ), financialTypes = FinancialTypes.Expense, categoryID = expenseItem.id
+            ).first()
+        }
+        _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expensesFinancialSummary = map) }
     }
 
-    suspend fun requestSummaryInMonthNotion(
-        financialEntity: FinancialEntity,
-        financialCategory: CategoryEntity
-    ): Flow<Float> {
-        val currentMonthDateRange = Range(
-            getStartOfMonthDate(Date(financialEntity.date.time)),
-            getEndOfMonthDate(Date(System.currentTimeMillis()))
-        )
-        return financialCardNotesProvider.requestValueSummaryNotionForFinancialCard(
-            financialEntity,
-            financialCategory,
-            currentMonthDateRange
-        )
+    private suspend fun initializeIncomeListFinancialNotions(listOfIncomes: List<IncomeItem>) {
+        val map = listOfIncomes.associate {incomeItem ->
+            incomeItem.id to getPeriodSummaryUseCase.getPeriodSummaryById(
+                dateRange = Range(
+                    getStartOfMonthDate(incomeItem.date), getEndOfMonthDate(incomeItem.date)
+                ), financialTypes = FinancialTypes.Income, categoryID = incomeItem.id
+            ).first()
+        }
+        _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomesFinancialSummary = map) }
     }
 
-    suspend fun requestMonthSummary(monthDate: Date): Pair<Int, Float> {
+    suspend fun requestMonthSummary(monthDate: Date): FinancialCardNotion {
         val dateRange = Range(getStartOfMonthDate(monthDate), getEndOfMonthDate(monthDate))
         return if (_financialLazyColumnState.value.isExpenseLazyColumn) {
-            getPeriodSummaryUseCase.getPeriodSummary(dateRange = dateRange, financialTypes = FinancialTypes.Expense).first()
+            getPeriodSummaryUseCase.getPeriodSummary(dateRange = dateRange, financialTypes = FinancialTypes.Expense)
+                .first()
         } else {
-            getPeriodSummaryUseCase.getPeriodSummary(dateRange = dateRange, financialTypes = FinancialTypes.Income).first()
+            getPeriodSummaryUseCase.getPeriodSummary(dateRange = dateRange, financialTypes = FinancialTypes.Income)
+                .first()
         }
     }
 }

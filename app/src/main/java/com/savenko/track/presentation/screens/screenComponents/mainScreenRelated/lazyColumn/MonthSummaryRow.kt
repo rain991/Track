@@ -32,8 +32,11 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.R
+import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
+import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.domain.models.currency.CurrencyTypes
 
 
 @Composable
@@ -74,7 +77,7 @@ fun MonthSummaryRow(
                 fontSize = 18.sp, fontWeight = FontWeight.W500
             )
         ) {
-            append(quantity.toString())
+            append(" $quantity")
         }
     }
 
@@ -96,7 +99,12 @@ fun MonthSummaryRow(
                     fontSize = 18.sp, fontWeight = FontWeight.W500
                 )
             ) {
-                append(" $summary")
+              val formatedSummary = if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                    FIAT_DECIMAL_FORMAT.format(summary)
+                } else {
+                    CRYPTO_DECIMAL_FORMAT.format(summary)
+                }
+                append(" $formatedSummary")
             }
             withStyle(
                 style = SpanStyle(
@@ -113,15 +121,13 @@ fun MonthSummaryRow(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .wrapContentHeight()
+                .wrapContentHeight().padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
             DashedDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp), dashWidth = 16.dp
+                modifier = Modifier.fillMaxWidth(), dashWidth = 16.dp
             )
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
                 Text(
                     text = stringResource(R.string.month_summary_header, monthName),
@@ -134,11 +140,9 @@ fun MonthSummaryRow(
             )
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = summaryText)
-            Spacer(modifier = Modifier.height(4.dp))
+            Spacer(modifier = Modifier.height(8.dp))
             DashedDivider(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp), dashWidth = 16.dp
+                modifier = Modifier.fillMaxWidth(), dashWidth = 16.dp
             )
             Spacer(modifier = Modifier.height(16.dp))
         }
