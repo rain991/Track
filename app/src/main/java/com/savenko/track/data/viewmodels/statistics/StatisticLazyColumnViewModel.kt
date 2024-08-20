@@ -15,7 +15,6 @@ import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesL
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredExpensesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -37,12 +36,12 @@ class StatisticLazyColumnViewModel(
     private val _incomeCategoriesList = mutableStateListOf<IncomeCategory>()
     val incomeCategoriesList: List<IncomeCategory> = _incomeCategoriesList
 
-    suspend fun innitializeListOfEntities(
+    suspend fun initializeListOfEntities(
         timePeriod: Range<Date>,
         financialEntities: FinancialEntities
     ) {
         viewModelScope.launch {
-            async {
+            launch {
                 when (financialEntities) {
                     is FinancialEntities.IncomeFinancialEntity -> {
                         getDesiredIncomesUseCase(timePeriod).collect {
@@ -67,13 +66,13 @@ class StatisticLazyColumnViewModel(
                     }
                 }
             }
-            async {
+            launch {
                 incomesCategoriesListRepositoryImpl.getCategoriesList().collect {
                     _incomeCategoriesList.clear()
                     _incomeCategoriesList.addAll(it)
                 }
             }
-            async {
+            launch {
                 expensesCategoriesListRepository.getCategoriesList().collect {
                     _expenseCategoriesList.clear()
                     _expenseCategoriesList.addAll(it)

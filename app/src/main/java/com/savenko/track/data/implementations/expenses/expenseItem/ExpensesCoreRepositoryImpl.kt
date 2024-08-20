@@ -10,7 +10,9 @@ import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceReposi
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.flow
 import java.time.LocalDate
 import java.util.Date
 
@@ -26,8 +28,10 @@ class ExpensesCoreRepositoryImpl(
             end = end
         ).collect { foundedExpenseItems ->
             var sumOfExpensesInPreferableCurrency = 0.0f
-            val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
-            val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
+            val listOfExpensesInPreferableCurrency =
+                foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
+            val listOfExpensesNotInPreferableCurrency =
+                foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
             listOfExpensesInPreferableCurrency.forEach { it -> sumOfExpensesInPreferableCurrency += it.value }
             listOfExpensesNotInPreferableCurrency.forEach { it ->
                 val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
@@ -40,15 +44,21 @@ class ExpensesCoreRepositoryImpl(
         }
     }
 
-    override suspend fun getSumOfExpensesByCategoriesInTimeSpan(start: Long, end: Long, categoriesIds: List<Int>): Flow<Float> = channelFlow {
+    override suspend fun getSumOfExpensesByCategoriesInTimeSpan(
+        start: Long,
+        end: Long,
+        categoriesIds: List<Int>
+    ): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         expenseItemsDao.getExpensesByCategoriesIdInTimeSpan(
             start = start,
             end = end, listOfCategoriesId = categoriesIds
         ).collect { foundedExpenseItems ->
             var sumOfExpensesInPreferableCurrency = 0.0f
-            val listOfExpensesInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
-            val listOfExpensesNotInPreferableCurrency = foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
+            val listOfExpensesInPreferableCurrency =
+                foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
+            val listOfExpensesNotInPreferableCurrency =
+                foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
             listOfExpensesInPreferableCurrency.forEach { sumOfExpensesInPreferableCurrency += it.value }
             listOfExpensesNotInPreferableCurrency.forEach {
                 val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
@@ -62,7 +72,10 @@ class ExpensesCoreRepositoryImpl(
 
     override suspend fun getCurrentMonthSumOfExpense(): Flow<Float> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
-        return getSumOfExpensesInTimeSpan(start = getStartOfMonthDate(todayDate).time, end = getEndOfMonthDate(todayDate).time)
+        return getSumOfExpensesInTimeSpan(
+            start = getStartOfMonthDate(todayDate).time,
+            end = getEndOfMonthDate(todayDate).time
+        )
     }
 
     override suspend fun getCurrentMonthSumOfExpensesByCategoriesId(listOfCategoriesId: List<Int>): Flow<Float> {
@@ -78,7 +91,26 @@ class ExpensesCoreRepositoryImpl(
         return expenseItemsDao.getCountOfExpensesInTimeSpan(start = startDate.time, end = endDate.time)
     }
 
-    override suspend fun getCountOfExpensesInSpanByCategoriesIds(startDate: Date, endDate: Date, categoriesIds: List<Int>): Flow<Int> {
+    override suspend fun getCountOfExpensesInSpanByCategoriesIds(
+        startDate: Date,
+        endDate: Date,
+        categoriesIds: List<Int>
+    ): Flow<Int> {
         return expenseItemsDao.getCountOfExpensesInTimeSpanByCategoriesIds(startDate.time, endDate.time, categoriesIds)
+    }
+
+    // Average - day average spending in time span
+    override suspend fun getAverageInTimeSpan(startDate: Date, endDate: Date): Flow<Float> {
+        val dayDifference = flow<Int> { (startDate.time.minus(endDate.time)).div(86400000).toInt() }
+        return combine(
+            getSumOfExpensesInTimeSpan(start = startDate.time, end = endDate.time),
+            dayDifference
+        ) { sumOfExpenses, daysDifference ->
+            try {
+                sumOfExpenses.div(daysDifference)
+            } catch (e: Exception) {
+                sumOfExpenses
+            }
+        }
     }
 }

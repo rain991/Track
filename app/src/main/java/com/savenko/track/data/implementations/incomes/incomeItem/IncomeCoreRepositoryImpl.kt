@@ -7,6 +7,7 @@ import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceReposi
 import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import java.util.Date
 
@@ -80,5 +81,13 @@ class IncomeCoreRepositoryImpl(
             end = endDate.time,
             categoriesIds = categoriesIds
         )
+    }
+
+    // Average - average throughout values
+    override suspend fun getAverageInTimeSpan(startDate: Date, endDate: Date): Flow<Float> {
+        return combine(getSumOfIncomesInTimeSpan(startDate,endDate), getCountOfIncomesInSpan(startDate,endDate)){
+            sumOfIncomes, countOfIncomes ->
+            sumOfIncomes.div(countOfIncomes)
+        }
     }
 }

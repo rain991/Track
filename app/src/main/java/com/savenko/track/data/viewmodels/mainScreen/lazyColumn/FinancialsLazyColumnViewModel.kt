@@ -3,7 +3,6 @@ package com.savenko.track.data.viewmodels.mainScreen.lazyColumn
 import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.core.FinancialCardNotesProvider
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
 import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
@@ -38,8 +37,7 @@ class FinancialsLazyColumnViewModel(
     private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepository,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository,
     private val currencyListRepositoryImpl: CurrencyListRepository,
-    private val currenciesPreferenceRepository: CurrenciesPreferenceRepository,
-    private val financialCardNotesProvider: FinancialCardNotesProvider
+    private val currenciesPreferenceRepository: CurrenciesPreferenceRepository
 ) : ViewModel() {
     private val _financialLazyColumnState =
         MutableStateFlow(
@@ -117,7 +115,7 @@ class FinancialsLazyColumnViewModel(
             expenseItem.id to getPeriodSummaryUseCase.getPeriodSummaryById(
                 dateRange = Range(
                     getStartOfMonthDate(expenseItem.date), getEndOfMonthDate(expenseItem.date)
-                ), financialTypes = FinancialTypes.Expense, categoryID = expenseItem.id
+                ), financialTypes = FinancialTypes.Expense, categoryID = expenseItem.categoryId
             ).first()
         }
         _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expensesFinancialSummary = map) }
@@ -128,7 +126,7 @@ class FinancialsLazyColumnViewModel(
             incomeItem.id to getPeriodSummaryUseCase.getPeriodSummaryById(
                 dateRange = Range(
                     getStartOfMonthDate(incomeItem.date), getEndOfMonthDate(incomeItem.date)
-                ), financialTypes = FinancialTypes.Income, categoryID = incomeItem.id
+                ), financialTypes = FinancialTypes.Income, categoryID = incomeItem.categoryId
             ).first()
         }
         _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomesFinancialSummary = map) }

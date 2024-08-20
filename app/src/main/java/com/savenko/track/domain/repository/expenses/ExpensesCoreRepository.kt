@@ -10,4 +10,5 @@ interface ExpensesCoreRepository {
     suspend fun getCurrentMonthSumOfExpensesByCategoriesId(listOfCategoriesId : List<Int>) : Flow<Float>
     suspend fun getCountOfExpensesInSpan(startDate: Date, endDate: Date): Flow<Int>
     suspend fun getCountOfExpensesInSpanByCategoriesIds(startDate: Date, endDate: Date,categoriesIds : List<Int>): Flow<Int>
+    suspend fun getAverageInTimeSpan(startDate: Date, endDate: Date) : Flow<Float>
 }

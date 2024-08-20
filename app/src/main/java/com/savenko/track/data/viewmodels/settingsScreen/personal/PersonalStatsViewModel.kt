@@ -7,7 +7,6 @@ import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.presentation.screens.states.additional.settings.personalSettings.PersonalStatsState
-import kotlinx.coroutines.async
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -31,22 +30,22 @@ class PersonalStatsViewModel(
 
     init {
         viewModelScope.launch {
-            async {
+            launch {
                 personalStatsProvider.provideLoginCount().collect { setLoginCount(it) }
             }
-            async {
+            launch {
                 personalStatsProvider.provideAllTimeIncomesSum().collect { setIncomesSum(it) }
             }
-            async {
+            launch {
                 personalStatsProvider.provideAllTimeIncomesCount().collect { setIncomesCount(it) }
             }
-            async {
+            launch {
                 personalStatsProvider.provideAllTimeExpensesSum().collect { setExpensesSum(it) }
             }
-            async {
+            launch {
                 personalStatsProvider.provideAllTimeExpensesCount().collect { setExpensesCount(it) }
             }
-            async {
+            launch {
                 currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect { setPreferableCurrency(it) }
             }
         }

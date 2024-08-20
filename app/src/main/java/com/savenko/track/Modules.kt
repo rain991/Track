@@ -187,7 +187,7 @@ val viewModelModule = module {
     viewModel { AdditionalPreferencesSettingsViewModel(get(), get(), get(), get()) }
 
     // Track main screen related
-    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
 
     // Statistics related
     viewModel { StatisticChartViewModel(get(), get(), get()) }

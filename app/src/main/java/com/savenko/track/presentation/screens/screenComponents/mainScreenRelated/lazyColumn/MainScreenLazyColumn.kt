@@ -269,6 +269,7 @@ fun MainScreenLazyColumn(
                                     }
                                     Log.d("FinancialSummary", "ID: ${currentFinancialEntity.id}, Summary: ${expenseListFinancialSummary[currentFinancialEntity.id]?.financialSummary}")
                                     Log.d("FinancialSummary", "size: ${expenseListFinancialSummary.size} ")
+
                                     FinancialItemCardTypeSimple(
                                         financialEntity = currentFinancialEntity,
                                         categoryEntity = currentFinancialCategory,
