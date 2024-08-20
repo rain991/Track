@@ -52,7 +52,7 @@ class IdeaListRepositoryImpl(
             when (idea) {
                 is ExpenseLimits -> {
                     if (idea.isRelatedToAllCategories) {
-                        expensesCoreRepositoryImpl.getSumOfExpenses(idea.startDate.time, currentTimeMillis).collect {
+                        expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(idea.startDate.time, currentTimeMillis).collect {
                             send(it)
                         }
                     } else {
@@ -62,7 +62,7 @@ class IdeaListRepositoryImpl(
                                 idea.secondRelatedCategoryId,
                                 idea.thirdRelatedCategoryId
                             )
-                        expensesCoreRepositoryImpl.getSumOfExpensesByCategories(
+                        expensesCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
                             idea.startDate.time,
                             currentTimeMillis,
                             relatedGroups

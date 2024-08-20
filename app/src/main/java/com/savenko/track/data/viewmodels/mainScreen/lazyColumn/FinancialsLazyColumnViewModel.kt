@@ -6,10 +6,11 @@ import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.core.FinancialCardNotesProvider
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
-import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
+import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
+import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
@@ -17,10 +18,12 @@ import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesL
 import com.savenko.track.domain.usecases.crud.financials.DeleteFinancialItemUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserExpensesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified.GetUserIncomesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetPeriodSummaryUseCase
 import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialLazyColumnState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
@@ -29,6 +32,7 @@ import java.util.Date
 class FinancialsLazyColumnViewModel(
     private val getUserExpensesUseCase: GetUserExpensesUseCase,
     private val getUserIncomesUseCase: GetUserIncomesUseCase,
+    private val getPeriodSummaryUseCase: GetPeriodSummaryUseCase,
     private val deleteFinancialItemUseCase: DeleteFinancialItemUseCase,
     private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepository,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository,
@@ -108,7 +112,7 @@ class FinancialsLazyColumnViewModel(
     ): Flow<Int> {
         val currentMonthDateRange = Range(
             getStartOfMonthDate(Date(financialEntity.date.time)),
-            getEndOfTheMonth(Date(System.currentTimeMillis()))
+            getEndOfMonthDate(Date(System.currentTimeMillis()))
         )
         return financialCardNotesProvider.requestCountNotionForFinancialCard(
             financialEntity,
@@ -123,13 +127,22 @@ class FinancialsLazyColumnViewModel(
     ): Flow<Float> {
         val currentMonthDateRange = Range(
             getStartOfMonthDate(Date(financialEntity.date.time)),
-            getEndOfTheMonth(Date(System.currentTimeMillis()))
+            getEndOfMonthDate(Date(System.currentTimeMillis()))
         )
         return financialCardNotesProvider.requestValueSummaryNotionForFinancialCard(
             financialEntity,
             financialCategory,
             currentMonthDateRange
         )
+    }
+
+    suspend fun requestMonthSummary(monthDate: Date): Pair<Int, Float> {
+        val dateRange = Range(getStartOfMonthDate(monthDate), getEndOfMonthDate(monthDate))
+        return if (_financialLazyColumnState.value.isExpenseLazyColumn) {
+            getPeriodSummaryUseCase.getPeriodSummary(dateRange = dateRange, financialTypes = FinancialTypes.Expense).first()
+        } else {
+            getPeriodSummaryUseCase.getPeriodSummary(dateRange = dateRange, financialTypes = FinancialTypes.Income).first()
+        }
     }
 }
 

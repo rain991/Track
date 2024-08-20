@@ -12,7 +12,7 @@ class PersonalStatsProvider(
     private val dataStoreManager: DataStoreManager
 ) {
     suspend fun provideAllTimeExpensesSum(): Flow<Float> {
-        return expensesCoreRepositoryImpl.getSumOfExpenses(start = 0, end = System.currentTimeMillis())
+        return expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(start = 0, end = System.currentTimeMillis())
     }
 
     suspend fun provideAllTimeIncomesSum(): Flow<Float> {

@@ -49,12 +49,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.zIndex
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
+import com.savenko.track.data.other.constants.MONTH_SUMMARY_MIN_LIST_SIZE
 import com.savenko.track.data.other.converters.dates.areDatesSame
+import com.savenko.track.data.other.converters.dates.areMonthsSame
 import com.savenko.track.data.other.converters.dates.areYearsSame
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.expenses.ExpenseItem
+import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.other.getMonthResID
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
@@ -65,9 +68,11 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
+import java.util.Calendar
+import java.util.Locale
 
 /*  Contains lazy column used in expense screen. Also contains such private composable functions:
-    Transactions (ui to switch between expeneses and incomes), EmptyLazyColumnPlacement, ExpenseDayHeader, ExpenseMonthHeader, ExpenseYearHeader   */
+    Transactions (ui to switch between expenses and incomes), EmptyLazyColumnPlacement, ExpenseDayHeader, ExpenseMonthHeader, ExpenseYearHeader   */
 @Composable
 fun MainScreenLazyColumn(
     containsInfoCards: Boolean,
@@ -75,6 +80,7 @@ fun MainScreenLazyColumn(
     switchBottomSheetToIncomes: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
+    val locale = Locale.getDefault()
     val listState = rememberLazyListState()
     val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
     val lazyColumnState = financialsLazyColumnViewModel.financialLazyColumnState.collectAsState()
@@ -171,8 +177,14 @@ fun MainScreenLazyColumn(
                             } else {
                                 incomeCategoriesList.find { it.categoryId == currentFinancialEntity.categoryId }
                             }
+                        val financialsList = if (isExpenseLazyColumn) {
+                            expensesList
+                        } else {
+                            incomeList
+                        }
                         var isPreviousDayDifferent = index == 0
                         var isNextDayDifferent = false
+                        var isNextMonthDifferent = false
                         var isPreviousYearDifferent = false
                         if (index > 0) {
                             val previousFinancialEntity = if (isExpenseLazyColumn) {
@@ -197,6 +209,8 @@ fun MainScreenLazyColumn(
                                     expensesList[index + 1].date,
                                     currentFinancialEntity.date
                                 )
+                                isNextMonthDifferent =
+                                    !areMonthsSame(expensesList[index + 1].date, currentFinancialEntity.date)
                             }
                         } else {
                             if (index < incomeList.size - 1) {
@@ -204,6 +218,8 @@ fun MainScreenLazyColumn(
                                     incomeList[index + 1].date,
                                     currentFinancialEntity.date
                                 )
+                                isNextMonthDifferent =
+                                    !areMonthsSame(incomeList[index + 1].date, currentFinancialEntity.date)
                             }
                         }
                         Column(modifier = Modifier.padding(horizontal = 8.dp)) {
@@ -302,7 +318,44 @@ fun MainScreenLazyColumn(
                                             )
                                         }
                                     )
-                                    if (isNextDayDifferent) Spacer(modifier = Modifier.height(20.dp))
+                                    if (isNextDayDifferent && !isNextMonthDifferent) Spacer(
+                                        modifier = Modifier.height(
+                                            20.dp
+                                        )
+                                    )
+                                    if (isNextMonthDifferent && financialsList.size > MONTH_SUMMARY_MIN_LIST_SIZE) {
+                                        var monthSummary by
+                                            remember { mutableStateOf(value = Pair(0, 0.0f)) }
+                                        LaunchedEffect(
+                                            key1 = Unit,
+                                            key2 = lazyColumnState.value.expensesList,
+                                            key3 = lazyColumnState.value.incomeList
+                                        ) {
+                                            monthSummary = financialsLazyColumnViewModel.requestMonthSummary(currentFinancialEntity.date)
+                                        }
+                                        val calendar = Calendar.getInstance().apply {
+                                            time = currentFinancialEntity.date
+                                        }
+                                        val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
+                                        if (isExpenseLazyColumn) {
+                                            MonthSummaryRow<ExpenseItem>(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                summary = monthSummary.second,
+                                                quantity = monthSummary.first,
+                                                monthName = monthName ?: "",
+                                                preferableCurrency = lazyColumnState.value.preferableCurrency
+                                            )
+                                        } else {
+                                            MonthSummaryRow<IncomeItem>(
+                                                modifier = Modifier.fillMaxWidth(),
+                                                summary = monthSummary.second,
+                                                quantity = monthSummary.first,
+                                                monthName = monthName ?: "",
+                                                preferableCurrency = lazyColumnState.value.preferableCurrency
+                                            )
+                                        }
+
+                                    }
                                     if ((isExpenseLazyColumn && index == expensesList.size - 1) || (!isExpenseLazyColumn && index == incomeList.size - 1)) {
                                         Spacer(modifier = Modifier.height(80.dp))
                                     }

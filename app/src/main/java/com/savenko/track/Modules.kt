@@ -78,6 +78,7 @@ import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredExpensesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetPeriodSummaryUseCase
 import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
 import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
@@ -168,6 +169,7 @@ val domainModule = module {
     factory<GetDesiredFinancialEntitiesUseCase> { GetDesiredFinancialEntitiesUseCase(get(), get()) }
     factory<GetUnfinishedIdeasUseCase> { GetUnfinishedIdeasUseCase(get()) }
     factory<ChangePreferableCurrencyUseCase> { ChangePreferableCurrencyUseCase(get(), get(), get(), get()) }
+    factory<GetPeriodSummaryUseCase> { GetPeriodSummaryUseCase(get(), get()) }
 }
 
 val viewModelModule = module {
@@ -178,14 +180,14 @@ val viewModelModule = module {
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
     viewModel { IdeasSettingsScreenViewModel(get(), get()) }
     viewModel { ThemePreferenceSettingsViewModel(get(), get()) }
-    viewModel { CategoriesSettingsScreenViewModel(get(), get(), get(),get()) }
+    viewModel { CategoriesSettingsScreenViewModel(get(), get(), get(), get()) }
     viewModel { NewCategoryViewModel(get(), get(), get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get(), get()) }
     viewModel { PersonalStatsViewModel(get(), get()) }
     viewModel { AdditionalPreferencesSettingsViewModel(get(), get(), get(), get()) }
 
     // Track main screen related
-    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get(), get(), get(), get()) }
+    viewModel { FinancialsLazyColumnViewModel(get(), get(), get(), get(), get(), get(), get(), get(), get()) }
 
     // Statistics related
     viewModel { StatisticChartViewModel(get(), get(), get()) }

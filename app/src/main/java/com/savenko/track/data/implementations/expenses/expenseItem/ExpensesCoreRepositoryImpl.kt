@@ -4,7 +4,7 @@ import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.savenko.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
+import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
@@ -19,7 +19,7 @@ class ExpensesCoreRepositoryImpl(
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : ExpensesCoreRepository {
-    override suspend fun getSumOfExpenses(start: Long, end: Long): Flow<Float> = channelFlow {
+    override suspend fun getSumOfExpensesInTimeSpan(start: Long, end: Long): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         expenseItemsDao.getExpensesInTimeSpanDateAsc(
             start = start,
@@ -40,7 +40,7 @@ class ExpensesCoreRepositoryImpl(
         }
     }
 
-    override suspend fun getSumOfExpensesByCategories(start: Long, end: Long, listOfCategories: List<Int>): Flow<Float> = channelFlow {
+    override suspend fun getSumOfExpensesByCategoriesInTimeSpan(start: Long, end: Long, listOfCategories: List<Int>): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         expenseItemsDao.getExpensesByCategoriesIdInTimeSpan(
             start = start,
@@ -62,14 +62,14 @@ class ExpensesCoreRepositoryImpl(
 
     override suspend fun getCurrentMonthSumOfExpense(): Flow<Float> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
-        return getSumOfExpenses(start = getStartOfMonthDate(todayDate).time, end = getEndOfTheMonth(todayDate).time)
+        return getSumOfExpensesInTimeSpan(start = getStartOfMonthDate(todayDate).time, end = getEndOfMonthDate(todayDate).time)
     }
 
     override suspend fun getCurrentMonthSumOfExpensesByCategoriesId(listOfCategoriesId: List<Int>): Flow<Float> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
-        return getSumOfExpensesByCategories(
+        return getSumOfExpensesByCategoriesInTimeSpan(
             start = getStartOfMonthDate(todayDate).time,
-            end = getEndOfTheMonth(todayDate).time,
+            end = getEndOfMonthDate(todayDate).time,
             listOfCategories = listOfCategoriesId
         )
     }

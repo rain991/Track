@@ -19,7 +19,7 @@ fun getStartOfMonthDate(date: Date): Date {
     return calendar.time
 }
 
-fun getEndOfTheMonth(date: Date): Date {
+fun getEndOfMonthDate(date: Date): Date {
     val calendar = Calendar.getInstance()
     calendar.time = date
     calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
@@ -57,13 +57,15 @@ fun getEndOfYearDate(date: Date): Date {
     return cal.time
 }
 
-
+fun areMonthsSame(date1: Date, date2: Date): Boolean {
+    val cal1 = Calendar.getInstance().apply { time = date1 }
+    val cal2 = Calendar.getInstance().apply { time = date2 }
+    return (cal1[Calendar.MONTH] == cal2[Calendar.MONTH] && cal1[Calendar.YEAR] == cal2[Calendar.YEAR])
+}
 
 fun areYearsSame(date1: Date, date2: Date): Boolean {
-    val cal1 = Calendar.getInstance()
-    val cal2 = Calendar.getInstance()
-    cal1.time = date1
-    cal2.time = date2
+    val cal1 = Calendar.getInstance().apply { time = date1 }
+    val cal2 = Calendar.getInstance().apply { time = date2 }
     return (cal1[Calendar.YEAR] == cal2[Calendar.YEAR])
 }
 

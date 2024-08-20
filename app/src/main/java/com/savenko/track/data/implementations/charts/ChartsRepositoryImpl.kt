@@ -5,7 +5,7 @@ import com.savenko.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.savenko.track.data.database.incomeRelated.IncomeCategoryDao
 import com.savenko.track.data.database.incomeRelated.IncomeDao
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
+import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
 import com.savenko.track.data.other.converters.dates.getEndOfYearDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.data.other.converters.dates.getStartOfYearDate
@@ -29,7 +29,7 @@ class ChartsRepositoryImpl(
         return withContext(context) {
           val monthExpenses =  expenseItemsDao.getExpensesInTimeSpanDateDesc(
                 start = getStartOfMonthDate(todayDate).time,
-                end = getEndOfTheMonth(todayDate).time
+                end = getEndOfMonthDate(todayDate).time
             ).first()
             monthExpenses.map{it.value to it.date}
         }
@@ -40,7 +40,7 @@ class ChartsRepositoryImpl(
         return withContext(context) {
            val monthIncomes =  incomeDao.getIncomesInTimeSpanDateDecs(
                 start = getStartOfMonthDate(todayDate).time,
-                end = getEndOfTheMonth(todayDate).time
+                end = getEndOfMonthDate(todayDate).time
             ).first()
             monthIncomes.map{it.value to it.date}
         }
@@ -73,7 +73,7 @@ class ChartsRepositoryImpl(
         return withContext(context) {
             val todayDate = convertLocalDateToDate(LocalDate.now())
             val startDate = getStartOfMonthDate(todayDate).time
-            val endDate = getEndOfTheMonth(todayDate).time
+            val endDate = getEndOfMonthDate(todayDate).time
             val expenseCategoriesList = expenseCategoryDao.getAllCategories().first()
             val resultMap = mutableMapOf<ExpenseCategory, Int>()
             expenseCategoriesList.forEach {
@@ -89,7 +89,7 @@ class ChartsRepositoryImpl(
         return withContext(context) {
             val todayDate = convertLocalDateToDate(LocalDate.now())
             val startDate = getStartOfMonthDate(todayDate).time
-            val endDate = getEndOfTheMonth(todayDate).time
+            val endDate = getEndOfMonthDate(todayDate).time
             val incomeCategoriesList = incomeCategoryDao.getAllIncomeCategories().first()
             val resultMap = mutableMapOf<IncomeCategory, Int>()
             incomeCategoriesList.forEach {

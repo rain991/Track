@@ -43,3 +43,5 @@ const val FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE = 8
 /*  warning changing this parameter will not increase real max value,
  it is only limit for composables (needed migration in Room from categories IDs parameters to list of categories IDs) */
 const val EXPENSE_LIMIT_MAX_CATEGORIES_SELECTED = 3
+const val MONTH_SUMMARY_MIN_LIST_SIZE =
+    10 // defines min. size of list of FinancialEntity needed in MainScreenLazyColumn to show month summary
