@@ -251,4 +251,9 @@
     <string name="no_categories_for_specified_filters_categories_settings">No categories for specified filters</string>
     <string name="shows_as_categories_settings">Shows as</string>
     <string name="find_your_category_CD">Find your category</string>
+    <string name="month_summary_header">%1$s summary</string>
+    <string name="total_expenses_month_summary">Total expenses :</string>
+    <string name="total_incomes_month_summary">Total incomes :</string>
+    <string name="total_operations_month_summary">Total operations :</string>
+    <string name="overall_month_summary">Overall :</string>
 </resources>

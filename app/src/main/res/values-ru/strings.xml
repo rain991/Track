@@ -212,4 +212,9 @@
     <string name="no_categories_for_specified_filters_categories_settings">Нет категорий для указанных фильтров</string>
     <string name="shows_as_categories_settings">Показывай как</string>
     <string name="find_your_category_CD">Найдите свою категорию</string>
+    <string name="month_summary_header">Итог %1$s</string>
+    <string name="total_expenses_month_summary">Всего расходов :</string>
+    <string name="total_incomes_month_summary">Всего доходов :</string>
+    <string name="total_operations_month_summary">Всего операций :</string>
+    <string name="overall_month_summary">В сумме :</string>
 </resources>

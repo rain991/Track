@@ -56,6 +56,7 @@ import com.savenko.track.data.other.converters.dates.areYearsSame
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
+import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
@@ -338,20 +339,22 @@ fun MainScreenLazyColumn(
                                         }
                                         val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
                                         if (isExpenseLazyColumn) {
-                                            MonthSummaryRow<ExpenseItem>(
+                                            MonthSummaryRow(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 summary = monthSummary.second,
                                                 quantity = monthSummary.first,
                                                 monthName = monthName ?: "",
-                                                preferableCurrency = lazyColumnState.value.preferableCurrency
+                                                preferableCurrency = lazyColumnState.value.preferableCurrency,
+                                                financialTypes = FinancialTypes.Expense
                                             )
                                         } else {
-                                            MonthSummaryRow<IncomeItem>(
+                                            MonthSummaryRow(
                                                 modifier = Modifier.fillMaxWidth(),
                                                 summary = monthSummary.second,
                                                 quantity = monthSummary.first,
                                                 monthName = monthName ?: "",
-                                                preferableCurrency = lazyColumnState.value.preferableCurrency
+                                                preferableCurrency = lazyColumnState.value.preferableCurrency,
+                                                financialTypes = FinancialTypes.Income
                                             )
                                         }
 

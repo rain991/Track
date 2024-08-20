@@ -212,4 +212,9 @@
     <string name="no_categories_for_specified_filters_categories_settings">Немає категорій для таких фільтрів</string>
     <string name="shows_as_categories_settings">Показуй як</string>
     <string name="find_your_category_CD">Знайди свою категорію</string>
+    <string name="month_summary_header">Підсумок %1$s</string>
+    <string name="total_expenses_month_summary">Загалом витрат :</string>
+    <string name="total_incomes_month_summary">Загалом доходів :</string>
+    <string name="total_operations_month_summary">Загалом операцій :</string>
+    <string name="overall_month_summary">У сумі :</string>
 </resources>
