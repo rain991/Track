@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.flow.flowOf
 import java.time.LocalDate
 import java.util.Date
 
@@ -99,12 +99,11 @@ class ExpensesCoreRepositoryImpl(
         return expenseItemsDao.getCountOfExpensesInTimeSpanByCategoriesIds(startDate.time, endDate.time, categoriesIds)
     }
 
-    // Average - day average spending in time span
     override suspend fun getAverageInTimeSpan(startDate: Date, endDate: Date): Flow<Float> {
-        val dayDifference = flow<Int> { (startDate.time.minus(endDate.time)).div(86400000).toInt() }
+        val dayDifference = (endDate.time - startDate.time) / 86400000 + 1
         return combine(
             getSumOfExpensesInTimeSpan(start = startDate.time, end = endDate.time),
-            dayDifference
+            flowOf(dayDifference)
         ) { sumOfExpenses, daysDifference ->
             try {
                 sumOfExpenses.div(daysDifference)
@@ -113,4 +112,5 @@ class ExpensesCoreRepositoryImpl(
             }
         }
     }
+
 }

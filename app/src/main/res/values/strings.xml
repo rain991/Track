@@ -259,4 +259,5 @@
     <string name="financials_quantity_stats_info_cards">Financials quantity :</string>
     <string name="average_income_stats_info_cards">Average income :</string>
     <string name="average_expenses_stats_info_cards">Average expenses per day :</string>
+    <string name="period_summary_statistics_info_cards">Period summary</string>
 </resources>

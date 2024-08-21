@@ -19,6 +19,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
+import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticInfoCardsViewModel
@@ -26,6 +27,7 @@ import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.DateRangePickerDialog
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
+import com.savenko.track.presentation.other.composableTypes.provideDateRange
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticChart
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticChartOptionsSelector
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticLazyColumn
@@ -36,9 +38,9 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun StatisticsScreenComponent(innerPadding: PaddingValues) {
     val chartViewModel = koinViewModel<StatisticChartViewModel>()
-    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val statisticInfoCardsViewModel = koinViewModel<StatisticInfoCardsViewModel>()
     val statisticLazyColumnViewModel = koinViewModel<StatisticLazyColumnViewModel>()
+    val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
     val state = chartViewModel.statisticChartState.collectAsState()
     DateRangePickerDialog(
         isDialogVisible = state.value.isTimePeriodDialogVisible,
@@ -65,14 +67,43 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .widthIn(200.dp, Dp.Infinity)
-                    .padding(8.dp), chartViewModel = chartViewModel
+                    .padding(start = 8.dp, end = 8.dp, bottom = 4.dp), chartViewModel = chartViewModel
             )
         }
+        val dateRange = when (state.value.timePeriod) {
+            is StatisticChartTimePeriod.Week -> {
+                StatisticChartTimePeriod.Week().provideDateRange()
+            }
+
+            is StatisticChartTimePeriod.Month -> {
+                StatisticChartTimePeriod.Month().provideDateRange()
+
+            }
+
+            is StatisticChartTimePeriod.Year -> {
+                StatisticChartTimePeriod.Year().provideDateRange()
+
+            }
+
+            is StatisticChartTimePeriod.Other -> {
+                val specifiedTimePeriod = state.value.specifiedTimePeriod
+                if (specifiedTimePeriod != null) {
+                    val startOfSpan = convertLocalDateToDate(specifiedTimePeriod.lower)
+                    val endOfSpan = convertLocalDateToDate(specifiedTimePeriod.upper)
+                    Range(startOfSpan, endOfSpan)
+                } else {
+                    // likely impossible condition
+                    StatisticChartTimePeriod.Month().provideDateRange()
+                }
+            }
+        }
         TrackStatisticsInfoCards(
+            modifier = Modifier.padding(8.dp),
             statisticInfoCardsViewModel = statisticInfoCardsViewModel,
-            financialEntities = state.value.financialEntities
+            financialEntities = state.value.financialEntities,
+            dateRange = dateRange
         )
-        TrackStatisticChartOptionsSelector(chartViewModel = chartViewModel)
+        TrackStatisticChartOptionsSelector(modifier = Modifier.padding(8.dp), chartViewModel = chartViewModel)
         TrackStatisticLazyColumn(
             modifier = Modifier
                 .fillMaxWidth()

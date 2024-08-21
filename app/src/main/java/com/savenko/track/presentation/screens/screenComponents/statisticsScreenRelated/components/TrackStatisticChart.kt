@@ -85,7 +85,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
         chartViewModel.initializeValues()
     }
     Card(
-        modifier = modifier,
+        modifier = modifier.wrapContentHeight(),
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)
     ) {
         val chartColors =
@@ -106,12 +106,12 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 8.dp), verticalArrangement = Arrangement.Center
+                    .padding(8.dp, vertical = 12.dp), verticalArrangement = Arrangement.Center
             ) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .offset(0.dp, (-12).dp)
+                        .offset(0.dp, (-8).dp)
                 ) {
                     AnimatedContent(
                         targetState = when (chartState.value.financialEntities) {

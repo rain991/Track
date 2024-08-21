@@ -1,25 +1,31 @@
 package com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components
 
+import android.util.Range
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.scale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -33,21 +39,40 @@ import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.presentation.components.customComponents.VerticalDashedDivider
 import com.savenko.track.presentation.screens.states.core.statisticScreen.StatisticInfoCardsState
+import java.util.Date
 
 /**
 Contains TrackStatisticsInfoCards and additional functions: SingleFinancialContent, BothFinancialContent
  */
 @Composable
 fun TrackStatisticsInfoCards(
+    modifier: Modifier,
     statisticInfoCardsViewModel: StatisticInfoCardsViewModel,
-    financialEntities: FinancialEntities
+    financialEntities: FinancialEntities,
+    dateRange: Range<Date>
 ) {
     val state = statisticInfoCardsViewModel.infoCardsState.collectAsState()
+    val singleFinancialModifier = Modifier.wrapContentHeight()
+    val bothFinancialsModifier = Modifier.height(104.dp)
+    LaunchedEffect(key1 = dateRange) {
+        statisticInfoCardsViewModel.initializeValues(specifiedTimePeriod = dateRange)
+    }
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
-        modifier = Modifier.padding(8.dp)
+        modifier = modifier
+            .then(
+                if (financialEntities is FinancialEntities.Both) {
+                    bothFinancialsModifier
+                } else {
+                    singleFinancialModifier
+                }
+            )
     ) {
-        Box(modifier = Modifier.padding(8.dp).height(IntrinsicSize.Min)) {
+        Box(
+            modifier = Modifier
+                .padding(8.dp)
+                .height(IntrinsicSize.Min)
+        ) {
             when (financialEntities) {
                 is FinancialEntities.ExpenseFinancialEntity -> {
                     SingleFinancialContent(
@@ -125,15 +150,15 @@ private fun SingleFinancialContent(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .height(IntrinsicSize.Min),
+            .wrapContentHeight().scale(scaleX = 1.0f, scaleY = 0.9f),
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         Box(modifier = Modifier.align(Alignment.CenterHorizontally)) {
-            Text(text = "Period summary")
+            Text(text = stringResource(R.string.period_summary_statistics_info_cards))
         }
-        Text(text = overallQuantityText)
-        Text(text = overallAverageText)
-        Text(text = overallSummaryText)
+        Text(text = overallQuantityText, textAlign = TextAlign.Center)
+        Text(text = overallAverageText, textAlign = TextAlign.Center)
+        Text(text = overallSummaryText, textAlign = TextAlign.Center)
     }
 }
 
@@ -143,44 +168,79 @@ private fun BothFinancialsContent(
     preferableCurrency: Currency
 ) {
     val expensesQuantityAnnotatedString = provideAnnotatedString(
-        baseText = "Expenses",
+        baseText = stringResource(id = R.string.expenses),
         mainValue = state.expensesPeriodQuantity.toString(),
-        suffix = preferableCurrency.ticker
     )
     val incomesQuantityAnnotatedString = provideAnnotatedString(
-        baseText = "Incomes",
+        baseText = stringResource(id = R.string.incomes),
         mainValue = state.incomesPeriodQuantity.toString(),
-        suffix = preferableCurrency.ticker
     )
+
+
     val expensesSummaryAnnotatedString = provideAnnotatedString(
         baseText = stringResource(id = R.string.overall_month_summary),
-        mainValue = state.expensesPeriodSummary.toString(),
+        mainValue = if (preferableCurrency.type == CurrencyTypes.FIAT) {
+            FIAT_DECIMAL_FORMAT.format(
+                state.expensesPeriodSummary
+            )
+        } else {
+            CRYPTO_DECIMAL_FORMAT.format(
+                state.expensesPeriodSummary
+            )
+        },
         suffix = preferableCurrency.ticker
     )
     val incomesSummaryAnnotatedString = provideAnnotatedString(
         baseText = stringResource(id = R.string.overall_month_summary),
-        mainValue = state.incomesPeriodSummary.toString(),
+        mainValue = if (preferableCurrency.type == CurrencyTypes.FIAT) {
+            FIAT_DECIMAL_FORMAT.format(
+                state.incomesPeriodSummary
+            )
+        } else {
+            CRYPTO_DECIMAL_FORMAT.format(
+                state.incomesPeriodSummary
+            )
+        },
         suffix = preferableCurrency.ticker
     )
 
     Row(
         modifier = Modifier
-            .fillMaxWidth().height(IntrinsicSize.Max)
+            .fillMaxWidth()
+            .wrapContentHeight()
     ) {
-        Column(modifier = Modifier.weight(0.45f)) {
-            Text(text = expensesQuantityAnnotatedString)
-            Text(text = expensesSummaryAnnotatedString)
+        Column(
+            modifier = Modifier
+                .weight(0.45f)
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = expensesQuantityAnnotatedString, textAlign = TextAlign.Center)
+            Text(text = expensesSummaryAnnotatedString, textAlign = TextAlign.Center)
         }
         Column(
             modifier = Modifier
                 .weight(0.1f)
+                .fillMaxHeight()
                 .align(Alignment.CenterVertically)
         ) {
-            VerticalDashedDivider(Modifier.height(IntrinsicSize.Min))
+            VerticalDashedDivider(
+                Modifier
+                    .height(IntrinsicSize.Min)
+                    .align(Alignment.CenterHorizontally)
+                    .padding(vertical = 8.dp)
+            )
         }
-        Column(modifier = Modifier.weight(0.45f)) {
-            Text(text = incomesQuantityAnnotatedString)
-            Text(text = incomesSummaryAnnotatedString)
+        Column(
+            modifier = Modifier
+                .weight(0.45f)
+                .fillMaxHeight(),
+            verticalArrangement = Arrangement.SpaceEvenly,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Text(text = incomesQuantityAnnotatedString, textAlign = TextAlign.Center)
+            Text(text = incomesSummaryAnnotatedString, textAlign = TextAlign.Center)
         }
     }
 }
