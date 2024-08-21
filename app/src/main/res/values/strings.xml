@@ -256,4 +256,7 @@
     <string name="total_incomes_month_summary">Total incomes :</string>
     <string name="total_operations_month_summary">Total operations :</string>
     <string name="overall_month_summary">Overall :</string>
+    <string name="financials_quantity_stats_info_cards">Financials quantity :</string>
+    <string name="average_income_stats_info_cards">Average income :</string>
+    <string name="average_expenses_stats_info_cards">Average expenses per day :</string>
 </resources>

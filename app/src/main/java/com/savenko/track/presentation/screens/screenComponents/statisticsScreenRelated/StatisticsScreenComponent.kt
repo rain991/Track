@@ -21,6 +21,7 @@ import androidx.compose.ui.unit.dp
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
+import com.savenko.track.data.viewmodels.statistics.StatisticInfoCardsViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.DateRangePickerDialog
@@ -28,6 +29,7 @@ import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePe
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticChart
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticChartOptionsSelector
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticLazyColumn
+import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticsInfoCards
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -35,6 +37,7 @@ import org.koin.androidx.compose.koinViewModel
 fun StatisticsScreenComponent(innerPadding: PaddingValues) {
     val chartViewModel = koinViewModel<StatisticChartViewModel>()
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()
+    val statisticInfoCardsViewModel = koinViewModel<StatisticInfoCardsViewModel>()
     val statisticLazyColumnViewModel = koinViewModel<StatisticLazyColumnViewModel>()
     val state = chartViewModel.statisticChartState.collectAsState()
     DateRangePickerDialog(
@@ -65,6 +68,10 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
                     .padding(8.dp), chartViewModel = chartViewModel
             )
         }
+        TrackStatisticsInfoCards(
+            statisticInfoCardsViewModel = statisticInfoCardsViewModel,
+            financialEntities = state.value.financialEntities
+        )
         TrackStatisticChartOptionsSelector(chartViewModel = chartViewModel)
         TrackStatisticLazyColumn(
             modifier = Modifier

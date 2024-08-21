@@ -50,6 +50,7 @@ import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalSetting
 import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
+import com.savenko.track.data.viewmodels.statistics.StatisticInfoCardsViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.domain.repository.charts.ChartsRepository
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
@@ -192,6 +193,7 @@ val viewModelModule = module {
     // Statistics related
     viewModel { StatisticChartViewModel(get(), get(), get()) }
     viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { StatisticInfoCardsViewModel(get(), get()) }
 
     // Bottom sheets
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get(), get()) }

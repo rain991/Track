@@ -1,16 +1,12 @@
 package com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.lazyColumn
 
-
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -21,14 +17,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.R
@@ -37,7 +30,7 @@ import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
-
+import com.savenko.track.presentation.components.customComponents.HorizontalDashedDivider
 
 @Composable
 fun MonthSummaryRow(
@@ -124,7 +117,7 @@ fun MonthSummaryRow(
                 .wrapContentHeight().padding(horizontal = 24.dp)
         ) {
             Spacer(modifier = Modifier.height(8.dp))
-            DashedDivider(
+            HorizontalDashedDivider(
                 modifier = Modifier.fillMaxWidth(), dashWidth = 16.dp
             )
             Spacer(modifier = Modifier.height(8.dp))
@@ -141,7 +134,7 @@ fun MonthSummaryRow(
             Spacer(modifier = Modifier.height(4.dp))
             Text(text = summaryText)
             Spacer(modifier = Modifier.height(8.dp))
-            DashedDivider(
+            HorizontalDashedDivider(
                 modifier = Modifier.fillMaxWidth(), dashWidth = 16.dp
             )
             Spacer(modifier = Modifier.height(16.dp))
@@ -150,27 +143,3 @@ fun MonthSummaryRow(
 }
 
 
-@Composable
-fun DashedDivider(
-    modifier: Modifier = Modifier,
-    color: Color = MaterialTheme.colorScheme.secondary,
-    dashWidth: Dp = 8.dp,
-    dashGap: Dp = 8.dp,
-    thickness: Dp = 1.dp,
-) {
-    Row(
-        modifier = modifier.then(Modifier.height(thickness))
-    ) {
-        val configuration = LocalConfiguration.current
-        val dashCount = configuration.screenWidthDp.dp.value.div(dashWidth.value + dashGap.value).toInt()
-        repeat(dashCount) {
-            Box(
-                modifier = Modifier
-                    .width(dashWidth)
-                    .fillMaxHeight()
-                    .background(color)
-            )
-            Spacer(modifier = Modifier.width(dashGap))
-        }
-    }
-}

@@ -214,7 +214,7 @@
     <string name="find_your_category_CD">Znajdź swoją kategorię</string>
     <string name="month_summary_header">Podsumowanie %1$s</string>
     <string name="total_expenses_month_summary">Wydatków :</string>
-    <string name="total_incomes_month_summary">Dochodów :s</string>
+    <string name="total_incomes_month_summary">Dochodów :</string>
     <string name="total_operations_month_summary">Liczba operacji :</string>
-    <string name="overall_month_summary">W sumie :s</string>
+    <string name="overall_month_summary">W sumie :</string>
 </resources>
