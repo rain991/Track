@@ -3,7 +3,7 @@
     <!-- App information -->
     <string name="app_name" translatable="false">Track</string>
     <string name="app_logo" translatable="false">Application Logo</string>
-    <string name="logo_app_description">Convenient and easy-to-use expense tracker</string>
+    <string name="logo_app_description">Convenient and easy-to-use financial tracker</string>
 
     <!-- General -->
     <string name="currency">Currency</string>

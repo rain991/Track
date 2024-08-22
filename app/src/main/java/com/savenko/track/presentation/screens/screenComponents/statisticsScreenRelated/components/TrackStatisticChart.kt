@@ -88,8 +88,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
         chartViewModel.initializeValues()
     }
     Card(
-        modifier = modifier//.then(Modifier.wrapContentHeight())
-        ,
+        modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)
     ) {
         val chartColors =

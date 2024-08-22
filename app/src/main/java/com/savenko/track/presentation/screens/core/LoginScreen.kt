@@ -6,17 +6,19 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.IntrinsicSize
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.BasicTextField
@@ -42,6 +44,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.paint
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
@@ -58,7 +61,9 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import com.savenko.track.R
@@ -69,6 +74,7 @@ import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.navigation.Screen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
+
 
 @Composable
 fun LoginScreen(navController: NavController) {
@@ -100,6 +106,7 @@ fun LoginScreen(navController: NavController) {
     }
 }
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun LoginContent(loginViewModel: LoginViewModel, navController: NavController) {
     val focusManager = LocalFocusManager.current
@@ -108,167 +115,179 @@ private fun LoginContent(loginViewModel: LoginViewModel, navController: NavContr
     val budgetFocusRequester = remember { FocusRequester() }
     val coroutineScope = rememberCoroutineScope()
     val screenState = loginViewModel.loginScreenState.collectAsState()
-    Column(
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp), horizontalAlignment = Alignment.CenterHorizontally
+            .heightIn(200.dp, Dp.Infinity)
+            .padding(horizontal = 8.dp)
     ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(R.string.name),
-                style = MaterialTheme.typography.titleSmall,
-                textAlign = TextAlign.Center
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            BasicTextField(
-                modifier = Modifier
-                    .focusRequester(nameFocusRequester)
-                    .width(IntrinsicSize.Min)
-                    .padding(start = 8.dp),
-                textStyle = MaterialTheme.typography.displaySmall.copy(
-                    color = MaterialTheme.colorScheme.primary
-                ),
-                value = screenState.value.name,
-                onValueChange = { newText ->
-                    if (newText.length < NAME_MAX_LENGTH) {
-                        loginViewModel.setFirstNameStateFlow(newText)
-                    }
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Text,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        controller?.hide()
-                        focusManager.clearFocus()
-                    }
-                )
-            )
-        }
-        Spacer(modifier = Modifier.height(24.dp))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.Center,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                text = stringResource(
-                    id = R.string.aprox_month_income_login_screen
-                ),
-                style = MaterialTheme.typography.titleSmall, textAlign = TextAlign.Center
-            )
-            BasicTextField(
-                modifier = Modifier
-                    .focusRequester(budgetFocusRequester)
-                    .width(IntrinsicSize.Min)
-                    .padding(start = 12.dp),
-                textStyle = MaterialTheme.typography.displaySmall.copy(
-                    color = MaterialTheme.colorScheme.primary
-                ),
-                value = screenState.value.budget.toString(),
-                onValueChange = { newText ->
-                    try {
-                        val value = newText.toFloat()
-                        if (value < MAX_BUDGET_VALUE) {
-                            loginViewModel.setIncomeStateFlow(
-                                value
-                            )
-                        }
-                    } catch (e: NumberFormatException) {
-                        screenState.value.budget
-                    }
-                },
-                keyboardOptions = KeyboardOptions(
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
-                ),
-                keyboardActions = KeyboardActions(
-                    onDone = {
-                        controller?.hide()
-                        focusManager.clearFocus()
-                    }
-                )
-            )
-            Spacer(modifier = Modifier.width(8.dp))
-            LoginScreenCurrencyPicker(
-                currencyList = loginViewModel.currencyList,
-                selectedOption = screenState.value.currency,
-                onSelect = {
-                    loginViewModel.setCurrencyStateFlow(it)
-                }
-            )
-        }
-
-        Spacer(modifier = Modifier.height(24.dp))
-        Button(
+        Column(
             modifier = Modifier
-                .wrapContentWidth()
-                .height(40.dp),
-            onClick = {
-                coroutineScope.launch {
-                    loginViewModel.addToDataStore()
-                }
-                navController.navigate(Screen.MainScreen.route)
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.primary,
-                contentColor = MaterialTheme.colorScheme.onPrimary
-            ),
-            shape = RoundedCornerShape(16.dp)
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .padding(horizontal = 8.dp, vertical = 8.dp)
+                .paint(
+                    painterResource(id = R.drawable.login_background),
+                    contentScale = ContentScale.FillBounds,
+                    sizeToIntrinsics = false,
+                    colorFilter = ColorFilter.tint(
+                        MaterialTheme.colorScheme.primaryContainer
+                    )
+                ),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceEvenly
         ) {
-            Text(
-                text = stringResource(R.string.lets_start),
-                style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium)
-            )
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(R.string.name),
+                    style = MaterialTheme.typography.bodyMedium,
+                    textAlign = TextAlign.Center,
+                    color = MaterialTheme.colorScheme.onPrimaryContainer,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+                Spacer(modifier = Modifier.width(8.dp))
+                BasicTextField(
+                    modifier = Modifier
+                        .focusRequester(nameFocusRequester)
+                        .width(IntrinsicSize.Min)
+                        .padding(start = 8.dp)
+                        .align(Alignment.CenterVertically),
+                    textStyle = MaterialTheme.typography.titleLarge.copy(
+                        letterSpacing = 1.sp,
+                        color = MaterialTheme.colorScheme.onPrimaryContainer,
+                        fontWeight = FontWeight.W600
+                    ),
+                    value = screenState.value.name,
+                    onValueChange = { newText ->
+                        if (newText.length < NAME_MAX_LENGTH) {
+                            loginViewModel.setFirstNameStateFlow(newText)
+                        }
+                    },
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Text,
+                        imeAction = ImeAction.Done
+                    ),
+                    keyboardActions = KeyboardActions(
+                        onDone = {
+                            controller?.hide()
+                            focusManager.clearFocus()
+                        }
+                    )
+                )
+            }
+            FlowRow(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = stringResource(
+                        id = R.string.aprox_month_income_login_screen
+                    ),
+                    style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+                Row(modifier = Modifier.wrapContentWidth(), verticalAlignment = Alignment.CenterVertically) {
+                    BasicTextField(
+                        modifier = Modifier
+                            .focusRequester(budgetFocusRequester)
+                            .width(IntrinsicSize.Min)
+                            .padding(start = 12.dp),
+                        textStyle = MaterialTheme.typography.titleLarge.copy(
+                            color = MaterialTheme.colorScheme.onPrimaryContainer,
+                            fontWeight = FontWeight.W600,
+                            letterSpacing = (0.8).sp
+                        ),
+                        value = screenState.value.budget.toString(),
+                        onValueChange = { newText ->
+                            try {
+                                val value = newText.toFloat()
+                                if (value < MAX_BUDGET_VALUE) {
+                                    loginViewModel.setIncomeStateFlow(
+                                        value
+                                    )
+                                }
+                            } catch (e: NumberFormatException) {
+                                screenState.value.budget
+                            }
+                        },
+                        keyboardOptions = KeyboardOptions(
+                            keyboardType = KeyboardType.Number,
+                            imeAction = ImeAction.Done
+                        ),
+                        keyboardActions = KeyboardActions(
+                            onDone = {
+                                controller?.hide()
+                                focusManager.clearFocus()
+                            }
+                        )
+                    )
+                    Spacer(modifier = Modifier.width(8.dp))
+                    LoginScreenCurrencyPicker(
+                        currencyList = loginViewModel.currencyList,
+                        selectedOption = screenState.value.currency,
+                        onSelect = {
+                            loginViewModel.setCurrencyStateFlow(it)
+                        }
+                    )
+                }
+
+            }
+            Button(
+                modifier = Modifier
+                    .wrapContentHeight()
+                    .wrapContentWidth(),
+                onClick = {
+                    coroutineScope.launch {
+                        loginViewModel.addToDataStore()
+                    }
+                    navController.navigate(Screen.MainScreen.route)
+                },
+                colors = ButtonDefaults.buttonColors(),
+                shape = RoundedCornerShape(16.dp)
+            ) {
+                Text(
+                    text = stringResource(R.string.lets_start),
+                    style = MaterialTheme.typography.bodyMedium.copy(fontWeight = FontWeight.Medium),
+                    modifier = Modifier.align(Alignment.CenterVertically)
+                )
+            }
         }
     }
 }
 
 @Composable
 private fun LoginHeader() {
-    Box(contentAlignment = Alignment.Center) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
         Image(
-            modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight(fraction = 0.45f),
-            painter = painterResource(id = R.drawable.header),
-            contentDescription = stringResource(R.string.login_screen),
-            contentScale = ContentScale.FillBounds,
-            colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.primary)
+            modifier = Modifier.size(64.dp),
+            painter = painterResource(id = R.drawable.track_new_icon),
+            contentDescription = stringResource(id = R.string.app_logo)
         )
-        Box(contentAlignment = Alignment.Center, modifier = Modifier.offset(0.dp, (-75).dp)) {
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                Image(
-                    modifier = Modifier.size(64.dp),
-                    painter = painterResource(id = R.drawable.track_new_icon),
-                    contentDescription = stringResource(id = R.string.app_logo)
-                )
-                Spacer(modifier = Modifier.width(16.dp))
-                Column(
-                    modifier = Modifier
-                        .padding(vertical = 8.dp)
-                        .wrapContentWidth()
-                ) {
-                    Text(
-                        text = stringResource(id = R.string.app_name),
-                        style = MaterialTheme.typography.titleMedium,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                    Text(
-                        text = stringResource(id = R.string.logo_app_description),
-                        style = MaterialTheme.typography.titleSmall,
-                        textAlign = TextAlign.Center,
-                        color = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
-            }
+        Spacer(modifier = Modifier.width(16.dp))
+        Column(
+            modifier = Modifier
+                .padding(vertical = 8.dp)
+                .wrapContentWidth()
+        ) {
+            Text(
+                text = stringResource(id = R.string.app_name),
+                style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.W600),
+                color = MaterialTheme.colorScheme.onPrimary,
+                textAlign = TextAlign.Center,
+                modifier = Modifier.align(Alignment.CenterHorizontally)
+            )
+            Text(
+                text = stringResource(id = R.string.logo_app_description),
+                style = MaterialTheme.typography.bodySmall.copy(fontWeight = FontWeight.W500),
+                textAlign = TextAlign.Center,
+                color = MaterialTheme.colorScheme.onPrimary
+            )
         }
     }
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

@@ -92,7 +92,7 @@ fun PersonalSettingsStatistics(viewModel: PersonalStatsViewModel) {
                 text = stringResource(
                     R.string.login_message_personal_settings_screen,
                     statsState.value.loginCount
-                )
+                ), modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(8.dp))
         }
