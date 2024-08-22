@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -26,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottomAxis
@@ -85,7 +88,8 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
         chartViewModel.initializeValues()
     }
     Card(
-        modifier = modifier.wrapContentHeight(),
+        modifier = modifier//.then(Modifier.wrapContentHeight())
+        ,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)
     ) {
         val chartColors =
@@ -106,12 +110,12 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(8.dp, vertical = 12.dp), verticalArrangement = Arrangement.Center
+                    .padding(horizontal = 8.dp), verticalArrangement = Arrangement.Center
             ) {
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .offset(0.dp, (-8).dp)
+                        .offset(0.dp, (0).dp)  // y = -8
                 ) {
                     AnimatedContent(
                         targetState = when (chartState.value.financialEntities) {
@@ -191,26 +195,29 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                             zoomEnabled = false,
                             initialZoom = Zoom.Content
                         ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
+                        modifier = Modifier.fillMaxWidth().weight(1f, fill = false)
                     )
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(start = 32.dp, end = 12.dp), horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    val maxTextCount = 3
-                    val valuesStep = if (chartData.size <= maxTextCount) 1 else chartData.size / maxTextCount
-                    chartData.entries.sortedBy { it.key }.forEachIndexed { index, entry ->
-                        if (index % valuesStep == 0 || index == 0 || index == chartData.size - 1) {
-                            Text(
-                                text = dateTimeFormatter.format(entry.key),
-                                style = MaterialTheme.typography.bodySmall
-                            )
+                Column(Modifier.wrapContentHeight()){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 32.dp, end = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        val maxTextCount = 3
+                        val valuesStep = if (chartData.size <= maxTextCount) 1 else chartData.size / maxTextCount
+                        chartData.entries.sortedBy { it.key }.forEachIndexed { index, entry ->
+                            if (index % valuesStep == 0 || index == 0 || index == chartData.size - 1) {
+                                Text(
+                                    text = dateTimeFormatter.format(entry.key),
+                                    style = MaterialTheme.typography.bodySmall,maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
+                                )
+                            }
                         }
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }

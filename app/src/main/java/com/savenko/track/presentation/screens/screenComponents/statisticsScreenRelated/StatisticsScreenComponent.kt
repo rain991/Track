@@ -12,11 +12,10 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.widthIn
+import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
@@ -66,7 +65,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             TrackStatisticChart(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .widthIn(200.dp, Dp.Infinity)
+                    .width(300.dp)
                     .padding(start = 8.dp, end = 8.dp, bottom = 4.dp), chartViewModel = chartViewModel
             )
         }

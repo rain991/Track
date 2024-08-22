@@ -217,4 +217,8 @@
     <string name="total_incomes_month_summary">Загалом доходів :</string>
     <string name="total_operations_month_summary">Загалом операцій :</string>
     <string name="overall_month_summary">У сумі :</string>
+    <string name="financials_quantity_stats_info_cards">Операцій :</string>
+    <string name="average_income_stats_info_cards">Середній дохід</string>
+    <string name="average_expenses_stats_info_cards">Середні денні витрати</string>
+    <string name="period_summary_statistics_info_cards">Сума за період</string>
 </resources>
