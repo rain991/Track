@@ -34,7 +34,7 @@ import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.other.workers.CurrenciesRatesWorker
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
-import com.savenko.track.data.viewmodels.login.LoginViewModel
+import com.savenko.track.data.viewmodels.login.LoginScreenViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.BudgetIdeaCardViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
@@ -175,7 +175,7 @@ val domainModule = module {
 
 val viewModelModule = module {
     // Login related
-    viewModel { LoginViewModel(get(), get(), get(), get()) }
+    viewModel { LoginScreenViewModel(get(), get(), get(), get()) }
 
     // Settings related
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }

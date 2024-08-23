@@ -10,6 +10,7 @@ import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceReposi
 import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
 import com.savenko.track.presentation.screens.states.core.loginScreen.LoginScreenState
+import com.savenko.track.presentation.themes.Themes
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -19,7 +20,7 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 
 
-class LoginViewModel(
+class LoginScreenViewModel(
     private val updateUserDataUseCase: UpdateUserDataUseCase,
     private val dataStoreManager: DataStoreManager,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
@@ -47,6 +48,11 @@ class LoginViewModel(
                 currenciesPreferenceRepositoryImpl.setPreferableCurrency(_loginScreenState.value.currency)
             }
         }
+    }
+
+    val preferableTheme = dataStoreManager.preferableTheme
+    suspend fun setPreferableTheme(value: Themes) {
+        updateUserDataUseCase(key = DataStoreManager.PREFERABLE_THEME, value = value.name)
     }
 
     fun setCurrencyStateFlow(currency: Currency) {

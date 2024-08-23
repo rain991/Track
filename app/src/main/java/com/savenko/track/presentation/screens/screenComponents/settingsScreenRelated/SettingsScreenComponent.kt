@@ -81,9 +81,7 @@ fun SettingsScreenComponent(
             if (!isPageNameVisible) Spacer(modifier = Modifier.height(8.dp))
             SettingsScreenAccountPreferences(navHostController = navHostController)
             Spacer(modifier = Modifier.height(12.dp))
-            SettingsScreenThemePreferences(
-                modifier = Modifier, dataStoreManager = settingsData
-            )
+            SettingsScreenThemePreferences(modifier = Modifier)
             Spacer(modifier = Modifier.height(12.dp))
             SettingsScreenAdditionalPreferences()
         }
