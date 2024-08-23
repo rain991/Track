@@ -5,6 +5,7 @@ import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -15,12 +16,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
+import androidx.compose.ui.unit.dp
 import androidx.core.view.WindowCompat
 import androidx.navigation.NavController
 import com.savenko.track.R
 import com.savenko.track.data.viewmodels.login.LoginScreenViewModel
-import com.savenko.track.presentation.screens.loginScreen.LoginHeader
 import com.savenko.track.presentation.screens.loginScreen.LoginScreenContent
+import com.savenko.track.presentation.screens.loginScreen.LoginScreenHeader
 import org.koin.androidx.compose.koinViewModel
 
 
@@ -47,7 +49,7 @@ fun LoginScreen(navController: NavController) {
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            LoginHeader()//LoginScreenHeader()
+            LoginScreenHeader(modifier = Modifier.padding(top = 64.dp))
             Spacer(modifier = Modifier.weight(1f))
             LoginScreenContent(loginScreenViewModel, navController)
             Spacer(modifier = Modifier.weight(1.2f))
