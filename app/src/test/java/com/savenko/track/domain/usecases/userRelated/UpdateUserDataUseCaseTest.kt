@@ -29,7 +29,6 @@ class UpdateUserDataUseCaseTest() {
             )
     }
 
-
     @AfterEach
     fun tearDown() {
         reset(dataStoreManager)

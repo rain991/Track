@@ -11,13 +11,13 @@ import kotlinx.coroutines.runBlocking
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Test
-
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 
 class CreateCategoryUseCaseTest {
-    val expenseCategoriesListRepository = mock<ExpensesCategoriesListRepositoryImpl>()
-    val incomesCategoriesListRepositoryImpl = mock<IncomesCategoriesListRepositoryImpl>()
+
+    private val expenseCategoriesListRepository: ExpensesCategoriesListRepositoryImpl = mock <ExpensesCategoriesListRepositoryImpl>()
+    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl = mock <IncomesCategoriesListRepositoryImpl>()
 
     @AfterEach
     fun tearDown() {
@@ -26,26 +26,33 @@ class CreateCategoryUseCaseTest {
 
     @Test
     fun `expense category was correctly added`() = runBlocking {
-        val testCategory =
-            ExpenseCategory(categoryId = 13, note = "note test", colorId = "sdfsdfsdf")
+        val testCategory = ExpenseCategory(categoryId = 13, note = "note test", colorId = "sdfsdfsdf")
+
+        // Stubbing methods
         Mockito.`when`(expenseCategoriesListRepository.getCategoryById(testCategory.categoryId))
             .thenReturn(testCategory)
+
         val useCase = CreateCategoryUseCase(
             categoriesListRepository = expenseCategoriesListRepository,
             incomesCategoriesListRepositoryImpl = incomesCategoriesListRepositoryImpl
         )
+
         useCase(category = testCategory)
-        Mockito.verify(expenseCategoriesListRepository, Mockito.times(1))
-            .addCategory(testCategory)
-        val actual =
-            expenseCategoriesListRepository.getCategoryById(testCategory.categoryId)
+
+        // Verify interactions
+        Mockito.verify(expenseCategoriesListRepository).addCategory(testCategory)
+        Mockito.verify(expenseCategoriesListRepository).getCategoryById(testCategory.categoryId)
+
+        val actual = expenseCategoriesListRepository.getCategoryById(testCategory.categoryId)
         assertEquals(testCategory, actual)
     }
 
     @Test
     fun `income category was correctly added`() = runBlocking {
-        val testCategoryList =
-            listOf(IncomeCategory(categoryId = 11, note = "note sdf", colorId = "colorId test"))
+        val testCategory = IncomeCategory(categoryId = 11, note = "note sdf", colorId = "colorId test")
+        val testCategoryList = listOf(testCategory)
+
+        // Stubbing methods
         Mockito.`when`(incomesCategoriesListRepositoryImpl.getCategoriesList())
             .thenReturn(flow { emit(testCategoryList) })
 
@@ -53,12 +60,14 @@ class CreateCategoryUseCaseTest {
             categoriesListRepository = expenseCategoriesListRepository,
             incomesCategoriesListRepositoryImpl = incomesCategoriesListRepositoryImpl
         )
-        useCase(category = testCategoryList[0])
-        Mockito.verify(incomesCategoriesListRepositoryImpl, Mockito.times(1))
-            .addCategory(testCategoryList[0])
 
-        val actual =
-            incomesCategoriesListRepositoryImpl.getCategoriesList().firstOrNull()
+        useCase(category = testCategory)
+
+        // Verify interactions
+        Mockito.verify(incomesCategoriesListRepositoryImpl).addCategory(testCategory)
+        Mockito.verify(incomesCategoriesListRepositoryImpl).getCategoriesList()
+
+        val actual = incomesCategoriesListRepositoryImpl.getCategoriesList().firstOrNull()
         assertEquals(testCategoryList, actual)
     }
 }
