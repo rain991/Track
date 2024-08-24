@@ -11,11 +11,9 @@ import com.savenko.track.domain.models.idea.Savings
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
 import com.savenko.track.presentation.screens.states.additional.settings.ideasSettings.IdeasSettingsScreenState
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
@@ -75,9 +73,8 @@ class IdeasSettingsScreenViewModel(
         }
     }
 
-    suspend fun getCompletionValue(idea: Idea): StateFlow<Float> {
+    suspend fun getCompletionValue(idea: Idea): Flow<Float> {
         return ideaListRepositoryImpl.getCompletionValue(idea)
-            .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = 0.0f)
     }
 
     fun setIsSortedDateDescending(value: Boolean) {

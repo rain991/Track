@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
+import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
@@ -37,7 +37,7 @@ class TrackScreenInfoCardsViewModel(
     suspend fun initializeValues() {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         val startOfMonthDate = getStartOfMonthDate(todayDate)
-        val endOfMonthDate = getEndOfTheMonth(todayDate)
+        val endOfMonthDate = getEndOfMonthDate(todayDate)
         viewModelScope.launch(start = CoroutineStart.DEFAULT) {
             launch {
                 expensesCoreRepositoryImpl.getCurrentMonthSumOfExpense().collect {

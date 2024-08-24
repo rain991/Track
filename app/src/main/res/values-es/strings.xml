@@ -249,5 +249,14 @@
     <string name="no_categories_for_specified_filters_categories_settings">No hay categorías para los filtros especificados</string>
     <string name="shows_as_categories_settings">Mostrar como</string>
     <string name="find_your_category_CD">Encuentra tu categoría</string>
+    <string name="month_summary_header">Resumen de %1$s</string>
+    <string name="total_expenses_month_summary">Gastos totales :</string>
+    <string name="total_incomes_month_summary">Ingresos totales :</string>
+    <string name="total_operations_month_summary">Total de operaciones :</string>
+    <string name="overall_month_summary">En general :</string>
+    <string name="financials_quantity_stats_info_cards">Cantidad de finanzas :</string>
+    <string name="average_income_stats_info_cards">Ingreso promedio :</string>
+    <string name="average_expenses_stats_info_cards">Gastos promedio por día :</string>
+    <string name="period_summary_statistics_info_cards">Resumen del período :</string>
 
 </resources>

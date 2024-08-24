@@ -1,6 +1,7 @@
 package com.savenko.track.presentation.components.ideasCards
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
@@ -20,6 +22,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
@@ -52,6 +55,18 @@ fun SavingsIdeaCard(
             .padding(horizontal = 8.dp)  ,border = BorderStroke((1.2).dp, savingsSpecificColor
     ), shape = RoundedCornerShape(8.dp)
     ) {
+        Canvas(modifier = Modifier.wrapContentSize()) {
+            val arcSize = 70.dp.toPx()
+            drawArc(
+                color = savingsSpecificColor,
+                startAngle = 0f,
+                sweepAngle = 90f,
+                useCenter = true,
+                topLeft = androidx.compose.ui.geometry.Offset(-(arcSize / 2), -(arcSize / 2)),
+                size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
+                style = Fill
+            )
+        }
         Column(
             modifier = Modifier
                 .fillMaxSize()

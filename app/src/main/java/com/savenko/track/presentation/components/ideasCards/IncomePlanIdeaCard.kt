@@ -1,6 +1,7 @@
 package com.savenko.track.presentation.components.ideasCards
 
 import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
@@ -22,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
+import androidx.compose.ui.graphics.drawscope.Fill
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
@@ -49,7 +52,7 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
     val localContext = LocalContext.current
     var plannedText by remember { mutableStateOf(buildAnnotatedString { }) }
     var completedText by remember { mutableStateOf(buildAnnotatedString { }) }
-    LaunchedEffect(key1 = Unit) {
+    LaunchedEffect(key1 = preferableCurrency, key2 = incomePlans.goal, key3 = completionValue) {
         plannedText = buildAnnotatedString {
             withStyle(
                 style = SpanStyle(
@@ -123,6 +126,18 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
             .padding(horizontal = 8.dp),
         border = BorderStroke((1.2).dp, incomePlanSpecificColor), shape = RoundedCornerShape(8.dp)
     ) {
+        Canvas(modifier = Modifier.wrapContentSize()) {
+            val arcSize = 70.dp.toPx()
+            drawArc(
+                color = incomePlanSpecificColor,
+                startAngle = 0f,
+                sweepAngle = 90f,
+                useCenter = true,
+                topLeft = androidx.compose.ui.geometry.Offset(-(arcSize / 2), -(arcSize / 2)),
+                size = androidx.compose.ui.geometry.Size(arcSize, arcSize),
+                style = Fill
+            )
+        }
         Row(
             modifier = Modifier
                 .fillMaxWidth()

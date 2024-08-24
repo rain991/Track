@@ -248,5 +248,14 @@
     <string name="no_categories_for_specified_filters_categories_settings">Keine Kategorien für bestimmte Filter</string>
     <string name="shows_as_categories_settings">Zeigt als</string>
     <string name="find_your_category_CD">Finden Sie Ihre Kategorie</string>
+    <string name="month_summary_header">%1$s Zusammenfassung</string>
+    <string name="total_expenses_month_summary">Gesamtausgaben :</string>
+    <string name="total_incomes_month_summary">Gesamteinnahmen :</string>
+    <string name="total_operations_month_summary">Operationen insgesamt :</string>
+    <string name="overall_month_summary">Gesamt :</string>
+    <string name="financials_quantity_stats_info_cards">Finanzkennzahlen Menge :</string>
+    <string name="average_income_stats_info_cards">Durchschnittseinkommen :</string>
+    <string name="average_expenses_stats_info_cards">Durchschnittliche Ausgaben pro Tag :</string>
+    <string name="period_summary_statistics_info_cards">Zusammenfassung des Zeitraums</string>
 
 </resources>

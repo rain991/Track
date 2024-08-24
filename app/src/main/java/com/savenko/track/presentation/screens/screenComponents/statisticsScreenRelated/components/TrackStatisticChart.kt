@@ -7,8 +7,10 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -26,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.patrykandpatrick.vico.compose.cartesian.CartesianChartHost
 import com.patrykandpatrick.vico.compose.cartesian.axis.rememberBottomAxis
@@ -111,7 +114,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                 Box(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
-                        .offset(0.dp, (-12).dp)
+                        .offset(0.dp, (0).dp)  // y = -8
                 ) {
                     AnimatedContent(
                         targetState = when (chartState.value.financialEntities) {
@@ -152,7 +155,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                             startAxis = rememberStartAxis(
                                 guideline = null,
                                 horizontalLabelPosition = VerticalAxis.HorizontalLabelPosition.Inside,
-                                label =  rememberTextComponent(
+                                label = rememberTextComponent(
                                     color = MaterialTheme.colorScheme.onSecondary,
                                     padding = Dimensions.of(2.dp),
                                     margins = Dimensions.of(start = 3.dp),
@@ -191,77 +194,29 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                             zoomEnabled = false,
                             initialZoom = Zoom.Content
                         ),
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .wrapContentHeight()
+                        modifier = Modifier.fillMaxWidth().weight(1f, fill = false)
                     )
                 }
-                Row(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 32.dp), horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    chartData.keys.sorted().forEachIndexed { index, entry ->
-                        when (chartState.value.timePeriod) {
-                            is StatisticChartTimePeriod.Week -> {
+                Column(Modifier.wrapContentHeight()){
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(start = 32.dp, end = 12.dp),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        val maxTextCount = 3
+                        val valuesStep = if (chartData.size <= maxTextCount) 1 else chartData.size / maxTextCount
+                        chartData.entries.sortedBy { it.key }.forEachIndexed { index, entry ->
+                            if (index % valuesStep == 0 || index == 0 || index == chartData.size - 1) {
                                 Text(
-                                    text = dateTimeFormatter.format(entry),
-                                    style = MaterialTheme.typography.bodySmall
+                                    text = dateTimeFormatter.format(entry.key),
+                                    style = MaterialTheme.typography.bodySmall,maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
-                            }
-
-                            is StatisticChartTimePeriod.Month -> {
-                                if (chartData.size < 5) {
-                                    Text(
-                                        text = dateTimeFormatter.format(entry),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                } else {
-                                    val valuesStep = chartData.keys.size / 5
-                                    if (index % valuesStep == 0 || index == 0) {
-                                        Text(
-                                            text = dateTimeFormatter.format(entry),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    }
-                                }
-                            }
-
-                            is StatisticChartTimePeriod.Year -> {
-                                if (chartData.size < 5) {
-                                    Text(
-                                        text = dateTimeFormatter.format(entry),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                } else {
-                                    val valuesStep = chartData.keys.size / 5
-                                    if (index % valuesStep == 0 || index == 0) {
-                                        Text(
-                                            text = dateTimeFormatter.format(entry),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    }
-                                }
-                            }
-
-                            is StatisticChartTimePeriod.Other -> {
-                                if (chartData.size < 5) {
-                                    Text(
-                                        text = dateTimeFormatter.format(entry),
-                                        style = MaterialTheme.typography.bodySmall
-                                    )
-                                } else {
-                                    val valuesStep = chartData.keys.size / 5
-                                    if (index % valuesStep == 0 || index == 0) {
-                                        Text(
-                                            text = dateTimeFormatter.format(entry),
-                                            style = MaterialTheme.typography.bodySmall
-                                        )
-                                    }
-                                }
                             }
                         }
                     }
+                    Spacer(modifier = Modifier.height(8.dp))
                 }
             }
         }

@@ -4,8 +4,6 @@ import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.database.ideaRelated.ExpenseLimitsDao
 import com.savenko.track.data.database.ideaRelated.IncomePlansDao
 import com.savenko.track.data.database.ideaRelated.SavingsDao
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
 import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.idea.ExpenseLimits
@@ -19,7 +17,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
+import java.util.Date
 import kotlin.coroutines.CoroutineContext
 
 class IdeaListRepositoryImpl(
@@ -54,22 +52,30 @@ class IdeaListRepositoryImpl(
             when (idea) {
                 is ExpenseLimits -> {
                     if (idea.isRelatedToAllCategories) {
-                        expensesCoreRepositoryImpl.getSumOfExpenses(idea.startDate.time, currentTimeMillis).collect {
+                        expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(idea.startDate.time, currentTimeMillis).collect {
                             send(it)
                         }
                     } else {
                         val relatedGroups =
-                            listOfNotNull(idea.firstRelatedCategoryId, idea.secondRelatedCategoryId, idea.thirdRelatedCategoryId)
-                        expensesCoreRepositoryImpl.getSumOfExpensesByCategories(idea.startDate.time, currentTimeMillis, relatedGroups)
-                            .collect {
+                            listOfNotNull(
+                                idea.firstRelatedCategoryId,
+                                idea.secondRelatedCategoryId,
+                                idea.thirdRelatedCategoryId
+                            )
+                        expensesCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
+                            idea.startDate.time,
+                            currentTimeMillis,
+                            relatedGroups
+                        ).collect {
                                 send(it)
                             }
                     }
                 }
+
                 is IncomePlans -> {
                     incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
                         idea.startDate,
-                        getEndOfTheMonth(convertLocalDateToDate(LocalDate.now()))
+                        Date(currentTimeMillis)
                     ).collect {
                         send(it)
                     }
@@ -80,7 +86,10 @@ class IdeaListRepositoryImpl(
         }
     }
 
-    override suspend fun changePreferableCurrenciesOnIdeas(newPreferableCurrency: Currency, previousPreferableCurrency: Currency) {
+    override suspend fun changePreferableCurrenciesOnIdeas(
+        newPreferableCurrency: Currency,
+        previousPreferableCurrency: Currency
+    ) {
         val ideasList = mutableListOf<Idea>()
         ideasList.addAll(getIncomesPlansList().first())
         ideasList.addAll(getSavingsList().first())
@@ -89,21 +98,37 @@ class IdeaListRepositoryImpl(
             when (idea) {
                 is Savings -> {
                     val newValue =
-                        currenciesRatesHandler.convertValueToAnyCurrency(idea.value, previousPreferableCurrency, newPreferableCurrency)
+                        currenciesRatesHandler.convertValueToAnyCurrency(
+                            idea.value,
+                            previousPreferableCurrency,
+                            newPreferableCurrency
+                        )
                     val newGoal =
-                        currenciesRatesHandler.convertValueToAnyCurrency(idea.goal, previousPreferableCurrency, newPreferableCurrency)
+                        currenciesRatesHandler.convertValueToAnyCurrency(
+                            idea.goal,
+                            previousPreferableCurrency,
+                            newPreferableCurrency
+                        )
                     savingsDao.update(idea.copy(value = newValue, goal = newGoal))
                 }
 
                 is IncomePlans -> {
                     val newGoal =
-                        currenciesRatesHandler.convertValueToAnyCurrency(idea.goal, previousPreferableCurrency, newPreferableCurrency)
+                        currenciesRatesHandler.convertValueToAnyCurrency(
+                            idea.goal,
+                            previousPreferableCurrency,
+                            newPreferableCurrency
+                        )
                     incomePlansDao.update(idea.copy(goal = newGoal))
                 }
 
                 is ExpenseLimits -> {
                     val newGoal =
-                        currenciesRatesHandler.convertValueToAnyCurrency(idea.goal, previousPreferableCurrency, newPreferableCurrency)
+                        currenciesRatesHandler.convertValueToAnyCurrency(
+                            idea.goal,
+                            previousPreferableCurrency,
+                            newPreferableCurrency
+                        )
                     expenseLimitsDao.update(idea.copy(goal = newGoal))
                 }
             }

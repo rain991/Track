@@ -43,7 +43,6 @@ fun CategoryChip(
 ) {
     val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     val buttonColor = parseColor(hexColor = category.colorId)
-
     Button(
         modifier = Modifier
             .wrapContentHeight()

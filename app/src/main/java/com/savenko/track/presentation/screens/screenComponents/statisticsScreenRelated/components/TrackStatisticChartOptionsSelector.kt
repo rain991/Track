@@ -44,7 +44,7 @@ import java.util.Date
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) {
+fun TrackStatisticChartOptionsSelector(modifier : Modifier,chartViewModel: StatisticChartViewModel) {
     val chartState = chartViewModel.statisticChartState.collectAsState()
     val financialTypeSelectorItems =
         listOf(
@@ -61,7 +61,7 @@ fun TrackStatisticChartOptionsSelector(chartViewModel: StatisticChartViewModel) 
         )
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
-        modifier = Modifier.padding(8.dp)
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier

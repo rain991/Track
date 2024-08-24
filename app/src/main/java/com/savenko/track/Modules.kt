@@ -34,7 +34,7 @@ import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.other.workers.CurrenciesRatesWorker
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
-import com.savenko.track.data.viewmodels.login.LoginViewModel
+import com.savenko.track.data.viewmodels.login.LoginScreenViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.BudgetIdeaCardViewModel
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
@@ -50,6 +50,7 @@ import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalSetting
 import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsViewModel
 import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
+import com.savenko.track.data.viewmodels.statistics.StatisticInfoCardsViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.domain.repository.charts.ChartsRepository
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
@@ -78,6 +79,7 @@ import com.savenko.track.domain.usecases.userData.financialEntities.nonSpecified
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredExpensesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
+import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetPeriodSummaryUseCase
 import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
 import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
@@ -99,7 +101,7 @@ val coreModule = module {
     single<FinancialCardNotesProvider> { FinancialCardNotesProvider(get(), get()) }
     single<ChartDataProvider> { ChartDataProvider(get(), get(), get(), get()) }
     single<PersonalStatsProvider> { PersonalStatsProvider(get(), get(), get()) }
-    single<WorkManagerHelper> { WorkManagerHelper(get(), get()) }
+    single<WorkManagerHelper> { WorkManagerHelper(androidContext(), get()) }
     single<DatabaseStringResourcesProvider> { DatabaseStringResourcesProvider(get()) }
 }
 
@@ -168,17 +170,18 @@ val domainModule = module {
     factory<GetDesiredFinancialEntitiesUseCase> { GetDesiredFinancialEntitiesUseCase(get(), get()) }
     factory<GetUnfinishedIdeasUseCase> { GetUnfinishedIdeasUseCase(get()) }
     factory<ChangePreferableCurrencyUseCase> { ChangePreferableCurrencyUseCase(get(), get(), get(), get()) }
+    factory<GetPeriodSummaryUseCase> { GetPeriodSummaryUseCase(get(), get()) }
 }
 
 val viewModelModule = module {
     // Login related
-    viewModel { LoginViewModel(get(), get(), get(), get()) }
+    viewModel { LoginScreenViewModel(get(), get(), get(), get()) }
 
     // Settings related
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
     viewModel { IdeasSettingsScreenViewModel(get(), get()) }
     viewModel { ThemePreferenceSettingsViewModel(get(), get()) }
-    viewModel { CategoriesSettingsScreenViewModel(get(), get(), get(),get()) }
+    viewModel { CategoriesSettingsScreenViewModel(get(), get(), get(), get()) }
     viewModel { NewCategoryViewModel(get(), get(), get()) }
     viewModel { PersonalSettingsScreenViewmodel(get(), get(), get()) }
     viewModel { PersonalStatsViewModel(get(), get()) }
@@ -190,6 +193,7 @@ val viewModelModule = module {
     // Statistics related
     viewModel { StatisticChartViewModel(get(), get(), get()) }
     viewModel { StatisticLazyColumnViewModel(get(), get(), get(), get(), get(), get()) }
+    viewModel { StatisticInfoCardsViewModel(get(), get()) }
 
     // Bottom sheets
     viewModel { BottomSheetViewModel(get(), get(), get(), get(), get(), get()) }

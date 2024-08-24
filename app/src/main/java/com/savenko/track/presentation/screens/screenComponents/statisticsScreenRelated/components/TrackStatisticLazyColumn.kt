@@ -118,7 +118,7 @@ fun TrackStatisticLazyColumn(
             }
         }
         LaunchedEffect(key1 = Unit, key2 = state.value, key3 = dateRange) {
-            statisticLazyColumnViewModel.innitializeListOfEntities(
+            statisticLazyColumnViewModel.initializeListOfEntities(
                 timePeriod = dateRange,
                 financialEntities = state.value.financialEntities
             )

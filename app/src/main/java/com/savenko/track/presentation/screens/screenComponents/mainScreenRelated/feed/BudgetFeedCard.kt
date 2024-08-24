@@ -58,7 +58,7 @@ fun BudgetFeedCard() {
             val currentMonth = stringResource(id = getMonthResID(localDate = LocalDate.now()))
             Text(
                 text = stringResource(R.string.budget_main_feed_card, currentMonth),
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
+                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.W500),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = 8.dp, vertical = 4.dp),
@@ -89,7 +89,7 @@ fun BudgetFeedCard() {
                             }
                             withStyle(
                                 style = SpanStyle(
-                                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                                    fontSize = 18.sp, fontWeight = FontWeight.W500
                                 )
                             ) {
                                 append(
@@ -126,7 +126,7 @@ fun BudgetFeedCard() {
                             }
                             withStyle(
                                 style = SpanStyle(
-                                    fontSize = 18.sp, fontWeight = FontWeight.SemiBold
+                                    fontSize = 18.sp, fontWeight = FontWeight.W500
                                 )
                             ) {
                                 append(

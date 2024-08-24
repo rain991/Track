@@ -153,7 +153,6 @@ fun FinancialItemCardTypeSimple(
                             }
                         }
                     }
-
                     Spacer(modifier = Modifier.weight(1f))
                     Row(
                         modifier = Modifier

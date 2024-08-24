@@ -125,27 +125,18 @@ class StatisticChartViewModel(
             val incomeXToDates =
                 incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
             modelProducer.runTransaction {
-                val expenseListOfValues = expenseChartData.map { it.value }
-                val incomeListOfValues = incomeChartData.map { it.value }
-
-                if (expenseListOfValues.size > 1 && incomeListOfValues.size > 1) {
-
-                }
+//                val expenseListOfValues = expenseChartData.map { it.value }
+//                val incomeListOfValues = incomeChartData.map { it.value }
 
                 if (expenseXToDates.size > 1 || incomeXToDates.size > 1) {
                     lineSeries {
-                        if (incomeXToDates.isNotEmpty()) {
-                            series(incomeXToDates.keys, incomeChartData.map { it.value })
-                        }
                         if (expenseXToDates.isNotEmpty()) {
                             series(expenseXToDates.keys, expenseChartData.map { it.value })
                         }
+                        if (incomeXToDates.isNotEmpty()) {
+                            series(incomeXToDates.keys, incomeChartData.map { it.value })
+                        }
                         extras { it[xToDateMapKey] = (expenseXToDates + incomeXToDates) }
-//                        if(expenseXToDates.size > incomeXToDates.size){
-//                            extras { it[xToDateMapKey] = expenseXToDates }
-//                        }else{
-//                            extras { it[xToDateMapKey] = incomeXToDates }
-//                        }
                     }
                 }
 

@@ -5,7 +5,7 @@ import com.savenko.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.savenko.track.data.database.incomeRelated.IncomeDao
 import com.savenko.track.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getEndOfTheMonth
+import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
 import com.savenko.track.data.other.converters.dates.getEndOfWeekDate
 import com.savenko.track.data.other.converters.dates.getEndOfYearDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
@@ -38,7 +38,7 @@ class NotesRepositoryImpl(
         val todayDate = convertLocalDateToDate(LocalDate.now())
         val listOfIncomeItems = incomeDao.getIncomesInTimeSpanDateDecs(
             start = getStartOfMonthDate(todayDate).time,
-            end = getEndOfTheMonth(todayDate).time
+            end = getEndOfMonthDate(todayDate).time
         ).first()
         var sumOfExpensesInPreferableCurrency = 0.0f
         val listOfIncomesInPreferableCurrency = listOfIncomeItems.filter { it.currencyTicker == preferableCurrency.ticker }
@@ -65,7 +65,7 @@ class NotesRepositoryImpl(
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getCountOfExpensesInTimeSpan(
             start = getStartOfMonthDate(todayDate).time,
-            end = getEndOfTheMonth(todayDate).time
+            end = getEndOfMonthDate(todayDate).time
         ).first()
     }
 
@@ -73,7 +73,7 @@ class NotesRepositoryImpl(
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return incomeDao.getCountOfIncomesInTimeSpan(
             start = getStartOfMonthDate(todayDate).time,
-            end = getEndOfTheMonth(todayDate).time
+            end = getEndOfMonthDate(todayDate).time
         ).first()
     }
 
@@ -107,7 +107,7 @@ class NotesRepositoryImpl(
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getBiggestExpenseInTimeSpan(
             start = getStartOfMonthDate(todayDate).time,
-            end = getEndOfTheMonth(todayDate).time
+            end = getEndOfMonthDate(todayDate).time
         )
     }
 
@@ -115,7 +115,7 @@ class NotesRepositoryImpl(
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getBiggestExpenseInTimeSpan(
             start = getStartOfMonthDate(todayDate).time,
-            end = getEndOfTheMonth(todayDate).time
+            end = getEndOfMonthDate(todayDate).time
         )
     }
 

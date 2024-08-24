@@ -48,7 +48,8 @@ fun PersonalSettingsStatistics(viewModel: PersonalStatsViewModel) {
             if (statsState.value.allTimeExpensesCount == 0) {
                 Text(
                     text = stringResource(R.string.not_added_any_expenses_yet_personal_settings_screen),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             } else {
                 Text(
@@ -67,7 +68,8 @@ fun PersonalSettingsStatistics(viewModel: PersonalStatsViewModel) {
             if (statsState.value.allTimeIncomesCount == 0) {
                 Text(
                     text = stringResource(R.string.not_added_any_incomes_yet_personal_settings_screen),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    modifier = Modifier.align(Alignment.CenterHorizontally)
                 )
             } else {
                 Text(
@@ -92,7 +94,7 @@ fun PersonalSettingsStatistics(viewModel: PersonalStatsViewModel) {
                 text = stringResource(
                     R.string.login_message_personal_settings_screen,
                     statsState.value.loginCount
-                )
+                ), modifier = Modifier.align(Alignment.CenterHorizontally)
             )
             Spacer(modifier = Modifier.height(8.dp))
         }

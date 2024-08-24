@@ -51,10 +51,10 @@ class FinancialCardNotesProvider(
         val endDate = timeSpan.upper
         if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
             val result =
-                expenseCoreRepositoryImpl.getSumOfExpensesByCategories(
+                expenseCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
                     start = startDate.time,
                     end = endDate.time,
-                    listOfCategories = listOf(financialCategory.categoryId)
+                    categoriesIds = listOf(financialCategory.categoryId)
                 )
             return result
         }

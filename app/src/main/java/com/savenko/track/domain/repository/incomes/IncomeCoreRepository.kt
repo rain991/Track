@@ -8,4 +8,5 @@ interface IncomeCoreRepository {
     suspend fun getSumOfIncomesInTimeSpanByCategoriesIds(startOfSpan: Date, endOfSpan: Date, categoriesIds : List<Int>): Flow<Float>
     suspend fun getCountOfIncomesInSpan(startDate: Date, endDate: Date): Flow<Int>
     suspend fun getCountOfIncomesInSpanByCategoriesIds(startDate: Date, endDate: Date, categoriesIds: List<Int>): Flow<Int>
+    suspend fun getAverageInTimeSpan(startDate: Date, endDate: Date) : Flow<Float>
 }
