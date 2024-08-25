@@ -5,7 +5,6 @@ import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.repository.expenses.ExpensesListRepository
 import kotlinx.coroutines.flow.Flow
-import java.util.Date
 
 class ExpensesListRepositoryImpl(
     private val expenseItemsDao: ExpenseItemsDAO
@@ -14,8 +13,8 @@ class ExpensesListRepositoryImpl(
         return expenseItemsDao.getAll()
     }
 
-    override fun getExpensesListInTimeSpanDateDesc(startOfSpan: Date, endOfSpan: Date): Flow<List<ExpenseItem>> {
-        return expenseItemsDao.getExpensesInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time)
+    override fun getExpensesListInTimeSpanDateDesc(startOfSpan: Long, endOfSpan: Long): Flow<List<ExpenseItem>> {
+        return expenseItemsDao.getExpensesInTimeSpanDateDesc(startOfSpan, endOfSpan)
     }
 
     override fun getExpensesByIds(listOfIds: List<Int>): List<ExpenseItem> {
@@ -30,7 +29,7 @@ class ExpensesListRepositoryImpl(
         return expenseItemsDao.getAllWithDateDesc()
     }
 
-    override fun getExpensesByCategoryInTimeSpan(startOfSpan: Date, endOfSpan: Date, category: ExpenseCategory): List<ExpenseItem> {
-        return expenseItemsDao.findExpensesInTimeSpan(start = startOfSpan.time, end = endOfSpan.time, categoryId = category.categoryId)
+    override fun getExpensesByCategoryInTimeSpan(startOfSpan: Long, endOfSpan: Long, category: ExpenseCategory): List<ExpenseItem> {
+        return expenseItemsDao.findExpensesInTimeSpan(start = startOfSpan, end = endOfSpan, categoryId = category.categoryId)
     }
 }

@@ -42,7 +42,7 @@ class GetDesiredExpensesUseCaseTest {
         val startOfSpan = Date(4000)
         val endOfSpan = Date(10000)
         val datesRange = Range(startOfSpan, endOfSpan)
-        Mockito.`when`(expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan, endOfSpan))
+        Mockito.`when`(expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time))
             .thenReturn(
                 flow { emit(listOfExpenses.filter { it.date.time in startOfSpan.time..endOfSpan.time }) }
             )

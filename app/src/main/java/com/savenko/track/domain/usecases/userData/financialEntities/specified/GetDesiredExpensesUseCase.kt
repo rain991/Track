@@ -9,8 +9,8 @@ import java.util.Date
 class GetDesiredExpensesUseCase(private val expensesListRepositoryImpl: ExpensesListRepository) {
     operator fun invoke(timePeriod: Range<Date>): Flow<List<ExpenseItem>> {
         return expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(
-            timePeriod.lower,
-            timePeriod.upper
+            timePeriod.lower.time,
+            timePeriod.upper.time
         )
     }
 }

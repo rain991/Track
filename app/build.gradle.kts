@@ -8,7 +8,9 @@ android {
     testOptions {
         unitTests {
             isIncludeAndroidResources = true
+            isReturnDefaultValues = true
         }
+        animationsDisabled = true
     }
     android.buildFeatures.buildConfig = true
     namespace = "com.savenko.track"
@@ -57,6 +59,7 @@ android {
 
 dependencies {
     implementation("androidx.test:core-ktx:1.6.1")
+    implementation("androidx.test.ext:junit-ktx:1.2.1")
     val workVersion = "2.9.1"
     val koinVersion = "3.5.3"
     val retrofitVersion = "2.9.0"
@@ -96,9 +99,10 @@ dependencies {
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.8")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation ("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
-    //junit
+    //junit\
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("junit:junit:4.13.2")
     testImplementation("junit:junit:4.13.2")
     testImplementation("org.robolectric:robolectric:4.13")
