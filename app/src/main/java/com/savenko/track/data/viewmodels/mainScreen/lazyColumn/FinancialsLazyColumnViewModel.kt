@@ -55,13 +55,13 @@ class FinancialsLazyColumnViewModel(
 
     init {
         viewModelScope.launch {
-            getUserExpensesUseCase().collect { listOfExpenses ->
+            getUserExpensesUseCase.getUserExpensesDateDesc().collect { listOfExpenses ->
                 _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expensesList = listOfExpenses) }
                 initializeExpenseListFinancialNotions(listOfExpenses)
             }
         }
         viewModelScope.launch {
-            getUserIncomesUseCase().collect { listOfIncomes ->
+            getUserIncomesUseCase.getUserIncomesDateDesc().collect { listOfIncomes ->
                 _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomeList = listOfIncomes) }
                 initializeIncomeListFinancialNotions(listOfIncomes)
             }

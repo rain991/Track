@@ -12,7 +12,7 @@ class GetDesiredFinancialEntitiesUseCase(
     private val incomeListRepositoryImpl: IncomeListRepository,
     private val expensesListRepositoryImpl: ExpensesListRepository
 ) {
-    suspend operator fun invoke(timePeriod: Range<Date>): Flow<MutableList<FinancialEntity>> {
+    suspend operator fun invoke(timePeriod: Range<Date>): Flow<List<FinancialEntity>> {
         val expenseItemsFlow =
             expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(
                 timePeriod.lower,

@@ -1,39 +1,48 @@
-package com.savenko.track.domain.usecases.ideasRelated
+package com.savenko.track.domain.usecases.crud.ideasRelated
 
 import com.savenko.track.data.implementations.ideas.IdeaItemRepositoryImpl
 import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
-import com.savenko.track.domain.usecases.crud.ideasRelated.CreateIdeaUseCase
-import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.Test
+import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.kotlin.verify
 
 class CreateIdeaUseCaseTest {
-
+    private lateinit var createIdeaUseCase: CreateIdeaUseCase
     private val ideaItemRepositoryImpl = mock<IdeaItemRepositoryImpl>()
 
+    @Before
+    fun setup() {
+        createIdeaUseCase = CreateIdeaUseCase(ideaItemRepositoryImpl)
+    }
+
+    @After
+    fun tearDown() {
+        Mockito.reset(ideaItemRepositoryImpl)
+    }
+
     @Test
-    fun `savings are added correctly`() = runBlocking {
+    fun `savings are added correctly`() = runTest {
         val idea = mock<Savings>()
-        val createIdeaUseCase = CreateIdeaUseCase(ideaItemRepositoryImpl)
         createIdeaUseCase.invoke(idea)
         verify(ideaItemRepositoryImpl).addIdea(idea)
     }
 
     @Test
-    fun `incomePlans are added correctly`() = runBlocking {
+    fun `incomePlans are added correctly`() = runTest {
         val idea = mock<IncomePlans>()
-        val createIdeaUseCase = CreateIdeaUseCase(ideaItemRepositoryImpl)
         createIdeaUseCase.invoke(idea)
         verify(ideaItemRepositoryImpl).addIdea(idea)
     }
 
     @Test
-    fun `expenseLimits are added correctly`() = runBlocking {
+    fun `expenseLimits are added correctly`() = runTest {
         val idea = mock<ExpenseLimits>()
-        val createIdeaUseCase = CreateIdeaUseCase(ideaItemRepositoryImpl)
         createIdeaUseCase.invoke(idea)
         verify(ideaItemRepositoryImpl).addIdea(idea)
     }

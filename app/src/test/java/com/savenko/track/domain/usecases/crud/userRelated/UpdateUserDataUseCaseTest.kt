@@ -1,44 +1,50 @@
-package com.savenko.track.domain.usecases.userRelated
+package com.savenko.track.domain.usecases.crud.userRelated
 
 import com.savenko.track.data.other.dataStore.DataStoreManager
-import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
 import com.savenko.track.presentation.themes.Themes
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.params.ParameterizedTest
-import org.junit.jupiter.params.provider.Arguments
-import org.junit.jupiter.params.provider.MethodSource
+import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Before
+import org.junit.Test
+import org.junit.runner.RunWith
+import org.junit.runners.Parameterized
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.reset
 
-class UpdateUserDataUseCaseTest() {
-    private val dataStoreManager = mock<DataStoreManager>()
-    private val updateUserDataUseCase = UpdateUserDataUseCase(dataStoreManager)
 
+@RunWith(Parameterized::class)
+class UpdateUserDataUseCaseTest(private val updateUserDataUseCaseParam: UpdateUserDataUseCaseParam) {
     companion object {
+        private lateinit var updateUserDataUseCase: UpdateUserDataUseCase
+        private val dataStoreManager = mock<DataStoreManager>()
+
+        @Before
+        fun setup() {
+            updateUserDataUseCase = UpdateUserDataUseCase(dataStoreManager)
+        }
+
+        @After
+        fun tearDown() {
+            reset(dataStoreManager)
+        }
+
         @JvmStatic
-        fun params() =
-            listOf(
-                Arguments.of(UpdateUserDataUseCaseParam.UserName()),
-                Arguments.of(UpdateUserDataUseCaseParam.UseSystemTheme()),
-                Arguments.of(UpdateUserDataUseCaseParam.PreferableTheme()),
-                Arguments.of(UpdateUserDataUseCaseParam.Budget()),
-                Arguments.of(UpdateUserDataUseCaseParam.ShowPageName())
-            )
+        @Parameterized.Parameters
+        fun params() = listOf(
+            arrayOf(UpdateUserDataUseCaseParam.UserName()),
+            arrayOf(UpdateUserDataUseCaseParam.UseSystemTheme()),
+            arrayOf(UpdateUserDataUseCaseParam.PreferableTheme()),
+            arrayOf(UpdateUserDataUseCaseParam.Budget()),
+            arrayOf(UpdateUserDataUseCaseParam.ShowPageName())
+        )
     }
 
-    @AfterEach
-    fun tearDown() {
-        reset(dataStoreManager)
-    }
 
-    @ParameterizedTest
-    @MethodSource("params")
-    fun `new values are inserted correctly`(param: UpdateUserDataUseCaseParam) = runBlocking {
-        val paramValue = param.param
-        when (param) {
+    @Test
+    fun `new values are inserted correctly`() = runTest {
+        when (val paramValue = updateUserDataUseCaseParam.param) {
             is UpdateUserDataUseCaseParam.UserName -> {
                 val currentParamValue = paramValue as String
                 Mockito.`when`(dataStoreManager.nameFlow)

@@ -5,7 +5,7 @@ import com.savenko.track.domain.repository.incomes.IncomeListRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetUserIncomesUseCase(private val incomeListRepositoryImpl: IncomeListRepository) {
-    operator fun invoke(): Flow<List<IncomeItem>> {
+    fun getUserIncomesDateDesc(): Flow<List<IncomeItem>> {
         return incomeListRepositoryImpl.getSortedIncomesListDateDesc()
     }
 }

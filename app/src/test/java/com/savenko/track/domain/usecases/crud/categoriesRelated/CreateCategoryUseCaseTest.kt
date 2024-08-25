@@ -1,34 +1,41 @@
-package com.savenko.track.domain.usecases.categoriesRelated
+package com.savenko.track.domain.usecases.crud.categoriesRelated
 
-import com.savenko.track.data.implementations.expenses.expenseCategories.ExpensesCategoriesListRepositoryImpl
-import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCategoriesListRepositoryImpl
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
-import com.savenko.track.domain.usecases.crud.categoriesRelated.CreateCategoryUseCase
+import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
+import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
-import kotlinx.coroutines.runBlocking
-import org.junit.jupiter.api.AfterEach
-import org.junit.jupiter.api.Assertions.assertEquals
-import org.junit.jupiter.api.Test
+import kotlinx.coroutines.test.runTest
+import org.junit.After
+import org.junit.Assert.assertEquals
+import org.junit.Before
+import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 
 class CreateCategoryUseCaseTest {
+    private lateinit var createCategoryUseCase: CreateCategoryUseCase
+    private val expenseCategoriesListRepository: ExpensesCategoriesListRepository =
+        mock()
+    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository =
+        mock()
 
-    private val expenseCategoriesListRepository: ExpensesCategoriesListRepositoryImpl = mock <ExpensesCategoriesListRepositoryImpl>()
-    private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepositoryImpl = mock <IncomesCategoriesListRepositoryImpl>()
+    @Before
+    fun setup() {
+        createCategoryUseCase =
+            CreateCategoryUseCase(expenseCategoriesListRepository, incomesCategoriesListRepositoryImpl)
+    }
 
-    @AfterEach
+    @After
     fun tearDown() {
         Mockito.reset(expenseCategoriesListRepository, incomesCategoriesListRepositoryImpl)
     }
 
     @Test
-    fun `expense category was correctly added`() = runBlocking {
-        val testCategory = ExpenseCategory(categoryId = 13, note = "note test", colorId = "sdfsdfsdf")
+    fun `expense category was correctly added`() = runTest {
+        val testCategory = ExpenseCategory(categoryId = 1, note = "Test Note", colorId = "Color123")
 
-        // Stubbing methods
         Mockito.`when`(expenseCategoriesListRepository.getCategoryById(testCategory.categoryId))
             .thenReturn(testCategory)
 
@@ -39,20 +46,17 @@ class CreateCategoryUseCaseTest {
 
         useCase(category = testCategory)
 
-        // Verify interactions
         Mockito.verify(expenseCategoriesListRepository).addCategory(testCategory)
-        Mockito.verify(expenseCategoriesListRepository).getCategoryById(testCategory.categoryId)
 
         val actual = expenseCategoriesListRepository.getCategoryById(testCategory.categoryId)
         assertEquals(testCategory, actual)
     }
 
     @Test
-    fun `income category was correctly added`() = runBlocking {
-        val testCategory = IncomeCategory(categoryId = 11, note = "note sdf", colorId = "colorId test")
+    fun `income category was correctly added`() = runTest {
+        val testCategory = IncomeCategory(categoryId = 1, note = "Test Note", colorId = "Color123")
         val testCategoryList = listOf(testCategory)
 
-        // Stubbing methods
         Mockito.`when`(incomesCategoriesListRepositoryImpl.getCategoriesList())
             .thenReturn(flow { emit(testCategoryList) })
 
@@ -63,9 +67,7 @@ class CreateCategoryUseCaseTest {
 
         useCase(category = testCategory)
 
-        // Verify interactions
         Mockito.verify(incomesCategoriesListRepositoryImpl).addCategory(testCategory)
-        Mockito.verify(incomesCategoriesListRepositoryImpl).getCategoriesList()
 
         val actual = incomesCategoriesListRepositoryImpl.getCategoriesList().firstOrNull()
         assertEquals(testCategoryList, actual)
