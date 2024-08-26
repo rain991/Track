@@ -59,12 +59,12 @@ class TrackScreenFeedViewModel(
 
 
     suspend fun getCompletionValue(idea: Idea): StateFlow<Float> {
-        return ideaListRepositoryImpl.getCompletionValue(idea)
+        return ideaListRepositoryImpl.getIdeaCompletedValue(idea)
             .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = 0.0f)
     }
 
     private suspend fun getIdeaCompletionValue(idea: Idea): Float {
-        return ideaListRepositoryImpl.getCompletionValue(idea).first()
+        return ideaListRepositoryImpl.getIdeaCompletedValue(idea).first()
     }
 
     fun incrementCardIndex() {
