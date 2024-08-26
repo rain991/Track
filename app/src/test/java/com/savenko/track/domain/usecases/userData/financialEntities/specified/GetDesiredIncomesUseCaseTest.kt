@@ -3,6 +3,7 @@ package com.savenko.track.domain.usecases.userData.financialEntities.specified
 import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.domain.repository.incomes.IncomeListRepository
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
 import kotlinx.coroutines.test.runTest
 import org.junit.After
@@ -14,6 +15,7 @@ import org.mockito.Mockito.verifyNoMoreInteractions
 import org.mockito.Mockito.`when`
 import org.mockito.kotlin.mock
 import java.util.Date
+import kotlin.test.assertEquals
 
 class GetDesiredIncomesUseCaseTest {
 
@@ -41,10 +43,13 @@ class GetDesiredIncomesUseCaseTest {
         )
         val expectedFlow: Flow<List<IncomeItem>> = flowOf(incomeItems)
 
-        `when`(incomeListRepository.getIncomesInTimeSpanDateDesc(lowerDate.time, upperDate.time)).thenReturn(expectedFlow)
+        `when`(incomeListRepository.getIncomesInTimeSpanDateDesc(lowerDate.time, upperDate.time)).thenReturn(
+            expectedFlow
+        )
 
-        getDesiredIncomesUseCase(lowerDate.time, upperDate.time)
-
+        val result = getDesiredIncomesUseCase(lowerDate.time, upperDate.time).first()
+        val expected = incomeItems.filter { it.date.time in lowerDate.time..upperDate.time }
+        assertEquals(expected, result)
         verify(incomeListRepository).getIncomesInTimeSpanDateDesc(lowerDate.time, upperDate.time)
         verifyNoMoreInteractions(incomeListRepository)
     }

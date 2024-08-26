@@ -1,6 +1,5 @@
 package com.savenko.track.domain.usecases.userData.financialEntities.specified
 
-import android.util.Range
 import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
 import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
@@ -14,23 +13,24 @@ class GetPeriodSummaryUseCase(
     private val expenseCoreRepository: ExpensesCoreRepository
 ) {
     suspend fun getPeriodSummary(
-        dateRange: Range<Date>,
+        periodStartMillis: Long,
+        periodEndMillis: Long,
         financialTypes: FinancialTypes
     ): Flow<FinancialCardNotion> {
         return when (financialTypes) {
             FinancialTypes.Expense -> {
                 val countOfExpensesFlow =
                     expenseCoreRepository.getCountOfExpensesInSpan(
-                        startDate = dateRange.lower,
-                        endDate = dateRange.upper
+                        startDate = Date(periodStartMillis),
+                        endDate = Date(periodEndMillis)
                     )
                 val expensesSummaryFlow = expenseCoreRepository.getSumOfExpensesInTimeSpan(
-                    start = dateRange.lower.time,
-                    end = dateRange.upper.time
+                    start = periodStartMillis,
+                    end = periodEndMillis
                 )
                 val expenseAverageFlow = expenseCoreRepository.getAverageInTimeSpan(
-                    startDate = dateRange.lower,
-                    endDate = dateRange.upper
+                    startDate = Date(periodStartMillis),
+                    endDate = Date(periodEndMillis)
                 )
                 combine(countOfExpensesFlow, expensesSummaryFlow, expenseAverageFlow) { count, summary, average ->
                     FinancialCardNotion(financialsQuantity = count, financialSummary = summary, periodAverage = average)
@@ -39,14 +39,17 @@ class GetPeriodSummaryUseCase(
 
             FinancialTypes.Income -> {
                 val countOfIncomesFlow =
-                    incomeCoreRepository.getCountOfIncomesInSpan(startDate = dateRange.lower, endDate = dateRange.upper)
+                    incomeCoreRepository.getCountOfIncomesInSpan(
+                        startDate = Date(periodStartMillis),
+                        endDate = Date(periodEndMillis)
+                    )
                 val incomesSummaryFlow = incomeCoreRepository.getSumOfIncomesInTimeSpan(
-                    startOfSpan = dateRange.lower,
-                    endOfSpan = dateRange.upper
+                    startOfSpan = Date(periodStartMillis),
+                    endOfSpan = Date(periodEndMillis)
                 )
                 val incomesAverageFlow = incomeCoreRepository.getAverageInTimeSpan(
-                    startDate = dateRange.lower,
-                    endDate = dateRange.upper
+                    startDate = Date(periodStartMillis),
+                    endDate = Date(periodEndMillis)
                 )
                 combine(countOfIncomesFlow, incomesSummaryFlow, incomesAverageFlow) { count, summary, average ->
                     FinancialCardNotion(financialsQuantity = count, financialSummary = summary, periodAverage = average)
@@ -56,7 +59,8 @@ class GetPeriodSummaryUseCase(
     }
 
     suspend fun getPeriodSummaryById(
-        dateRange: Range<Date>,
+        periodStartMillis: Long,
+        periodEndMillis: Long,
         categoryID: Int,
         financialTypes: FinancialTypes
     ): Flow<FinancialCardNotion> {
@@ -64,13 +68,13 @@ class GetPeriodSummaryUseCase(
             FinancialTypes.Expense -> {
                 val countOfExpensesFlow =
                     expenseCoreRepository.getCountOfExpensesInSpanByCategoriesIds(
-                        startDate = dateRange.lower,
-                        endDate = dateRange.upper,
+                        startDate = Date(periodStartMillis),
+                        endDate = Date(periodEndMillis),
                         categoriesIds = listOf(categoryID)
                     )
                 val expensesSummaryFlow = expenseCoreRepository.getSumOfExpensesByCategoriesInTimeSpan(
-                    start = dateRange.lower.time,
-                    end = dateRange.upper.time,
+                    start = periodStartMillis,
+                    end = periodEndMillis,
                     categoriesIds = listOf(categoryID)
                 )
                 combine(countOfExpensesFlow, expensesSummaryFlow) { count, summary ->
@@ -81,13 +85,13 @@ class GetPeriodSummaryUseCase(
             FinancialTypes.Income -> {
                 val countOfIncomesFlow =
                     incomeCoreRepository.getCountOfIncomesInSpanByCategoriesIds(
-                        startDate = dateRange.lower,
-                        endDate = dateRange.upper,
+                        startDate = Date(periodStartMillis),
+                        endDate = Date(periodEndMillis),
                         categoriesIds = listOf(categoryID)
                     )
                 val incomesSummaryFlow = incomeCoreRepository.getSumOfIncomesInTimeSpanByCategoriesIds(
-                    startOfSpan = dateRange.lower,
-                    endOfSpan = dateRange.upper,
+                    startOfSpan = Date(periodStartMillis),
+                    endOfSpan = Date(periodEndMillis),
                     categoriesIds = listOf(categoryID)
                 )
                 combine(countOfIncomesFlow, incomesSummaryFlow) { count, summary ->

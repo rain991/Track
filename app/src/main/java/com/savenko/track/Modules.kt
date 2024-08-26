@@ -80,8 +80,9 @@ import com.savenko.track.domain.usecases.userData.financialEntities.specified.Ge
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetPeriodSummaryUseCase
-import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
-import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
+import com.savenko.track.domain.usecases.userData.ideas.GetIdeasListUseCase
+import com.savenko.track.domain.usecases.userData.ideas.GetUnfinishedIdeasUseCase
+import com.savenko.track.domain.usecases.userData.other.ChangeCurrenciesPreferenceUseCase
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -169,7 +170,8 @@ val domainModule = module {
     factory<GetDesiredExpensesUseCase> { GetDesiredExpensesUseCase(get()) }
     factory<GetDesiredFinancialEntitiesUseCase> { GetDesiredFinancialEntitiesUseCase(get(), get()) }
     factory<GetUnfinishedIdeasUseCase> { GetUnfinishedIdeasUseCase(get()) }
-    factory<ChangePreferableCurrencyUseCase> { ChangePreferableCurrencyUseCase(get(), get(), get(), get()) }
+    factory<GetIdeasListUseCase> { GetIdeasListUseCase(get()) }
+    factory<ChangeCurrenciesPreferenceUseCase> { ChangeCurrenciesPreferenceUseCase(get(), get(), get(), get()) }
     factory<GetPeriodSummaryUseCase> { GetPeriodSummaryUseCase(get(), get()) }
 }
 

@@ -7,7 +7,7 @@ import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.models.abstractLayer.createCompletedInstance
 import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaItemRepository
 import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
-import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
+import com.savenko.track.domain.usecases.userData.ideas.GetUnfinishedIdeasUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

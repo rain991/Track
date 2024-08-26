@@ -1,4 +1,4 @@
-package com.savenko.track.domain.usecases.userData.ideas.specified
+package com.savenko.track.domain.usecases.userData.ideas
 
 import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.combine
 
 
 class GetUnfinishedIdeasUseCase(private val ideaListRepositoryImpl: IdeaListRepository) {
-    suspend operator fun invoke(): Flow<MutableList<Idea>> {
+    suspend operator fun invoke(): Flow<List<Idea>> {
         return combine(
             ideaListRepositoryImpl.getIncomesPlansList(),
             ideaListRepositoryImpl.getSavingsList(),

@@ -7,13 +7,15 @@ import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceReposi
 import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
 import kotlinx.coroutines.flow.first
 
-// ChangePreferableCurrencyUseCase returns true if currency changing operation was success
-class ChangePreferableCurrencyUseCase(
+class ChangeCurrenciesPreferenceUseCase(
     private val currenciesRatesHandler: CurrenciesRatesHandler,
     private val dataStoreManager: DataStoreManager,
     private val ideaListRepositoryImpl: IdeaListRepository,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
 ) {
+    /**
+     * ChangePreferableCurrencyUseCase returns true if currency changing operation was success
+     */
     suspend operator fun invoke(
         targetCurrency: Currency,
         currentPreferableCurrency: Currency,
