@@ -50,5 +50,4 @@ class CurrenciesPreferenceRepositoryImpl(private val currenciesPreferenceDao: Cu
     override fun getFourthAdditionalCurrency(): Flow<Currency?> {
         return currenciesPreferenceDao.getFourthAdditionalCurrency()
     }
-
 }
