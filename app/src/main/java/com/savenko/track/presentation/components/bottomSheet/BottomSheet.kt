@@ -194,10 +194,10 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                             hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue
                         )
                         Spacer(Modifier.weight(1f))
-                        val text = bottomSheetViewState.value.note
+                        val note = bottomSheetViewState.value.note
                         Box(modifier = Modifier.padding(start = 8.dp)) {
                             GradientInputTextField(
-                                value = text,
+                                value = note,
                                 label = stringResource(R.string.your_note_adding_exp)
                             ) {
                                 if (it.length < FINANCIAL_NOTE_MAX_LENGTH) bottomSheetViewModel.setNote(it)

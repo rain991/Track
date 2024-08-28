@@ -63,8 +63,8 @@ import org.koin.compose.koinInject
 import java.util.Calendar
 import java.util.Locale
 
-/*  FinancialItemCardTypeSimple used in expenses screen for single expense or income entity in lazy column
-    Also contains ExpenseValueCard(rectangle on right with values and currency), CategoryCard(colored category name), NoteCard(contains notion)  */
+/**  FinancialItemCardTypeSimple used in expenses screen for single expense or income entity in lazy column
+Also contains ExpenseValueCard(rectangle on right with values and currency), CategoryCard(colored category name), NoteCard(contains notion)  */
 @Composable
 fun FinancialItemCardTypeSimple(
     financialEntity: FinancialEntity,
@@ -337,7 +337,7 @@ private fun ExpenseValueCard(
                     FIAT_DECIMAL_FORMAT.format(financialEntity.value)
                 } else {
                     CRYPTO_DECIMAL_FORMAT.format(financialEntity.value)
-                }, style = MaterialTheme.typography.bodyLarge.copy( fontSize = 24.sp)
+                }, style = MaterialTheme.typography.bodyLarge.copy(fontSize = 24.sp)
             )
             Text(text = currentCurrencyName, style = MaterialTheme.typography.bodyMedium)
         }
@@ -376,7 +376,7 @@ private fun CategoryCard(modifier: Modifier, category: CategoryEntity, container
 }
 
 @Composable
-private fun NoteCard(expenseItem: FinancialEntity, cardColor : Color) {
+private fun NoteCard(expenseItem: FinancialEntity, cardColor: Color) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
         modifier = Modifier.wrapContentSize(),

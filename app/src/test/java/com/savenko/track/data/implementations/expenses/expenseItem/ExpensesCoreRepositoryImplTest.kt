@@ -14,7 +14,9 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.`when`
+import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.verify
 import java.util.Date
 
 class ExpensesCoreRepositoryImplTest {
@@ -39,40 +41,79 @@ class ExpensesCoreRepositoryImplTest {
         runTest {
             val start = 1000L
             val end = 5000L
-            val preferableCurrency = mock<Currency>()
+            val preferableCurrency = mock<Currency> {
+                on { ticker } doReturn "USD"
+            }
             val expenses = listOf(
-                ExpenseItem(1, "sdf", 100f, "USD", date = Date(3000), categoryId = 5),
-                ExpenseItem(2, "dsf", 340f, "USD", date = Date(10000), categoryId = 5),
+                ExpenseItem(1, preferableCurrency.ticker, 100f, "USD", date = Date(3000), categoryId = 5),
+                ExpenseItem(2, preferableCurrency.ticker, 340f, "KSK", date = Date(10000), categoryId = 5),
             )
             `when`(currenciesPreferenceRepositoryImpl.getPreferableCurrency()).thenReturn(flowOf(preferableCurrency))
-            `when`(expenseItemsDao.getExpensesInTimeSpanDateAsc(start, end)).thenReturn(flowOf(expenses))
-
+            `when`(
+                expenseItemsDao.getExpensesInTimeSpanDateAsc(
+                    start,
+                    end
+                )
+            ).thenReturn(flowOf(expenses.filter { it.date.time in start..end }))
             val result = expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(start, end).first()
 
-            assertEquals(340f, result)
+            assertEquals(100f, result)
         }
 
     @Test
-    fun getSumOfExpensesByCategoriesInTimeSpan() {
+    fun `getSumOfExpensesInTimeSpan should call convertion for financials with non-preferable currency`() = runTest {
+        val start = 1000L
+        val end = 5000L
+        val preferableCurrency = mock<Currency> {
+            on { ticker } doReturn "USD"
+        }
+        val nonPreferableCurrency = mock<Currency> {
+            on { ticker } doReturn "UAH"
+        }
+        val expense1 = ExpenseItem(1, preferableCurrency.ticker, 100f, "USD", date = Date(3000), categoryId = 5)
+        val expense2 = ExpenseItem(2, nonPreferableCurrency.ticker, 340f, "KSK", date = Date(4000), categoryId = 5)
+        val expenses = listOf(expense1, expense2)
+        `when`(currenciesPreferenceRepositoryImpl.getPreferableCurrency()).thenReturn(flowOf(preferableCurrency))
+        `when`(
+            expenseItemsDao.getExpensesInTimeSpanDateAsc(
+                start,
+                end
+            )
+        ).thenReturn(flowOf(expenses.filter { it.date.time in start..end }))
+        `when`(currenciesRatesHandler.convertValueToBasicCurrency(expense2)).thenReturn(340f)
+        val result = expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(start, end).first()
+
+        assertEquals(440f, result)
+        verify(currenciesRatesHandler).convertValueToBasicCurrency(expense2)
     }
 
     @Test
-    fun getCurrentMonthSumOfExpense() {
-    }
+    fun `getSumOfExpensesByCategoriesInTimeSpan requests correct data`() = runTest {
+        val start = 1000L
+        val end = 5000L
+        val categoriesId = listOf(1, 3)
 
-    @Test
-    fun getCurrentMonthSumOfExpensesByCategoriesId() {
-    }
+        val preferableCurrency = mock<Currency> {
+            on { ticker } doReturn "USD"
+        }
 
-    @Test
-    fun getCountOfExpensesInSpan() {
-    }
+        val expenseItem1 = ExpenseItem(1, "USD", 100f, "USD", date = Date(3000), categoryId = 1)
+        val expenseItem2 = ExpenseItem(2, "USD", 200f, "USD", date = Date(4000), categoryId = 3)
+        val expenseItems = listOf(expenseItem1, expenseItem2)
 
-    @Test
-    fun getCountOfExpensesInSpanByCategoriesIds() {
-    }
+        `when`(currenciesPreferenceRepositoryImpl.getPreferableCurrency()).thenReturn(flowOf(preferableCurrency))
+        `when`(expenseItemsDao.getExpensesByCategoriesIdInTimeSpan(start, end, categoriesId)).thenReturn(flowOf(expenseItems))
 
-    @Test
-    fun getAverageInTimeSpan() {
+        expensesCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
+            start = start,
+            end = end,
+            categoriesIds = categoriesId
+        ).first() // Trigger the flow
+
+        verify(expenseItemsDao).getExpensesByCategoriesIdInTimeSpan(
+            start = start,
+            end = end,
+            listOfCategoriesId = categoriesId
+        )
     }
 }
