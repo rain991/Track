@@ -1,7 +1,8 @@
 
 # Track: Your Ultimate Financial Tracker
-![trackNewHeader](https://github.com/user-attachments/assets/6e858b43-3bb6-404d-a6c7-5c1dbb4aa9cc)
+![trackNewHeader2](https://github.com/user-attachments/assets/b5895405-ad27-4fc0-9d27-0eadd9473b72)
 ## Introduction
+
 
 **Track** is a financial tracking app designed to help you take control of your finances with ease and confidence. Whether you are monitoring daily expenses, planning for long-term goals, or simply aiming to understand your spending habits better, Track provides you with the tools you need to manage your money effectively.
 
