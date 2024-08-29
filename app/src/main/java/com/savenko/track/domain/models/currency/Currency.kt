@@ -3,6 +3,7 @@ package com.savenko.track.domain.models.currency
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
+import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 
 @Entity(tableName = "currency")
@@ -26,4 +27,8 @@ fun Currency.matchesSearchQuery(
         searchQuery,
         ignoreCase = true
     ) || localizedCurrencyName.contains(searchQuery, ignoreCase = true)
+}
+
+fun findCurrencyByTicker(ticker: String, listOfAvailableCurrencies: List<Currency>): Currency {
+    return listOfAvailableCurrencies.find { it.ticker == ticker.trim() } ?: CURRENCY_DEFAULT
 }

@@ -24,7 +24,6 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,27 +37,23 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.MAX_FINANCIAL_VALUE
-import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 
-// Warning amountInput is currently depends on external viewModels
 @Composable
 fun BottomSheetAmountInput(
-    bottomSheetViewModel: BottomSheetViewModel,
     currentCurrency: Currency,
-    hasErrors: Boolean = false
+    listOfAvailableCurrencies: List<Currency>,
+    currentInputValue: Float,
+    hasErrors: Boolean = false,
+    onInputValueChange: (Float) -> Unit,
+    onCurrencyChange: () -> Unit
 ) {
     val controller = LocalSoftwareKeyboardController.current
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-    val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
-    val currentInputValue = bottomSheetViewState.value.inputValue
-    val listOfCurrencies = bottomSheetViewModel.listOfCurrencies.filter { it.value != null }
-    val currentSelectedCurrency =
-        bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
+
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
@@ -79,7 +74,7 @@ fun BottomSheetAmountInput(
                 ),
                 value = currentInputValue.toString(),
                 onValueChange = { newText ->
-                    bottomSheetViewModel.setInputValue(
+                    onInputValueChange(
                         try {
                             val newValue = newText.toFloat()
                             if (newValue < MAX_FINANCIAL_VALUE) {
@@ -104,19 +99,18 @@ fun BottomSheetAmountInput(
                 ),
                 maxLines = 1)
             TextButton(
-                onClick = { bottomSheetViewModel.changeSelectedCurrency() },
+                onClick = { onCurrencyChange() },
                 modifier = Modifier.wrapContentWidth()
             ) {
                 Text(text = currentCurrency.ticker, style = MaterialTheme.typography.titleMedium)
             }
-            if (listOfCurrencies.size > 1) {
+            if (listOfAvailableCurrencies.size > 1) {
                 Column(modifier = Modifier.fillMaxHeight()) {
                     AnimatedContent(
-                        targetState = currentSelectedCurrency,
+                        targetState = currentCurrency,
                         label = ""
                     ) { selectedCurrency ->
-                        val selectedIndex =
-                            listOfCurrencies.indexOfFirst { it.value == selectedCurrency.value }
+                        val selectedIndex = listOfAvailableCurrencies.indexOfFirst { it == selectedCurrency }
                         when (selectedIndex) {
                             0 -> {
                                 Column(
@@ -134,7 +128,7 @@ fun BottomSheetAmountInput(
                                 }
                             }
 
-                            listOfCurrencies.size - 1 -> {
+                            listOfAvailableCurrencies.size - 1 -> {
                                 Column(
                                     Modifier
                                         .fillMaxHeight()

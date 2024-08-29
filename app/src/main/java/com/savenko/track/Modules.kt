@@ -122,7 +122,7 @@ val appModule = module {
 
     // Currencies
     single<CurrencyListRepository> { CurrencyListRepositoryImpl(get()) }
-    single<CurrenciesPreferenceRepository> { CurrenciesPreferenceRepositoryImpl(get()) }
+    single<CurrenciesPreferenceRepository> { CurrenciesPreferenceRepositoryImpl(get(), get()) }
 
     // Ideas
     single<IdeaItemRepository> { IdeaItemRepositoryImpl(get(), get(), get()) }

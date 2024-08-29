@@ -87,8 +87,6 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
-    val currentCurrency =
-        bottomSheetViewModel.selectedCurrency.collectAsState(initial = CURRENCY_DEFAULT)
     val isAddingExpense = bottomSheetViewState.value.isAddingExpense
     val categoryList = if (isAddingExpense) {
         bottomSheetViewModel.expenseCategoryList
@@ -188,10 +186,20 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                                 }
                             }
                         }
+                        val listOfAvailableCurrencies = bottomSheetViewModel.listOfPreferableCurrencies
+                        val selectedCurrencyIndex = bottomSheetViewState.value.currentSelectedCurrencyIndex
+                        val currentCurrency = listOfAvailableCurrencies.getOrNull(selectedCurrencyIndex) ?: CURRENCY_DEFAULT
                         BottomSheetAmountInput(
-                            bottomSheetViewModel = bottomSheetViewModel,
-                            currentCurrency = currentCurrency.value!!,
-                            hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue
+                            currentCurrency = currentCurrency,
+                            listOfAvailableCurrencies = listOfAvailableCurrencies,
+                            hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue,
+                            currentInputValue = bottomSheetViewState.value.inputValue ?: 0.0f,
+                            onInputValueChange = {
+                                bottomSheetViewModel.setInputValue(it)
+                            },
+                            onCurrencyChange = {
+                                bottomSheetViewModel.changeSelectedCurrency()
+                            }
                         )
                         Spacer(Modifier.weight(1f))
                         val note = bottomSheetViewState.value.note
