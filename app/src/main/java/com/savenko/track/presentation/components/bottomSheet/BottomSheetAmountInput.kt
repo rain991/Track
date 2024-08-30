@@ -24,14 +24,13 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
-import androidx.compose.ui.platform.LocalSoftwareKeyboardController
+import androidx.compose.ui.platform.SoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -46,14 +45,13 @@ fun BottomSheetAmountInput(
     currentCurrency: Currency,
     listOfAvailableCurrencies: List<Currency>,
     currentInputValue: Float,
+    focusRequester: FocusRequester,
+    keyboardController: SoftwareKeyboardController?,
     hasErrors: Boolean = false,
     onInputValueChange: (Float) -> Unit,
     onCurrencyChange: () -> Unit
 ) {
-    val controller = LocalSoftwareKeyboardController.current
-    val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
-
     Column(modifier = Modifier.fillMaxWidth()) {
         Row(
             modifier = Modifier
@@ -93,7 +91,7 @@ fun BottomSheetAmountInput(
                 ),
                 keyboardActions = KeyboardActions(
                     onDone = {
-                        controller?.hide()
+                        keyboardController?.hide()
                         focusManager.clearFocus()
                     }
                 ),

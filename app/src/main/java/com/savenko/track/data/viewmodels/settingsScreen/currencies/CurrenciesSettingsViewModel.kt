@@ -90,13 +90,11 @@ class CurrenciesSettingsViewModel(
                                 fourthAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
                                     currenciesPreference.fourthAdditionalCurrency
                                 )
-
                             )
                         )
                     }
                 }
             }
-
         }
     }
 
