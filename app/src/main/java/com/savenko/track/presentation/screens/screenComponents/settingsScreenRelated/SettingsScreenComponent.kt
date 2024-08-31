@@ -19,7 +19,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
-import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
 import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.accountPreferences.common.SettingsScreenAccountPreferences
@@ -31,8 +30,7 @@ import com.savenko.track.presentation.screens.screenComponents.settingsScreenRel
 fun SettingsScreenComponent(
     paddingValues: PaddingValues,
     navHostController: NavHostController,
-    isPageNameVisible: Boolean,
-    settingsData: DataStoreManager
+    isPageNameVisible: Boolean
 ) {
     val windowInfo = rememberWindowInfo()
     val expandedScreenModifier = Modifier
@@ -67,23 +65,17 @@ fun SettingsScreenComponent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(
-                    if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
-                        24.dp
-                    } else {
-                        0.dp
-                    }
-                )
                 .wrapContentHeight()
                 .padding(8.dp)
                 .verticalScroll(state = rememberScrollState())
         ) {
             if (!isPageNameVisible) Spacer(modifier = Modifier.height(8.dp))
-            SettingsScreenAccountPreferences(navHostController = navHostController)
-            Spacer(modifier = Modifier.height(12.dp))
+            Spacer(modifier = Modifier.height(8.dp))
+            SettingsScreenAccountPreferences(modifier = Modifier.fillMaxWidth(), navHostController = navHostController)
+            Spacer(modifier = Modifier.height(24.dp))
             SettingsScreenThemePreferences(modifier = Modifier)
-            Spacer(modifier = Modifier.height(12.dp))
-            SettingsScreenAdditionalPreferences()
+            Spacer(modifier = Modifier.height(24.dp))
+            SettingsScreenAdditionalPreferences(modifier = Modifier.fillMaxWidth())
         }
     }
 }

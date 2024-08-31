@@ -53,7 +53,7 @@ fun SavingsIdeaCard(
         modifier = Modifier
             .height(140.dp)
             .padding(horizontal = 8.dp)  ,border = BorderStroke((1.2).dp, savingsSpecificColor
-    ), shape = RoundedCornerShape(8.dp)
+    ), shape = RoundedCornerShape(16.dp)
     ) {
         Canvas(modifier = Modifier.wrapContentSize()) {
             val arcSize = 70.dp.toPx()
@@ -80,7 +80,7 @@ fun SavingsIdeaCard(
             ) {
                 Text(
                     text = savings.label,
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.W500),
                     maxLines = 1
                 )
             }

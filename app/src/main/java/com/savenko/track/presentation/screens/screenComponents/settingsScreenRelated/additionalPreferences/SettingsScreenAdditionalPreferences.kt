@@ -30,13 +30,13 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SettingsScreenAdditionalPreferences() {
+fun SettingsScreenAdditionalPreferences(modifier : Modifier) {
     val coroutineScope = rememberCoroutineScope()
     val viewModel = koinViewModel<AdditionalPreferencesSettingsViewModel>()
     val state = viewModel.additionalPreferencesState.collectAsState()
     var isExpenseCategorySelectionVisible by remember { mutableStateOf(false) }
     var isIncomeCategorySelectionVisible by remember { mutableStateOf(false) }
-    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row(modifier = Modifier.padding(start = 8.dp)) {
             Text(
                 text = stringResource(R.string.additional),

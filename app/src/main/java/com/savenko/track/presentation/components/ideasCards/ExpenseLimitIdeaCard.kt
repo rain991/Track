@@ -108,7 +108,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
         modifier = Modifier
             .height(140.dp)
             .padding(horizontal = 8.dp) , border = BorderStroke((1.2).dp, expenseLimitSpecificColor
-    ), shape = RoundedCornerShape(8.dp)
+    ), shape = RoundedCornerShape(16.dp)
     ) {
         Canvas(modifier = Modifier.wrapContentSize()) {
             val arcSize = 70.dp.toPx()
@@ -138,7 +138,7 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
             ) {
                 Text(
                     text = stringResource(R.string.expense_limit),
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.W500),
                     modifier = Modifier.padding(4.dp)
                 )
             }

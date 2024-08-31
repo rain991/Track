@@ -1,13 +1,11 @@
 package com.savenko.track.data.viewmodels.common
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
 import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
 import com.savenko.track.data.other.constants.INCOME_CATEGORY_GROUPING_ID_DEFAULT
-import com.savenko.track.data.other.constants.TAG
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
@@ -87,10 +85,6 @@ class BottomSheetViewModel(
                     currenciesPreference.secondAdditionalCurrency,
                     currenciesPreference.thirdAdditionalCurrency,
                     currenciesPreference.fourthAdditionalCurrency
-                )
-                Log.d(
-                    TAG,
-                    "listOf: listOfNonNullCurrenciesPreference size ${listOfNonNullCurrenciesNames.size} "
                 )
                 _listOfPreferableCurrencies.addAll(listOfNonNullCurrenciesNames)
             }
@@ -235,16 +229,12 @@ class BottomSheetViewModel(
         val listOfCurrenciesValues = listOfPreferableCurrencies.map { it }
         val selectedCurrencyIndex = _bottomSheetViewState.value.currentSelectedCurrencyIndex
         for (i in (selectedCurrencyIndex + 1) until listOfPreferableCurrencies.size) {
-            if (listOfCurrenciesValues[i] != null) {
-                setSelectedCurrency(i)
-                return
-            }
+            setSelectedCurrency(i)
+            return
         }
         for (i in 0 until selectedCurrencyIndex) {
-            if (listOfCurrenciesValues[i] != null) {
-                setSelectedCurrency(i)
-                return
-            }
+            setSelectedCurrency(i)
+            return
         }
     }
 

@@ -53,7 +53,15 @@ fun MainScreenFloatingActionButton(
                 onClick = onClick,
                 colors = ButtonDefaults.buttonColors(containerColor = Color.Transparent)
             ) {
-                Row(modifier = Modifier.padding(8.dp), verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.padding(
+                        horizontal = if (isButtonExpanded) {
+                            8.dp
+                        } else {
+                            0.dp
+                        }, vertical = 8.dp
+                    ), verticalAlignment = Alignment.CenterVertically
+                ) {
                     Icon(
                         imageVector = Icons.Filled.Edit,
                         contentDescription = text,

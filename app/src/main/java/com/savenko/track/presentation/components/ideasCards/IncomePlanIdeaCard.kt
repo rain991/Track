@@ -124,7 +124,7 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
         modifier = Modifier
             .height(140.dp)
             .padding(horizontal = 8.dp),
-        border = BorderStroke((1.2).dp, incomePlanSpecificColor), shape = RoundedCornerShape(8.dp)
+        border = BorderStroke((1.2).dp, incomePlanSpecificColor), shape = RoundedCornerShape(16.dp)
     ) {
         Canvas(modifier = Modifier.wrapContentSize()) {
             val arcSize = 70.dp.toPx()
@@ -153,7 +153,7 @@ fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, prefera
             ) {
                 Text(
                     text = stringResource(R.string.income_plan),
-                    style = MaterialTheme.typography.headlineSmall,
+                    style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.W500),
                     modifier = Modifier.padding(4.dp)
                 )
             }
