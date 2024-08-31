@@ -1,6 +1,7 @@
 package com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.lazyColumn
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -50,6 +51,8 @@ import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.mainScreenInfoCards.TrackScreenInfoCards
 import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialCardNotion
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 import java.util.Calendar
@@ -166,6 +169,7 @@ fun MainScreenLazyColumn(
                         } else {
                             incomeList
                         }
+                        var isVisible by remember { mutableStateOf(true) }
                         var isPreviousDayDifferent = index == 0
                         var isNextDayDifferent = false
                         var isNextMonthDifferent = false
@@ -206,123 +210,136 @@ fun MainScreenLazyColumn(
                                     !areMonthsSame(incomeList[index + 1].date, currentFinancialEntity.date)
                             }
                         }
-                        Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                            if (isScrollingUp) {
-                                LaunchedEffect(listState) {
-                                    listState.animateScrollToItem(index = 0)
-                                    isScrollingUp = false
+                        AnimatedVisibility(
+                            visible = isVisible,
+                            exit = fadeOut()
+                        ) {
+                            Column(modifier = Modifier.padding(horizontal = 8.dp)) {
+                                if (isScrollingUp) {
+                                    LaunchedEffect(listState) {
+                                        listState.animateScrollToItem(index = 0)
+                                        isScrollingUp = false
+                                    }
                                 }
-                            }
-                            Column {
-                                if (currentFinancialCategory != null) {
-                                    Row(
-                                        Modifier
-                                            .fillMaxWidth()
-                                            .padding(horizontal = 4.dp),
-                                        verticalAlignment = Alignment.Bottom
-                                    ) {
-                                        if (isPreviousDayDifferent) {
-                                            if (isPreviousYearDifferent) {
-                                                FinancialYearLabel(
-                                                    localDate = convertDateToLocalDate(
+                                Column {
+                                    if (currentFinancialCategory != null) {
+                                        Row(
+                                            Modifier
+                                                .fillMaxWidth()
+                                                .padding(horizontal = 4.dp),
+                                            verticalAlignment = Alignment.Bottom
+                                        ) {
+                                            if (isPreviousDayDifferent) {
+                                                if (isPreviousYearDifferent) {
+                                                    FinancialYearLabel(
+                                                        localDate = convertDateToLocalDate(
+                                                            currentFinancialEntity.date
+                                                        )
+                                                    )
+                                                    Spacer(modifier = Modifier.width(2.dp))
+                                                }
+                                                Spacer(modifier = Modifier.width(4.dp))
+                                                FinancialMonthLabel(
+                                                    convertDateToLocalDate(
                                                         currentFinancialEntity.date
                                                     )
                                                 )
-                                                Spacer(modifier = Modifier.width(2.dp))
+                                                Text(
+                                                    text = ", ",
+                                                    style = MaterialTheme.typography.titleMedium.copy(
+                                                        color = MaterialTheme.colorScheme.onPrimaryContainer
+                                                    )
+                                                )
+                                                FinancialDayLabel(
+                                                    localDate = convertDateToLocalDate(
+                                                        currentFinancialEntity.date
+                                                    ),
+                                                    isPastSmallMarkupNeeded = false
+                                                )
                                             }
-                                            Spacer(modifier = Modifier.width(4.dp))
-                                            FinancialMonthLabel(
-                                                convertDateToLocalDate(
-                                                    currentFinancialEntity.date
-                                                )
-                                            )
-                                            Text(
-                                                text = ", ",
-                                                style = MaterialTheme.typography.titleMedium.copy(
-                                                    color = MaterialTheme.colorScheme.onPrimaryContainer
-                                                )
-                                            )
-                                            FinancialDayLabel(
-                                                localDate = convertDateToLocalDate(
-                                                    currentFinancialEntity.date
-                                                ),
-                                                isPastSmallMarkupNeeded = false
-                                            )
+                                            Spacer(modifier = Modifier.height(4.dp))
                                         }
-                                        Spacer(modifier = Modifier.height(4.dp))
-                                    }
-                                    FinancialItemCardTypeSimple(
-                                        financialEntity = currentFinancialEntity,
-                                        categoryEntity = currentFinancialCategory,
-                                        expanded = (expandedItem == currentFinancialEntity),
-                                        preferableCurrency = lazyColumnState.value.preferableCurrency,
-                                        financialEntityMonthSummary = if (isExpenseLazyColumn) {
-                                            expenseListFinancialSummary[currentFinancialEntity.id]?.financialSummary ?: 0.0f
-                                        } else {
-                                            incomeListFinancialSummary[currentFinancialEntity.id]?.financialSummary ?: 0.0f
-                                        },
-                                        countOfFinancialEntities = if (isExpenseLazyColumn) {
-                                            expenseListFinancialSummary[currentFinancialEntity.id]?.financialsQuantity ?: 0
-                                        } else {
-                                            incomeListFinancialSummary[currentFinancialEntity.id]?.financialsQuantity ?: 0
-                                        },
-                                        onDeleteFinancial = {
-                                            coroutineScope.launch {
-                                                financialsLazyColumnViewModel.deleteFinancialItem(it)
-                                            }
-                                        },
-                                        currenciesList = currenciesList,
-                                        onClick = {
-                                            financialsLazyColumnViewModel.setExpandedExpenseCard(
-                                                if (expandedItem != currentFinancialEntity) {
-                                                    currentFinancialEntity
-                                                } else {
-                                                    null
+                                        FinancialItemCardTypeSimple(
+                                            financialEntity = currentFinancialEntity,
+                                            categoryEntity = currentFinancialCategory,
+                                            expanded = (expandedItem == currentFinancialEntity),
+                                            preferableCurrency = lazyColumnState.value.preferableCurrency,
+                                            financialEntityMonthSummary = if (isExpenseLazyColumn) {
+                                                expenseListFinancialSummary[currentFinancialEntity.id]?.financialSummary
+                                                    ?: 0.0f
+                                            } else {
+                                                incomeListFinancialSummary[currentFinancialEntity.id]?.financialSummary
+                                                    ?: 0.0f
+                                            },
+                                            countOfFinancialEntities = if (isExpenseLazyColumn) {
+                                                expenseListFinancialSummary[currentFinancialEntity.id]?.financialsQuantity
+                                                    ?: 0
+                                            } else {
+                                                incomeListFinancialSummary[currentFinancialEntity.id]?.financialsQuantity
+                                                    ?: 0
+                                            },
+                                            onDeleteFinancial = {
+                                                isVisible = false
+                                                coroutineScope.launch(Dispatchers.IO) {
+                                                    delay(500)
+                                                    financialsLazyColumnViewModel.deleteFinancialItem(it)
                                                 }
-                                            )
-                                        }
-                                    )
-                                    if (isNextDayDifferent && !isNextMonthDifferent) Spacer(
-                                        modifier = Modifier.height(
-                                            20.dp
+                                            },
+                                            currenciesList = currenciesList,
+                                            onClick = {
+                                                financialsLazyColumnViewModel.setExpandedExpenseCard(
+                                                    if (expandedItem != currentFinancialEntity) {
+                                                        currentFinancialEntity
+                                                    } else {
+                                                        null
+                                                    }
+                                                )
+                                            }
                                         )
-                                    )
-                                    if (isNextMonthDifferent && financialsList.size > MONTH_SUMMARY_MIN_LIST_SIZE) {
-                                        var monthSummary by remember { mutableStateOf<FinancialCardNotion?>(null) }
-                                        LaunchedEffect(
-                                            key1 = Unit,
-                                            key2 = lazyColumnState.value.expensesList,
-                                            key3 = lazyColumnState.value.incomeList
-                                        ) {
-                                            monthSummary = financialsLazyColumnViewModel.requestMonthSummary(currentFinancialEntity.date)
-                                        }
-                                        val calendar = Calendar.getInstance().apply {
-                                            time = currentFinancialEntity.date
-                                        }
-                                        val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
-                                        if (isExpenseLazyColumn) {
-                                            MonthSummaryRow(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                summary = monthSummary?.financialSummary ?: 0.0f,
-                                                quantity = monthSummary?.financialsQuantity ?: 0,
-                                                monthName = monthName ?: "",
-                                                preferableCurrency = lazyColumnState.value.preferableCurrency,
-                                                financialTypes = FinancialTypes.Expense
+                                        if (isNextDayDifferent && !isNextMonthDifferent) Spacer(
+                                            modifier = Modifier.height(
+                                                20.dp
                                             )
-                                        } else {
-                                            MonthSummaryRow(
-                                                modifier = Modifier.fillMaxWidth(),
-                                                summary = monthSummary?.financialSummary ?: 0.0f,
-                                                quantity = monthSummary?.financialsQuantity ?: 0,
-                                                monthName = monthName ?: "",
-                                                preferableCurrency = lazyColumnState.value.preferableCurrency,
-                                                financialTypes = FinancialTypes.Income
-                                            )
+                                        )
+                                        if (isNextMonthDifferent && financialsList.size > MONTH_SUMMARY_MIN_LIST_SIZE) {
+                                            var monthSummary by remember { mutableStateOf<FinancialCardNotion?>(null) }
+                                            LaunchedEffect(
+                                                key1 = Unit,
+                                                key2 = lazyColumnState.value.expensesList,
+                                                key3 = lazyColumnState.value.incomeList
+                                            ) {
+                                                monthSummary = financialsLazyColumnViewModel.requestMonthSummary(
+                                                    currentFinancialEntity.date
+                                                )
+                                            }
+                                            val calendar = Calendar.getInstance().apply {
+                                                time = currentFinancialEntity.date
+                                            }
+                                            val monthName =
+                                                calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
+                                            if (isExpenseLazyColumn) {
+                                                MonthSummaryRow(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    summary = monthSummary?.financialSummary ?: 0.0f,
+                                                    quantity = monthSummary?.financialsQuantity ?: 0,
+                                                    monthName = monthName ?: "",
+                                                    preferableCurrency = lazyColumnState.value.preferableCurrency,
+                                                    financialTypes = FinancialTypes.Expense
+                                                )
+                                            } else {
+                                                MonthSummaryRow(
+                                                    modifier = Modifier.fillMaxWidth(),
+                                                    summary = monthSummary?.financialSummary ?: 0.0f,
+                                                    quantity = monthSummary?.financialsQuantity ?: 0,
+                                                    monthName = monthName ?: "",
+                                                    preferableCurrency = lazyColumnState.value.preferableCurrency,
+                                                    financialTypes = FinancialTypes.Income
+                                                )
+                                            }
                                         }
-
-                                    }
-                                    if ((isExpenseLazyColumn && index == expensesList.size - 1) || (!isExpenseLazyColumn && index == incomeList.size - 1)) {
-                                        Spacer(modifier = Modifier.height(80.dp))
+                                        if ((isExpenseLazyColumn && index == expensesList.size - 1) || (!isExpenseLazyColumn && index == incomeList.size - 1)) {
+                                            Spacer(modifier = Modifier.height(80.dp))
+                                        }
                                     }
                                 }
                             }
