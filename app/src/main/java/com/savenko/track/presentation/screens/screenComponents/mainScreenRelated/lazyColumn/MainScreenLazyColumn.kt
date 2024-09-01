@@ -4,13 +4,11 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
@@ -21,7 +19,6 @@ import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.FloatingActionButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -43,20 +40,15 @@ import com.savenko.track.data.other.constants.MONTH_SUMMARY_MIN_LIST_SIZE
 import com.savenko.track.data.other.converters.dates.areDatesSame
 import com.savenko.track.data.other.converters.dates.areMonthsSame
 import com.savenko.track.data.other.converters.dates.areYearsSame
-import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
-import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.models.expenses.ExpenseItem
-import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.mainScreenInfoCards.TrackScreenInfoCards
 import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialCardNotion
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
-import java.util.Calendar
-import java.util.Locale
 
 @Composable
 fun MainScreenLazyColumn(
@@ -65,7 +57,6 @@ fun MainScreenLazyColumn(
     switchBottomSheetToIncomes: () -> Unit,
 ) {
     val coroutineScope = rememberCoroutineScope()
-    val locale = Locale.getDefault()
     val listState = rememberLazyListState()
     val financialsLazyColumnViewModel = koinViewModel<FinancialsLazyColumnViewModel>()
     val lazyColumnState = financialsLazyColumnViewModel.financialLazyColumnState.collectAsState()
@@ -73,9 +64,6 @@ fun MainScreenLazyColumn(
     val incomeList = lazyColumnState.value.incomeList
     val incomeCategoriesList = lazyColumnState.value.incomeCategoriesList
     val expenseCategoriesList = lazyColumnState.value.expenseCategoriesList
-    val currenciesList = lazyColumnState.value.currenciesList
-    val expenseListFinancialSummary = lazyColumnState.value.expensesFinancialSummary
-    val incomeListFinancialSummary = lazyColumnState.value.incomesFinancialSummary
     val isExpenseLazyColumn = lazyColumnState.value.isExpenseLazyColumn
     val expandedItem = lazyColumnState.value.expandedFinancialEntity
     val isScrolledBelow = lazyColumnState.value.isScrolledBelow
@@ -210,136 +198,56 @@ fun MainScreenLazyColumn(
                                     !areMonthsSame(incomeList[index + 1].date, currentFinancialEntity.date)
                             }
                         }
-                        AnimatedVisibility(
-                            visible = isVisible,
-                            exit = fadeOut()
-                        ) {
-                            Column(modifier = Modifier.padding(horizontal = 8.dp)) {
-                                if (isScrollingUp) {
-                                    LaunchedEffect(listState) {
-                                        listState.animateScrollToItem(index = 0)
-                                        isScrollingUp = false
+                        if (currentFinancialCategory != null) {
+                            AnimatedVisibility(
+                                visible = isVisible,
+                                exit = fadeOut()
+                            ) {
+                                Box {
+                                    if (isScrollingUp) {
+                                        LaunchedEffect(listState) {
+                                            listState.animateScrollToItem(index = 0)
+                                            isScrollingUp = false
+                                        }
                                     }
-                                }
-                                Column {
-                                    if (currentFinancialCategory != null) {
-                                        Row(
-                                            Modifier
-                                                .fillMaxWidth()
-                                                .padding(horizontal = 4.dp),
-                                            verticalAlignment = Alignment.Bottom
-                                        ) {
-                                            if (isPreviousDayDifferent) {
-                                                if (isPreviousYearDifferent) {
-                                                    FinancialYearLabel(
-                                                        localDate = convertDateToLocalDate(
-                                                            currentFinancialEntity.date
-                                                        )
-                                                    )
-                                                    Spacer(modifier = Modifier.width(2.dp))
-                                                }
-                                                Spacer(modifier = Modifier.width(4.dp))
-                                                FinancialMonthLabel(
-                                                    convertDateToLocalDate(
-                                                        currentFinancialEntity.date
-                                                    )
-                                                )
-                                                Text(
-                                                    text = ", ",
-                                                    style = MaterialTheme.typography.titleMedium.copy(
-                                                        color = MaterialTheme.colorScheme.onPrimaryContainer
-                                                    )
-                                                )
-                                                FinancialDayLabel(
-                                                    localDate = convertDateToLocalDate(
-                                                        currentFinancialEntity.date
-                                                    ),
-                                                    isPastSmallMarkupNeeded = false
-                                                )
+                                    var monthSummary by remember { mutableStateOf<FinancialCardNotion?>(null) }
+                                    LaunchedEffect(
+                                        key1 = Unit,
+                                        key2 = lazyColumnState.value.expensesList,
+                                        key3 = lazyColumnState.value.incomeList
+                                    ) {
+                                        monthSummary = financialsLazyColumnViewModel.requestMonthSummary(
+                                            currentFinancialEntity.date
+                                        )
+                                    }
+                                    LazyColumnSingleFinancialComponent(
+                                        isExpanded = (expandedItem == currentFinancialEntity),
+                                        financialEntity = currentFinancialEntity,
+                                        financialCategory = currentFinancialCategory,
+                                        preferableCurrency = lazyColumnState.value.preferableCurrency,
+                                        monthSummary = monthSummary,
+                                        containsMonthSummaryRow = isNextMonthDifferent && financialsList.size > MONTH_SUMMARY_MIN_LIST_SIZE,
+                                        isExpenseLazyColumn = isExpenseLazyColumn,
+                                        isPreviousDayDifferent = isPreviousDayDifferent,
+                                        isPreviousYearDifferent = isPreviousYearDifferent,
+                                        isNextDayDifferent = isNextDayDifferent,
+                                        isNextMonthDifferent = isNextMonthDifferent,
+                                        isLastInList = (isExpenseLazyColumn && index == expensesList.size - 1) || (!isExpenseLazyColumn && index == incomeList.size - 1),
+                                        onDeleteFinancial = { financialEntity ->
+                                            isVisible = false
+                                            coroutineScope.launch(Dispatchers.IO) {
+                                                delay(500)
+                                                financialsLazyColumnViewModel.deleteFinancialItem(financialEntity)
                                             }
-                                            Spacer(modifier = Modifier.height(4.dp))
                                         }
-                                        FinancialItemCardTypeSimple(
-                                            financialEntity = currentFinancialEntity,
-                                            categoryEntity = currentFinancialCategory,
-                                            expanded = (expandedItem == currentFinancialEntity),
-                                            preferableCurrency = lazyColumnState.value.preferableCurrency,
-                                            financialEntityMonthSummary = if (isExpenseLazyColumn) {
-                                                expenseListFinancialSummary[currentFinancialEntity.id]?.financialSummary
-                                                    ?: 0.0f
+                                    ) { financialEntity ->
+                                        financialsLazyColumnViewModel.setExpandedExpenseCard(
+                                            if (expandedItem != financialEntity) {
+                                                financialEntity
                                             } else {
-                                                incomeListFinancialSummary[currentFinancialEntity.id]?.financialSummary
-                                                    ?: 0.0f
-                                            },
-                                            countOfFinancialEntities = if (isExpenseLazyColumn) {
-                                                expenseListFinancialSummary[currentFinancialEntity.id]?.financialsQuantity
-                                                    ?: 0
-                                            } else {
-                                                incomeListFinancialSummary[currentFinancialEntity.id]?.financialsQuantity
-                                                    ?: 0
-                                            },
-                                            onDeleteFinancial = {
-                                                isVisible = false
-                                                coroutineScope.launch(Dispatchers.IO) {
-                                                    delay(500)
-                                                    financialsLazyColumnViewModel.deleteFinancialItem(it)
-                                                }
-                                            },
-                                            currenciesList = currenciesList,
-                                            onClick = {
-                                                financialsLazyColumnViewModel.setExpandedExpenseCard(
-                                                    if (expandedItem != currentFinancialEntity) {
-                                                        currentFinancialEntity
-                                                    } else {
-                                                        null
-                                                    }
-                                                )
+                                                null
                                             }
                                         )
-                                        if (isNextDayDifferent && !isNextMonthDifferent) Spacer(
-                                            modifier = Modifier.height(
-                                                20.dp
-                                            )
-                                        )
-                                        if (isNextMonthDifferent && financialsList.size > MONTH_SUMMARY_MIN_LIST_SIZE) {
-                                            var monthSummary by remember { mutableStateOf<FinancialCardNotion?>(null) }
-                                            LaunchedEffect(
-                                                key1 = Unit,
-                                                key2 = lazyColumnState.value.expensesList,
-                                                key3 = lazyColumnState.value.incomeList
-                                            ) {
-                                                monthSummary = financialsLazyColumnViewModel.requestMonthSummary(
-                                                    currentFinancialEntity.date
-                                                )
-                                            }
-                                            val calendar = Calendar.getInstance().apply {
-                                                time = currentFinancialEntity.date
-                                            }
-                                            val monthName =
-                                                calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
-                                            if (isExpenseLazyColumn) {
-                                                MonthSummaryRow(
-                                                    modifier = Modifier.fillMaxWidth(),
-                                                    summary = monthSummary?.financialSummary ?: 0.0f,
-                                                    quantity = monthSummary?.financialsQuantity ?: 0,
-                                                    monthName = monthName ?: "",
-                                                    preferableCurrency = lazyColumnState.value.preferableCurrency,
-                                                    financialTypes = FinancialTypes.Expense
-                                                )
-                                            } else {
-                                                MonthSummaryRow(
-                                                    modifier = Modifier.fillMaxWidth(),
-                                                    summary = monthSummary?.financialSummary ?: 0.0f,
-                                                    quantity = monthSummary?.financialsQuantity ?: 0,
-                                                    monthName = monthName ?: "",
-                                                    preferableCurrency = lazyColumnState.value.preferableCurrency,
-                                                    financialTypes = FinancialTypes.Income
-                                                )
-                                            }
-                                        }
-                                        if ((isExpenseLazyColumn && index == expensesList.size - 1) || (!isExpenseLazyColumn && index == incomeList.size - 1)) {
-                                            Spacer(modifier = Modifier.height(80.dp))
-                                        }
                                     }
                                 }
                             }

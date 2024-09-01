@@ -236,7 +236,7 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                         BottomSheetAcceptButton(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .requiredHeightIn(40.dp , Dp.Infinity),
+                                .requiredHeightIn(40.dp, Dp.Infinity),
                         ) {
                             coroutineScope.launch {
                                 bottomSheetViewModel.addFinancialItem()
