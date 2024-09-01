@@ -34,6 +34,7 @@ import org.koin.compose.koinInject
 
 @Composable
 fun CategoryChip(
+    modifier: Modifier,
     category: CategoryEntity,
     textStyle: TextStyle = MaterialTheme.typography.bodyMedium,
     isSelected: Boolean,
@@ -44,9 +45,7 @@ fun CategoryChip(
     val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
     val buttonColor = parseColor(hexColor = category.colorId)
     Button(
-        modifier = Modifier
-            .wrapContentHeight()
-            .scale(chipScale),
+        modifier = modifier.then(Modifier.scale(chipScale)),
         onClick = { onSelect(category) },
         colors = ButtonColors(
             containerColor = buttonColor,
@@ -61,7 +60,9 @@ fun CategoryChip(
         }
     ) {
         Row(
-            modifier = Modifier.wrapContentWidth(),
+            modifier = Modifier
+                .wrapContentWidth()
+                .wrapContentHeight(),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -85,7 +86,6 @@ fun CategoryChip(
                     category.note
                 },
                 style = textStyle,
-                modifier = Modifier.fillMaxHeight(),
                 color = Color.White,
                 textAlign = TextAlign.Center,
                 overflow = TextOverflow.Visible,

@@ -18,7 +18,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.windowInsetsPadding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.KeyboardArrowDown
 import androidx.compose.material.icons.filled.KeyboardArrowUp
@@ -42,6 +44,7 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
@@ -183,7 +186,7 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                                 bottomSheetViewModel.changeSelectedCurrency()
                             }
                         )
-                        Spacer(Modifier.weight(1f))
+                        Spacer(Modifier.weight(0.5f))
                         val note = bottomSheetViewState.value.note
                         Box(modifier = Modifier.padding(start = 8.dp)) {
                             GradientInputTextField(
@@ -226,11 +229,15 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                                 )
                             }
                         }
-                        Box(modifier = Modifier.weight(1f)) {
+                        Box(modifier = Modifier.wrapContentHeight()) {
                             BottomSheetCategoriesGrid(categoryList = categoryList)
+                            Spacer(modifier = Modifier.height(16.dp))
                         }
-                        Spacer(Modifier.height(8.dp))
-                        BottomSheetAcceptButton {
+                        BottomSheetAcceptButton(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .requiredHeightIn(40.dp , Dp.Infinity),
+                        ) {
                             coroutineScope.launch {
                                 bottomSheetViewModel.addFinancialItem()
                             }

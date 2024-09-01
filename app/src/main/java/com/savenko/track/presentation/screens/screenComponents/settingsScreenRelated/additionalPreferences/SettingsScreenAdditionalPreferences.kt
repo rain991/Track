@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
@@ -30,7 +31,7 @@ import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun SettingsScreenAdditionalPreferences(modifier : Modifier) {
+fun SettingsScreenAdditionalPreferences(modifier: Modifier) {
     val coroutineScope = rememberCoroutineScope()
     val viewModel = koinViewModel<AdditionalPreferencesSettingsViewModel>()
     val state = viewModel.additionalPreferencesState.collectAsState()
@@ -47,9 +48,11 @@ fun SettingsScreenAdditionalPreferences(modifier : Modifier) {
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+        ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
@@ -77,6 +80,8 @@ fun SettingsScreenAdditionalPreferences(modifier : Modifier) {
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
                     CategoryChip(
+                        modifier = Modifier
+                            .wrapContentHeight(),
                         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                         category = selectedExpenseCategory,
                         isSelected = false,
@@ -96,10 +101,13 @@ fun SettingsScreenAdditionalPreferences(modifier : Modifier) {
                 }
             }
         }
-        Column(modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp)) {
-            Row(modifier = Modifier.fillMaxWidth(),
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp)
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
@@ -124,7 +132,8 @@ fun SettingsScreenAdditionalPreferences(modifier : Modifier) {
                         textAlign = TextAlign.Center,
                         modifier = Modifier.align(Alignment.CenterVertically)
                     )
-                    CategoryChip(
+                    CategoryChip(modifier = Modifier
+                        .wrapContentHeight(),
                         textStyle = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                         category = selectedIncomeCategory,
                         isSelected = false,

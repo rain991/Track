@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.heightIn
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
 import androidx.compose.foundation.lazy.staggeredgrid.rememberLazyStaggeredGridState
@@ -32,7 +33,8 @@ fun AdditionalPreferencesCategoriesGrid(
         ) {
             items(count = listOfCategories.size) { index ->
                 val item = listOfCategories[index]
-                CategoryChip(
+                CategoryChip(modifier = Modifier
+                    .wrapContentHeight(),
                     category = item,
                     isSelected = (selectedCategory == item),
                     borderColor = if (item == selectedCategory) {

@@ -39,7 +39,6 @@ fun MainScreenFloatingActionButton(
             )
         )
     }
-
     Box(
         modifier = Modifier
             .fillMaxSize()

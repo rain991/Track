@@ -65,11 +65,13 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                 append(localContext.getString(R.string.planned))
             }
             withStyle(style = SpanStyle(fontSize = 18.sp, fontWeight = FontWeight.SemiBold)) {
-                append(" " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                    FIAT_DECIMAL_FORMAT.format(expenseLimit.goal)
-                } else {
-                    CRYPTO_DECIMAL_FORMAT.format(expenseLimit.goal)
-                })
+                append(
+                    " " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                        FIAT_DECIMAL_FORMAT.format(expenseLimit.goal)
+                    } else {
+                        CRYPTO_DECIMAL_FORMAT.format(expenseLimit.goal)
+                    }
+                )
             }
             withStyle(style = SpanStyle(fontSize = 14.sp)) {
                 append(" " + preferableCurrency.ticker)
@@ -80,11 +82,13 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
                 append(localContext.getString(R.string.already_spent_expense_limit_card))
             }
             withStyle(style = SpanStyle(fontSize = 18.sp, fontWeight = FontWeight.SemiBold)) {
-                append(" " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
-                    FIAT_DECIMAL_FORMAT.format(completedValue)
-                } else {
-                    CRYPTO_DECIMAL_FORMAT.format(completedValue)
-                })
+                append(
+                    " " + if (preferableCurrency.type == CurrencyTypes.FIAT) {
+                        FIAT_DECIMAL_FORMAT.format(completedValue)
+                    } else {
+                        CRYPTO_DECIMAL_FORMAT.format(completedValue)
+                    }
+                )
             }
             withStyle(style = SpanStyle(fontSize = 14.sp)) {
                 append(" " + preferableCurrency.ticker)
@@ -107,8 +111,9 @@ fun ExpenseLimitIdeaCard(expenseLimit: ExpenseLimits, completedValue: Float, pre
     Card(
         modifier = Modifier
             .height(140.dp)
-            .padding(horizontal = 8.dp) , border = BorderStroke((1.2).dp, expenseLimitSpecificColor
-    ), shape = RoundedCornerShape(16.dp)
+            .padding(horizontal = 8.dp), border = BorderStroke(
+            (1.2).dp, expenseLimitSpecificColor
+        ), shape = RoundedCornerShape(16.dp)
     ) {
         Canvas(modifier = Modifier.wrapContentSize()) {
             val arcSize = 70.dp.toPx()
@@ -194,7 +199,8 @@ private fun SpecifiedCategoriesCardContent(
             .wrapContentHeight()
     ) {
         listOfRelatedCategories.forEach { expenseCategory ->
-            CategoryChip(
+            CategoryChip(modifier = Modifier
+                .wrapContentHeight(),
                 category = expenseCategory,
                 borderColor = null,
                 isSelected = false,
