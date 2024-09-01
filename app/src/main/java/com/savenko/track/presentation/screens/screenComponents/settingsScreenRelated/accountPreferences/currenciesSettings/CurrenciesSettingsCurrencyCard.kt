@@ -34,7 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.domain.models.currency.Currency
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import org.koin.compose.koinInject
 
 

@@ -29,7 +29,7 @@ interface IncomeDao {
     fun getAllEnabledIncomes(): Flow<List<IncomeItem>>
 
     @Query("SELECT * FROM incomes WHERE date BETWEEN :start AND :end ORDER BY date DESC")
-    fun getIncomesInTimeSpanDateDecs(start: Long, end: Long): Flow<List<IncomeItem>>
+    fun getIncomesInTimeSpanDateDesc(start: Long, end: Long): Flow<List<IncomeItem>>
 
     @Query("SELECT * FROM incomes WHERE disabled=0 ORDER BY date DESC")
     fun getAllWithDateDesc(): Flow<List<IncomeItem>>

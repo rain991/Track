@@ -4,7 +4,7 @@ import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
-import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
+import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISAPPEARANCE
 import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
@@ -96,9 +96,9 @@ class FinancialsLazyColumnViewModel(
 
     fun setScrolledBelow(firstVisibleIndex: Int) {
         if (_financialLazyColumnState.value.isExpenseLazyColumn) {
-            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.expensesList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE) }
+            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.expensesList.size > FIRST_VISIBLE_INDEX_FEED_DISAPPEARANCE) }
         } else {
-            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.incomeList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE) }
+            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.incomeList.size > FIRST_VISIBLE_INDEX_FEED_DISAPPEARANCE) }
         }
     }
 

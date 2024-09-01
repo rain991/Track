@@ -50,8 +50,7 @@ class TrackScreenFeedViewModel(
                 }
             }
         }
-
-        _ideaList.removeAll(ideasToUpdate)
+        _ideaList.removeAll(ideasToUpdate.toSet())
         ideasToUpdate.forEach { idea ->
             ideaItemRepositoryImpl.updateIdea(idea.createCompletedInstance())
         }

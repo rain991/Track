@@ -84,7 +84,7 @@ import com.savenko.track.domain.usecases.userData.ideas.GetIdeaCompletedValueUse
 import com.savenko.track.domain.usecases.userData.ideas.GetIdeasListUseCase
 import com.savenko.track.domain.usecases.userData.ideas.GetUnfinishedIdeasUseCase
 import com.savenko.track.domain.usecases.userData.other.ChangeCurrenciesPreferenceUseCase
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker

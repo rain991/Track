@@ -48,21 +48,21 @@ class IdeasSettingsScreenViewModel(
         viewModelScope.launch {
             launch {
                 getIdeasListUseCase(ideaTypes = GetIdeasListUseCase.IdeasTypes.IncomePlans).collect { newIncomePlans ->
-                    val currentIncomePlans = _listOfAllIdeas.filterIsInstance<IncomePlans>()
+                    val currentIncomePlans = _listOfAllIdeas.filterIsInstance<IncomePlans>().toSet()
                     _listOfAllIdeas.removeAll(currentIncomePlans)
                     _listOfAllIdeas.addAll(newIncomePlans)
                 }
             }
             launch {
                 getIdeasListUseCase(ideaTypes = GetIdeasListUseCase.IdeasTypes.Savings).collect { newSavings ->
-                    val currentSavings = _listOfAllIdeas.filterIsInstance<Savings>()
+                    val currentSavings = _listOfAllIdeas.filterIsInstance<Savings>().toSet()
                     _listOfAllIdeas.removeAll(currentSavings)
                     _listOfAllIdeas.addAll(newSavings)
                 }
             }
             launch {
                 getIdeasListUseCase(ideaTypes = GetIdeasListUseCase.IdeasTypes.ExpenseLimit).collect { newExpenseLimits ->
-                    val currentExpenseLimits = _listOfAllIdeas.filterIsInstance<ExpenseLimits>()
+                    val currentExpenseLimits = _listOfAllIdeas.filterIsInstance<ExpenseLimits>().toSet()
                     _listOfAllIdeas.removeAll(currentExpenseLimits)
                     _listOfAllIdeas.addAll(newExpenseLimits)
                 }

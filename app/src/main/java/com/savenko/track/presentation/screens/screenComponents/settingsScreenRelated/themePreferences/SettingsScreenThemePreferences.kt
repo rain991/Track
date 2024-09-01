@@ -99,7 +99,7 @@ fun SettingsScreenThemePreferences(modifier: Modifier) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Text(
-                    text = stringResource(R.string.show_page_name_setttings_screen),
+                    text = stringResource(R.string.show_page_name_settings_screen),
                     style = MaterialTheme.typography.bodyMedium.copy(color = MaterialTheme.colorScheme.onPrimary),
                     modifier = Modifier.padding(start = 4.dp)
                 )

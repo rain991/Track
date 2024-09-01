@@ -81,7 +81,7 @@ fun BottomSheetAmountInput(
                                 0.0f
                             }
                         } catch (e: NumberFormatException) {
-                            currentInputValue ?: 0.0f
+                            currentInputValue
                         }
                     )
                 },

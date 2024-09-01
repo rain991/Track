@@ -32,6 +32,6 @@ class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomeListRep
     }
 
     override suspend fun getIncomesInTimeSpanDateDesc(startOfSpan: Long, endOfSpan: Long): Flow<List<IncomeItem>> {
-        return incomeDao.getIncomesInTimeSpanDateDecs(start = startOfSpan, end = endOfSpan)
+        return incomeDao.getIncomesInTimeSpanDateDesc(start = startOfSpan, end = endOfSpan)
     }
 }

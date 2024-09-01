@@ -28,7 +28,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.colors.parseColor
 import org.koin.compose.koinInject
 

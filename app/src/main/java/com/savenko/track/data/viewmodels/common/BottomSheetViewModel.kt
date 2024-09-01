@@ -138,7 +138,7 @@ class BottomSheetViewModel(
                     note = bottomSheetViewState.value.note,
                     date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
                     value = bottomSheetViewState.value.inputValue!!,
-                    currencyTicker = selectedCurrency!!.ticker
+                    currencyTicker = selectedCurrency.ticker
                 )
                 addExpenseItemUseCase(currentExpenseItem)
             }
@@ -158,7 +158,7 @@ class BottomSheetViewModel(
                 note = bottomSheetViewState.value.note,
                 date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
                 value = bottomSheetViewState.value.inputValue!!,
-                currencyTicker = selectedCurrency!!.ticker
+                currencyTicker = selectedCurrency.ticker
             )
             addIncomeItemUseCase(currentIncomeItem)
         }

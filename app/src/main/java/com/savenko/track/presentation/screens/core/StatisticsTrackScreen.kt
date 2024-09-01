@@ -13,7 +13,7 @@ import com.savenko.track.presentation.components.customComponents.MainScreenFloa
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.StatisticsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
-/*  Statistic screen shows user achievments and useful stats for specific period of time. Also shows chart  */
+/*  Statistic screen shows user achievements and useful stats for specific period of time. Also shows chart  */
 @Composable
 fun StatisticsTrackScreen() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()

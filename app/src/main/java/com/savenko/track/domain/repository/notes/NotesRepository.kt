@@ -12,12 +12,12 @@ interface NotesRepository {
    suspend fun requestCountOfIncomesMonthly(): Int
    suspend fun requestCountOfExpensesWeekly(): Int
    suspend fun requestCountOfIncomesWeekly(): Int
-   suspend fun requestCountOfExpensesAnualy(): Int
-   suspend fun requestCountOfIncomeAnualy(): Int
+   suspend fun requestCountOfExpensesAnnually(): Int
+   suspend fun requestCountOfIncomeAnnually(): Int
    suspend fun requestBiggestExpenseMonthly(): Float?
    suspend fun requestBiggestIncomeMonthly(): Float?
-   suspend fun requestBiggestExpenseAnualy(): Float?
-   suspend fun requestBiggestIncomeAnualy(): Float?
+   suspend fun requestBiggestExpenseAnnually(): Float?
+   suspend fun requestBiggestIncomeAnnually(): Float?
    suspend fun requestLoginCounts() : Int
    suspend fun requestIdeasCount() : Int
 }

@@ -40,7 +40,7 @@ fun EmptyMainLazyColumnPlacement(isExpenseLazyColumn: Boolean) {
                 text = if (isExpenseLazyColumn) {
                     stringResource(R.string.empty_exp_lazyColumn_additional1)
                 } else {
-                    stringResource(R.string.empty_incm_lazyColumn_additional1)
+                    stringResource(R.string.empty_income_lazyColumn_additional1)
                 },
                 style = MaterialTheme.typography.bodyLarge,
                 textAlign = TextAlign.Center

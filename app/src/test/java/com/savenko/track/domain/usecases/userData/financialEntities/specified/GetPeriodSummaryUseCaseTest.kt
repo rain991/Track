@@ -1,3 +1,4 @@
+package com.savenko.track.domain.usecases.userData.financialEntities.specified
 
 import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository

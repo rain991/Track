@@ -61,7 +61,7 @@ class ExpensesCoreRepositoryImplTest {
         }
 
     @Test
-    fun `getSumOfExpensesInTimeSpan should call convertion for financials with non-preferable currency`() = runTest {
+    fun `getSumOfExpensesInTimeSpan should call conversion for financials with non-preferable currency`() = runTest {
         val start = 1000L
         val end = 5000L
         val preferableCurrency = mock<Currency> {

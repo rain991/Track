@@ -10,7 +10,7 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
 import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenEvent
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenState
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenViewOptions

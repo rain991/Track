@@ -61,7 +61,7 @@
     <string name="theme_settings_screen">Thema</string>
     <string name="preferable_currency_settings_screen">Bevorzugte Währung</string>
     <string name="use_device_theme_settings_screen">Geräteschema verwenden</string>
-    <string name="show_page_name_setttings_screen">Seitennamen anzeigen</string>
+    <string name="show_page_name_settings_screen">Seitennamen anzeigen</string>
     <string name="preferable_theme_settings_screen">Bevorzugtes Thema</string>
     <string name="extra_currency_settings_screen">Zusätzliche Währung</string>
     <string name="currencies_settings_screen">Währungen</string>
@@ -198,7 +198,7 @@
     <string name="spent_main_track_screen">Ausgegeben</string>
     <string name="scroll_up_CD">nach oben scrollen</string>
     <string name="budget_main_feed_card">%1$s Budget</string>
-    <string name="empty_incm_lazyColumn_additional1">Probieren Sie es mit dem Knopf in der rechten unteren Ecke aus, er ist in jedem App-Bildschirm verfügbar</string>
+    <string name="empty_income_lazyColumn_additional1">Probieren Sie es mit dem Knopf in der rechten unteren Ecke aus, er ist in jedem App-Bildschirm verfügbar</string>
     <string name="add_to_adding_to_saving_idea_dialog">Hinzufügen zu</string>
     <string name="planned_adding_to_saving_idea_dialog">Geplant %1$s</string>
     <string name="completed_for_adding_to_saving_idea_dialog">Abgeschlossen für</string>

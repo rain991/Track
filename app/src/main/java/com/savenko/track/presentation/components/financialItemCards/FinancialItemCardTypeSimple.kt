@@ -63,7 +63,7 @@ import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.colors.parseColor
 import org.koin.compose.koinInject
 import java.util.Calendar
