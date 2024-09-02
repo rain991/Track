@@ -66,9 +66,11 @@ fun MainScreenLazyColumn(
     val expenseCategoriesList = lazyColumnState.value.expenseCategoriesList
     val isExpenseLazyColumn = lazyColumnState.value.isExpenseLazyColumn
     val expandedItem = lazyColumnState.value.expandedFinancialEntity
+    val incomeListFinancialSummary = lazyColumnState.value.incomesFinancialSummary
     val isScrolledBelow = lazyColumnState.value.isScrolledBelow
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE } }
     var isScrollingUp by remember { mutableStateOf(false) }
+    val expenseListFinancialSummary = lazyColumnState.value.expensesFinancialSummary
     Box {
         Box(
             modifier = Modifier
@@ -225,7 +227,21 @@ fun MainScreenLazyColumn(
                                         financialEntity = currentFinancialEntity,
                                         financialCategory = currentFinancialCategory,
                                         preferableCurrency = lazyColumnState.value.preferableCurrency,
-                                        monthSummary = monthSummary,
+                                        financialEntityMonthSummary = if (isExpenseLazyColumn) {
+                                            expenseListFinancialSummary[currentFinancialEntity.id]?.financialSummary
+                                                ?: 0.0f
+                                        } else {
+                                            incomeListFinancialSummary[currentFinancialEntity.id]?.financialSummary
+                                                ?: 0.0f
+                                        },
+                                        financialEntityMonthQuantity = if (isExpenseLazyColumn) {
+                                            expenseListFinancialSummary[currentFinancialEntity.id]?.financialsQuantity
+                                                ?: 0
+                                        } else {
+                                            incomeListFinancialSummary[currentFinancialEntity.id]?.financialsQuantity
+                                                ?: 0
+                                        },
+                                        overallMonthSummary = monthSummary,
                                         containsMonthSummaryRow = isNextMonthDifferent && financialsList.size > MONTH_SUMMARY_MIN_LIST_SIZE,
                                         isExpenseLazyColumn = isExpenseLazyColumn,
                                         isPreviousDayDifferent = isPreviousDayDifferent,

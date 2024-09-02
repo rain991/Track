@@ -34,7 +34,9 @@ fun LazyColumnSingleFinancialComponent(
     financialEntity: FinancialEntity,
     financialCategory: CategoryEntity,
     preferableCurrency: Currency,
-    monthSummary: FinancialCardNotion?,
+    financialEntityMonthSummary : Float,
+    financialEntityMonthQuantity : Int,
+    overallMonthSummary: FinancialCardNotion?,
     containsMonthSummaryRow: Boolean,
     isExpenseLazyColumn: Boolean,
     isPreviousDayDifferent: Boolean,
@@ -88,8 +90,8 @@ fun LazyColumnSingleFinancialComponent(
             categoryEntity = financialCategory,
             expanded = isExpanded,
             preferableCurrency = preferableCurrency,
-            financialEntityMonthSummary = monthSummary?.financialSummary ?: 0.0f,
-            countOfFinancialEntities = monthSummary?.financialsQuantity ?: 0,
+            financialEntityMonthSummary = financialEntityMonthSummary,
+            countOfFinancialEntities = financialEntityMonthQuantity,
             onDeleteFinancial = {
                 onDeleteFinancial(financialEntity)
             },
@@ -107,8 +109,8 @@ fun LazyColumnSingleFinancialComponent(
             val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
             MonthSummaryRow(
                 modifier = Modifier.fillMaxWidth(),
-                summary = monthSummary?.financialSummary ?: 0.0f,
-                quantity = monthSummary?.financialsQuantity ?: 0,
+                summary = overallMonthSummary?.financialSummary ?: 0.0f,
+                quantity = overallMonthSummary?.financialsQuantity ?: 0,
                 monthName = monthName ?: "",
                 preferableCurrency = preferableCurrency,
                 financialTypes = if (isExpenseLazyColumn) {

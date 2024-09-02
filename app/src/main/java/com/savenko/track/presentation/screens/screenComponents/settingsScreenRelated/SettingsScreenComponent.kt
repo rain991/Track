@@ -2,7 +2,6 @@ package com.savenko.track.presentation.screens.screenComponents.settingsScreenRe
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -28,14 +27,13 @@ import com.savenko.track.presentation.screens.screenComponents.settingsScreenRel
 
 @Composable
 fun SettingsScreenComponent(
-    paddingValues: PaddingValues,
     navHostController: NavHostController,
     isPageNameVisible: Boolean
 ) {
     val windowInfo = rememberWindowInfo()
     val expandedScreenModifier = Modifier
         .padding(horizontal = 40.dp, vertical = 8.dp)
-        .clip(RoundedCornerShape(16.dp))
+        .clip(RoundedCornerShape(24.dp))
         .background(
             brush = Brush.linearGradient(
                 colors = listOf(
@@ -46,7 +44,7 @@ fun SettingsScreenComponent(
         )
     val compactScreenModifier = Modifier
         .padding(horizontal = 16.dp, vertical = 8.dp)
-        .clip(RoundedCornerShape(16.dp))
+        .clip(RoundedCornerShape(24.dp))
         .background(
             brush = Brush.linearGradient(
                 colors = listOf(
