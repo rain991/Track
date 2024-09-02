@@ -5,10 +5,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.Button
@@ -28,8 +25,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
-import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.colors.parseColor
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import org.koin.compose.koinInject
 
 @Composable
@@ -60,9 +57,7 @@ fun CategoryChip(
         }
     ) {
         Row(
-            modifier = Modifier
-                .wrapContentWidth()
-                .wrapContentHeight(),
+            modifier = Modifier,
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.Center
         ) {
@@ -70,7 +65,6 @@ fun CategoryChip(
                 Icon(
                     imageVector = Icons.Filled.Check,
                     contentDescription = stringResource(R.string.checked_category_add_exp_CD),
-                    modifier = Modifier.fillMaxHeight(),
                     tint = Color.White
                 )
             }

@@ -56,8 +56,8 @@ class BottomSheetViewModel(
             currentSelectedCurrencyIndex = 0,
             categoryPicked = DEFAULT_CATEGORY,
             timePickerState = false,
-            datePicked = LocalDate.now(),
-            todayButtonActiveState = true,
+            datePicked = null,
+            todayButtonActiveState = false,
             yesterdayButtonActiveState = false
         )
     )
@@ -95,7 +95,7 @@ class BottomSheetViewModel(
         const val DEFAULT_NOTE = ""
         const val DEFAULT_INPUT_VALUE = 0.0f
         val DEFAULT_CATEGORY = null
-        val DEFAULT_DATE: LocalDate = LocalDate.now()
+        val DEFAULT_DATE = null
     }
 
     suspend fun addFinancialItem() {
@@ -104,6 +104,7 @@ class BottomSheetViewModel(
         val groupingExpenseCategoryId = dataStoreManager.groupingExpenseCategoryId.first()
         val groupingIncomeCategoryId = dataStoreManager.groupingIncomeCategoryId.first()
         val selectedCurrency = listOfPreferableCurrencies[_bottomSheetViewState.value.currentSelectedCurrencyIndex]
+
         if (bottomSheetViewState.value.inputValue == null || bottomSheetViewState.value.inputValue == 0.0f) {
             setWarningMessage(BottomSheetErrors.IncorrectInputValue)
             return
@@ -118,6 +119,11 @@ class BottomSheetViewModel(
         }
         if (bottomSheetViewState.value.categoryPicked == null && ((bottomSheetViewState.value.isAddingExpense && !nonCategorisedExpenses) || (!bottomSheetViewState.value.isAddingExpense && !nonCategorisedIncomes))) {
             setWarningMessage(BottomSheetErrors.CategoryNotSelected)
+            return
+        }
+
+        if (bottomSheetViewState.value.datePicked == null) {
+            setWarningMessage(BottomSheetErrors.DateNotSelected)
             return
         }
 
@@ -136,7 +142,7 @@ class BottomSheetViewModel(
                         expenseCategoryPickedId
                     },
                     note = bottomSheetViewState.value.note,
-                    date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
+                    date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
                     value = bottomSheetViewState.value.inputValue!!,
                     currencyTicker = selectedCurrency.ticker
                 )
@@ -156,7 +162,7 @@ class BottomSheetViewModel(
                     incomeCategoryPickedId
                 },
                 note = bottomSheetViewState.value.note,
-                date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
+                date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
                 value = bottomSheetViewState.value.inputValue!!,
                 currencyTicker = selectedCurrency.ticker
             )
@@ -211,12 +217,12 @@ class BottomSheetViewModel(
             bottomSheetViewState.value.copy(isAddingExpense = value)
     }
 
-    fun setDatePicked(neededDate: LocalDate) {
+    fun setDatePicked(date: LocalDate?) {
         _bottomSheetViewState.update {
             bottomSheetViewState.value.copy(
-                datePicked = neededDate,
-                todayButtonActiveState = (neededDate == LocalDate.now()),
-                yesterdayButtonActiveState = (neededDate == (LocalDate.now().minusDays(1)))
+                datePicked = date,
+                todayButtonActiveState = (date == LocalDate.now()),
+                yesterdayButtonActiveState = (date == (LocalDate.now().minusDays(1)))
             )
         }
     }

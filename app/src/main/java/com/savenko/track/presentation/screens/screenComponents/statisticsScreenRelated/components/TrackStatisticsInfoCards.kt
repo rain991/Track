@@ -65,7 +65,7 @@ fun TrackStatisticsInfoCards(
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp),
         modifier = modifier
             .animateContentSize()
-            .clip(RoundedCornerShape(12.dp))
+            .clip(RoundedCornerShape(16.dp))
             .then(
                 if (financialEntities is FinancialEntities.Both) {
                     bothFinancialsModifier
@@ -76,7 +76,7 @@ fun TrackStatisticsInfoCards(
     ) {
         Box(
             modifier = Modifier
-                .padding(8.dp)
+                .padding(vertical = 4.dp, horizontal = 12.dp)
                 .wrapContentHeight()
                 .fillMaxWidth()
         ) {

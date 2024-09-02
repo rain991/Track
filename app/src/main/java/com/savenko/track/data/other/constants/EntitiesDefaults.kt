@@ -32,13 +32,13 @@ const val DEFAULT_INCOME_CATEGORIES_MAX_INDEX = 9
 const val CATEGORIES_NAME_MAX_LENGTH = 40
 const val IDEA_NOTE_MAX_LENGTH = 60
 const val NAME_MAX_LENGTH = 40
-const val FINANCIAL_NOTE_MAX_LENGTH = 25
+const val FINANCIAL_NOTE_MAX_LENGTH = 100
 const val CURRENCIES_FILTER_MAX_LENGTH = 40
 const val MAX_BUDGET_VALUE = Int.MAX_VALUE
 const val MAX_IDEA_VALUE = Int.MAX_VALUE
 const val MAX_FINANCIAL_VALUE = Float.MAX_VALUE
 const val MAX_CIRCULAR_PROGRESS_VALUE = 999f
-const val FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE = 8
+const val FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE = 16
 
 /*  warning changing this parameter will not increase real max value,
  it is only limit for composables (needed migration in Room from categories IDs parameters to list of categories IDs) */

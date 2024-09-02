@@ -3,8 +3,6 @@ package com.savenko.track.presentation.components.bottomSheet
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.staggeredgrid.LazyHorizontalStaggeredGrid
 import androidx.compose.foundation.lazy.staggeredgrid.StaggeredGridCells
@@ -17,14 +15,13 @@ import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.components.customComponents.CategoryChip
 
 @Composable
-fun BottomSheetCategorySelectionGrid(categoryList: List<CategoryEntity>, onSetCategoryPicked : (CategoryEntity) -> Unit) {
+fun BottomSheetCategorySelectionGrid(modifier : Modifier, categoryList: List<CategoryEntity>, onSetCategoryPicked : (CategoryEntity) -> Unit) {
     val lazyHorizontalState = rememberLazyStaggeredGridState()
-    Column(modifier = Modifier.fillMaxWidth()) {
+    Column(modifier = modifier) {
         LazyHorizontalStaggeredGrid(
-            modifier = Modifier.heightIn(min = 48.dp, max = 180.dp),
-            rows = StaggeredGridCells.FixedSize(40.dp),
+            rows = StaggeredGridCells.Fixed(2),
             state = lazyHorizontalState,
-            verticalArrangement = Arrangement.spacedBy(12.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp),
             horizontalItemSpacing = 8.dp, contentPadding = PaddingValues(horizontal = 8.dp)
         ) {
             items(count = categoryList.size) { index ->

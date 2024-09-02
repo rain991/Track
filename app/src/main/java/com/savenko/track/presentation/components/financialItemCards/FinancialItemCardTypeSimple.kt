@@ -63,8 +63,8 @@ import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
-import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.colors.parseColor
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import org.koin.compose.koinInject
 import java.util.Calendar
 import java.util.Locale
@@ -401,10 +401,12 @@ private fun NoteCard(expenseItem: FinancialEntity, cardColor: Color) {
     ) {
         Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)) {
             Text(
-                text = if (expenseItem.note.length < FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE) stringResource(
-                    R.string.note_exp_list,
-                    expenseItem.note
-                ) else expenseItem.note,
+                text = if (expenseItem.note.length < FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE) {
+                    stringResource(
+                        R.string.note_exp_list,
+                        expenseItem.note
+                    )
+                } else expenseItem.note.removeRange(FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE, expenseItem.note.length),
                 style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
             )
         }

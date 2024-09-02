@@ -35,22 +35,24 @@ import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.formatDateAsNumeric
 import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
+import com.savenko.track.presentation.components.customComponents.ErrorText
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
+import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 import com.savenko.track.presentation.screens.states.core.common.BottomSheetViewState
 import java.time.LocalDate
 
 @Composable
-fun BottomSheetDatePicker(
+fun BottomSheetDateSelection(
     bottomSheetViewState: BottomSheetViewState,
     isDayOutOfPredefinedSpan: (LocalDate) -> Boolean,
     onSetDatePicked: (LocalDate) -> Unit,
     onTogglePickerState: () -> Unit
 ) {
-    var text by remember { mutableStateOf(formatDateWithoutYear(convertLocalDateToDate(bottomSheetViewState.datePicked))) }
-    text = if (!isDayOutOfPredefinedSpan(bottomSheetViewState.datePicked)) {
-        stringResource(R.string.date)
-    } else {
+    var text by remember { mutableStateOf("") }
+    text = if (bottomSheetViewState.datePicked != null && isDayOutOfPredefinedSpan(bottomSheetViewState.datePicked)) {
         formatDateWithoutYear(convertLocalDateToDate(bottomSheetViewState.datePicked))
+    } else {
+        stringResource(R.string.date)
     }
     val todayDate = remember {
         derivedStateOf { LocalDate.now() }
@@ -58,31 +60,39 @@ fun BottomSheetDatePicker(
     val yesterdayDate = remember {
         derivedStateOf { LocalDate.now().minusDays(1) }
     }
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)
-    ) {
-        BottomSheetDateButton(
-            modifier = Modifier.height(IntrinsicSize.Min),
-            text = stringResource(R.string.today),
-            isSelected = (bottomSheetViewState.todayButtonActiveState), date = todayDate.value
-        ) { onSetDatePicked(LocalDate.now()) }
-        BottomSheetDateButton(
-            modifier = Modifier.height(IntrinsicSize.Min),
-            text = stringResource(R.string.yesterday),
-            isSelected = (bottomSheetViewState.yesterdayButtonActiveState),
-            date = yesterdayDate.value
-        ) { onSetDatePicked(LocalDate.now().minusDays(1)) }
-        Button(onClick = { onTogglePickerState() }) {
-            Text(text = text, style = MaterialTheme.typography.bodyMedium)
+    Column {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 8.dp), horizontalArrangement = Arrangement.spacedBy(4.dp)
+        ) {
+            BottomSheetDateButton(
+                modifier = Modifier.height(IntrinsicSize.Min),
+                text = stringResource(R.string.today),
+                isSelected = (bottomSheetViewState.todayButtonActiveState), date = todayDate.value
+            ) { onSetDatePicked(LocalDate.now()) }
+            BottomSheetDateButton(
+                modifier = Modifier.height(IntrinsicSize.Min),
+                text = stringResource(R.string.yesterday),
+                isSelected = (bottomSheetViewState.yesterdayButtonActiveState),
+                date = yesterdayDate.value
+            ) { onSetDatePicked(LocalDate.now().minusDays(1)) }
+            Button(onClick = { onTogglePickerState() }) {
+                Text(text = text, style = MaterialTheme.typography.bodyMedium)
+            }
+            SingleDatePickerDialog(
+                isDialogVisible = bottomSheetViewState.timePickerState,
+                futureDatePicker = false,
+                onDecline = { onTogglePickerState() }) { date ->
+                onSetDatePicked(convertDateToLocalDate(date))
+                onTogglePickerState()
+            }
         }
-        SingleDatePickerDialog(
-            isDialogVisible = bottomSheetViewState.timePickerState,
-            futureDatePicker = false,
-            onDecline = { onTogglePickerState() }) { date ->
-            onSetDatePicked(convertDateToLocalDate(date))
-            onTogglePickerState()
+        if (bottomSheetViewState.warningMessage == BottomSheetErrors.DateNotSelected) {
+            ErrorText(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                text = stringResource(id = bottomSheetViewState.warningMessage.error)
+            )
         }
     }
 }
@@ -94,6 +104,7 @@ fun BottomSheetDateButton(
     text: String,
     isSelected: Boolean,
     date: LocalDate,
+    needsAdditionalDateNotation: Boolean = false,
     onSelect: () -> Unit
 ) {
     Button(
@@ -101,19 +112,15 @@ fun BottomSheetDateButton(
         modifier = modifier
     ) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.Center) {
-            Column(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .fillMaxHeight(), verticalArrangement = Arrangement.Center
-            ) {
-                AnimatedVisibility(visible = isSelected, exit = fadeOut()) {
-                    Icon(
-                        imageVector = Icons.Filled.Check,
-                        contentDescription = stringResource(R.string.selected_date_add_exp),
-                        modifier = Modifier.height(22.dp),
-                        tint = MaterialTheme.colorScheme.onPrimary
-                    )
-                }
+            AnimatedVisibility(visible = isSelected, exit = fadeOut()) {
+                Icon(
+                    imageVector = Icons.Filled.Check,
+                    contentDescription = stringResource(R.string.selected_date_add_exp),
+                    modifier = Modifier
+                        .height(24.dp)
+                        .align(Alignment.CenterVertically),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
             }
             if (isSelected) Spacer(modifier = Modifier.width(8.dp))
             Column(
@@ -127,7 +134,7 @@ fun BottomSheetDateButton(
                     text = text,
                     style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
                 )
-                AnimatedVisibility(visible = isSelected) {
+                AnimatedVisibility(visible = isSelected && needsAdditionalDateNotation) {
                     Text(
                         text = formatDateAsNumeric(convertLocalDateToDate(date)),
                         style = MaterialTheme.typography.labelSmall,

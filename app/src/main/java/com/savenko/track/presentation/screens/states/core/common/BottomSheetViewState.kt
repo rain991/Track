@@ -12,8 +12,8 @@ data class BottomSheetViewState(
     val currentSelectedCurrencyIndex : Int,
     val categoryPicked: CategoryEntity?,
     val timePickerState: Boolean,
-    val datePicked: LocalDate = LocalDate.now(),
-    val todayButtonActiveState: Boolean = true,
-    val yesterdayButtonActiveState: Boolean = false,
+    val datePicked: LocalDate?,
+    val todayButtonActiveState: Boolean,
+    val yesterdayButtonActiveState: Boolean,
     val warningMessage : BottomSheetErrors? = null
 )
