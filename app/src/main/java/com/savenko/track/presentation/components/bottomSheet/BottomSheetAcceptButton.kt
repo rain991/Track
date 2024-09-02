@@ -1,6 +1,7 @@
 package com.savenko.track.presentation.components.bottomSheet
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -21,11 +22,18 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
+import com.savenko.track.presentation.themes.purpleGreyTheme.tertiaryContainerDarkHighContrast
+import com.savenko.track.presentation.themes.purpleGreyTheme.tertiaryContainerLightMediumContrast
 
 @Composable
 fun BottomSheetAcceptButton(modifier : Modifier, onClick: () -> Unit) {
     val gradientColor1 = MaterialTheme.colorScheme.primary
-    val gradientColor2 = MaterialTheme.colorScheme.tertiary
+    val isDarkTheme = isSystemInDarkTheme()
+    val gradientColor2 = if(!isDarkTheme){
+        tertiaryContainerLightMediumContrast
+    }else{
+        tertiaryContainerDarkHighContrast
+    }
     val brush = remember {
         Brush.linearGradient(
             listOf(

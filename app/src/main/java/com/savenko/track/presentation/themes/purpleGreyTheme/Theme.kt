@@ -9,6 +9,11 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
 
+
+/**
+ * PurpleGreyTheme is default Track theme. Purple colorscheme is used for light theme, Grey for dark theme
+ */
+
 @Composable
 fun PurpleGreyTheme(
     useDarkTheme: Boolean = isSystemInDarkTheme(),

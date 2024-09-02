@@ -1,14 +1,8 @@
 package com.savenko.track.presentation.components.bottomSheet
 
-import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.slideInVertically
-import androidx.compose.animation.slideOutVertically
-import androidx.compose.animation.togetherWith
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.IntrinsicSize
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -16,20 +10,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.navigationBars
-import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.requiredHeightIn
 import androidx.compose.foundation.layout.windowInsetsPadding
 import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -38,18 +26,16 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.scale
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FINANCIAL_NOTE_MAX_LENGTH
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
+import com.savenko.track.presentation.components.customComponents.CategoryChip
 import com.savenko.track.presentation.components.customComponents.GradientInputTextField
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 import com.savenko.track.presentation.other.windowInfo.WindowInfo
@@ -101,67 +87,7 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                         .windowInsetsPadding(WindowInsets.navigationBars)
                 ) {
                     Column(modifier = Modifier.fillMaxWidth()) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(IntrinsicSize.Min),
-                            horizontalArrangement = Arrangement.Center,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            Text(
-                                text = stringResource(R.string.add),
-                                style = MaterialTheme.typography.headlineMedium.copy(fontWeight = FontWeight.SemiBold),
-                                textAlign = TextAlign.Center
-                            )
-                            AnimatedContent(
-                                targetState = bottomSheetTitle,
-                                label = "verticalTextChange",
-                                transitionSpec = {
-                                    slideInVertically { it } togetherWith slideOutVertically { -it }
-                                }) {
-                                TextButton(
-                                    onClick = { bottomSheetViewModel.toggleIsAddingExpense() }
-                                ) {
-                                    Text(
-                                        text = it,
-                                        style = MaterialTheme.typography.headlineMedium.copy(
-                                            fontWeight = FontWeight.SemiBold
-                                        )
-                                    )
-                                }
-                            }
-                            Column(modifier = Modifier.fillMaxHeight()) {
-                                AnimatedContent(targetState = bottomSheetViewState.value.isAddingExpense, label = "") {
-                                    if (it) {
-                                        Column(
-                                            Modifier
-                                                .fillMaxHeight()
-                                                .padding(vertical = 8.dp)
-                                                .offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Bottom
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Default.KeyboardArrowDown,
-                                                modifier = Modifier.scale(0.8f),
-                                                contentDescription = null
-                                            )
-                                        }
-                                    } else {
-                                        Column(
-                                            Modifier
-                                                .fillMaxHeight()
-                                                .padding(vertical = 8.dp)
-                                                .offset((-8).dp, 0.dp), verticalArrangement = Arrangement.Top
-                                        ) {
-                                            Icon(
-                                                imageVector = Icons.Default.KeyboardArrowUp,
-                                                modifier = Modifier.scale(0.8f),
-                                                contentDescription = null
-                                            )
-                                        }
-                                    }
-                                }
-                            }
-                        }
+
                         val listOfAvailableCurrencies = bottomSheetViewModel.listOfPreferableCurrencies
                         val selectedCurrencyIndex = bottomSheetViewState.value.currentSelectedCurrencyIndex
                         val currentCurrency =
@@ -172,21 +98,48 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                             focusRequester.requestFocus()
                             controller?.show()
                         }
-                        BottomSheetAmountInput(
-                            currentCurrency = currentCurrency,
-                            listOfAvailableCurrencies = listOfAvailableCurrencies,
-                            hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue,
-                            currentInputValue = bottomSheetViewState.value.inputValue ?: 0.0f,
-                            focusRequester = focusRequester,
-                            onInputValueChange = {
-                                bottomSheetViewModel.setInputValue(it)
-                            },
-                            keyboardController = controller,
-                            onCurrencyChange = {
-                                bottomSheetViewModel.changeSelectedCurrency()
+
+                        Column {
+                            BottomSheetTransactionHeader(
+                                bottomSheetTitle = bottomSheetTitle,
+                                bottomSheetViewState = bottomSheetViewState
+                            ) {
+                                bottomSheetViewModel.toggleIsAddingExpense()
                             }
-                        )
-                        Spacer(Modifier.weight(0.5f))
+                            BottomSheetAmountInput(
+                                currentCurrency = currentCurrency,
+                                listOfAvailableCurrencies = listOfAvailableCurrencies,
+                                hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue,
+                                currentInputValue = bottomSheetViewState.value.inputValue ?: 0.0f,
+                                focusRequester = focusRequester,
+                                onInputValueChange = {
+                                    bottomSheetViewModel.setInputValue(it)
+                                },
+                                keyboardController = controller,
+                                onCurrencyChange = {
+                                    bottomSheetViewModel.changeSelectedCurrency()
+                                }
+                            )
+                            Spacer(modifier = Modifier.height(8.dp))
+                            AnimatedVisibility(
+                                visible = bottomSheetViewState.value.categoryPicked != null,
+                                modifier = Modifier.align(Alignment.CenterHorizontally)
+                            ) {
+                                bottomSheetViewState.value.categoryPicked?.let { category ->
+                                    CategoryChip(
+                                        modifier = Modifier.requiredHeightIn(min = 32.dp, max = 40.dp),
+                                        category = category,
+                                        isSelected = true,
+                                        borderColor = MaterialTheme.colorScheme.primary,
+                                        onSelect = { bottomSheetViewModel.setCategoryPicked(null) }
+                                    )
+                                }
+                            }
+                        }
+
+
+                        // Note, Date and category input below
+                        Spacer(Modifier.weight(1f))
                         val note = bottomSheetViewState.value.note
                         Box(modifier = Modifier.padding(start = 8.dp)) {
                             GradientInputTextField(
@@ -229,9 +182,13 @@ fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
                                 )
                             }
                         }
-                        Box(modifier = Modifier.wrapContentHeight()) {
-                            BottomSheetCategoriesGrid(categoryList = categoryList)
-                            Spacer(modifier = Modifier.height(16.dp))
+                        AnimatedVisibility(
+                            visible = bottomSheetViewState.value.categoryPicked == null,
+                            modifier = Modifier.wrapContentHeight()
+                        ) {
+                            BottomSheetCategorySelectionGrid(categoryList = categoryList) {
+                                bottomSheetViewModel.setCategoryPicked(it)
+                            }
                         }
                         BottomSheetAcceptButton(
                             modifier = Modifier

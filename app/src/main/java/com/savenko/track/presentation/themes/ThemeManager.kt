@@ -9,7 +9,10 @@ import com.savenko.track.presentation.themes.purpleGreyTheme.PurpleGreyTheme
 import com.savenko.track.presentation.themes.redTheme.RedTheme
 import com.savenko.track.presentation.themes.yellowTheme.YellowTheme
 
-
+/**
+ * Theme manager is wrapper of Track theme that handles theme needed to be used by user preferences.
+ * User can change preferable colorscheme or enable Dynamic Colors (SDK >= 31)
+ */
 @Composable
 fun ThemeManager(
     isUsingDynamicColors: Boolean,
