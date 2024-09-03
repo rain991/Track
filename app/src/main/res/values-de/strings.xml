@@ -30,8 +30,6 @@
 
     <!-- Expense-related -->
     <string name="expense">Ausgabe</string>
-    <string name="add_new_category">Neue Kategorie hinzufügen</string>
-    <string name="other_adding">Andere</string>
 
     <!-- Dates -->
     <string name="today">Heute</string>
@@ -42,7 +40,6 @@
     <string name="your_note_adding_exp">Notiz</string>
     <string name="checked_category_add_exp_CD">Geprüfte Kategorie</string>
     <string name="note_exp_list">Notiz: %1$s</string>
-    <string name="warning_bottom_sheet_exp">Kategorie auswählen oder richtigen Wert eingeben</string>
 
     <!-- Empty states -->
     <string name="empty_exp_lazyColumn_title">Sie haben noch keine Ausgaben hinzugefügt</string>
@@ -57,7 +54,6 @@
 
     <!-- Settings -->
     <string name="settings">Einstellungen</string>
-    <string name="greetings_settings_screen">Hallo, %1$s</string>
     <string name="theme_settings_screen">Thema</string>
     <string name="preferable_currency_settings_screen">Bevorzugte Währung</string>
     <string name="use_device_theme_settings_screen">Geräteschema verwenden</string>
@@ -84,13 +80,11 @@
     <string name="not_added_any_incomes_yet_personal_settings_screen">Sie haben noch keine Einnahmen hinzugefügt</string>
     <string name="you_have_already_added_incomes_worth_of">Sie haben bereits %1$s Einnahmen im Wert von %2$s %3$s hinzugefügt</string>
     <string name="login_message_personal_settings_screen">Sie haben Track %1$s Mal betreten</string>
-    <string name="message_categories_settings_screen">Erstellen, löschen und finden Sie Ihre Kategorien. Vorgegebene Kategorien können nicht gelöscht werden</string>
     <string name="expense_categories_categories_settings_screen">Ausgabenkategorien</string>
     <string name="delete">Löschen</string>
     <string name="income_categories">Einkommenskategorien</string>
 
     <!-- Lazy columns -->
-    <string name="recent_lazy_column">Neueste</string>
     <string name="expenses_lazy_column">Ausgaben</string>
     <string name="incomes_lazy_column">Einnahmen</string>
     <plurals name="operations_screen_info_cards">
@@ -103,7 +97,6 @@
     <string name="first_notion_new_idea_card">Ideen sind der Weg, finanzielle Ziele zu deklarieren</string>
     <string name="second_notion_new_idea_card">Verfügbare Idee-Typen: Einsparungen, Ausgabenlimits und Einkommenspläne</string>
     <string name="third_notion_new_idea_card">Ideen werden Ihre Ziele in der App benachrichtigen</string>
-    <string name="goal">Ziel</string>
     <string name="date">Datum</string>
     <string name="limit_end_date_ideas">Limit Enddatum</string>
     <string name="plan_end_date_ideas">Geplantes Enddatum</string>
@@ -138,15 +131,12 @@
 
     <!-- Expense limit -->
     <string name="expense_limit">Ausgabenlimit</string>
-    <string name="planned_value_expense_limit_card">Geplant</string>
     <string name="already_spent_expense_limit_card">Bereits ausgegeben</string>
     <string name="categories_message_expense_limit_card">Kategorien:</string>
     <string name="related_to_all_categories_expense_limit_card">Bezieht sich auf alle Kategorien</string>
 
     <!-- Savings -->
     <string name="saving">Sparen</string>
-    <string name="planned_savings_idea_card">Geplant</string>
-    <string name="completed_for_savings_idea_card">Abgeschlossen für</string>
 
     <!-- Income plan -->
     <string name="income_plan">Einkommensplan</string>
@@ -165,7 +155,6 @@
     <!-- Financial Cards -->
     <string name="expenses_fin_item_card">"%1$s Ausgaben: "</string>
     <string name="incomes_fin_item_card">"%1$s Einnahmen: "</string>
-    <string name="operations_track_stats_lazycolumn">%1$s Operationen</string>
     <string name="warning_message_info_cards">0 Operationen in diesem Monat</string>
 
     <!-- Other -->
@@ -175,12 +164,10 @@
     <string name="you_havent_added_incomes_yet_lazy_column">Sie haben noch keine Einnahmen hinzugefügt</string>
     <string name="add_expense">Ausgaben hinzufügen</string>
     <string name="add_incomes">Einkommen hinzufügen</string>
-    <string name="add_new_expense">Neue Ausgaben hinzufügen</string>
     <string name="create_new_category">Neue Kategorie erstellen</string>
     <string name="category_exist_warning_new_category_dialog">Diese Kategorie existiert bereits</string>
     <string name="back_to_settings_screen_CD">Zurück zum Einstellungen-Bildschirm</string>
     <string name="statistic">Statistik</string>
-    <string name="add_it_button">Hinzufügen</string>
     <string name="financial">Finanziell</string>
     <string name="cd_add_new_category">Neue Kategorie erstellen</string>
     <string name="both">Beide</string>
@@ -193,7 +180,6 @@
     <string name="add_idea">Idee hinzufügen</string>
     <string name="optional">Optional</string>
     <string name="saving_for">Sparen für</string>
-    <string name="budget">Budget</string>
     <string name="planned_main_track_screen">Geplant</string>
     <string name="spent_main_track_screen">Ausgegeben</string>
     <string name="scroll_up_CD">nach oben scrollen</string>
@@ -216,7 +202,6 @@
     <string name="select_category_new_idea_dialog_error">Kategorie auswählen oder Ausgabenlimit auf alle Kategorien beziehen</string>
     <string name="non_categorised_expenses_error_BS">Gruppierungskategorie für nicht kategorisierte Ausgaben auswählen</string>
     <string name="non_categorised_incomes_error_BS">Gruppierungskategorie für nicht kategorisierte Einnahmen auswählen</string>
-    <string name="login_screen">Login Bildschirm</string>
     <string name="edit_personal_info">persönliche Informationen bearbeiten</string>
     <string name="delete_financial_item_CD">Finanzposten löschen</string>
     <string name="currency_in_use_error">%1$s wird bereits verwendet</string>
@@ -247,7 +232,6 @@
     <string name="filter_categories_categories_screen">Kategorien finden</string>
     <string name="no_categories_for_specified_filters_categories_settings">Keine Kategorien für bestimmte Filter</string>
     <string name="shows_as_categories_settings">Zeigt als</string>
-    <string name="find_your_category_CD">Finden Sie Ihre Kategorie</string>
     <string name="month_summary_header">%1$s Zusammenfassung</string>
     <string name="total_expenses_month_summary">Gesamtausgaben :</string>
     <string name="total_incomes_month_summary">Gesamteinnahmen :</string>
