@@ -5,14 +5,15 @@ import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetEr
 import java.time.LocalDate
 
 data class BottomSheetViewState(
-    val isAddingExpense : Boolean = true,
+    val isAddingExpense : Boolean,
     val isBottomSheetExpanded: Boolean,
     val note: String,
     val inputValue: Float?,
+    val currentSelectedCurrencyIndex : Int,
     val categoryPicked: CategoryEntity?,
     val timePickerState: Boolean,
-    val datePicked: LocalDate = LocalDate.now(),
-    val todayButtonActiveState: Boolean = true,
-    val yesterdayButtonActiveState: Boolean = false,
+    val datePicked: LocalDate?,
+    val todayButtonActiveState: Boolean,
+    val yesterdayButtonActiveState: Boolean,
     val warningMessage : BottomSheetErrors? = null
 )

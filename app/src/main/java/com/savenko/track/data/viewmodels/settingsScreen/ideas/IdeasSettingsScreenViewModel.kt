@@ -9,7 +9,8 @@ import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
-import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
+import com.savenko.track.domain.usecases.userData.ideas.GetIdeaCompletedValueUseCase
+import com.savenko.track.domain.usecases.userData.ideas.GetIdeasListUseCase
 import com.savenko.track.presentation.screens.states.additional.settings.ideasSettings.IdeasSettingsScreenState
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,8 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class IdeasSettingsScreenViewModel(
-    private val ideaListRepositoryImpl: IdeaListRepository,
+    private val getIdeasListUseCase: GetIdeasListUseCase,
+    private val getIdeaCompletedValueUseCase: GetIdeaCompletedValueUseCase,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) : ViewModel() {
     private val _listOfAllIdeas = mutableStateListOf<Idea>()
@@ -45,22 +47,22 @@ class IdeasSettingsScreenViewModel(
     private suspend fun initializeValues() {
         viewModelScope.launch {
             launch {
-                ideaListRepositoryImpl.getIncomesPlansList().collect { newIncomePlans ->
-                    val currentIncomePlans = _listOfAllIdeas.filterIsInstance<IncomePlans>()
+                getIdeasListUseCase(ideaTypes = GetIdeasListUseCase.IdeasTypes.IncomePlans).collect { newIncomePlans ->
+                    val currentIncomePlans = _listOfAllIdeas.filterIsInstance<IncomePlans>().toSet()
                     _listOfAllIdeas.removeAll(currentIncomePlans)
                     _listOfAllIdeas.addAll(newIncomePlans)
                 }
             }
             launch {
-                ideaListRepositoryImpl.getSavingsList().collect { newSavings ->
-                    val currentSavings = _listOfAllIdeas.filterIsInstance<Savings>()
+                getIdeasListUseCase(ideaTypes = GetIdeasListUseCase.IdeasTypes.Savings).collect { newSavings ->
+                    val currentSavings = _listOfAllIdeas.filterIsInstance<Savings>().toSet()
                     _listOfAllIdeas.removeAll(currentSavings)
                     _listOfAllIdeas.addAll(newSavings)
                 }
             }
             launch {
-                ideaListRepositoryImpl.getExpenseLimitsList().collect { newExpenseLimits ->
-                    val currentExpenseLimits = _listOfAllIdeas.filterIsInstance<ExpenseLimits>()
+                getIdeasListUseCase(ideaTypes = GetIdeasListUseCase.IdeasTypes.ExpenseLimit).collect { newExpenseLimits ->
+                    val currentExpenseLimits = _listOfAllIdeas.filterIsInstance<ExpenseLimits>().toSet()
                     _listOfAllIdeas.removeAll(currentExpenseLimits)
                     _listOfAllIdeas.addAll(newExpenseLimits)
                 }
@@ -73,8 +75,8 @@ class IdeasSettingsScreenViewModel(
         }
     }
 
-    suspend fun getCompletionValue(idea: Idea): Flow<Float> {
-        return ideaListRepositoryImpl.getCompletionValue(idea)
+    suspend fun getIdeasCompletedValue(idea: Idea): Flow<Float> {
+        return getIdeaCompletedValueUseCase(idea)
     }
 
     fun setIsSortedDateDescending(value: Boolean) {

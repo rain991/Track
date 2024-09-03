@@ -36,7 +36,7 @@ class NotesRepositoryImpl(
     override suspend fun requestSumOfIncomesMonthly(): Float {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         val todayDate = convertLocalDateToDate(LocalDate.now())
-        val listOfIncomeItems = incomeDao.getIncomesInTimeSpanDateDecs(
+        val listOfIncomeItems = incomeDao.getIncomesInTimeSpanDateDesc(
             start = getStartOfMonthDate(todayDate).time,
             end = getEndOfMonthDate(todayDate).time
         ).first()
@@ -90,7 +90,7 @@ class NotesRepositoryImpl(
         return incomeDao.getCountOfIncomesInTimeSpan(start = getStartOfWeekDate(todayDate).time, end = getEndOfWeekDate(todayDate).time).first()
     }
 
-    override suspend fun requestCountOfExpensesAnualy(): Int {
+    override suspend fun requestCountOfExpensesAnnually(): Int {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getCountOfExpensesInTimeSpan(
             start = getStartOfYearDate(todayDate).time,
@@ -98,7 +98,7 @@ class NotesRepositoryImpl(
         ).first()
     }
 
-    override suspend fun requestCountOfIncomeAnualy(): Int {
+    override suspend fun requestCountOfIncomeAnnually(): Int {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return incomeDao.getCountOfIncomesInTimeSpan(start = getStartOfYearDate(todayDate).time, end = getEndOfYearDate(todayDate).time).first()
     }
@@ -119,7 +119,7 @@ class NotesRepositoryImpl(
         )
     }
 
-    override suspend fun requestBiggestExpenseAnualy(): Float? {
+    override suspend fun requestBiggestExpenseAnnually(): Float? {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return expenseItemsDao.getBiggestExpenseInTimeSpan(
             start = getStartOfYearDate(todayDate).time,
@@ -127,7 +127,7 @@ class NotesRepositoryImpl(
         )
     }
 
-    override suspend fun requestBiggestIncomeAnualy(): Float? {
+    override suspend fun requestBiggestIncomeAnnually(): Float? {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return incomeDao.getBiggestIncomeInTimeSpan(start = getStartOfYearDate(todayDate).time, end = getEndOfYearDate(todayDate).time)
     }

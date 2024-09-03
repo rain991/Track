@@ -1,4 +1,4 @@
-package com.savenko.track.presentation.UiText
+package com.savenko.track.presentation.other.uiText
 
 import android.content.Context
 import com.savenko.track.R
@@ -23,7 +23,11 @@ class DatabaseStringResourcesProvider(private val context: Context) {
     }
 
     fun getCategoryLocalizedName(category: CategoryEntity) : String{
-        return context.getString(provideDefaultCategoriesStringResource(category))
+        return if(category.isDefault()){
+            context.getString(provideDefaultCategoriesStringResource(category))
+        }else{
+            category.note
+        }
     }
 
     private val expenseCategoryStringResources = mapOf(

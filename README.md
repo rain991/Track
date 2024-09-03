@@ -54,7 +54,7 @@
 ## Used Technologies
 - Kotlin
 - Jetpack compose
-- Datastore, Room Persistance Library
+- Datastore, Room Persistence Library
 - Koin DI
 - Retrofit
 - WorkManager

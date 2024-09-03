@@ -80,9 +80,11 @@ import com.savenko.track.domain.usecases.userData.financialEntities.specified.Ge
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredFinancialEntitiesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetPeriodSummaryUseCase
-import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
-import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import com.savenko.track.domain.usecases.userData.ideas.GetIdeaCompletedValueUseCase
+import com.savenko.track.domain.usecases.userData.ideas.GetIdeasListUseCase
+import com.savenko.track.domain.usecases.userData.ideas.GetUnfinishedIdeasUseCase
+import com.savenko.track.domain.usecases.userData.other.ChangeCurrenciesPreferenceUseCase
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import org.koin.android.ext.koin.androidContext
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.androidx.workmanager.dsl.worker
@@ -120,7 +122,7 @@ val appModule = module {
 
     // Currencies
     single<CurrencyListRepository> { CurrencyListRepositoryImpl(get()) }
-    single<CurrenciesPreferenceRepository> { CurrenciesPreferenceRepositoryImpl(get()) }
+    single<CurrenciesPreferenceRepository> { CurrenciesPreferenceRepositoryImpl(get(), get()) }
 
     // Ideas
     single<IdeaItemRepository> { IdeaItemRepositoryImpl(get(), get(), get()) }
@@ -169,7 +171,9 @@ val domainModule = module {
     factory<GetDesiredExpensesUseCase> { GetDesiredExpensesUseCase(get()) }
     factory<GetDesiredFinancialEntitiesUseCase> { GetDesiredFinancialEntitiesUseCase(get(), get()) }
     factory<GetUnfinishedIdeasUseCase> { GetUnfinishedIdeasUseCase(get()) }
-    factory<ChangePreferableCurrencyUseCase> { ChangePreferableCurrencyUseCase(get(), get(), get(), get()) }
+    factory<GetIdeasListUseCase> { GetIdeasListUseCase(get()) }
+    factory<GetIdeaCompletedValueUseCase> { GetIdeaCompletedValueUseCase(get()) }
+    factory<ChangeCurrenciesPreferenceUseCase> { ChangeCurrenciesPreferenceUseCase(get(), get(), get(), get()) }
     factory<GetPeriodSummaryUseCase> { GetPeriodSummaryUseCase(get(), get()) }
 }
 
@@ -179,7 +183,7 @@ val viewModelModule = module {
 
     // Settings related
     viewModel { CurrenciesSettingsViewModel(get(), get(), get(), get(), get()) }
-    viewModel { IdeasSettingsScreenViewModel(get(), get()) }
+    viewModel { IdeasSettingsScreenViewModel(get(), get(), get()) }
     viewModel { ThemePreferenceSettingsViewModel(get(), get()) }
     viewModel { CategoriesSettingsScreenViewModel(get(), get(), get(), get()) }
     viewModel { NewCategoryViewModel(get(), get(), get()) }

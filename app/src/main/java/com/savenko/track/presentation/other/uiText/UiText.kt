@@ -1,4 +1,4 @@
-package com.savenko.track.presentation.UiText
+package com.savenko.track.presentation.other.uiText
 
 import android.content.Context
 import androidx.annotation.StringRes

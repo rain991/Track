@@ -43,6 +43,11 @@ import com.savenko.track.data.other.constants.CURRENCIES_PREFERENCE_ID
             onUpdate = ForeignKey.NO_ACTION
         )]
 )
+/**
+ * Currency in CurrenciesPreferences is saved by its ticker
+ * If you need CurrenciesPreference with currencies in return use CurrenciesPreferenceConverted
+ */
+
 data class CurrenciesPreference(
     @PrimaryKey(autoGenerate = false)
     val id: Int = CURRENCIES_PREFERENCE_ID,

@@ -19,8 +19,8 @@ import com.savenko.track.R
 import com.savenko.track.presentation.navigation.Screen
 
 @Composable
-fun SettingsScreenAccountPreferences(navHostController: NavHostController) {
-    Column(modifier = Modifier.fillMaxWidth(), verticalArrangement = Arrangement.spacedBy(8.dp)) {
+fun SettingsScreenAccountPreferences(modifier : Modifier, navHostController: NavHostController) {
+    Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
         Row(modifier = Modifier.padding(start = 8.dp)) {
             Text(
                 text = stringResource(R.string.account),
@@ -31,19 +31,36 @@ fun SettingsScreenAccountPreferences(navHostController: NavHostController) {
                 color = MaterialTheme.colorScheme.onPrimary
             )
         }
-        SettingsLinkedRow(text = stringResource(R.string.personal)) {
+        SettingsLinkedRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp), text = stringResource(R.string.personal)
+        ) {
             navHostController.navigate(Screen.PersonalSettingsScreen.route)
         }
         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-        SettingsLinkedRow(text = stringResource(R.string.ideas)) {
+        SettingsLinkedRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp), text = stringResource(R.string.ideas)
+        ) {
             navHostController.navigate(Screen.IdeasListSettingsScreen.route)
         }
         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-        SettingsLinkedRow(text = stringResource(R.string.currencies)) {
+        SettingsLinkedRow(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp),
+            text = stringResource(R.string.currencies)
+        ) {
             navHostController.navigate(Screen.CurrenciesSettingsScreen.route)
         }
         HorizontalDivider(modifier = Modifier.padding(horizontal = 16.dp))
-        SettingsLinkedRow(text = stringResource(R.string.categories)) {
+        SettingsLinkedRow(
+            Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp, vertical = 8.dp), text = stringResource(R.string.categories)
+        ) {
             navHostController.navigate(Screen.CategoriesSettingsScreen.route)
         }
     }

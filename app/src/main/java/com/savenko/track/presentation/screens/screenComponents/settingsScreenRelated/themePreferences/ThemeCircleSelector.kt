@@ -49,7 +49,7 @@ fun CircleWithBorder(
 
 @Preview
 @Composable
-private fun prev() {
+private fun Prev() {
     CircleWithBorder(
         circleColor = MaterialTheme.colorScheme.primary,
         isBorderEnabled = true,

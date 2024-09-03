@@ -55,6 +55,8 @@ fun NewIdeaDialogCategoriesGrid(newIdeaDialogViewModel: NewIdeaDialogViewModel) 
             items(count = expenseCategoriesList.value.size) { index ->
                 val item = expenseCategoriesList.value[index]
                 CategoryChip(
+                    modifier = Modifier
+                        .wrapContentHeight(),
                     category = item,
                     isSelected = (item == firstSelectedCategory || item == secondSelectedCategory || item == thirdSelectedCategory),
                     onSelect = { newIdeaDialogViewModel.setSelectedCategory(item) },

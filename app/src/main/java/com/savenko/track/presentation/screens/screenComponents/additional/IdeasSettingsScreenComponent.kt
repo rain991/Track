@@ -183,7 +183,7 @@ fun IdeasSettingsScreenComponent(
                             var completionValue by remember { mutableFloatStateOf(0.0f) }
                             LaunchedEffect(key1 = Unit) {
                                 withContext(Dispatchers.IO){
-                                    ideasSettingsScreenViewModel.getCompletionValue(currentIdea).collect{
+                                    ideasSettingsScreenViewModel.getIdeasCompletedValue(currentIdea).collect{
                                         Log.d(TAG, "IdeasSettingsScreenComponent: exp completionValue = $it")
                                         completionValue = it
                                     }
@@ -205,7 +205,7 @@ fun IdeasSettingsScreenComponent(
                             var completionValue by remember { mutableFloatStateOf(0.0f) }
                             LaunchedEffect(key1 = Unit) {
                                 withContext(Dispatchers.IO){
-                                   ideasSettingsScreenViewModel.getCompletionValue(currentIdea).collect{
+                                   ideasSettingsScreenViewModel.getIdeasCompletedValue(currentIdea).collect{
                                        Log.d(TAG, "IdeasSettingsScreenComponent: inc completionValue = $it")
                                        completionValue = it
                                     }

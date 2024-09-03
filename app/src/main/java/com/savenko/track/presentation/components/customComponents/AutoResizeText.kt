@@ -15,9 +15,9 @@ import androidx.compose.ui.unit.isUnspecified
 
 @Composable
 fun AutoResizedText(
+    modifier: Modifier = Modifier,
     text: String,
     style: TextStyle = MaterialTheme.typography.bodySmall,
-    modifier: Modifier = Modifier,
     color: Color = style.color
 ) {
     var resizedTextStyle by remember {

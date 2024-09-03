@@ -3,7 +3,6 @@ package com.savenko.track.data.viewmodels.common
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
 import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
 import com.savenko.track.data.other.constants.INCOME_CATEGORY_GROUPING_ID_DEFAULT
@@ -23,16 +22,9 @@ import com.savenko.track.domain.usecases.crud.incomeRelated.AddIncomeItemUseCase
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 import com.savenko.track.presentation.screens.states.core.common.BottomSheetViewState
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.ExperimentalCoroutinesApi
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.flow.flatMapLatest
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -48,34 +40,12 @@ class BottomSheetViewModel(
 ) : ViewModel() {
     private val _expenseCategoryList = mutableStateListOf<ExpenseCategory>()
     val expenseCategoryList: List<ExpenseCategory> = _expenseCategoryList
+
     private val _incomeCategoryList = mutableStateListOf<IncomeCategory>()
     val incomeCategoryList = _incomeCategoryList
 
-    private val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = CURRENCY_DEFAULT)
-    private val firstAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFirstAdditionalCurrency()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
-    private val secondAdditionalCurrency = currenciesPreferenceRepositoryImpl.getSecondAdditionalCurrency()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
-    private val thirdAdditionalCurrency = currenciesPreferenceRepositoryImpl.getThirdAdditionalCurrency()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
-    private val fourthAdditionalCurrency = currenciesPreferenceRepositoryImpl.getFourthAdditionalCurrency()
-        .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = null)
-    val listOfCurrencies = listOf(
-        preferableCurrency,
-        firstAdditionalCurrency,
-        secondAdditionalCurrency,
-        thirdAdditionalCurrency,
-        fourthAdditionalCurrency
-    )
-    private val _selectedCurrencyIndex = MutableStateFlow(value = 0)
-
-    @OptIn(ExperimentalCoroutinesApi::class)
-    val selectedCurrency: Flow<Currency?> = _selectedCurrencyIndex.flatMapLatest { index ->
-        combine(listOfCurrencies.map { it }) { currencies ->
-            currencies.getOrNull(index)
-        }
-    }.distinctUntilChanged()
+    private val _listOfPreferableCurrencies = mutableStateListOf<Currency>()
+    val listOfPreferableCurrencies: List<Currency> = _listOfPreferableCurrencies
 
     private val _bottomSheetViewState = MutableStateFlow(
         BottomSheetViewState(
@@ -83,10 +53,11 @@ class BottomSheetViewModel(
             isBottomSheetExpanded = false,
             note = DEFAULT_NOTE,
             inputValue = DEFAULT_INPUT_VALUE,
+            currentSelectedCurrencyIndex = 0,
             categoryPicked = DEFAULT_CATEGORY,
             timePickerState = false,
-            datePicked = LocalDate.now(),
-            todayButtonActiveState = true,
+            datePicked = null,
+            todayButtonActiveState = false,
             yesterdayButtonActiveState = false
         )
     )
@@ -105,13 +76,26 @@ class BottomSheetViewModel(
                 _incomeCategoryList.addAll(it)
             }
         }
+        viewModelScope.launch {
+            currenciesPreferenceRepositoryImpl.getCurrenciesPreferenceConverted().collect { currenciesPreference ->
+                _listOfPreferableCurrencies.clear()
+                val listOfNonNullCurrenciesNames = listOfNotNull(
+                    currenciesPreference.preferableCurrency,
+                    currenciesPreference.firstAdditionalCurrency,
+                    currenciesPreference.secondAdditionalCurrency,
+                    currenciesPreference.thirdAdditionalCurrency,
+                    currenciesPreference.fourthAdditionalCurrency
+                )
+                _listOfPreferableCurrencies.addAll(listOfNonNullCurrenciesNames)
+            }
+        }
     }
 
     companion object {
         const val DEFAULT_NOTE = ""
         const val DEFAULT_INPUT_VALUE = 0.0f
         val DEFAULT_CATEGORY = null
-        val DEFAULT_DATE = LocalDate.now()
+        val DEFAULT_DATE = null
     }
 
     suspend fun addFinancialItem() {
@@ -119,6 +103,8 @@ class BottomSheetViewModel(
         val nonCategorisedIncomes = dataStoreManager.nonCategoryIncomes.first()
         val groupingExpenseCategoryId = dataStoreManager.groupingExpenseCategoryId.first()
         val groupingIncomeCategoryId = dataStoreManager.groupingIncomeCategoryId.first()
+        val selectedCurrency = listOfPreferableCurrencies[_bottomSheetViewState.value.currentSelectedCurrencyIndex]
+
         if (bottomSheetViewState.value.inputValue == null || bottomSheetViewState.value.inputValue == 0.0f) {
             setWarningMessage(BottomSheetErrors.IncorrectInputValue)
             return
@@ -133,6 +119,11 @@ class BottomSheetViewModel(
         }
         if (bottomSheetViewState.value.categoryPicked == null && ((bottomSheetViewState.value.isAddingExpense && !nonCategorisedExpenses) || (!bottomSheetViewState.value.isAddingExpense && !nonCategorisedIncomes))) {
             setWarningMessage(BottomSheetErrors.CategoryNotSelected)
+            return
+        }
+
+        if (bottomSheetViewState.value.datePicked == null) {
+            setWarningMessage(BottomSheetErrors.DateNotSelected)
             return
         }
 
@@ -151,9 +142,9 @@ class BottomSheetViewModel(
                         expenseCategoryPickedId
                     },
                     note = bottomSheetViewState.value.note,
-                    date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
+                    date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
                     value = bottomSheetViewState.value.inputValue!!,
-                    currencyTicker = selectedCurrency.first()!!.ticker
+                    currencyTicker = selectedCurrency.ticker
                 )
                 addExpenseItemUseCase(currentExpenseItem)
             }
@@ -171,9 +162,9 @@ class BottomSheetViewModel(
                     incomeCategoryPickedId
                 },
                 note = bottomSheetViewState.value.note,
-                date = convertLocalDateToDate(bottomSheetViewState.value.datePicked),
+                date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
                 value = bottomSheetViewState.value.inputValue!!,
-                currencyTicker = selectedCurrency.first()!!.ticker
+                currencyTicker = selectedCurrency.ticker
             )
             addIncomeItemUseCase(currentIncomeItem)
         }
@@ -221,17 +212,17 @@ class BottomSheetViewModel(
             bottomSheetViewState.value.copy(isAddingExpense = !_bottomSheetViewState.value.isAddingExpense)
     }
 
-    fun setIsAddingExpense(value : Boolean) {
+    fun setIsAddingExpense(value: Boolean) {
         _bottomSheetViewState.value =
             bottomSheetViewState.value.copy(isAddingExpense = value)
     }
 
-    fun setDatePicked(neededDate: LocalDate) {
+    fun setDatePicked(date: LocalDate?) {
         _bottomSheetViewState.update {
             bottomSheetViewState.value.copy(
-                datePicked = neededDate,
-                todayButtonActiveState = (neededDate == LocalDate.now()),
-                yesterdayButtonActiveState = (neededDate == (LocalDate.now().minusDays(1)))
+                datePicked = date,
+                todayButtonActiveState = (date == LocalDate.now()),
+                yesterdayButtonActiveState = (date == (LocalDate.now().minusDays(1)))
             )
         }
     }
@@ -241,24 +232,20 @@ class BottomSheetViewModel(
     }
 
     fun changeSelectedCurrency() {
-        val listOfCurrenciesValues = listOfCurrencies.map { it.value }
-        val selectedCurrencyIndex = _selectedCurrencyIndex.value
-        for (i in (selectedCurrencyIndex + 1) until listOfCurrencies.size) {
-            if (listOfCurrenciesValues[i] != null) {
-                setSelectedCurrency(i)
-                return
-            }
+        val listOfCurrenciesValues = listOfPreferableCurrencies.map { it }
+        val selectedCurrencyIndex = _bottomSheetViewState.value.currentSelectedCurrencyIndex
+        for (i in (selectedCurrencyIndex + 1) until listOfPreferableCurrencies.size) {
+            setSelectedCurrency(i)
+            return
         }
         for (i in 0 until selectedCurrencyIndex) {
-            if (listOfCurrenciesValues[i] != null) {
-                setSelectedCurrency(i)
-                return
-            }
+            setSelectedCurrency(i)
+            return
         }
     }
 
     private fun setSelectedCurrency(index: Int) {
-        _selectedCurrencyIndex.value = index
+        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(currentSelectedCurrencyIndex = index)
     }
 
     private fun setWarningMessage(message: BottomSheetErrors?) {

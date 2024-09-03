@@ -13,7 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -27,6 +27,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
+
 @Composable
 fun SettingsSpecifiedScreenHeader(screenName: String, onBackPressed: () -> Unit) {
     Row(
@@ -43,7 +44,7 @@ fun SettingsSpecifiedScreenHeader(screenName: String, onBackPressed: () -> Unit)
                 .clickable { onBackPressed() }
         ) {
             Icon(
-                imageVector = Icons.Default.ArrowBack,
+                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
                 contentDescription = stringResource(R.string.back_to_settings_screen_CD),
                 modifier = Modifier
                     .align(Alignment.Center)

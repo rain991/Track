@@ -33,7 +33,7 @@ class TrackActivity : ComponentActivity() {
             val useSystemTheme = dataStoreManager.useSystemTheme.collectAsState(initial = USE_SYSTEM_THEME_DEFAULT)
             val preferableTheme =
                 dataStoreManager.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT.name)
-            if(loginCountState.value != -1){
+            if (loginCountState.value != -1) {
                 ThemeManager(
                     isUsingDynamicColors = useSystemTheme.value,
                     preferableTheme = getThemeByName(preferableTheme.value)

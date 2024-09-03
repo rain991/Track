@@ -47,7 +47,7 @@ fun BudgetFeedCard() {
     Card(
         modifier = Modifier
             .height(140.dp)
-            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
+            .padding(horizontal = 8.dp), shape = RoundedCornerShape(16.dp)
     ) {
         Column(
             modifier = Modifier

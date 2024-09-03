@@ -6,6 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface CurrenciesPreferenceRepository {
     fun getCurrenciesPreferences(): Flow<CurrenciesPreference>
+    suspend fun getCurrenciesPreferenceConverted(): Flow<CurrenciesPreferenceConverted>
     suspend fun setPreferableCurrency(currency: Currency)
     suspend fun setFirstAdditionalCurrency(currency: Currency?)
     suspend fun setSecondAdditionalCurrency(currency: Currency?)

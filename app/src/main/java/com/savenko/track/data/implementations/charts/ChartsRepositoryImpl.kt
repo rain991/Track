@@ -38,7 +38,7 @@ class ChartsRepositoryImpl(
     override suspend fun requestCurrentMonthIncomesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return withContext(context) {
-           val monthIncomes =  incomeDao.getIncomesInTimeSpanDateDecs(
+           val monthIncomes =  incomeDao.getIncomesInTimeSpanDateDesc(
                 start = getStartOfMonthDate(todayDate).time,
                 end = getEndOfMonthDate(todayDate).time
             ).first()
@@ -61,7 +61,7 @@ class ChartsRepositoryImpl(
     override suspend fun requestCurrentYearIncomesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
         val todayDate = convertLocalDateToDate(LocalDate.now())
         return withContext(context) {
-            val yearIncomes = incomeDao.getIncomesInTimeSpanDateDecs(
+            val yearIncomes = incomeDao.getIncomesInTimeSpanDateDesc(
                 start = getStartOfYearDate(todayDate).time,
                 end = getEndOfYearDate(todayDate).time
             ).first()

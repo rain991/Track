@@ -35,10 +35,8 @@ fun SettingsTrackScreen(navHostController: NavHostController) {
                 .padding(it)
         ) {
             SettingsScreenComponent(
-                paddingValues = it,
                 navHostController = navHostController,
-                isPageNameVisible = isPageNameVisible.value,
-                settingsData = settingsData
+                isPageNameVisible = isPageNameVisible.value
             )
         }
     }

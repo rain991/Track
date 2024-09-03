@@ -32,13 +32,12 @@ class ExpensesCoreRepositoryImpl(
                 foundedExpenseItems.filter { it.currencyTicker == preferableCurrency.ticker }
             val listOfExpensesNotInPreferableCurrency =
                 foundedExpenseItems.filter { it.currencyTicker != preferableCurrency.ticker }
-            listOfExpensesInPreferableCurrency.forEach { it -> sumOfExpensesInPreferableCurrency += it.value }
-            listOfExpensesNotInPreferableCurrency.forEach { it ->
+            listOfExpensesInPreferableCurrency.forEach { sumOfExpensesInPreferableCurrency += it.value }
+            listOfExpensesNotInPreferableCurrency.forEach {
                 val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
                 if (convertedValue != INCORRECT_CONVERSION_RESULT) {
                     sumOfExpensesInPreferableCurrency += convertedValue
                 }
-                // could be broadcast for insufficient currencies rates
             }
             send(sumOfExpensesInPreferableCurrency)
         }
@@ -112,5 +111,4 @@ class ExpensesCoreRepositoryImpl(
             }
         }
     }
-
 }

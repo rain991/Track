@@ -16,10 +16,10 @@ sealed class Notion(val name: String) {
          val message = "$count incomes in selected time span"
      }
 
-     class RequestCountOfExpensesEntitiesMontly(val count: Int, val month : String) : Notion("RequestCountOfExpensesEntitiesMontly"){
+     class RequestCountOfExpensesEntitiesMonthly(val count: Int, val month : String) : Notion("RequestCountOfExpensesEntitiesMonthly"){
          val message = "$month expenses: $count "
      }
-     class RequestCountOfIncomesEntitiesMontly(val count: Int, val month : String) : Notion("RequestCountOfIncomesEntitiesMontly"){
+     class RequestCountOfIncomesEntitiesMonthly(val count: Int, val month : String) : Notion("RequestCountOfIncomesEntitiesMonthly"){
          val message = "$month incomes: $count "
      }
 
@@ -30,10 +30,10 @@ sealed class Notion(val name: String) {
          val message = "Incomes this week: $count"
      }
 
-    class RequestCountOfExpensesEntitiesAnually(val count: Int) : Notion("RequestCountOfExpensesEntitiesAnually"){
+    class RequestCountOfExpensesEntitiesAnnually(val count: Int) : Notion("RequestCountOfExpensesEntitiesAnnually"){
         val message = "Expenses this year: $count"
     }
-    class RequestCountOfIncomesEntitiesAnually(val count: Int) : Notion("RequestCountOfIncomesEntitiesAnually"){
+    class RequestCountOfIncomesEntitiesAnnually(val count: Int) : Notion("RequestCountOfIncomesEntitiesAnnually"){
         val message = "Incomes this year: $count"
     }
 

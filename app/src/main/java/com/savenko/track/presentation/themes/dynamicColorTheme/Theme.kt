@@ -15,6 +15,10 @@ import androidx.core.view.WindowCompat
 import com.savenko.track.data.other.constants.DEFAULT_DARK_COLOR_SCHEME
 import com.savenko.track.data.other.constants.DEFAULT_LIGHT_COLOR_SCHEME
 
+
+/**
+ * TrackerTheme is used as Dynamic Colors theme
+ */
 @Composable
 fun TrackerTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),

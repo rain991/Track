@@ -5,7 +5,7 @@ import com.savenko.track.domain.repository.expenses.ExpensesListRepository
 import kotlinx.coroutines.flow.Flow
 
 class GetUserExpensesUseCase(private val expensesListRepositoryImpl: ExpensesListRepository) {
-    operator fun invoke(): Flow<List<ExpenseItem>> {
+    fun getUserExpensesDateDesc(): Flow<List<ExpenseItem>> {
         return expensesListRepositoryImpl.getSortedExpensesListDateDesc()
     }
 }

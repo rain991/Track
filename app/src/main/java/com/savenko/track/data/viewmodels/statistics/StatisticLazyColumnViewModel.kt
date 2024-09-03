@@ -44,7 +44,7 @@ class StatisticLazyColumnViewModel(
             launch {
                 when (financialEntities) {
                     is FinancialEntities.IncomeFinancialEntity -> {
-                        getDesiredIncomesUseCase(timePeriod).collect {
+                        getDesiredIncomesUseCase(timePeriod.lower.time, timePeriod.upper.time).collect {
                             _listOfFilteredFinancialEntities.clear()
                             _listOfFilteredFinancialEntities.addAll(it)
                         }
@@ -59,7 +59,10 @@ class StatisticLazyColumnViewModel(
                     }
 
                     is FinancialEntities.Both -> {
-                        getDesiredFinancialEntitiesUseCase(timePeriod).collect { listOfFinancialEntities ->
+                        getDesiredFinancialEntitiesUseCase(
+                            timePeriod.lower.time,
+                            timePeriod.upper.time
+                        ).collect { listOfFinancialEntities ->
                             _listOfFilteredFinancialEntities.clear()
                             _listOfFilteredFinancialEntities.addAll(listOfFinancialEntities.sortedByDescending { it.date.time })
                         }

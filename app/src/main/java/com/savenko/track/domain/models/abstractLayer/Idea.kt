@@ -15,28 +15,14 @@ abstract class Idea {
 
 fun Idea.createCompletedInstance(): Idea {
     return when (this) {
-        is ExpenseLimits -> ExpenseLimits(
-            id = this.id,
-            goal = this.goal,
-            completed = true,
-            startDate = this.startDate,
-            endDate = this.endDate,
-            isEachMonth = this.isEachMonth,
-            isRelatedToAllCategories = this.isRelatedToAllCategories,
-            firstRelatedCategoryId = this.firstRelatedCategoryId,
-            secondRelatedCategoryId = this.secondRelatedCategoryId,
-            thirdRelatedCategoryId = this.thirdRelatedCategoryId
-        )
-        is IncomePlans -> IncomePlans(id = this.id, completed = true, goal = this.goal, startDate = this.startDate, endDate = this.endDate)
-        is Savings -> Savings(
-            id = this.id,
-            completed = true,
-            goal = this.goal,
-            startDate = this.startDate,
-            endDate = this.endDate,
-            label = this.label,
-            value = this.value
-        )
+        is ExpenseLimits -> this.copy(completed = true)
+        is IncomePlans -> this.copy(completed = true)
+        is Savings -> if (this.value >= this.goal) {
+            this.copy(completed = true)
+        } else {
+            this
+        }
+
         else -> throw IllegalArgumentException("Unknown subclass of Idea")
     }
 }

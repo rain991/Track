@@ -7,10 +7,10 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 class GetDesiredExpensesUseCase(private val expensesListRepositoryImpl: ExpensesListRepository) {
-    suspend operator fun invoke(timePeriod: Range<Date>): Flow<List<ExpenseItem>> {
+    operator fun invoke(timePeriod: Range<Date>): Flow<List<ExpenseItem>> {
         return expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(
-            timePeriod.lower,
-            timePeriod.upper
+            timePeriod.lower.time,
+            timePeriod.upper.time
         )
     }
 }

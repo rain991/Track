@@ -5,7 +5,6 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.models.incomes.IncomeItem
 import com.savenko.track.domain.repository.incomes.IncomeListRepository
 import kotlinx.coroutines.flow.Flow
-import java.util.Date
 
 class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomeListRepository {
     override fun getIncomesList(): Flow<List<IncomeItem>> {
@@ -21,21 +20,18 @@ class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomeListRep
     }
 
     override suspend fun getIncomesByCategoryInTimeSpan(
-        startOfSpan: Date,
-        endOfSpan: Date,
+        startOfSpan: Long,
+        endOfSpan: Long,
         category: IncomeCategory
     ): Flow<List<IncomeItem>> {
         return incomeDao.findIncomesInTimeSpanByCategoriesIds(
-            start = startOfSpan.time,
-            end = endOfSpan.time,
+            start = startOfSpan,
+            end = endOfSpan,
             categoriesIds = listOf(category.categoryId)
         )
     }
 
-    override suspend fun getIncomesInTimeSpanDateDesc(
-        startOfSpan: Date,
-        endOfSpan: Date
-    ): Flow<List<IncomeItem>> {
-        return incomeDao.getIncomesInTimeSpanDateDecs(start = startOfSpan.time, end = endOfSpan.time)
+    override suspend fun getIncomesInTimeSpanDateDesc(startOfSpan: Long, endOfSpan: Long): Flow<List<IncomeItem>> {
+        return incomeDao.getIncomesInTimeSpanDateDesc(start = startOfSpan, end = endOfSpan)
     }
 }

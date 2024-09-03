@@ -5,6 +5,13 @@ plugins {
 }
 
 android {
+    testOptions {
+        unitTests {
+            isIncludeAndroidResources = true
+            isReturnDefaultValues = true
+        }
+        animationsDisabled = true
+    }
     android.buildFeatures.buildConfig = true
     namespace = "com.savenko.track"
     compileSdk = 34
@@ -13,8 +20,8 @@ android {
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 34
-        versionCode = 32
-        versionName = "1.6.0"
+        versionCode = 31
+        versionName = "1.6.1"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
@@ -51,6 +58,8 @@ android {
 
 
 dependencies {
+    implementation("androidx.test:core-ktx:1.6.1")
+    implementation("androidx.test.ext:junit-ktx:1.2.1")
     val workVersion = "2.9.1"
     val koinVersion = "3.5.3"
     val retrofitVersion = "2.9.0"
@@ -81,24 +90,27 @@ dependencies {
     //compose
     implementation("androidx.navigation:navigation-compose:2.7.7")
     implementation("androidx.activity:activity-compose:1.9.0")
-    implementation(platform("androidx.compose:compose-bom:2024.06.00"))
+    implementation(platform("androidx.compose:compose-bom:2024.08.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.2.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.06.00"))
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.08.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit4")
     debugImplementation("androidx.compose.ui:ui-tooling:1.6.8")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation ("androidx.core:core-splashscreen:1.0.1")
+    implementation("androidx.core:core-splashscreen:1.0.1")
 
-    //junit
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.10.2")
-    testRuntimeOnly("org.junit.platform:junit-platform-launcher")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.10.2")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
-    androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    //junit\
+    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    implementation("junit:junit:4.13.2")
+    testImplementation("junit:junit:4.13.2")
+    testImplementation("org.robolectric:robolectric:4.13")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0-RC.2")
+    testImplementation("org.mockito.kotlin:mockito-kotlin:5.4.0")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testCompileOnly("io.insert-koin:koin-test:$koinVersion")
+    testCompileOnly("io.insert-koin:koin-test-junit4:$koinVersion")
 
     //other
     implementation("androidx.work:work-runtime-ktx:$workVersion")

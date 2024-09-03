@@ -28,7 +28,7 @@ fun NewIdeaFeedCard(newIdeaDialogViewModel: NewIdeaDialogViewModel) {
                 newIdeaDialogViewModel.setIsNewIdeaDialogVisible(true)
             }
             .height(140.dp)
-            .padding(horizontal = 8.dp), shape = RoundedCornerShape(8.dp)
+            .padding(horizontal = 8.dp), shape = RoundedCornerShape(16.dp)
     ) {
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
             TextButton(onClick = { newIdeaDialogViewModel.setIsNewIdeaDialogVisible(true)}) {

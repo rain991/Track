@@ -4,7 +4,7 @@ import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
-import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE
+import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISAPPEARANCE
 import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
@@ -55,13 +55,13 @@ class FinancialsLazyColumnViewModel(
 
     init {
         viewModelScope.launch {
-            getUserExpensesUseCase().collect { listOfExpenses ->
+            getUserExpensesUseCase.getUserExpensesDateDesc().collect { listOfExpenses ->
                 _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expensesList = listOfExpenses) }
                 initializeExpenseListFinancialNotions(listOfExpenses)
             }
         }
         viewModelScope.launch {
-            getUserIncomesUseCase().collect { listOfIncomes ->
+            getUserIncomesUseCase.getUserIncomesDateDesc().collect { listOfIncomes ->
                 _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomeList = listOfIncomes) }
                 initializeIncomeListFinancialNotions(listOfIncomes)
             }
@@ -96,9 +96,9 @@ class FinancialsLazyColumnViewModel(
 
     fun setScrolledBelow(firstVisibleIndex: Int) {
         if (_financialLazyColumnState.value.isExpenseLazyColumn) {
-            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.expensesList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE) }
+            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.expensesList.size > FIRST_VISIBLE_INDEX_FEED_DISAPPEARANCE) }
         } else {
-            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.incomeList.size > FIRST_VISIBLE_INDEX_FEED_DISSAPEARANCE) }
+            _financialLazyColumnState.update { _financialLazyColumnState.value.copy(isScrolledBelow = firstVisibleIndex != 0 && _financialLazyColumnState.value.incomeList.size > FIRST_VISIBLE_INDEX_FEED_DISAPPEARANCE) }
         }
     }
 
@@ -111,22 +111,24 @@ class FinancialsLazyColumnViewModel(
     }
 
     private suspend fun initializeExpenseListFinancialNotions(listOfExpenses: List<ExpenseItem>) {
-        val map = listOfExpenses.associate {expenseItem ->
+        val map = listOfExpenses.associate { expenseItem ->
             expenseItem.id to getPeriodSummaryUseCase.getPeriodSummaryById(
-                dateRange = Range(
-                    getStartOfMonthDate(expenseItem.date), getEndOfMonthDate(expenseItem.date)
-                ), financialTypes = FinancialTypes.Expense, categoryID = expenseItem.categoryId
+                periodStartMillis = getStartOfMonthDate(expenseItem.date).time,
+                periodEndMillis = getEndOfMonthDate(expenseItem.date).time,
+                financialTypes = FinancialTypes.Expense,
+                categoryID = expenseItem.categoryId
             ).first()
         }
         _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expensesFinancialSummary = map) }
     }
 
     private suspend fun initializeIncomeListFinancialNotions(listOfIncomes: List<IncomeItem>) {
-        val map = listOfIncomes.associate {incomeItem ->
+        val map = listOfIncomes.associate { incomeItem ->
             incomeItem.id to getPeriodSummaryUseCase.getPeriodSummaryById(
-                dateRange = Range(
-                    getStartOfMonthDate(incomeItem.date), getEndOfMonthDate(incomeItem.date)
-                ), financialTypes = FinancialTypes.Income, categoryID = incomeItem.categoryId
+                periodStartMillis = getStartOfMonthDate(incomeItem.date).time,
+                periodEndMillis = getEndOfMonthDate(incomeItem.date).time,
+                financialTypes = FinancialTypes.Income,
+                categoryID = incomeItem.categoryId
             ).first()
         }
         _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomesFinancialSummary = map) }
@@ -135,11 +137,17 @@ class FinancialsLazyColumnViewModel(
     suspend fun requestMonthSummary(monthDate: Date): FinancialCardNotion {
         val dateRange = Range(getStartOfMonthDate(monthDate), getEndOfMonthDate(monthDate))
         return if (_financialLazyColumnState.value.isExpenseLazyColumn) {
-            getPeriodSummaryUseCase.getPeriodSummary(dateRange = dateRange, financialTypes = FinancialTypes.Expense)
-                .first()
+            getPeriodSummaryUseCase.getPeriodSummary(
+                periodStartMillis = dateRange.lower.time,
+                periodEndMillis = dateRange.upper.time,
+                financialTypes = FinancialTypes.Expense
+            ).first()
         } else {
-            getPeriodSummaryUseCase.getPeriodSummary(dateRange = dateRange, financialTypes = FinancialTypes.Income)
-                .first()
+            getPeriodSummaryUseCase.getPeriodSummary(
+                periodStartMillis = dateRange.lower.time,
+                periodEndMillis = dateRange.upper.time,
+                financialTypes = FinancialTypes.Income
+            ).first()
         }
     }
 }

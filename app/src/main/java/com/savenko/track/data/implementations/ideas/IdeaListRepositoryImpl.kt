@@ -46,7 +46,7 @@ class IdeaListRepositoryImpl(
         }
     }
 
-    override suspend fun getCompletionValue(idea: Idea): Flow<Float> = channelFlow {
+    override suspend fun getIdeaCompletedValue(idea: Idea): Flow<Float> = channelFlow {
         val currentTimeMillis = System.currentTimeMillis()
         withContext(Dispatchers.IO) {
             when (idea) {

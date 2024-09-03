@@ -19,7 +19,7 @@ class IncomeCoreRepositoryImpl(
     // Sum of incomes
     override suspend fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
-        incomeDao.getIncomesInTimeSpanDateDecs(
+        incomeDao.getIncomesInTimeSpanDateDesc(
             start = startOfSpan.time,
             end = endOfSpan.time
         ).collect { foundedIncomeItems ->

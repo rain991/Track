@@ -7,7 +7,7 @@ import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.models.abstractLayer.createCompletedInstance
 import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaItemRepository
 import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
-import com.savenko.track.domain.usecases.userData.ideas.specified.GetUnfinishedIdeasUseCase
+import com.savenko.track.domain.usecases.userData.ideas.GetUnfinishedIdeasUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -50,8 +50,7 @@ class TrackScreenFeedViewModel(
                 }
             }
         }
-
-        _ideaList.removeAll(ideasToUpdate)
+        _ideaList.removeAll(ideasToUpdate.toSet())
         ideasToUpdate.forEach { idea ->
             ideaItemRepositoryImpl.updateIdea(idea.createCompletedInstance())
         }
@@ -59,12 +58,12 @@ class TrackScreenFeedViewModel(
 
 
     suspend fun getCompletionValue(idea: Idea): StateFlow<Float> {
-        return ideaListRepositoryImpl.getCompletionValue(idea)
+        return ideaListRepositoryImpl.getIdeaCompletedValue(idea)
             .stateIn(viewModelScope, SharingStarted.Eagerly, initialValue = 0.0f)
     }
 
     private suspend fun getIdeaCompletionValue(idea: Idea): Float {
-        return ideaListRepositoryImpl.getCompletionValue(idea).first()
+        return ideaListRepositoryImpl.getIdeaCompletedValue(idea).first()
     }
 
     fun incrementCardIndex() {

@@ -33,6 +33,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,6 +53,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.savenko.track.R
+import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE
@@ -57,14 +63,16 @@ import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.colors.parseColor
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import org.koin.compose.koinInject
 import java.util.Calendar
 import java.util.Locale
 
-/*  FinancialItemCardTypeSimple used in expenses screen for single expense or income entity in lazy column
-    Also contains ExpenseValueCard(rectangle on right with values and currency), CategoryCard(colored category name), NoteCard(contains notion)  */
+/**
+ *  FinancialItemCardTypeSimple used in expenses screen for single expense or income entity in lazy column
+ *  Also contains ExpenseValueCard(rectangle on right with values and currency), CategoryCard(colored category name), NoteCard(contains notion)
+ */
 @Composable
 fun FinancialItemCardTypeSimple(
     financialEntity: FinancialEntity,
@@ -72,7 +80,6 @@ fun FinancialItemCardTypeSimple(
     expanded: Boolean,
     financialEntityMonthSummary: Float,
     countOfFinancialEntities: Int,
-    currenciesList: List<Currency>,
     preferableCurrency: Currency,
     onClick: () -> Unit,
     onDeleteFinancial: (FinancialEntity) -> Unit
@@ -302,7 +309,6 @@ fun FinancialItemCardTypeSimple(
                 }
                 ExpenseValueCard(
                     financialEntity = financialEntity,
-                    listOfCurrencies = currenciesList,
                     currentCurrencyName = financialEntity.currencyTicker,
                     isExpanded = expanded
                 )
@@ -311,16 +317,21 @@ fun FinancialItemCardTypeSimple(
     }
 }
 
+
 @Composable
 private fun ExpenseValueCard(
     financialEntity: FinancialEntity,
-    listOfCurrencies: List<Currency>,
     currentCurrencyName: String,
     isExpanded: Boolean
 ) {
-    val currentCurrency =
-        listOfCurrencies.firstOrNull { it.ticker == financialEntity.currencyTicker }
-    val currencyType = currentCurrency?.type
+    val currenciesRatesHandler = koinInject<CurrenciesRatesHandler>()
+    var currencyType by remember {
+        mutableStateOf(CurrencyTypes.FIAT)
+    }
+    LaunchedEffect(key1 = Unit) {
+        currencyType =
+            currenciesRatesHandler.getCurrencyByTicker(financialEntity.currencyTicker)?.type ?: CurrencyTypes.OTHER
+    }
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 22.dp, focusedElevation = 14.dp),
         modifier = Modifier.padding(4.dp)
@@ -337,7 +348,7 @@ private fun ExpenseValueCard(
                     FIAT_DECIMAL_FORMAT.format(financialEntity.value)
                 } else {
                     CRYPTO_DECIMAL_FORMAT.format(financialEntity.value)
-                }, style = MaterialTheme.typography.bodyLarge.copy( fontSize = 24.sp)
+                }, style = MaterialTheme.typography.bodyLarge.copy(fontSize = 24.sp)
             )
             Text(text = currentCurrencyName, style = MaterialTheme.typography.bodyMedium)
         }
@@ -376,7 +387,7 @@ private fun CategoryCard(modifier: Modifier, category: CategoryEntity, container
 }
 
 @Composable
-private fun NoteCard(expenseItem: FinancialEntity, cardColor : Color) {
+private fun NoteCard(expenseItem: FinancialEntity, cardColor: Color) {
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 16.dp),
         modifier = Modifier.wrapContentSize(),
@@ -390,10 +401,12 @@ private fun NoteCard(expenseItem: FinancialEntity, cardColor : Color) {
     ) {
         Box(modifier = Modifier.padding(vertical = 4.dp, horizontal = 4.dp)) {
             Text(
-                text = if (expenseItem.note.length < FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE) stringResource(
-                    R.string.note_exp_list,
-                    expenseItem.note
-                ) else expenseItem.note,
+                text = if (expenseItem.note.length < FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE) {
+                    stringResource(
+                        R.string.note_exp_list,
+                        expenseItem.note
+                    )
+                } else expenseItem.note.removeRange(FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE, expenseItem.note.length),
                 style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
             )
         }

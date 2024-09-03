@@ -50,7 +50,7 @@ import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCIES_FILTER_MAX_LENGTH
 import com.savenko.track.domain.models.currency.Currency
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.screens.states.additional.settings.currenciesSettings.CurrenciesSettingsScreenEvent
 import org.koin.compose.koinInject
 

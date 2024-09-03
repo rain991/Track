@@ -9,8 +9,8 @@ import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.matchesSearchQuery
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.currencies.CurrencyListRepository
-import com.savenko.track.domain.usecases.userData.other.ChangePreferableCurrencyUseCase
-import com.savenko.track.presentation.UiText.DatabaseStringResourcesProvider
+import com.savenko.track.domain.usecases.userData.other.ChangeCurrenciesPreferenceUseCase
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.composableTypes.currencies.CurrenciesPreferenceUI
 import com.savenko.track.presentation.other.composableTypes.errors.CurrenciesSettingsScreenErrors
 import com.savenko.track.presentation.screens.states.additional.settings.currenciesSettings.CurrenciesSettingsScreenEvent
@@ -24,7 +24,7 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 class CurrenciesSettingsViewModel(
-    private val changePreferableCurrencyUseCase: ChangePreferableCurrencyUseCase,
+    private val changeCurrenciesPreferenceUseCase: ChangeCurrenciesPreferenceUseCase,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val currencyListRepositoryImpl: CurrencyListRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler,
@@ -90,13 +90,11 @@ class CurrenciesSettingsViewModel(
                                 fourthAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
                                     currenciesPreference.fourthAdditionalCurrency
                                 )
-
                             )
                         )
                     }
                 }
             }
-
         }
     }
 
@@ -226,7 +224,7 @@ class CurrenciesSettingsViewModel(
 
     private suspend fun setPreferableCurrency(targetCurrency: Currency) {
         val currenciesPreferencesUI = _selectedCurrenciesSettingsState.value.currenciesPreferenceUI
-        val isChangingSuccess = changePreferableCurrencyUseCase(
+        val isChangingSuccess = changeCurrenciesPreferenceUseCase.invoke(
             targetCurrency = targetCurrency,
             currentPreferableCurrency = currenciesPreferencesUI.preferableCurrency,
             firstAdditionalCurrency = currenciesPreferencesUI.firstAdditionalCurrency,

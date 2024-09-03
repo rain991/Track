@@ -93,13 +93,13 @@ fun TrackScreenInfoCards(
                         if (expenseCardBorderWidth > 0) Modifier.border(
                             width = expenseCardBorderWidth.dp,
                             borderBrush,
-                            RoundedCornerShape(8.dp)
+                            RoundedCornerShape(16.dp)
                         ) else Modifier
                     )
                     .clickable {
                         onExpenseCardClick()
                     },
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
                     modifier = Modifier
@@ -186,13 +186,13 @@ fun TrackScreenInfoCards(
                         if (incomeCardBorderWidth > 0.0f) Modifier.border(
                             width = incomeCardBorderWidth.dp,
                             borderBrush,
-                            RoundedCornerShape(8.dp)
+                            RoundedCornerShape(16.dp)
                         ) else Modifier
                     )
                     .clickable {
                         onIncomeCardClick()
                     },
-                shape = RoundedCornerShape(8.dp)
+                shape = RoundedCornerShape(16.dp)
             ) {
                 Column(
                     modifier = Modifier
