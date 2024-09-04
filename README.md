@@ -1,6 +1,6 @@
 
 # Track: Your Ultimate Financial Tracker
-![trackNewHeader2](https://github.com/user-attachments/assets/b5895405-ad27-4fc0-9d27-0eadd9473b72)
+![track_new_header](https://github.com/user-attachments/assets/a3abf061-6494-43af-9f2e-27dfc1ba19a4)
 ## Introduction
 
 
@@ -33,9 +33,9 @@
    - Make plans of future incomes using **Income Plans**
 
  **Multi-Currency Support**
-   - Supports multiple currencies including 40+ fiat and 15+ crypto currencies available
-   - Seamlessly track and convert expenses and income in different currencies
-   - Add up to 5 currencies and use them across Track 
+   - Track supports most popular currencies including 40+ fiat and 15+ cryptocurrencies
+   - Seamlessly track and convert finances in different currencies
+   - Add up to 5 preferable currencies and use them across Track 
 
  **Secure and Private**
    - Track prioritizes security and privacy
@@ -49,7 +49,7 @@
 
 ## Get Started with Track
 
-- Android : Track is available in Play Market Store -  [Link](https://play.google.com/store/apps/details?id=com.savenko.track)
+- Android : Track is available in Play Market Store - [Store Page](https://play.google.com/store/apps/details?id=com.savenko.track)
 - IOS : Track has long term plans to be available on Apple devices
 ## Used Technologies
 - Kotlin
