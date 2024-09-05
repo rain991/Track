@@ -241,5 +241,6 @@
     <string name="average_income_stats_info_cards">Durchschnittseinkommen :</string>
     <string name="average_expenses_stats_info_cards">Durchschnittliche Ausgaben pro Tag :</string>
     <string name="period_summary_statistics_info_cards">Zusammenfassung des Zeitraums</string>
+    <string name="describe_your_financial_bottom_sheet">Beschreiben Sie Ihre finanziellen</string>
 
 </resources>

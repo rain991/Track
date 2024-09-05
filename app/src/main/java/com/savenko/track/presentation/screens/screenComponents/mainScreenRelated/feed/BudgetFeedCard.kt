@@ -1,6 +1,5 @@
 package com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.feed
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -158,9 +157,7 @@ fun BudgetFeedCard() {
                 ) {
                     val circleHeight= 80f
                     CustomCircularProgressIndicator(
-                        modifier = Modifier
-                            .size(circleHeight.times(1.1f).dp)
-                            .background(MaterialTheme.colorScheme.surfaceVariant),
+                        modifier = Modifier.size(circleHeight.times(1.1f).dp),
                         initialValue = (state.value.budgetExpectancy * 100).toInt(),
                         primaryColor = MaterialTheme.colorScheme.primary,
                         secondaryColor = MaterialTheme.colorScheme.secondary

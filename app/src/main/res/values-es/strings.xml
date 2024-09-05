@@ -242,5 +242,6 @@
     <string name="average_income_stats_info_cards">Ingreso promedio :</string>
     <string name="average_expenses_stats_info_cards">Gastos promedio por día :</string>
     <string name="period_summary_statistics_info_cards">Resumen del período :</string>
+    <string name="describe_your_financial_bottom_sheet">Describa su situación financiera</string>
 
 </resources>

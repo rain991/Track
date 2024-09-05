@@ -20,7 +20,7 @@ import com.savenko.track.data.other.constants.FINANCIAL_NOTE_MAX_LENGTH
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetNoteInput(modifier: Modifier, note: String, onNoteChange: (String) -> Unit) {
-    Column(modifier = Modifier) {
+    Column(modifier = modifier) {
         Text(
             text = stringResource(R.string.your_note_adding_exp),
             style = MaterialTheme.typography.titleLarge,
@@ -32,14 +32,15 @@ fun BottomSheetNoteInput(modifier: Modifier, note: String, onNoteChange: (String
             onValueChange = { if (it.length < FINANCIAL_NOTE_MAX_LENGTH) onNoteChange(it) },
             placeholder = {
                 Text(
-                    text = "Describe your financial",
+                    text = stringResource(R.string.describe_your_financial_bottom_sheet),
                     color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.8f)
                 )
             },
-            colors = TextFieldDefaults.textFieldColors(
+            colors = TextFieldDefaults.colors(
                 focusedIndicatorColor = Color.Transparent,
                 unfocusedIndicatorColor = Color.Transparent,
-                containerColor = Color.Transparent
+                focusedContainerColor = Color.Transparent,
+                unfocusedContainerColor = Color.Transparent
             )
         )
     }

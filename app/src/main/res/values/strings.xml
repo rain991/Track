@@ -244,4 +244,5 @@
     <string name="average_expenses_stats_info_cards">Average expenses per day :</string>
     <string name="period_summary_statistics_info_cards">Period summary</string>
     <string name="currencies_settings_screen">Currency</string>
+    <string name="describe_your_financial_bottom_sheet">Describe your financial</string>
 </resources>

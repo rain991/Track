@@ -205,4 +205,5 @@
     <string name="average_income_stats_info_cards">Середній дохід</string>
     <string name="average_expenses_stats_info_cards">Середні денні витрати</string>
     <string name="period_summary_statistics_info_cards">Підсумок періоду</string>
+    <string name="describe_your_financial_bottom_sheet">Опишіть свої фінансові</string>
 </resources>

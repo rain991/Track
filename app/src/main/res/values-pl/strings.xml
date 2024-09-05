@@ -205,4 +205,5 @@
     <string name="average_income_stats_info_cards">Średni dochód :</string>
     <string name="average_expenses_stats_info_cards">Średnie wydatki dziennie :</string>
     <string name="period_summary_statistics_info_cards">Podsumowanie okresu</string>
+    <string name="describe_your_financial_bottom_sheet">Opisz operacje</string>
 </resources>

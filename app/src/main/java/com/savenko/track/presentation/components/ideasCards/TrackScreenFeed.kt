@@ -87,7 +87,7 @@ fun TrackScreenFeed() {
             .fillMaxWidth()
             .height(140.dp),
         state = pagerState,
-        beyondBoundsPageCount = 1,
+        beyondViewportPageCount = 1,
         contentPadding = PaddingValues(horizontal = 2.dp)
     ) { index ->
         when (index) {
