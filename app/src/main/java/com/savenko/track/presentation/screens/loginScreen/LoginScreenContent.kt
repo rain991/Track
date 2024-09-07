@@ -200,7 +200,7 @@ fun LoginScreenContent(loginScreenViewModel: LoginScreenViewModel, navController
                 }
             }
             ThemeSelectorRow(preferableTheme = preferableTheme) { newTheme ->
-                coroutineScope.launch {
+                coroutineScope.launch() {
                     themePreferenceViewModel.setPreferableTheme(newTheme)
                 }
             }

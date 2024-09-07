@@ -7,6 +7,7 @@ import androidx.compose.runtime.collectAsState
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import com.savenko.track.data.core.WorkManagerHelper
 import com.savenko.track.data.other.constants.PREFERABLE_THEME_DEFAULT
+import com.savenko.track.data.other.constants.UNINITIALIZED_LOGIN_COUNT_STATE
 import com.savenko.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
@@ -26,14 +27,15 @@ class TrackActivity : ComponentActivity() {
         workManagerHelper.setupPeriodicRequest()
         workManagerHelper.checkAndUpdateCurrencyRates()
         setContent {
-            val loginCountState = trackScreenManagerViewModel.loginCountValue.collectAsState(initial = -1)
+            val loginCountState =
+                trackScreenManagerViewModel.loginCountValue.collectAsState(initial = UNINITIALIZED_LOGIN_COUNT_STATE)
             splashScreen.setKeepOnScreenCondition {
-                loginCountState.value == -1
+                loginCountState.value == UNINITIALIZED_LOGIN_COUNT_STATE
             }
             val useSystemTheme = dataStoreManager.useSystemTheme.collectAsState(initial = USE_SYSTEM_THEME_DEFAULT)
             val preferableTheme =
                 dataStoreManager.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT.name)
-            if (loginCountState.value != -1) {
+            if (loginCountState.value != UNINITIALIZED_LOGIN_COUNT_STATE) {
                 ThemeManager(
                     isUsingDynamicColors = useSystemTheme.value,
                     preferableTheme = getThemeByName(preferableTheme.value)
