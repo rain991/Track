@@ -19,6 +19,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.launch
 import java.util.concurrent.TimeUnit
 
+/**
+ * Helps handling workers used in Track.
+ */
 class WorkManagerHelper(private val context: Context, private val currencyListRepository: CurrencyListRepository) {
     companion object {
         val networkConnectedWorkerConstraints = Constraints.Builder()
@@ -26,6 +29,9 @@ class WorkManagerHelper(private val context: Context, private val currencyListRe
             .build()
     }
 
+    /**
+     * Starts unique periodic work request of currencies rates
+     */
     fun setupPeriodicRequest() {
         val periodicRatesRequest = PeriodicWorkRequestBuilder<CurrenciesRatesWorker>(
             repeatInterval = CURRENCIES_RATES_REQUEST_PERIOD,
@@ -39,6 +45,9 @@ class WorkManagerHelper(private val context: Context, private val currencyListRe
         )
     }
 
+    /**
+     * Checks if currencies rates are fulfilled correctly, if not - makes one time request to get currency rates
+     */
     fun checkAndUpdateCurrencyRates() {
         CoroutineScope(Dispatchers.IO).launch {
             val currencyList = currencyListRepository.getCurrencyList().first()
