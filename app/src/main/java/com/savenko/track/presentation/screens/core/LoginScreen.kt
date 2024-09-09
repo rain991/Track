@@ -25,7 +25,9 @@ import com.savenko.track.presentation.screens.loginScreen.LoginScreenContent
 import com.savenko.track.presentation.screens.loginScreen.LoginScreenHeader
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * LoginScreen contains [LoginScreenHeader] and [LoginScreenContent]
+ */
 @Composable
 fun LoginScreen(navController: NavController) {
     val localContext = LocalContext.current

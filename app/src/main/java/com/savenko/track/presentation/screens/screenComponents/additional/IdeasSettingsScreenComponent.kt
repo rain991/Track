@@ -62,7 +62,7 @@ fun IdeasSettingsScreenComponent(
     val listState = rememberLazyListState()
     val screenState = ideasSettingsScreenViewModel.screenState.collectAsState()
     val addToSavingIdeaDialogSavings = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
-    val listOfAllIdeas = ideasSettingsScreenViewModel.listOfAllIdeas
+    val listOfFilteredIdeas = screenState.value.listOfSelectedIdeas
     val preferableCurrency = screenState.value.preferableCurrency
     val sortingButtonText = remember {
         derivedStateOf {
@@ -77,157 +77,159 @@ fun IdeasSettingsScreenComponent(
     if (addToSavingIdeaDialogSavings.value != null) {
         AddToSavingDialog(addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel)
     }
-    if (listOfAllIdeas.isEmpty()) {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-            Text(text = stringResource(R.string.warning_message_idea_settings_screen))
-        }
-    } else {
-        Column(
+
+    Column(
+        modifier = Modifier
+            .fillMaxSize()
+            .padding(top = 16.dp)
+    ) {
+        Card(
             modifier = Modifier
-                .fillMaxSize()
-                .padding(top = 16.dp)
-        ) {
-            Card(modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 8.dp)) {
-                Column(modifier = Modifier.padding(8.dp)) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                            .wrapContentHeight(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = stringResource(R.string.show_completed_ideas_idea_settings_screen))
-                        Switch(
-                            checked = screenState.value.isShowingCompletedIdeas,
-                            onCheckedChange = {
-                                coroutineScope.launch {
-                                    ideasSettingsScreenViewModel.setIsShowingCompletedIdeas(it)
-                                }
-                            })
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = 8.dp)
-                            .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        Text(text = stringResource(R.string.sorted_date_idea_settings_screen))
-                        Spacer(modifier = Modifier.width(8.dp))
-                        Card(elevation = CardDefaults.cardElevation(
+                .padding(horizontal = 8.dp)
+        ) {
+            Column(modifier = Modifier.padding(8.dp)) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                        .wrapContentHeight(),
+                    horizontalArrangement = Arrangement.SpaceBetween,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = stringResource(R.string.show_completed_ideas_idea_settings_screen))
+                    Switch(
+                        checked = screenState.value.isShowingCompletedIdeas,
+                        onCheckedChange = {
+                            coroutineScope.launch {
+                                ideasSettingsScreenViewModel.setIsShowingCompletedIdeas(it)
+                            }
+                        })
+                }
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = 8.dp)
+                        .wrapContentHeight(), verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Text(text = stringResource(R.string.sorted_date_idea_settings_screen))
+                    Spacer(modifier = Modifier.width(8.dp))
+                    Card(
+                        elevation = CardDefaults.cardElevation(
                             defaultElevation = 12.dp,
                             focusedElevation = 12.dp
-                        )) {
-                            TextButton(
-                                onClick = { ideasSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) },
-                                modifier = Modifier.align(Alignment.CenterHorizontally)
-                            ) {
-                                AnimatedContent(targetState = sortingButtonText, label = "animatedButtonText") {
-                                    Text(
-                                        text = stringResource(id = it.value), style = MaterialTheme.typography.bodyMedium
-                                    )
-                                }
+                        )
+                    ) {
+                        TextButton(
+                            onClick = { ideasSettingsScreenViewModel.setIsSortedDateDescending(!screenState.value.isSortedDateDescending) },
+                            modifier = Modifier.align(Alignment.CenterHorizontally)
+                        ) {
+                            AnimatedContent(targetState = sortingButtonText, label = "animatedButtonText") {
+                                Text(
+                                    text = stringResource(id = it.value),
+                                    style = MaterialTheme.typography.bodyMedium
+                                )
                             }
                         }
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(16.dp))
-            Text(
-                text = stringResource(R.string.your_ideas_setting_screen),
-                style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
-                modifier = Modifier.padding(start = 8.dp)
-            )
-            Spacer(modifier = Modifier.height(8.dp))
-            LazyColumn(
-                state = listState, modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 4.dp)
+        }
+        Spacer(modifier = Modifier.height(16.dp))
+        Text(
+            text = stringResource(R.string.your_ideas_setting_screen),
+            style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.SemiBold),
+            modifier = Modifier.padding(start = 8.dp)
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        if (listOfFilteredIdeas.isEmpty()) {
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .fillMaxWidth(), contentAlignment = Alignment.Center
             ) {
-                val filteredIdeas = if (screenState.value.isShowingCompletedIdeas) {
-                    listOfAllIdeas
-                } else {
-                    listOfAllIdeas.filter { !it.completed }
-                }
-
-                val sortedIdeas = if (screenState.value.isSortedDateDescending) {
-                    filteredIdeas.sortedByDescending { it.startDate }
-                } else {
-                    filteredIdeas.sortedBy { it.startDate }
-                }
-                items(sortedIdeas.size) { index: Int ->
-                    val boxModifier = Modifier.padding(
-                        horizontal = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
-                            24.dp
-                        } else {
-                            0.dp
-                        }
-                    )
-                    when (val currentIdea = sortedIdeas[index]) {
-                        is Savings -> {
-                            Box(
-                                modifier = boxModifier
-                            ) {
-                                SavingsIdeaCard(
-                                    savings = currentIdea,
-                                    preferableCurrency = preferableCurrency,
-                                    addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
-                                )
-                            }
-                        }
-
-                        is ExpenseLimits -> {
-                            var completionValue by remember { mutableFloatStateOf(0.0f) }
-                            LaunchedEffect(key1 = Unit) {
-                                withContext(Dispatchers.IO){
-                                    ideasSettingsScreenViewModel.getIdeasCompletedValue(currentIdea).collect{
-                                        Log.d(TAG, "IdeasSettingsScreenComponent: exp completionValue = $it")
-                                        completionValue = it
-                                    }
-                                }
-                            }
-                            Box(
-                                modifier = boxModifier
-                            ) {
-                                ExpenseLimitIdeaCard(
-                                    expenseLimit = currentIdea,
-                                    completedValue = completionValue,
-                                    preferableCurrency = preferableCurrency
-                                )
-                            }
-
-                        }
-
-                        is IncomePlans -> {
-                            var completionValue by remember { mutableFloatStateOf(0.0f) }
-                            LaunchedEffect(key1 = Unit) {
-                                withContext(Dispatchers.IO){
-                                   ideasSettingsScreenViewModel.getIdeasCompletedValue(currentIdea).collect{
-                                       Log.d(TAG, "IdeasSettingsScreenComponent: inc completionValue = $it")
-                                       completionValue = it
-                                    }
-                                }
-                            }
-                            Box(
-                                modifier = boxModifier
-                            ) {
-                                IncomePlanIdeaCard(
-                                    incomePlans = currentIdea,
-                                    completionValue = completionValue,
-                                    preferableCurrency = preferableCurrency
-                                )
-                            }
+                Text(
+                    text = stringResource(R.string.warning_message_idea_settings_screen),
+                    style = MaterialTheme.typography.titleSmall
+                )
+            }
+        }
+        LazyColumn(
+            state = listState, modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 4.dp)
+        ) {
+            items(listOfFilteredIdeas.size) { index: Int ->
+                val boxModifier = Modifier.padding(
+                    horizontal = if (windowInfo.screenWidthInfo is WindowInfo.WindowType.Expanded) {
+                        24.dp
+                    } else {
+                        0.dp
+                    }
+                )
+                when (val currentIdea = listOfFilteredIdeas[index]) {
+                    is Savings -> {
+                        Box(
+                            modifier = boxModifier
+                        ) {
+                            SavingsIdeaCard(
+                                savings = currentIdea,
+                                preferableCurrency = preferableCurrency,
+                                addToSavingIdeaDialogViewModel = addToSavingIdeaDialogViewModel
+                            )
                         }
                     }
-                    Spacer(modifier = Modifier.height(12.dp))
-                    if (index == sortedIdeas.size - 1) {
-                        Spacer(modifier = Modifier.height(24.dp))
+
+                    is ExpenseLimits -> {
+                        var completionValue by remember { mutableFloatStateOf(0.0f) }
+                        LaunchedEffect(key1 = Unit) {
+                            withContext(Dispatchers.IO) {
+                                ideasSettingsScreenViewModel.getIdeasCompletedValue(currentIdea).collect {
+                                    Log.d(TAG, "IdeasSettingsScreenComponent: exp completionValue = $it")
+                                    completionValue = it
+                                }
+                            }
+                        }
+                        Box(
+                            modifier = boxModifier
+                        ) {
+                            ExpenseLimitIdeaCard(
+                                expenseLimit = currentIdea,
+                                completedValue = completionValue,
+                                preferableCurrency = preferableCurrency
+                            )
+                        }
+
                     }
+
+                    is IncomePlans -> {
+                        var completionValue by remember { mutableFloatStateOf(0.0f) }
+                        LaunchedEffect(key1 = Unit) {
+                            withContext(Dispatchers.IO) {
+                                ideasSettingsScreenViewModel.getIdeasCompletedValue(currentIdea).collect {
+                                    Log.d(TAG, "IdeasSettingsScreenComponent: inc completionValue = $it")
+                                    completionValue = it
+                                }
+                            }
+                        }
+                        Box(
+                            modifier = boxModifier
+                        ) {
+                            IncomePlanIdeaCard(
+                                incomePlans = currentIdea,
+                                completionValue = completionValue,
+                                preferableCurrency = preferableCurrency
+                            )
+                        }
+                    }
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                if (index == listOfFilteredIdeas.size - 1) {
+                    Spacer(modifier = Modifier.height(24.dp))
                 }
             }
         }
     }
+
 }

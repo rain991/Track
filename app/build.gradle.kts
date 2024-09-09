@@ -58,8 +58,6 @@ android {
 
 
 dependencies {
-    implementation("androidx.test:core-ktx:1.6.1")
-    implementation("androidx.test.ext:junit-ktx:1.2.1")
     val workVersion = "2.9.1"
     val koinVersion = "3.5.3"
     val retrofitVersion = "2.9.0"
@@ -102,6 +100,8 @@ dependencies {
     implementation("androidx.core:core-splashscreen:1.0.1")
 
     //junit
+    implementation("androidx.test:core-ktx:1.6.1")
+    implementation("androidx.test.ext:junit-ktx:1.2.1")
     testImplementation("org.jetbrains.kotlin:kotlin-test")
     implementation("junit:junit:4.13.2")
     testImplementation("junit:junit:4.13.2")

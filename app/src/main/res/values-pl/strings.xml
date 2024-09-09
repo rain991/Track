@@ -44,7 +44,7 @@
     <string name="extra_currency_settings_screen">Waluta dodatkowa</string>
     <string name="currencies_settings_screen">Waluta</string>
     <string name="delete_latest_currency_settings_screen">Usuń ostatnią walutę</string>
-    <string name="warning_message_idea_settings_screen">Nie stworzyłeś jeszcze żadnej idea</string>
+    <string name="warning_message_idea_settings_screen">Nie znaleziono Idea dla określonych filtrów</string>
     <string name="show_completed_ideas_idea_settings_screen">Pokaż skończone idea</string>
     <string name="sorted_date_idea_settings_screen">Sortuj według daty</string>
     <string name="newest_first_idea_settings_screen">najpierw nowe</string>

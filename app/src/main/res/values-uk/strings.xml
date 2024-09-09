@@ -44,7 +44,7 @@
     <string name="extra_currency_settings_screen">Додаткова валюта</string>
     <string name="currencies_settings_screen">Валюта</string>
     <string name="delete_latest_currency_settings_screen">Видали останню валюту</string>
-    <string name="warning_message_idea_settings_screen">Ви ще не створили жодної ідеї</string>
+    <string name="warning_message_idea_settings_screen">Не знайдено ідей для зазначених фільтрів</string>
     <string name="show_completed_ideas_idea_settings_screen">Покажи закінчені ідеї</string>
     <string name="sorted_date_idea_settings_screen">Сортування датою</string>
     <string name="newest_first_idea_settings_screen">спочатку нові</string>

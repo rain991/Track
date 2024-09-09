@@ -62,7 +62,7 @@
     <string name="extra_currency_settings_screen">Zusätzliche Währung</string>
     <string name="currencies_settings_screen">Währungen</string>
     <string name="delete_latest_currency_settings_screen">Letzte Währung löschen</string>
-    <string name="warning_message_idea_settings_screen">Sie haben noch keine Ideen erstellt</string>
+    <string name="warning_message_idea_settings_screen">Keine Ideen für bestimmte Filter gefunden</string>
     <string name="show_completed_ideas_idea_settings_screen">Abgeschlossene Ideen anzeigen</string>
     <string name="sorted_date_idea_settings_screen">Sortiertes Datum</string>
     <string name="newest_first_idea_settings_screen">Neueste zuerst</string>

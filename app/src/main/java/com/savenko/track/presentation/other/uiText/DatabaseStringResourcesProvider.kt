@@ -5,6 +5,9 @@ import com.savenko.track.R
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 
+/**
+ * Use DatabaseStringResourcesProvider to provide string resources for predefined Room database
+ */
 class DatabaseStringResourcesProvider(private val context: Context) {
     fun provideDefaultCategoriesStringResource(category: CategoryEntity): Int {
         return if (category is ExpenseCategory) {

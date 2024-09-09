@@ -115,10 +115,10 @@ val appModule = module {
     single<ExpensesCategoriesListRepository> { ExpensesCategoriesListRepositoryImpl(get()) }
 
     // Income related
-    single<IncomeListRepository> { IncomeListRepositoryImpl(get()) }
-    single<IncomesCategoriesListRepository> { IncomesCategoriesListRepositoryImpl(get()) }
     single<IncomeItemRepository> { IncomeItemRepositoryImpl(get()) }
     single<IncomeCoreRepository> { IncomeCoreRepositoryImpl(get(), get(), get()) }
+    single<IncomeListRepository> { IncomeListRepositoryImpl(get()) }
+    single<IncomesCategoriesListRepository> { IncomesCategoriesListRepositoryImpl(get()) }
 
     // Currencies
     single<CurrencyListRepository> { CurrencyListRepositoryImpl(get()) }

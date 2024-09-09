@@ -25,9 +25,8 @@ import kotlinx.coroutines.launch
 
 /**
  *  CurrenciesSettingsViewModel uses MVI pattern : exposes [currenciesSettingsScreenState] to UI and receives
- *  onEvent callback to handle user interactions
+ *  [onEvent] callback to handle user interactions
  */
-
 class CurrenciesSettingsViewModel(
     private val changeCurrenciesPreferenceUseCase: ChangeCurrenciesPreferenceUseCase,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
@@ -103,6 +102,9 @@ class CurrenciesSettingsViewModel(
         }
     }
 
+    /**
+     * Uses [CurrenciesSettingsScreenEvent] to handle UI events
+     */
     suspend fun onEvent(event: CurrenciesSettingsScreenEvent) {
         if (_currenciesSettingsScreenState.value.error is CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse) {
             clearErrorMessage()
@@ -192,7 +194,6 @@ class CurrenciesSettingsViewModel(
             )
         }
     }
-
 
     private suspend fun setLatestCurrencyAsNull() {
         val currenciesPreferenceUI = _currenciesSettingsScreenState.value.currenciesPreferenceUI

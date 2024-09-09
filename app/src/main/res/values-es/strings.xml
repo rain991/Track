@@ -62,7 +62,7 @@
     <string name="extra_currency_settings_screen">Moneda extra</string>
     <string name="currencies_settings_screen">Monedas</string>
     <string name="delete_latest_currency_settings_screen">Eliminar última moneda</string>
-    <string name="warning_message_idea_settings_screen">Aún no has creado ninguna idea</string>
+    <string name="warning_message_idea_settings_screen">No se encontraron ideas para filtros específicos</string>
     <string name="show_completed_ideas_idea_settings_screen">Mostrar ideas completadas</string>
     <string name="sorted_date_idea_settings_screen">Fecha ordenada</string>
     <string name="newest_first_idea_settings_screen">Más reciente primero</string>
