@@ -12,6 +12,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * Provides [personalStatsState], does not handle any user interaction
+ */
 class PersonalStatsViewModel(
     private val personalStatsProvider: PersonalStatsProvider,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository

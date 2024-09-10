@@ -16,6 +16,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * Handles additional settings in settings screen
+ * Provides [additionalPreferencesState]
+ */
 class AdditionalPreferencesSettingsViewModel(
     private val updateUserDataUseCase: UpdateUserDataUseCase,
     private val dataStoreManager: DataStoreManager,
@@ -50,29 +54,29 @@ class AdditionalPreferencesSettingsViewModel(
             }
         }
         viewModelScope.launch {
-            dataStoreManager.nonCategoryExpenses.collect{nonCategoryExpenses ->
-                _additionalPreferencesState.update{
+            dataStoreManager.nonCategoryExpenses.collect { nonCategoryExpenses ->
+                _additionalPreferencesState.update {
                     _additionalPreferencesState.value.copy(nonCategorisedExpenses = nonCategoryExpenses)
                 }
             }
         }
         viewModelScope.launch {
-            dataStoreManager.nonCategoryIncomes.collect{nonCategoryIncomes ->
-                _additionalPreferencesState.update{
+            dataStoreManager.nonCategoryIncomes.collect { nonCategoryIncomes ->
+                _additionalPreferencesState.update {
                     _additionalPreferencesState.value.copy(nonCategorisedIncomes = nonCategoryIncomes)
                 }
             }
         }
         viewModelScope.launch {
-            dataStoreManager.groupingExpenseCategoryId.collect{ groupingExpenseCategoryId ->
-                _additionalPreferencesState.update{
+            dataStoreManager.groupingExpenseCategoryId.collect { groupingExpenseCategoryId ->
+                _additionalPreferencesState.update {
                     _additionalPreferencesState.value.copy(groupingExpensesCategoryId = groupingExpenseCategoryId)
                 }
             }
         }
         viewModelScope.launch {
-            dataStoreManager.groupingIncomeCategoryId.collect{ groupingIncomeCategoryId ->
-                _additionalPreferencesState.update{
+            dataStoreManager.groupingIncomeCategoryId.collect { groupingIncomeCategoryId ->
+                _additionalPreferencesState.update {
                     _additionalPreferencesState.value.copy(groupingIncomeCategoryId = groupingIncomeCategoryId)
                 }
             }

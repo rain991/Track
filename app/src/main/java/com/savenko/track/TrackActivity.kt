@@ -17,6 +17,10 @@ import com.savenko.track.presentation.themes.getThemeByName
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
+
+/**
+ * **Track** is build as single activity no-fragment app with 100% Kotlin codebase
+ */
 class TrackActivity : ComponentActivity() {
     private val dataStoreManager: DataStoreManager by inject()
     private val workManagerHelper: WorkManagerHelper by inject()

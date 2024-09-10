@@ -79,7 +79,7 @@ fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) {
                     isInEditingMode = false
                 }) { editableName: String, editableBudget: Float ->
                 coroutineScope.launch {
-                    viewModel.setNewPersonalValues(
+                    viewModel.setNewPersonalPreferences(
                         newName = editableName,
                         newBudget = editableBudget
                     )

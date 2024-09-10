@@ -50,6 +50,13 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * Shows [Transactions] as a header of lazy column.
+ * Main content shows lazy column of [LazyColumnSingleFinancialComponent] items
+ * @param containsInfoCards If true, MainScreenLazyColumn will handle [TrackScreenInfoCards] visibility, use to implement flexible layout
+ * @param switchBottomSheetToExpenses callback called when user triggers switching to expenses financials
+ * @param switchBottomSheetToIncomes callback called when user triggers switching to incomes financials
+ */
 @Composable
 fun MainScreenLazyColumn(
     containsInfoCards: Boolean,

@@ -19,6 +19,10 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * CategoriesSettingsScreenViewModel works with MVI pattern : provides [screenState] for UI and receives
+ *  [onAction] callback to handle user interactions
+ */
 class CategoriesSettingsScreenViewModel(
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository,
     private val expensesCategoriesListRepositoryImpl: ExpensesCategoriesListRepository,

@@ -5,6 +5,9 @@ import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.usecases.crud.userRelated.UpdateUserDataUseCase
 import com.savenko.track.presentation.themes.Themes
 
+/**
+ * ThemePreferenceSettingsViewModel can be used in components that could change theme preferences
+ */
 class ThemePreferenceSettingsViewModel(
     private val updateUserDataUseCase: UpdateUserDataUseCase,
     private val dataStoreManager: DataStoreManager
