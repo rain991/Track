@@ -57,22 +57,17 @@ import com.savenko.track.data.other.constants.MAX_BUDGET_VALUE
 import com.savenko.track.data.other.constants.NAME_MAX_LENGTH
 import com.savenko.track.data.other.constants.PREFERABLE_THEME_DEFAULT
 import com.savenko.track.data.viewmodels.login.LoginScreenViewModel
-import com.savenko.track.data.viewmodels.settingsScreen.themePreferences.ThemePreferenceSettingsViewModel
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.components.customComponents.AutoResizedText
 import com.savenko.track.presentation.components.customComponents.ThemeSelectorRow
 import com.savenko.track.presentation.navigation.Screen
 import kotlinx.coroutines.launch
-import org.koin.androidx.compose.koinViewModel
-
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun LoginScreenContent(loginScreenViewModel: LoginScreenViewModel, navController: NavController) {
     val coroutineScope = rememberCoroutineScope()
-    val themePreferenceViewModel = koinViewModel<ThemePreferenceSettingsViewModel>()
-    val preferableTheme =
-        themePreferenceViewModel.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT.name)
+    val preferableTheme = loginScreenViewModel.preferableTheme.collectAsState(initial = PREFERABLE_THEME_DEFAULT.name)
     val focusManager = LocalFocusManager.current
     val controller = LocalSoftwareKeyboardController.current
     val nameFocusRequester = remember { FocusRequester() }
@@ -201,7 +196,7 @@ fun LoginScreenContent(loginScreenViewModel: LoginScreenViewModel, navController
             }
             ThemeSelectorRow(preferableTheme = preferableTheme) { newTheme ->
                 coroutineScope.launch {
-                    themePreferenceViewModel.setPreferableTheme(newTheme)
+                    loginScreenViewModel.setPreferableTheme(newTheme)
                 }
             }
             Button(

@@ -10,9 +10,9 @@ import com.savenko.track.domain.models.currency.matchesSearchQuery
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import com.savenko.track.domain.usecases.userData.other.ChangeCurrenciesPreferenceUseCase
-import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.other.composableTypes.currencies.CurrenciesPreferenceUI
 import com.savenko.track.presentation.other.composableTypes.errors.CurrenciesSettingsScreenErrors
+import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
 import com.savenko.track.presentation.screens.states.additional.settings.currenciesSettings.CurrenciesSettingsScreenEvent
 import com.savenko.track.presentation.screens.states.additional.settings.currenciesSettings.SelectedCurrenciesSettingsState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -23,6 +23,10 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ *  CurrenciesSettingsViewModel uses MVI pattern : exposes [currenciesSettingsScreenState] to UI and receives
+ *  [onEvent] callback to handle user interactions
+ */
 class CurrenciesSettingsViewModel(
     private val changeCurrenciesPreferenceUseCase: ChangeCurrenciesPreferenceUseCase,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
@@ -30,7 +34,7 @@ class CurrenciesSettingsViewModel(
     private val currenciesRatesHandler: CurrenciesRatesHandler,
     private val databaseStringResourcesProvider: DatabaseStringResourcesProvider
 ) : ViewModel() {
-    private val _selectedCurrenciesSettingsState = MutableStateFlow(
+    private val _currenciesSettingsScreenState = MutableStateFlow(
         SelectedCurrenciesSettingsState(
             allCurrenciesList = listOf(),
             currenciesPreferenceUI = CurrenciesPreferenceUI(
@@ -44,7 +48,7 @@ class CurrenciesSettingsViewModel(
             error = null
         )
     )
-    val selectedCurrenciesSettingsState = _selectedCurrenciesSettingsState.asStateFlow()
+    val currenciesSettingsScreenState = _currenciesSettingsScreenState.asStateFlow()
 
     private val _searchText = MutableStateFlow("")
     val searchText = _searchText.asStateFlow()
@@ -62,8 +66,8 @@ class CurrenciesSettingsViewModel(
         viewModelScope.launch {
             launch {
                 currencyListRepositoryImpl.getCurrencyList().collect { listOfCurrencies ->
-                    _selectedCurrenciesSettingsState.update {
-                        _selectedCurrenciesSettingsState.value.copy(
+                    _currenciesSettingsScreenState.update {
+                        _currenciesSettingsScreenState.value.copy(
                             allCurrenciesList = listOfCurrencies
                         )
                     }
@@ -72,8 +76,8 @@ class CurrenciesSettingsViewModel(
             }
             launch {
                 currenciesPreferenceRepositoryImpl.getCurrenciesPreferences().collect { currenciesPreference ->
-                    _selectedCurrenciesSettingsState.update {
-                        _selectedCurrenciesSettingsState.value.copy(
+                    _currenciesSettingsScreenState.update {
+                        _currenciesSettingsScreenState.value.copy(
                             currenciesPreferenceUI = CurrenciesPreferenceUI(
                                 currenciesRatesHandler.getCurrencyByTicker(
                                     currenciesPreference.preferableCurrency
@@ -98,8 +102,11 @@ class CurrenciesSettingsViewModel(
         }
     }
 
+    /**
+     * Uses [CurrenciesSettingsScreenEvent] to handle UI events
+     */
     suspend fun onEvent(event: CurrenciesSettingsScreenEvent) {
-        if (_selectedCurrenciesSettingsState.value.error is CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse) {
+        if (_currenciesSettingsScreenState.value.error is CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse) {
             clearErrorMessage()
         }
         when (event) {
@@ -171,7 +178,7 @@ class CurrenciesSettingsViewModel(
             }
 
             CurrenciesSettingsScreenEvent.SwitchAdditionalCurrenciesVisibility -> {
-                setAdditionalCurrenciesVisibility(!_selectedCurrenciesSettingsState.value.isAdditionalCurrenciesVisible)
+                setAdditionalCurrenciesVisibility(!_currenciesSettingsScreenState.value.isAdditionalCurrenciesVisible)
             }
         }
     }
@@ -181,16 +188,15 @@ class CurrenciesSettingsViewModel(
     }
 
     private fun setAdditionalCurrenciesVisibility(value: Boolean) {
-        _selectedCurrenciesSettingsState.update {
-            _selectedCurrenciesSettingsState.value.copy(
+        _currenciesSettingsScreenState.update {
+            _currenciesSettingsScreenState.value.copy(
                 isAdditionalCurrenciesVisible = value
             )
         }
     }
 
-
     private suspend fun setLatestCurrencyAsNull() {
-        val currenciesPreferenceUI = _selectedCurrenciesSettingsState.value.currenciesPreferenceUI
+        val currenciesPreferenceUI = _currenciesSettingsScreenState.value.currenciesPreferenceUI
         when {
             currenciesPreferenceUI.fourthAdditionalCurrency != null -> setCurrency(
                 null,
@@ -215,15 +221,15 @@ class CurrenciesSettingsViewModel(
     }
 
     private fun clearErrorMessage() {
-        _selectedCurrenciesSettingsState.update { _selectedCurrenciesSettingsState.value.copy(error = null) }
+        _currenciesSettingsScreenState.update { _currenciesSettingsScreenState.value.copy(error = null) }
     }
 
     private fun setErrorMessage(error: CurrenciesSettingsScreenErrors) {
-        _selectedCurrenciesSettingsState.update { _selectedCurrenciesSettingsState.value.copy(error = error) }
+        _currenciesSettingsScreenState.update { _currenciesSettingsScreenState.value.copy(error = error) }
     }
 
     private suspend fun setPreferableCurrency(targetCurrency: Currency) {
-        val currenciesPreferencesUI = _selectedCurrenciesSettingsState.value.currenciesPreferenceUI
+        val currenciesPreferencesUI = _currenciesSettingsScreenState.value.currenciesPreferenceUI
         val isChangingSuccess = changeCurrenciesPreferenceUseCase.invoke(
             targetCurrency = targetCurrency,
             currentPreferableCurrency = currenciesPreferencesUI.preferableCurrency,
@@ -233,12 +239,12 @@ class CurrenciesSettingsViewModel(
             fourthAdditionalCurrency = currenciesPreferencesUI.fourthAdditionalCurrency
         )
         if (!isChangingSuccess) {
-            _selectedCurrenciesSettingsState.update { _selectedCurrenciesSettingsState.value.copy(error = CurrenciesSettingsScreenErrors.IncorrectCurrencyConversion) }
+            _currenciesSettingsScreenState.update { _currenciesSettingsScreenState.value.copy(error = CurrenciesSettingsScreenErrors.IncorrectCurrencyConversion) }
         }
     }
 
     private fun getRandomNotUsedCurrency(): Currency {
-        val currenciesPreferenceUI = _selectedCurrenciesSettingsState.value.currenciesPreferenceUI
+        val currenciesPreferenceUI = _currenciesSettingsScreenState.value.currenciesPreferenceUI
         val usedCurrencies = listOfNotNull(
             currenciesPreferenceUI.preferableCurrency,
             currenciesPreferenceUI.firstAdditionalCurrency,
@@ -247,7 +253,7 @@ class CurrenciesSettingsViewModel(
             currenciesPreferenceUI.fourthAdditionalCurrency
         )
         val availableCurrencyList =
-            _selectedCurrenciesSettingsState.value.allCurrenciesList.filter { currency ->
+            _currenciesSettingsScreenState.value.allCurrenciesList.filter { currency ->
                 !usedCurrencies.contains(
                     currency
                 )
@@ -256,7 +262,7 @@ class CurrenciesSettingsViewModel(
     }
 
     private suspend fun setCurrency(currency: Currency?, position: CurrenciesOptions) {
-        val currenciesPreferenceUI = _selectedCurrenciesSettingsState.value.currenciesPreferenceUI
+        val currenciesPreferenceUI = _currenciesSettingsScreenState.value.currenciesPreferenceUI
         val preferableCurrency = currenciesPreferenceUI.preferableCurrency
         val firstAdditionalCurrency = currenciesPreferenceUI.firstAdditionalCurrency
         val secondAdditionalCurrency = currenciesPreferenceUI.secondAdditionalCurrency

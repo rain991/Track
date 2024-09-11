@@ -6,6 +6,9 @@ import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
+/**
+ * Provides user stats.
+ */
 class PersonalStatsProvider(
     private val incomeCoreRepositoryImpl: IncomeCoreRepository,
     private val expensesCoreRepositoryImpl: ExpensesCoreRepository,

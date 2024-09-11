@@ -8,6 +8,7 @@ import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.repository.expenses.categories.ExpensesCategoriesListRepository
 import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
 import com.savenko.track.domain.usecases.crud.categoriesRelated.CreateCategoryUseCase
+import com.savenko.track.presentation.components.dialogs.newCategoryDialog.NewCategoryDialog
 import com.savenko.track.presentation.other.composableTypes.errors.NewCategoryDialogErrors
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.NewCategoryDialogState
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -15,6 +16,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * NewCategoryViewModel should be used with [NewCategoryDialog]
+ */
 class NewCategoryViewModel(
     private val createCategoryUseCase: CreateCategoryUseCase,
     private val incomesCategoriesListRepositoryImpl: IncomesCategoriesListRepository,
@@ -23,7 +27,8 @@ class NewCategoryViewModel(
     private val listOfExpenseCategories = mutableListOf<ExpenseCategory>()
     private val listOfIncomeCategories = mutableListOf<IncomeCategory>()
 
-    private val _newCategoryDialogState = MutableStateFlow(NewCategoryDialogState(isDialogVisible = false, dialogErrors = null))
+    private val _newCategoryDialogState =
+        MutableStateFlow(NewCategoryDialogState(isDialogVisible = false, dialogErrors = null))
     val newCategoryDialogState = _newCategoryDialogState.asStateFlow()
 
     init {
@@ -66,6 +71,9 @@ class NewCategoryViewModel(
         }
     }
 
+    fun setDialogVisibility(value: Boolean) {
+        _newCategoryDialogState.update { _newCategoryDialogState.value.copy(isDialogVisible = value) }
+    }
 
     private fun setListOfExpenseCategories(list: List<ExpenseCategory>) {
         listOfExpenseCategories.clear()
@@ -79,9 +87,5 @@ class NewCategoryViewModel(
 
     private fun setDialogError(value: NewCategoryDialogErrors?) {
         _newCategoryDialogState.update { _newCategoryDialogState.value.copy(dialogErrors = value) }
-    }
-
-    fun setDialogVisibility(value : Boolean){
-        _newCategoryDialogState.update { _newCategoryDialogState.value.copy(isDialogVisible = value) }
     }
 }

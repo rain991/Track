@@ -30,6 +30,9 @@ import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
 
+/**
+ * Provides state for [BottomSheet](com.savenko.track.presentation.components.bottomSheet.BottomSheet)
+ */
 class BottomSheetViewModel(
     private val addExpenseItemUseCase: AddExpenseItemUseCase,
     private val addIncomeItemUseCase: AddIncomeItemUseCase,

@@ -1,6 +1,5 @@
 package com.savenko.track.presentation.components.ideasCards
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -35,9 +34,11 @@ import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
 
-/*  It is main screen feed which contains automatically scrollable pager which always starting with card TrackMainFeedCard
-    and ending with NewIdeaFeedCard. Also contains :   */
-@OptIn(ExperimentalFoundationApi::class)
+/**
+ * It is main screen feed which contains automatically scrollable pager which always starts
+ * with card TrackMainFeedCard and ending with NewIdeaFeedCard
+ * Scroll and state is handled by [TrackScreenFeedViewModel]
+ */
 @Composable
 fun TrackScreenFeed() {
     val trackScreenFeedViewModel = koinViewModel<TrackScreenFeedViewModel>()
@@ -46,7 +47,8 @@ fun TrackScreenFeed() {
     val currenciesPreferenceRepositoryImpl = koinInject<CurrenciesPreferenceRepository>()
     val currentIndex = trackScreenFeedViewModel.cardIndex.collectAsState()
     val maxIndex = trackScreenFeedViewModel.maxPagerIndex.collectAsState()
-    val preferableCurrencyState = currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
+    val preferableCurrencyState =
+        currenciesPreferenceRepositoryImpl.getPreferableCurrency().collectAsState(initial = CURRENCY_DEFAULT)
     val ideaList = trackScreenFeedViewModel.ideaList
     val pagerState = rememberPagerState(initialPage = 0, pageCount = { maxIndex.value + 1 })
     val currentSavingAddingDialogState = addToSavingIdeaDialogViewModel.currentSavings.collectAsState()
@@ -87,7 +89,7 @@ fun TrackScreenFeed() {
             .fillMaxWidth()
             .height(140.dp),
         state = pagerState,
-        beyondBoundsPageCount = 1,
+        beyondViewportPageCount = 1,
         contentPadding = PaddingValues(horizontal = 2.dp)
     ) { index ->
         when (index) {

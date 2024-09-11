@@ -13,6 +13,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
 import java.util.Date
 
+/**
+ * Use to summarize info about financials.
+ */
 class FinancialCardNotesProvider(
     private val expenseCoreRepositoryImpl: ExpensesCoreRepository,
     private val incomeCoreRepositoryImpl: IncomeCoreRepository

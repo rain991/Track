@@ -205,4 +205,5 @@
     <string name="average_income_stats_info_cards">Средний доход :</string>
     <string name="average_expenses_stats_info_cards">Средние дневные траты :</string>
     <string name="period_summary_statistics_info_cards">Сводка периода</string>
+    <string name="describe_your_financial_bottom_sheet">Опишите свою операцию</string>
 </resources>

@@ -16,6 +16,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.util.Date
 
+/**
+ * Handles data for [TrackStatisticsInfoCards](com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticsInfoCards)
+ */
 class StatisticInfoCardsViewModel(
     private val getPeriodSummaryUseCase: GetPeriodSummaryUseCase,
     private val currenciesPreferenceRepository: CurrenciesPreferenceRepository

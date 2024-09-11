@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.safeContentPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
@@ -46,7 +45,10 @@ import com.savenko.track.presentation.other.composableTypes.errors.NewCategoryDi
 import com.savenko.track.presentation.screens.screenComponents.settingsScreenRelated.themePreferences.CircleWithBorder
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * NewCategoryDialog used for creating new financial category.
+ * It handles name, type and specific selected color
+ */
 @Composable
 fun NewCategoryDialog(
     error: NewCategoryDialogErrors? = null,

@@ -40,7 +40,12 @@ import com.savenko.track.data.viewmodels.mainScreen.feedCards.TrackScreenInfoCar
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import org.koin.androidx.compose.koinViewModel
 
-/*  Contains 2 additional cards above lazy column in main screen. Those card show overall stats about expenses and income relatively.   */
+/**  Contains 2 cards that showing overall financial stats.
+ *   @param isScrolledBelow regulates TrackScreenInfoCards visibility
+ *   @param isExpenseCardSelected selected card has additional gradient border
+ *   @param onExpenseCardClick on expense card click callback
+ *   @param onIncomeCardClick  on income card click callback
+ */
 @Composable
 fun TrackScreenInfoCards(
     isScrolledBelow: Boolean,

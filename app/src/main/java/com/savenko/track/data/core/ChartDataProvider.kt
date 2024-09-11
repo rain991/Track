@@ -20,15 +20,21 @@ import kotlinx.coroutines.flow.first
 import java.time.LocalDate
 import java.util.Date
 
-// Transforms data to understandable for chart format
-
+/**
+ * Transforms data to understandable for Vico chart format
+ */
 class ChartDataProvider(
     private val incomesListRepositoryImpl: IncomeListRepository,
     private val expensesListRepositoryImpl: ExpensesListRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) {
-
+    /**
+     * [requestDataForChart] summarizes financials stats by type in specific day.
+     * If user has few financials at same date they will be summarized.
+     * Only 1 map entry will be retrieved for specific financial day.
+     * @return map of financials summary in [otherTimeSpan]
+     */
     suspend fun requestDataForChart(
         financialEntities: FinancialEntities,
         statisticChartTimePeriod: StatisticChartTimePeriod,
@@ -38,32 +44,36 @@ class ChartDataProvider(
             when (statisticChartTimePeriod) {
                 is StatisticChartTimePeriod.Week -> {
                     val range = StatisticChartTimePeriod.Week().provideDateRange()
-                    incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(range.lower.time, range.upper.time).collect { listOfIncomes ->
-                        send(summarizeFinancialValuesByDays(listOfIncomes))
-                    }
+                    incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(range.lower.time, range.upper.time)
+                        .collect { listOfIncomes ->
+                            send(summarizeFinancialValuesByDays(listOfIncomes))
+                        }
                 }
 
                 is StatisticChartTimePeriod.Month -> {
                     val range = StatisticChartTimePeriod.Month().provideDateRange()
-                    incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(range.lower.time, range.upper.time).collect { listOfIncomes ->
-                        send(summarizeFinancialValuesByDays(listOfIncomes))
-                    }
+                    incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(range.lower.time, range.upper.time)
+                        .collect { listOfIncomes ->
+                            send(summarizeFinancialValuesByDays(listOfIncomes))
+                        }
                 }
 
                 is StatisticChartTimePeriod.Year -> {
                     val range = StatisticChartTimePeriod.Year().provideDateRange()
-                    incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(range.lower.time, range.upper.time).collect { listOfIncomes ->
-                        send(summarizeFinancialValuesByDays(listOfIncomes))
-                    }
+                    incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(range.lower.time, range.upper.time)
+                        .collect { listOfIncomes ->
+                            send(summarizeFinancialValuesByDays(listOfIncomes))
+                        }
                 }
 
                 is StatisticChartTimePeriod.Other -> {
                     if (otherTimeSpan != null) {
                         val startOfSpan = convertLocalDateToDate(otherTimeSpan.lower)
                         val endOfSpan = convertLocalDateToDate(otherTimeSpan.upper)
-                        incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time).collect { listOfIncomes ->
-                            send(summarizeFinancialValuesByDays(listOfIncomes))
-                        }
+                        incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time)
+                            .collect { listOfIncomes ->
+                                send(summarizeFinancialValuesByDays(listOfIncomes))
+                            }
                     }
                 }
             }
@@ -74,34 +84,38 @@ class ChartDataProvider(
                 is StatisticChartTimePeriod.Week -> {
                     val currentDate = Date(System.currentTimeMillis())
                     val startOfSpan = getStartOfWeekDate(currentDate)
-                    expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, currentDate.time).collect { listOfIncomes ->
-                        send(summarizeFinancialValuesByDays(listOfIncomes))
-                    }
+                    expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, currentDate.time)
+                        .collect { listOfIncomes ->
+                            send(summarizeFinancialValuesByDays(listOfIncomes))
+                        }
                 }
 
                 is StatisticChartTimePeriod.Month -> {
                     val currentDate = Date(System.currentTimeMillis())
                     val startOfSpan = getStartOfMonthDate(currentDate)
-                    expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, currentDate.time).collect { listOfIncomes ->
-                        send(summarizeFinancialValuesByDays(listOfIncomes))
-                    }
+                    expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, currentDate.time)
+                        .collect { listOfIncomes ->
+                            send(summarizeFinancialValuesByDays(listOfIncomes))
+                        }
                 }
 
                 is StatisticChartTimePeriod.Year -> {
                     val currentDate = Date(System.currentTimeMillis())
                     val startOfSpan = getStartOfYearDate(currentDate)
-                    expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, currentDate.time).collect { listOfIncomes ->
-                        send(summarizeFinancialValuesByDays(listOfIncomes))
-                    }
+                    expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, currentDate.time)
+                        .collect { listOfIncomes ->
+                            send(summarizeFinancialValuesByDays(listOfIncomes))
+                        }
                 }
 
                 is StatisticChartTimePeriod.Other -> {
                     if (otherTimeSpan != null) {
                         val startOfSpan = convertLocalDateToDate(otherTimeSpan.lower)
                         val endOfSpan = convertLocalDateToDate(otherTimeSpan.upper)
-                        expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time).collect { listOfIncomes ->
-                            send(summarizeFinancialValuesByDays(listOfIncomes))
-                        }
+                        expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time)
+                            .collect { listOfIncomes ->
+                                send(summarizeFinancialValuesByDays(listOfIncomes))
+                            }
                     }
                 }
             }

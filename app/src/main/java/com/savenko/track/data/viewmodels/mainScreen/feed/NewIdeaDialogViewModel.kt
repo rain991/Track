@@ -20,6 +20,9 @@ import kotlinx.coroutines.flow.asStateFlow
 import java.time.LocalDate
 import java.util.Date
 
+/**
+ * Handles state of [AddToSavingDialog](com.savenko.track.presentation.components.dialogs.addToSavingIdeaDialog.AddToSavingDialog)
+ */
 class NewIdeaDialogViewModel(
     private val createIdeaUseCase: CreateIdeaUseCase
 ) : ViewModel() {

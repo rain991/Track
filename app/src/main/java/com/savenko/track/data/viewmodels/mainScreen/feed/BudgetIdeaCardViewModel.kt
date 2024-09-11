@@ -11,6 +11,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+/**
+ * Provides data for [BudgetFeedCard](com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.feed.BudgetFeedCard)
+ */
 class BudgetIdeaCardViewModel(
     private val budgetIdeaCardRepositoryImpl: BudgetIdeaCardRepository,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository

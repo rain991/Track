@@ -46,7 +46,7 @@ import com.savenko.track.presentation.screens.states.core.statisticScreen.Statis
 import java.util.Date
 
 /**
-Contains TrackStatisticsInfoCards and additional functions: SingleFinancialContent, BothFinancialContent
+ *   Contains TrackStatisticsInfoCards and additional functions: SingleFinancialContent, BothFinancialContent
  */
 @Composable
 fun TrackStatisticsInfoCards(

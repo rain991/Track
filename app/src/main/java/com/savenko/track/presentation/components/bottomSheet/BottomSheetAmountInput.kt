@@ -40,6 +40,11 @@ import com.savenko.track.data.other.constants.MAX_FINANCIAL_VALUE
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 
+/**
+ * BottomSheetAmountInput is used as TextField for financial value in [BottomSheet]
+ * It also handles currencyChange via [onCurrencyChange]
+ * @param listOfAvailableCurrencies Is list of currencies that are available to be selected
+ */
 @Composable
 fun BottomSheetAmountInput(
     currentCurrency: Currency,

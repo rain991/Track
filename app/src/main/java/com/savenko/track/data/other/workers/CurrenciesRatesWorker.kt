@@ -33,7 +33,7 @@ class CurrenciesRatesWorker(
             val allTickersList = allCurrenciesList.map { it.ticker }
             val symbols = allTickersList.joinToString(separator = ", ")
             try {
-                val response = RetrofitClient.api.getLatestRates(API_KEY, symbols)
+                val response = RetrofitClient.currencyApi.getLatestRates(API_KEY, symbols)
                 response.rates.forEach { (currency, rate) ->
                     currencyListRepositoryImpl.editCurrencyRate(
                         rate = (1.0 / rate.toDouble()),

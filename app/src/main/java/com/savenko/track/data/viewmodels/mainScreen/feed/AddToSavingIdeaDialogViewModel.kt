@@ -19,10 +19,13 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 
+/**
+ * Handles state of [NewIdeaDialogViewModel](import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel)
+ */
 class AddToSavingIdeaDialogViewModel(
-    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val savingsDao: SavingsDao,
-    private val currenciesRatesHandler: CurrenciesRatesHandler
+    private val currenciesRatesHandler: CurrenciesRatesHandler,
+    currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) : ViewModel() {
     private val _currentSavings = MutableStateFlow<Savings?>(null)
     val currentSavings = _currentSavings.asStateFlow()
@@ -96,11 +99,11 @@ class AddToSavingIdeaDialogViewModel(
         }
     }
 
-    private fun setSelectedCurrency(index: Int) {
-        _selectedCurrencyIndex.value = index
-    }
-
     fun setCurrentSaving(value: Savings?) {
         _currentSavings.value = value
+    }
+
+    private fun setSelectedCurrency(index: Int) {
+        _selectedCurrencyIndex.value = index
     }
 }

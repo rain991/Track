@@ -16,7 +16,9 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 
-
+/**
+ * Handles [TrackScreenFeed](com.savenko.track.presentation.components.ideasCards.TrackScreenFeed) state, including scrolling
+ */
 class TrackScreenFeedViewModel(
     private val getUnfinishedIdeasUseCase: GetUnfinishedIdeasUseCase,
     private val ideaListRepositoryImpl: IdeaListRepository,

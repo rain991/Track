@@ -18,6 +18,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * Provides state for [TrackScreenInfoCards](com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.mainScreenInfoCards.TrackScreenInfoCards)
+ */
 class TrackScreenInfoCardsViewModel(
     private val expensesCoreRepositoryImpl: ExpensesCoreRepository,
     private val incomeCoreRepositoryImpl: IncomeCoreRepository,

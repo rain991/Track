@@ -19,6 +19,9 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
 import java.util.Date
 
+/**
+ * Provides data for [TrackStatisticLazyColumn](com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticLazyColumn)
+ */
 class StatisticLazyColumnViewModel(
     private val getDesiredIncomesUseCase: GetDesiredIncomesUseCase,
     private val getDesiredExpensesUseCase: GetDesiredExpensesUseCase,

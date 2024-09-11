@@ -13,7 +13,7 @@ data class FinancialLazyColumnState(
     val incomeList: List<IncomeItem> = listOf(),
     val incomeCategoriesList: List<IncomeCategory> = listOf(),
     val currenciesList : List<Currency>,
-    val expensesFinancialSummary : Map<Int, FinancialCardNotion>, // map of index related to pair of notion values
+    val expensesFinancialSummary : Map<Int, FinancialCardNotion>,
     val incomesFinancialSummary : Map<Int, FinancialCardNotion>,
     val preferableCurrency : Currency,
     val isScrolledBelow: Boolean,

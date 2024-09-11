@@ -1,6 +1,5 @@
 package com.savenko.track.data.viewmodels.settingsScreen.ideas
 
-import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
@@ -18,17 +17,21 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
+/**
+ * IdeasSettingsScreenViewModel provides list of Ideas with specific filters
+ * Filters are handled via [screenState] and related functions
+ */
 class IdeasSettingsScreenViewModel(
     private val getIdeasListUseCase: GetIdeasListUseCase,
     private val getIdeaCompletedValueUseCase: GetIdeaCompletedValueUseCase,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) : ViewModel() {
-    private val _listOfAllIdeas = mutableStateListOf<Idea>()
-    val listOfAllIdeas: List<Idea> = _listOfAllIdeas
+    private val listOfAllIdeas = mutableListOf<Idea>()
+    private val filteredAndSortedIdeas: MutableList<Idea> = mutableListOf()
 
     private val _screenState = MutableStateFlow(
         IdeasSettingsScreenState(
-            listOfSelectedIdeas = _listOfAllIdeas,
+            listOfSelectedIdeas = filteredAndSortedIdeas,
             isSortedDateDescending = true,
             isShowingCompletedIdeas = true,
             preferableCurrency = CURRENCY_DEFAULT
@@ -36,35 +39,51 @@ class IdeasSettingsScreenViewModel(
     )
     val screenState = _screenState.asStateFlow()
 
+
     init {
         viewModelScope.launch {
             initializeValues()
-            _screenState.update { _screenState.value.copy(listOfSelectedIdeas = _listOfAllIdeas) }
-            sortListDescending()
         }
+    }
+
+    suspend fun getIdeasCompletedValue(idea: Idea): Flow<Float> {
+        return getIdeaCompletedValueUseCase(idea)
+    }
+
+    fun setIsSortedDateDescending(value: Boolean) {
+        _screenState.value = _screenState.value.copy(isSortedDateDescending = value)
+        updateFilteredAndSortedIdeas()
+    }
+
+    fun setIsShowingCompletedIdeas(value: Boolean) {
+        _screenState.value = _screenState.value.copy(isShowingCompletedIdeas = value)
+        updateFilteredAndSortedIdeas()
     }
 
     private suspend fun initializeValues() {
         viewModelScope.launch {
             launch {
                 getIdeasListUseCase(ideaTypes = GetIdeasListUseCase.IdeasTypes.IncomePlans).collect { newIncomePlans ->
-                    val currentIncomePlans = _listOfAllIdeas.filterIsInstance<IncomePlans>().toSet()
-                    _listOfAllIdeas.removeAll(currentIncomePlans)
-                    _listOfAllIdeas.addAll(newIncomePlans)
+                    val currentIncomePlans = listOfAllIdeas.filterIsInstance<IncomePlans>().toSet()
+                    listOfAllIdeas.removeAll(currentIncomePlans)
+                    listOfAllIdeas.addAll(newIncomePlans)
+                    updateFilteredAndSortedIdeas()
                 }
             }
             launch {
                 getIdeasListUseCase(ideaTypes = GetIdeasListUseCase.IdeasTypes.Savings).collect { newSavings ->
-                    val currentSavings = _listOfAllIdeas.filterIsInstance<Savings>().toSet()
-                    _listOfAllIdeas.removeAll(currentSavings)
-                    _listOfAllIdeas.addAll(newSavings)
+                    val currentSavings = listOfAllIdeas.filterIsInstance<Savings>().toSet()
+                    listOfAllIdeas.removeAll(currentSavings)
+                    listOfAllIdeas.addAll(newSavings)
+                    updateFilteredAndSortedIdeas()
                 }
             }
             launch {
                 getIdeasListUseCase(ideaTypes = GetIdeasListUseCase.IdeasTypes.ExpenseLimit).collect { newExpenseLimits ->
-                    val currentExpenseLimits = _listOfAllIdeas.filterIsInstance<ExpenseLimits>().toSet()
-                    _listOfAllIdeas.removeAll(currentExpenseLimits)
-                    _listOfAllIdeas.addAll(newExpenseLimits)
+                    val currentExpenseLimits = listOfAllIdeas.filterIsInstance<ExpenseLimits>().toSet()
+                    listOfAllIdeas.removeAll(currentExpenseLimits)
+                    listOfAllIdeas.addAll(newExpenseLimits)
+                    updateFilteredAndSortedIdeas()
                 }
             }
             launch {
@@ -75,20 +94,19 @@ class IdeasSettingsScreenViewModel(
         }
     }
 
-    suspend fun getIdeasCompletedValue(idea: Idea): Flow<Float> {
-        return getIdeaCompletedValueUseCase(idea)
-    }
+    private fun updateFilteredAndSortedIdeas() {
+        val filteredIdeas = if (_screenState.value.isShowingCompletedIdeas) {
+            listOfAllIdeas
+        } else {
+            listOfAllIdeas.filter { !it.completed }
+        }
 
-    fun setIsSortedDateDescending(value: Boolean) {
-        _screenState.value = _screenState.value.copy(isSortedDateDescending = value)
-    }
-
-    fun setIsShowingCompletedIdeas(value: Boolean) {
-        _screenState.value = _screenState.value.copy(isShowingCompletedIdeas = value)
-    }
-
-    private fun sortListDescending() {
-        val newIdeasList = _screenState.value.listOfSelectedIdeas.sortedByDescending { it.startDate }
-        _screenState.value = _screenState.value.copy(listOfSelectedIdeas = newIdeasList, isSortedDateDescending = true)
+        val sortedIdeas = if (_screenState.value.isSortedDateDescending) {
+            filteredIdeas.sortedByDescending { it.startDate }
+        } else {
+            filteredIdeas.sortedBy { it.startDate }
+        }
+        filteredAndSortedIdeas.clear()
+        filteredAndSortedIdeas.addAll(sortedIdeas)
     }
 }

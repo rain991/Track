@@ -21,6 +21,9 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 
+/**
+ * Provides [statisticChartState] for Vico chart used in statistics screen
+ */
 class StatisticChartViewModel(
     private val chartDataProvider: ChartDataProvider,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
@@ -28,7 +31,6 @@ class StatisticChartViewModel(
 ) : ViewModel() {
     val modelProducer = CartesianChartModelProducer.build()
     val xToDateMapKey = ExtraStore.Key<Map<Float, LocalDate>>()
-
     private val _statisticChartState =
         MutableStateFlow(
             StatisticChartState(
@@ -61,12 +63,46 @@ class StatisticChartViewModel(
         }
     }
 
-    suspend fun initializeValues() {
+    private suspend fun initializeValues() {
         if (_statisticChartState.value.financialEntities !is FinancialEntities.Both) {
             initializeSeparateFinancialValues()
         } else {
             initializeGroupedFinancialValues()
         }
+    }
+
+    suspend fun setFinancialEntity(value: FinancialEntities) {
+        _statisticChartState.value = _statisticChartState.value.copy(financialEntities = value)
+        initializeValues()
+    }
+
+    suspend fun setTimePeriod(value: StatisticChartTimePeriod) {
+        _statisticChartState.value = _statisticChartState.value.copy(timePeriod = value)
+        initializeValues()
+    }
+
+    fun setSpecifiedTimePeriod(value: Range<LocalDate>?) {
+        _statisticChartState.update { _statisticChartState.value.copy(specifiedTimePeriod = value) }
+    }
+
+    fun setTimePeriodDialogVisibility(value: Boolean) {
+        _statisticChartState.update { _statisticChartState.value.copy(isTimePeriodDialogVisible = value) }
+    }
+
+    fun setChartVisibility(value: Boolean) {
+        _statisticChartState.update { _statisticChartState.value.copy(isChartVisible = value) }
+    }
+
+    private fun setDataSet(data: Map<LocalDate, Float>) {
+        _statisticChartState.update { _statisticChartState.value.copy(chartData = data) }
+    }
+
+    private fun setAdditionalData(data: Map<LocalDate, Float>?) {
+        _statisticChartState.update { _statisticChartState.value.copy(additionalChartData = data) }
+    }
+
+    private fun setPreferableCurrency(value: Currency) {
+        _statisticChartState.update { _statisticChartState.value.copy(preferableCurrency = value) }
     }
 
     private suspend fun initializeSeparateFinancialValues() {
@@ -125,9 +161,6 @@ class StatisticChartViewModel(
             val incomeXToDates =
                 incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
             modelProducer.runTransaction {
-//                val expenseListOfValues = expenseChartData.map { it.value }
-//                val incomeListOfValues = incomeChartData.map { it.value }
-
                 if (expenseXToDates.size > 1 || incomeXToDates.size > 1) {
                     lineSeries {
                         if (expenseXToDates.isNotEmpty()) {
@@ -142,38 +175,5 @@ class StatisticChartViewModel(
 
             }
         }
-    }
-
-
-    fun setFinancialEntity(value: FinancialEntities) {
-        _statisticChartState.update { _statisticChartState.value.copy(financialEntities = value) }
-    }
-
-    fun setTimePeriod(value: StatisticChartTimePeriod) {
-        _statisticChartState.update { _statisticChartState.value.copy(timePeriod = value) }
-    }
-
-    fun setSpecifiedTimePeriod(value: Range<LocalDate>?) {
-        _statisticChartState.update { _statisticChartState.value.copy(specifiedTimePeriod = value) }
-    }
-
-    fun setTimePeriodDialogVisibility(value: Boolean) {
-        _statisticChartState.update { _statisticChartState.value.copy(isTimePeriodDialogVisible = value) }
-    }
-
-    fun setChartVisibility(value: Boolean) {
-        _statisticChartState.update { _statisticChartState.value.copy(isChartVisible = value) }
-    }
-
-    private fun setDataSet(data: Map<LocalDate, Float>) {
-        _statisticChartState.update { _statisticChartState.value.copy(chartData = data) }
-    }
-
-    private fun setAdditionalData(data: Map<LocalDate, Float>?) {
-        _statisticChartState.update { _statisticChartState.value.copy(additionalChartData = data) }
-    }
-
-    private fun setPreferableCurrency(value: Currency) {
-        _statisticChartState.update { _statisticChartState.value.copy(preferableCurrency = value) }
     }
 }

@@ -16,6 +16,7 @@ const val NON_CATEGORY_FINANCIALS_DEFAULT = false
 const val GROUPING_CATEGORY_ID_DEFAULT = Int.MIN_VALUE // This value used to compare if user selected any category
 const val EXPENSE_CATEGORY_GROUPING_ID_DEFAULT = 13
 const val INCOME_CATEGORY_GROUPING_ID_DEFAULT = 9
+const val UNINITIALIZED_LOGIN_COUNT_STATE = -1
 
 // Color scheme and theme
 val PREFERABLE_THEME_DEFAULT: Themes = Themes.PurpleGreyTheme

@@ -16,7 +16,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowUp
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
@@ -25,6 +24,7 @@ import androidx.compose.material3.SingleChoiceSegmentedButtonRow
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -42,11 +42,12 @@ import com.savenko.track.data.other.converters.dates.getStartOfYearDate
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
+import kotlinx.coroutines.launch
 import java.util.Date
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TrackStatisticChartOptionsSelector(modifier : Modifier,chartViewModel: StatisticChartViewModel) {
+    val coroutineScope = rememberCoroutineScope()
     val chartState = chartViewModel.statisticChartState.collectAsState()
     val financialTypeSelectorItems =
         listOf(
@@ -87,7 +88,9 @@ fun TrackStatisticChartOptionsSelector(modifier : Modifier,chartViewModel: Stati
                                     count = financialTypeSelectorItems.size
                                 ),
                                 onClick = {
-                                    chartViewModel.setFinancialEntity(financialEntityType)
+                                    coroutineScope.launch {
+                                        chartViewModel.setFinancialEntity(financialEntityType)
+                                    }
                                 },
                                 selected = financialEntityType.nameId == chartState.value.financialEntities.nameId
                             ) {
@@ -115,7 +118,9 @@ fun TrackStatisticChartOptionsSelector(modifier : Modifier,chartViewModel: Stati
                                 ),
                                 onClick = {
                                     if (timeSpan !is StatisticChartTimePeriod.Other) {
-                                        chartViewModel.setTimePeriod(timeSpan)
+                                        coroutineScope.launch {
+                                            chartViewModel.setTimePeriod(timeSpan)
+                                        }
                                     }
                                     if (timeSpan is StatisticChartTimePeriod.Other) {
                                         chartViewModel.setTimePeriodDialogVisibility(true)
