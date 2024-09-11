@@ -1,6 +1,5 @@
 package com.savenko.track.presentation.screens.core
 
-import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -12,7 +11,6 @@ import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
 /**
  * Track screen manager is pager that handles navigation across main Track screens : SettingsTrackScreen, MainTrackScreen, StatisticsTrackScreen
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TrackScreenManager(navHostController: NavHostController, viewModel: TrackScreenManagerViewModel) {
     val pagerValue = viewModel.pagerStateValue.collectAsState()

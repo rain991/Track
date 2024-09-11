@@ -8,12 +8,15 @@ import com.savenko.track.R
 import com.savenko.track.data.other.constants.SHOW_PAGE_NAME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
-import com.savenko.track.presentation.components.screenRelated.Header
 import com.savenko.track.presentation.components.customComponents.MainScreenFloatingActionButton
+import com.savenko.track.presentation.components.screenRelated.Header
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.StatisticsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
-/*  Statistic screen shows user achievements and useful stats for specific period of time. Also shows chart  */
+
+/**
+ *  Statistic screen shows user achievements and useful stats for specific period of time
+ *  Also shows Vico chart  */
 @Composable
 fun StatisticsTrackScreen() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()

@@ -10,6 +10,9 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 
+/**
+ * Handles current page in pager handled by [TrackScreenManager](com.savenko.track.presentation.screens.core.TrackScreenManager)
+ */
 class TrackScreenManagerViewModel(
     private val savedStateHandle: SavedStateHandle,
     private val dataStoreManager: DataStoreManager

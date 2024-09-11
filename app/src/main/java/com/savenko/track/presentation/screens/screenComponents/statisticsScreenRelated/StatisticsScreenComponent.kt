@@ -15,6 +15,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
@@ -31,11 +32,15 @@ import com.savenko.track.presentation.screens.screenComponents.statisticsScreenR
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticChartOptionsSelector
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticLazyColumn
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticsInfoCards
+import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
-
+/**
+ * Screen component used in [Track statistic screen](com.savenko.track.presentation.screens.core.StatisticsTrackScreen)
+ */
 @Composable
 fun StatisticsScreenComponent(innerPadding: PaddingValues) {
+    val coroutineScope = rememberCoroutineScope()
     val chartViewModel = koinViewModel<StatisticChartViewModel>()
     val statisticInfoCardsViewModel = koinViewModel<StatisticInfoCardsViewModel>()
     val statisticLazyColumnViewModel = koinViewModel<StatisticLazyColumnViewModel>()
@@ -45,7 +50,9 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
         isDialogVisible = state.value.isTimePeriodDialogVisible,
         futureDatePicker = false,
         onDecline = { chartViewModel.setTimePeriodDialogVisibility(false) }) { startDate, endDate ->
-        chartViewModel.setTimePeriod(StatisticChartTimePeriod.Other())
+        coroutineScope.launch {
+            chartViewModel.setTimePeriod(StatisticChartTimePeriod.Other())
+        }
         chartViewModel.setSpecifiedTimePeriod(Range(convertDateToLocalDate(startDate), convertDateToLocalDate(endDate)))
         chartViewModel.setTimePeriodDialogVisibility(false)
     }
@@ -91,7 +98,6 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
                     val endOfSpan = convertLocalDateToDate(specifiedTimePeriod.upper)
                     Range(startOfSpan, endOfSpan)
                 } else {
-                    // likely impossible condition
                     StatisticChartTimePeriod.Month().provideDateRange()
                 }
             }

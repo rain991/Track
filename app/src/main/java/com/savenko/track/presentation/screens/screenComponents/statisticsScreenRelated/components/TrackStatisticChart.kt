@@ -19,7 +19,6 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -61,7 +60,6 @@ import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePe
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
-
 @Composable
 fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: StatisticChartViewModel) {
     val chartState = chartViewModel.statisticChartState.collectAsState()
@@ -83,10 +81,10 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
             )
         }
     }
-    LaunchedEffect(key1 = chartState.value.timePeriod, key2 = chartState.value.financialEntities)
-    {
-        chartViewModel.initializeValues()
-    }
+//    LaunchedEffect(key1 = chartState.value.timePeriod, key2 = chartState.value.financialEntities)
+//    {
+//        chartViewModel.initializeValues()
+//    }
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)
