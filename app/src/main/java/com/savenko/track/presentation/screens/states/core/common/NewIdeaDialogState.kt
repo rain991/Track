@@ -5,6 +5,21 @@ import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialog
 import com.savenko.track.presentation.other.composableTypes.options.IdeaSelectorTypes
 import java.util.Date
 
+/**
+ * New idea dialog state
+ *
+ * @property goal
+ * @property typeSelected
+ * @property includedInBudget
+ * @property eachMonth
+ * @property endDate
+ * @property label
+ * @property isDateDialogVisible
+ * @property relatedToAllCategories
+ * @property listOfSelectedCategories
+ * @property warningMessage
+ * @constructor Create empty New idea dialog state
+ */
 data class NewIdeaDialogState(
     val goal: Float,
     val typeSelected: IdeaSelectorTypes,

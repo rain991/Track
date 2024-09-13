@@ -101,6 +101,10 @@ class BottomSheetViewModel(
         val DEFAULT_DATE = null
     }
 
+    /**
+     * Add financial item
+     *
+     */
     suspend fun addFinancialItem() {
         val nonCategorisedExpenses = dataStoreManager.nonCategoryExpenses.first()
         val nonCategorisedIncomes = dataStoreManager.nonCategoryIncomes.first()
@@ -179,10 +183,20 @@ class BottomSheetViewModel(
         setBottomSheetExpanded(false)
     }
 
+    /**
+     * Set bottom sheet expanded
+     *
+     * @param value
+     */
     fun setBottomSheetExpanded(value: Boolean) {
         _bottomSheetViewState.value = _bottomSheetViewState.value.copy(isBottomSheetExpanded = value)
     }
 
+    /**
+     * Set input value
+     *
+     * @param inputValue
+     */
     fun setInputValue(inputValue: Float) {
         _bottomSheetViewState.value = _bottomSheetViewState.value.copy(inputValue = inputValue)
         if (_bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue && inputValue > 0) {
@@ -190,10 +204,20 @@ class BottomSheetViewModel(
         }
     }
 
+    /**
+     * Set note
+     *
+     * @param note
+     */
     fun setNote(note: String) {
         _bottomSheetViewState.value = _bottomSheetViewState.value.copy(note = note)
     }
 
+    /**
+     * Set category picked
+     *
+     * @param category
+     */
     fun setCategoryPicked(category: CategoryEntity?) {
         if (_bottomSheetViewState.value.categoryPicked != category) {
             _bottomSheetViewState.value = bottomSheetViewState.value.copy(categoryPicked = category)
@@ -205,21 +229,39 @@ class BottomSheetViewModel(
         }
     }
 
+    /**
+     * Toggle picker state
+     *
+     */
     fun togglePickerState() {
         _bottomSheetViewState.value =
             bottomSheetViewState.value.copy(timePickerState = !_bottomSheetViewState.value.timePickerState)
     }
 
+    /**
+     * Toggle is adding expense
+     *
+     */
     fun toggleIsAddingExpense() {
         _bottomSheetViewState.value =
             bottomSheetViewState.value.copy(isAddingExpense = !_bottomSheetViewState.value.isAddingExpense)
     }
 
+    /**
+     * Set is adding expense
+     *
+     * @param value
+     */
     fun setIsAddingExpense(value: Boolean) {
         _bottomSheetViewState.value =
             bottomSheetViewState.value.copy(isAddingExpense = value)
     }
 
+    /**
+     * Set date picked
+     *
+     * @param date
+     */
     fun setDatePicked(date: LocalDate?) {
         _bottomSheetViewState.update {
             bottomSheetViewState.value.copy(
