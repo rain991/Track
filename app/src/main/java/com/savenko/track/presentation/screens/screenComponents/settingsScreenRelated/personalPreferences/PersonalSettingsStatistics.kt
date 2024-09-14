@@ -25,6 +25,9 @@ import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalStatsViewModel
 import com.savenko.track.domain.models.currency.CurrencyTypes
 
+/**
+ * Statistics in [personal settings screen](com.savenko.track.presentation.screens.screenComponents.additional.PersonalSettingsScreenComponent)
+ */
 @Composable
 fun PersonalSettingsStatistics(viewModel: PersonalStatsViewModel) {
     val statsState = viewModel.personalStatsState.collectAsState()

@@ -44,6 +44,13 @@ import com.savenko.track.presentation.components.customComponents.CategorySettin
 import com.savenko.track.presentation.other.colors.parseColor
 import com.savenko.track.presentation.screens.screenComponents.additional.CategoriesFilterInputField
 
+/**
+ * Categories settings list view content in [CategoriesSettingsScreen](com.savenko.track.presentation.screens.screenComponents.additional.CategoriesSettingsScreenComponentKt.CategoriesSettingsScreenComponent)
+ *
+ * @param listOfExpenseCategories list of filtered user expense categories
+ * @param listOfIncomeCategories list of filtered user incomes categories
+ * @param nameFilter category name filter
+ */
 @Composable
 fun CategoriesSettingsListViewContent(
     listOfExpenseCategories: List<ExpenseCategory>,

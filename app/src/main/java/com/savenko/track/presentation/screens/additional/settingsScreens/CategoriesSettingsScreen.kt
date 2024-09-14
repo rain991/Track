@@ -27,6 +27,9 @@ import com.savenko.track.presentation.screens.screenComponents.additional.Catego
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * Categories settings screen
+ */
 @Composable
 fun CategoriesSettingsScreen(navController: NavHostController) {
     val viewModel = koinViewModel<CategoriesSettingsScreenViewModel>()
