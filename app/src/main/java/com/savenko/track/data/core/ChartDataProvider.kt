@@ -122,6 +122,12 @@ class ChartDataProvider(
         }
     }
 
+    /**
+     * Summarizes financial values by days
+     *
+     * @param listOfFinancialEntity list of financial to be summarized
+     * @return
+     */
     private suspend fun summarizeFinancialValuesByDays(listOfFinancialEntity: List<FinancialEntity>): Map<LocalDate, Float> {
         val resultMap = mutableMapOf<LocalDate, Float>()
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()

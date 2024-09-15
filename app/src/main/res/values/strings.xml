@@ -1,11 +1,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
-
-    <!-- App information -->
     <string name="app_name" translatable="false">Track</string>
     <string name="app_logo" translatable="false">Application Logo</string>
     <string name="logo_app_description">Convenient and easy-to-use financial tracker</string>
-
-    <!-- General -->
     <string name="currency">Currency</string>
     <string name="error">Error</string>
     <string name="unknown">Unknown</string>
@@ -13,8 +9,6 @@
     <string name="name">Name</string>
     <string name="expenses">Expenses</string>
     <string name="incomes">Incomes</string>
-
-    <!-- Months -->
     <string name="january">January</string>
     <string name="february">February</string>
     <string name="march">March</string>
@@ -28,32 +22,20 @@
     <string name="november">November</string>
     <string name="december">December</string>
     <string name="unknown_month">Unknown month</string>
-
-    <!-- Expense-related -->
     <string name="expense">Expense</string>
-
-    <!-- Dates -->
     <string name="today">Today</string>
     <string name="yesterday">Yesterday</string>
     <string name="selected_date_add_exp">Selected date</string>
-
-    <!-- Notes and warnings -->
     <string name="your_note_adding_exp">Note</string>
     <string name="checked_category_add_exp_CD">Checked category</string>
     <string name="note_exp_list">Note: %1$s</string>
-
-    <!-- Empty states -->
     <string name="empty_exp_lazyColumn_title">You haven\'t added expenses yet</string>
     <string name="empty_exp_lazyColumn_additional1">Try it out using button in right bottom corner, it is available in every app screen</string>
-
-    <!-- Settings headers -->
     <string name="account">Account</string>
     <string name="personal">Personal</string>
     <string name="ideas">Ideas</string>
     <string name="currencies">Currencies</string>
     <string name="categories">Categories</string>
-
-    <!-- Settings -->
     <string name="settings">Preferences</string>
     <string name="theme_settings_screen">Theme</string>
     <string name="preferable_currency_settings_screen">Preferable currency</string>
@@ -83,9 +65,6 @@
     <string name="expense_categories_categories_settings_screen">Expense categories</string>
     <string name="delete">Delete</string>
     <string name="income_categories">Income categories</string>
-
-
-    <!-- Lazy columns -->
     <string name="expenses_lazy_column">Expenses</string>
     <string name="incomes_lazy_column">Incomes</string>
     <plurals name="operations_screen_info_cards">
@@ -93,8 +72,6 @@
         <item quantity="other">operations</item>
     </plurals>
     <string name="warning_message_track_stats_lazycolumn">We have not found financial operations for specified filters</string>
-
-    <!-- Ideas -->
     <string name="first_notion_new_idea_card">Ideas is the way you declare financial goals</string>
     <string name="second_notion_new_idea_card">Available Idea types: savings, expense limits and income plans</string>
     <string name="third_notion_new_idea_card">Ideas will notify about your goals in app</string>
@@ -104,8 +81,6 @@
     <string name="related_to_all_categories_ideas">Related to all categories</string>
     <string name="new_idea_main_screen_feed">New idea</string>
     <string name="add_new_idea">Add new idea</string>
-
-    <!-- Expense categories -->
     <string name="expense_categories_groceries">Groceries</string>
     <string name="expense_categories_Utilities">Utilities</string>
     <string name="expense_categories_Household">Household</string>
@@ -119,8 +94,6 @@
     <string name="expense_categories_Investments">Investments</string>
     <string name="expense_categories_Unique">Unique</string>
     <string name="expense_categories_Other">Other</string>
-
-    <!-- Income categories -->
     <string name="income_categories_Salary">Salary</string>
     <string name="income_categories_Freelance">Freelance</string>
     <string name="income_categories_Investment">Investment</string>
@@ -129,36 +102,24 @@
     <string name="income_categories_Dividends">Dividends</string>
     <string name="income_categories_Grants">Grants</string>
     <string name="income_categories_Royalties">Royalties</string>
-
-    <!-- Expense limit -->
     <string name="expense_limit">Expense limit</string>
     <string name="already_spent_expense_limit_card">Already spent</string>
     <string name="categories_message_expense_limit_card">Categories:</string>
     <string name="related_to_all_categories_expense_limit_card">" Related to all categories"</string>
-
-    <!-- Savings -->
     <string name="saving">Saving</string>
-
-    <!-- Income plan -->
     <string name="income_plan">Income plan</string>
     <string name="planned">Planned</string>
     <string name="completed_for">Completed for</string>
     <string name="preferable_period_income_plan_card">Preferable period: %1$s - %2$s</string>
     <string name="other">Other</string>
     <string name="income">Income</string>
-
-    <!-- Chart -->
     <string name="warning_track_statistic_chart">We have not enough data to build a chart</string>
     <string name="hide_chart">Hide chart</string>
     <string name="show_chart">Show chart</string>
     <string name="selected_time_period_track_stats_options">Selected time period : %1$s - %2$s</string>
-
-    <!-- Financial Cards -->
     <string name="expenses_fin_item_card" tools:ignore="StringFormatCount">"%1$s expenses: "</string>
     <string name="incomes_fin_item_card" tools:ignore="StringFormatCount">"%1$s incomes: "</string>
     <string name="warning_message_info_cards">0 operations this month</string>
-
-    <!-- Other -->
     <string name="add">Add</string>
     <string name="add_it">Add it</string>
     <string name="aprox_month_income_login_screen">Aprox. month income</string>
@@ -170,6 +131,8 @@
     <string name="back_to_settings_screen_CD">back to settings screen</string>
     <string name="statistic">Statistic</string>
     <string name="financial">Financial</string>
+
+
     <string name="financial_operation_statistic_screen">Financial operations</string>
     <string name="expense_operation_statistic_screen">Expense operations</string>
     <string name="income_operation_statistic_screen">Income operations</string>
