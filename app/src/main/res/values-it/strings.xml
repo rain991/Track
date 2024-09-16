@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="logo_app_description">Tracker finanziario comodo e facile da usare</string>
+
+    <string name="currency">Valuta</string>
+
+    <string name="error">Errore</string>
+
+    <string name="unknown">Sconosciuto</string>
+
+    <string name="lets_start">Cominciamo!</string>
+
+    <string name="name">Nome</string>
+
+    <string name="expenses">Spese</string>
+
+    <string name="incomes">Redditi</string>
+
+    <string name="january">Gennaio</string>
+
+    <string name="february">Febbraio</string>
+
+    <string name="march">Marzo</string>
+
+    <string name="april">aprile</string>
+
+    <string name="may">Maggio</string>
+
+    <string name="june">Giugno</string>
+
+    <string name="july">Luglio</string>
+
+    <string name="august">agosto</string>
+
+    <string name="september">settembre</string>
+
+    <string name="october">ottobre</string>
+
+    <string name="november">novembre</string>
+
+    <string name="december">Dicembre</string>
+
+    <string name="unknown_month">Mese sconosciuto</string>
+
+    <string name="expense">Spese</string>
+
+    <string name="today">Oggi</string>
+
+    <string name="yesterday">Ieri</string>
+
+    <string name="selected_date_add_exp">Data selezionata</string>
+
+    <string name="your_note_adding_exp">Nota</string>
+
+    <string name="checked_category_add_exp_CD">Categoria selezionata</string>
+
+    <string name="note_exp_list">Nota: %1$s</string>
+
+    <string name="empty_exp_lazyColumn_title">Non hai ancora aggiunto spese</string>
+
+    <string name="empty_exp_lazyColumn_additional1">Provalo utilizzando il pulsante nell\'angolo in basso a destra, è disponibile in ogni schermata dell\'app</string>
+
+    <string name="account">Account</string>
+
+    <string name="personal">Personale</string>
+
+    <string name="ideas">Idee</string>
+
+    <string name="currencies">Valute</string>
+
+    <string name="categories">Categorie</string>
+
+    <string name="settings">Preferenze</string>
+
+    <string name="theme_settings_screen">Tema</string>
+
+    <string name="preferable_currency_settings_screen">Valuta preferibile</string>
+
+    <string name="use_device_theme_settings_screen">Usa lo schema colori del dispositivo</string>
+
+    <string name="show_page_name_settings_screen">Mostra il nome della pagina</string>
+
+    <string name="preferable_theme_settings_screen">Tema preferibile</string>
+
+    <string name="extra_currency_settings_screen">Valuta extra</string>
+
+    <string name="delete_latest_currency_settings_screen">Elimina l\'ultima valuta</string>
+
+    <string name="warning_message_idea_settings_screen">Nessuna idea trovata per i filtri specificati</string>
+
+    <string name="show_completed_ideas_idea_settings_screen">Mostra idee completate</string>
+
+    <string name="sorted_date_idea_settings_screen">Data ordinata</string>
+
+    <string name="newest_first_idea_settings_screen">Prima il più recente</string>
+
+    <string name="oldest_first_idea_settings_screen">Prima il più vecchio</string>
+
+    <string name="message_currencies_settings_screen">Puoi cambiare valuta toccando il relativo ticker sulle carte. La valuta da te preferita è quella di base utilizzata nella maggior parte delle parti del Tracciato.</string>
+
+    <string name="name_personal_settings_screen">Nome : %1$s</string>
+
+    <string name="budget_personal_settings_screen">Bilancio : %1$s %2$s</string>
+
+    <string name="new_budget_personal_settings_screen">Nuovo bilancio</string>
+
+    <string name="new_name_personal_settings_screen">Nuovo nome</string>
+
+    <string name="decline">Declino</string>
+
+    <string name="save">Salva</string>
+
+    <string name="your_stats_personal_settings_screen">Le tue statistiche</string>
+
+    <string name="not_added_any_expenses_yet_personal_settings_screen">Non hai ancora aggiunto alcuna spesa</string>
+
+    <string name="you_have_already_added_expenses_worth_of">Hai già aggiunto %1$s spese, per un valore di %2$s %3$s</string>
+
+    <string name="not_added_any_incomes_yet_personal_settings_screen">Non hai ancora aggiunto alcun reddito</string>
+
+    <string name="you_have_already_added_incomes_worth_of">Hai già aggiunto %1$s entrate, per un valore di %2$s %3$s</string>
+
+    <string name="login_message_personal_settings_screen">Hai inserito la traccia %1$s volte</string>
+
+    <string name="expense_categories_categories_settings_screen">Categorie di spesa</string>
+
+    <string name="delete">Eliminare</string>
+
+    <string name="income_categories">Categorie di reddito</string>
+
+    <string name="expenses_lazy_column">Spese</string>
+
+    <string name="incomes_lazy_column">Redditi</string>
+
+    <plurals name="operations_screen_info_cards">
+        <item quantity="one">operazione</item>
+        <item quantity="many">operazioni</item>
+        <item quantity="other">operazioni</item>
+    </plurals>
+
+    <string name="warning_message_track_stats_lazycolumn">Non abbiamo trovato operazioni finanziarie per i filtri specificati</string>
+
+    <string name="first_notion_new_idea_card">Le idee sono il modo in cui dichiari gli obiettivi finanziari</string>
+
+    <string name="second_notion_new_idea_card">Tipi di idee disponibili: risparmi, limiti di spesa e piani di reddito</string>
+
+    <string name="third_notion_new_idea_card">Le idee ti informeranno sui tuoi obiettivi nell\'app</string>
+
+    <string name="date">Data</string>
+
+    <string name="limit_end_date_ideas">Data di fine del limite</string>
+
+    <string name="plan_end_date_ideas">Data di fine prevista</string>
+
+    <string name="related_to_all_categories_ideas">Correlato a tutte le categorie</string>
+
+    <string name="new_idea_main_screen_feed">Nuova idea</string>
+
+    <string name="add_new_idea">Aggiungi nuova idea</string>
+
+    <string name="expense_categories_groceries">Alimentari</string>
+
+    <string name="expense_categories_Utilities">Utilità</string>
+
+    <string name="expense_categories_Household">Domestico</string>
+
+    <string name="expense_categories_Transportation">Trasporti</string>
+
+    <string name="expense_categories_DiningOut">Cenare fuori</string>
+
+    <string name="expense_categories_Entertainment">Divertimento</string>
+
+    <string name="expense_categories_Gifts">Regali</string>
+
+    <string name="expense_categories_ClothingAndAccessories">Abbigliamento e accessori</string>
+
+    <string name="expense_categories_PersonalCare">Cura della persona</string>
+
+    <string name="expense_categories_TechnologyAndElectronics">Tecnologia ed elettronica</string>
+
+    <string name="expense_categories_Investments">Investimenti</string>
+
+    <string name="expense_categories_Unique">Unico</string>
+
+    <string name="expense_categories_Other">Altro</string>
+
+    <string name="income_categories_Salary">Stipendio</string>
+
+    <string name="income_categories_Freelance">Libero professionista</string>
+
+    <string name="income_categories_Investment">Investimento</string>
+
+    <string name="income_categories_RentalIncome">Reddito da locazione</string>
+
+    <string name="income_categories_BusinessIncome">Reddito d\'impresa</string>
+
+    <string name="income_categories_Dividends">Dividendi</string>
+
+    <string name="income_categories_Grants">Sovvenzioni</string>
+
+    <string name="income_categories_Royalties">Diritti d\'autore</string>
+
+    <string name="expense_limit">Limite di spesa</string>
+
+    <string name="already_spent_expense_limit_card">Già speso</string>
+
+    <string name="categories_message_expense_limit_card">Categorie:</string>
+
+    <string name="related_to_all_categories_expense_limit_card"> Correlato a tutte le categorie</string>
+
+    <string name="saving">Risparmio</string>
+
+    <string name="income_plan">Piano di reddito</string>
+
+    <string name="planned">Pianificato</string>
+
+    <string name="completed_for">Completato per</string>
+
+    <string name="preferable_period_income_plan_card">Periodo preferibile: %1$s - %2$s</string>
+
+    <string name="other">Altro</string>
+
+    <string name="income">Reddito</string>
+
+    <string name="warning_track_statistic_chart">Non abbiamo dati sufficienti per creare un grafico</string>
+
+    <string name="hide_chart">Nascondi grafico</string>
+
+    <string name="show_chart">Mostra grafico</string>
+
+    <string name="selected_time_period_track_stats_options">Periodo di tempo selezionato : %1$s - %2$s</string>
+
+    <string name="expenses_fin_item_card" tools:ignore="StringFormatCount">%1$s spese: </string>
+
+    <string name="incomes_fin_item_card" tools:ignore="StringFormatCount">%1$s redditi: </string>
+
+    <string name="warning_message_info_cards">0 operazioni questo mese</string>
+
+    <string name="add">Aggiungere</string>
+
+    <string name="add_it">Aggiungilo</string>
+
+    <string name="aprox_month_income_login_screen">Reddito mensile approssimativo</string>
+
+    <string name="you_havent_added_incomes_yet_lazy_column">Non hai ancora aggiunto i redditi</string>
+
+    <string name="add_expense">Aggiungi spese</string>
+
+    <string name="add_incomes">Aggiungi redditi</string>
+
+    <string name="create_new_category">Crea una nuova categoria</string>
+
+    <string name="category_exist_warning_new_category_dialog">Questa categoria esiste già</string>
+
+    <string name="back_to_settings_screen_CD">torna alla schermata delle impostazioni</string>
+
+    <string name="statistic">Statistica</string>
+
+    <string name="financial">Finanziario</string>
+
+    <string name="financial_operation_statistic_screen">Operazioni finanziarie</string>
+
+    <string name="expense_operation_statistic_screen">Operazioni di spesa</string>
+
+    <string name="income_operation_statistic_screen">Operazioni di reddito</string>
+
+    <string name="cd_add_new_category">Crea una nuova categoria</string>
+
+    <string name="both">Entrambi</string>
+
+    <string name="week">Settimana</string>
+
+    <string name="month">Mese</string>
+
+    <string name="year">Anno</string>
+
+    <string name="limit_planned">Limite pianificato</string>
+
+    <string name="income_planned">Reddito pianificato</string>
+
+    <string name="savings_planned">Risparmi previsti</string>
+
+    <string name="add_idea">Aggiungi idea</string>
+
+    <string name="optional">opzionale</string>
+
+    <string name="saving_for">Risparmio per</string>
+
+    <string name="planned_main_track_screen">Pianificato</string>
+
+    <string name="spent_main_track_screen">Speso</string>
+
+    <string name="scroll_up_CD">scorrere verso l\'alto</string>
+
+    <string name="budget_main_feed_card">%1$s bilancio</string>
+
+    <string name="empty_income_lazyColumn_additional1">Provalo utilizzando il pulsante nell\'angolo in basso a destra, è disponibile in ogni schermata dell\'app</string>
+
+    <string name="add_to_adding_to_saving_idea_dialog">aggiungere a </string>
+
+    <string name="planned_adding_to_saving_idea_dialog">Pianificato %1$s </string>
+
+    <string name="completed_for_adding_to_saving_idea_dialog">Completato per</string>
+
+    <string name="specified_category_fin_item_card">%1$s in %2$s: </string>
+
+    <string name="each_month_limit_new_idea_dialog">Limite di ogni mese</string>
+
+    <string name="confirm">Confermare</string>
+
+    <string name="cancel">Cancellare</string>
+
+    <string name="incorrect_input_value_BS_error">Valore di input non corretto</string>
+
+    <string name="select_financial_category_BS_error">Seleziona la categoria finanziaria</string>
+
+    <string name="incorrect_goal_value_newIdeaDialog_error">Valore obiettivo errato</string>
+
+    <string name="incorrect_saving_label_error">Etichetta di salvataggio vuota</string>
+
+    <string name="select_correct_date_error">Seleziona la data corretta</string>
+
+    <string name="you_have_already_selected_categories_error">Hai già selezionato 3 categorie</string>
+
+    <string name="additional">Aggiuntivo</string>
+
+    <string name="select_category_new_idea_dialog_error">Seleziona una categoria o imposta un limite di spesa relativo a tutte le categorie</string>
+
+    <string name="non_categorised_expenses_error_BS">Selezionare la categoria di raggruppamento per le spese non categorizzate</string>
+
+    <string name="non_categorised_incomes_error_BS">Selezionare la categoria di raggruppamento per i redditi non categorizzati</string>
+
+    <string name="edit_personal_info">modificare informazioni personali</string>
+
+    <string name="delete_financial_item_CD">Elimina elemento finanziario</string>
+
+    <string name="currency_in_use_error">%1$s è già in uso</string>
+
+    <string name="changing_preferable_currency_error">Si è verificato un errore durante la modifica della valuta preferita</string>
+
+    <string name="income_category">Categoria di reddito</string>
+
+    <string name="expense_category">Categoria di spesa</string>
+
+    <string name="allow_non_categorised_expenses">Consenti spese non categorizzate</string>
+
+    <string name="show_as">Mostra come</string>
+
+    <string name="allow_non_categorised_incomes">Consentire redditi non categorizzati</string>
+
+    <string name="category_name_new_category_dialog">Nome della categoria</string>
+
+    <string name="filter_currencies">Filtra valute</string>
+
+    <string name="hide_additional_currencies">Nascondi valute aggiuntive</string>
+
+    <string name="show_additional_currencies">Mostra valute aggiuntive</string>
+
+    <string name="user">Utente</string>
+
+    <string name="plan_started_income_plan_card">Piano avviato : %1$s</string>
+
+    <string name="your_ideas_setting_screen">Le tue idee</string>
+
+    <string name="set_as_preferable_currency_currencies_settings">Imposta come valuta preferita</string>
+
+    <string name="set_as_first_priority_additional">Imposta come prima priorità aggiuntiva</string>
+
+    <string name="set_as_second_priority_additional">Imposta come seconda priorità aggiuntiva</string>
+
+    <string name="set_as_third_priority_additional">Imposta come terza priorità aggiuntiva</string>
+
+    <string name="set_as_fourth_priority_additional">Imposta come quarta priorità aggiuntiva</string>
+
+    <string name="list_categories_settings_view_option">Lista</string>
+
+    <string name="cards_categories_settings_view_option">Carta</string>
+
+    <string name="show_only_custom_categories_settings">Mostra solo categorie personalizzate</string>
+
+    <string name="filter_categories_categories_screen">Trova categorie</string>
+
+    <string name="no_categories_for_specified_filters_categories_settings">Nessuna categoria per i filtri specificati</string>
+
+    <string name="shows_as_categories_settings">Mostra come</string>
+
+    <string name="month_summary_header">%1$s riepilogo</string>
+
+    <string name="total_expenses_month_summary">Spese totali :</string>
+
+    <string name="total_incomes_month_summary">Redditi totali :</string>
+
+    <string name="total_operations_month_summary">Totale operazioni :</string>
+
+    <string name="overall_month_summary">Complessivamente :</string>
+
+    <string name="financials_quantity_stats_info_cards">Quantità finanziaria :</string>
+
+    <string name="average_income_stats_info_cards">Reddito medio :</string>
+
+    <string name="average_expenses_stats_info_cards">Spese medie giornaliere :</string>
+
+    <string name="period_summary_statistics_info_cards">Riepilogo del periodo</string>
+
+    <string name="describe_your_financial_bottom_sheet">Descrivi la tua situazione finanziaria</string>
+
+</resources>

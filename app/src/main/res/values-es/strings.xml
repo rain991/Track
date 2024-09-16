@@ -60,7 +60,6 @@
     <string name="show_page_name_settings_screen">Mostrar nombre de la página</string>
     <string name="preferable_theme_settings_screen">Tema preferido</string>
     <string name="extra_currency_settings_screen">Moneda extra</string>
-    <string name="currencies_settings_screen">Monedas</string>
     <string name="delete_latest_currency_settings_screen">Eliminar última moneda</string>
     <string name="warning_message_idea_settings_screen">No se encontraron ideas para filtros específicos</string>
     <string name="show_completed_ideas_idea_settings_screen">Mostrar ideas completadas</string>
