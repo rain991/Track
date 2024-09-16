@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_logo" translatable="false">Application Logo</string>
+
+    <string name="logo_app_description">便利で使いやすい財務トラッカー</string>
+
+    <string name="currency">通貨</string>
+
+    <string name="error">エラー</string>
+
+    <string name="unknown">未知</string>
+
+    <string name="lets_start">さあ始めましょう！</string>
+
+    <string name="name">名前</string>
+
+    <string name="expenses">経費</string>
+
+    <string name="incomes">収入</string>
+
+    <string name="january">1 月</string>
+
+    <string name="february">2 月</string>
+
+    <string name="march">行進</string>
+
+    <string name="april">4 月</string>
+
+    <string name="may">5 月</string>
+
+    <string name="june">6 月</string>
+
+    <string name="july">7 月</string>
+
+    <string name="august">8 月</string>
+
+    <string name="september">9 月</string>
+
+    <string name="october">10 月</string>
+
+    <string name="november">11 月</string>
+
+    <string name="december">12 月</string>
+
+    <string name="unknown_month">不明な月</string>
+
+    <string name="expense">費用</string>
+
+    <string name="today">今日</string>
+
+    <string name="yesterday">昨日</string>
+
+    <string name="selected_date_add_exp">選択した日付</string>
+
+    <string name="your_note_adding_exp">注記</string>
+
+    <string name="checked_category_add_exp_CD">チェックしたカテゴリ</string>
+
+    <string name="note_exp_list">注: %1$s</string>
+
+    <string name="empty_exp_lazyColumn_title">まだ経費を追加していません</string>
+
+    <string name="empty_exp_lazyColumn_additional1">右下のボタンを使って試してみてください。どのアプリ画面でも利用できます。</string>
+
+    <string name="account">アカウント</string>
+
+    <string name="personal">個人的</string>
+
+    <string name="ideas">アイデア</string>
+
+    <string name="currencies">通貨</string>
+
+    <string name="categories">カテゴリー</string>
+
+    <string name="settings">設定</string>
+
+    <string name="theme_settings_screen">テーマ</string>
+
+    <string name="preferable_currency_settings_screen">推奨通貨</string>
+
+    <string name="use_device_theme_settings_screen">デバイスのカラースキームを使用する</string>
+
+    <string name="show_page_name_settings_screen">ページ名を表示</string>
+
+    <string name="preferable_theme_settings_screen">好ましいテーマ</string>
+
+    <string name="extra_currency_settings_screen">追加通貨</string>
+
+    <string name="delete_latest_currency_settings_screen">最新の通貨を削除</string>
+
+    <string name="warning_message_idea_settings_screen">指定されたフィルターに該当するアイデアは見つかりませんでした</string>
+
+    <string name="show_completed_ideas_idea_settings_screen">完了したアイデアを表示</string>
+
+    <string name="sorted_date_idea_settings_screen">ソートされた日付</string>
+
+    <string name="newest_first_idea_settings_screen">新着順</string>
+
+    <string name="oldest_first_idea_settings_screen">古い順</string>
+
+    <string name="message_currencies_settings_screen">カード内のティッカーをタッチすることで通貨を切り替えることができます。トラックのほとんどの部分では、選択した通貨が基本として使用されます。</string>
+
+    <string name="name_personal_settings_screen">名前 : %1$s</string>
+
+    <string name="budget_personal_settings_screen">予算 : %1$s %2$s</string>
+
+    <string name="new_budget_personal_settings_screen">新しい予算</string>
+
+    <string name="new_name_personal_settings_screen">新しい名前</string>
+
+    <string name="decline">衰退</string>
+
+    <string name="save">保存</string>
+
+    <string name="your_stats_personal_settings_screen">あなたの統計</string>
+
+    <string name="not_added_any_expenses_yet_personal_settings_screen">まだ経費を追加していません</string>
+
+    <string name="you_have_already_added_expenses_worth_of">すでに %1$s の費用が追加されています。これは %2$s %3$s に相当します。</string>
+
+    <string name="not_added_any_incomes_yet_personal_settings_screen">まだ収入を追加していません</string>
+
+    <string name="you_have_already_added_incomes_worth_of">すでに %1$s 収入が追加されています。これは %2$s %3$s に相当します</string>
+
+    <string name="login_message_personal_settings_screen">トラックに%1$s回入力しました</string>
+
+    <string name="expense_categories_categories_settings_screen">経費カテゴリ</string>
+
+    <string name="delete">消去</string>
+
+    <string name="income_categories">収入カテゴリー</string>
+
+    <string name="expenses_lazy_column">経費</string>
+
+    <string name="incomes_lazy_column">収入</string>
+
+    <plurals name="operations_screen_info_cards">
+        <item quantity="other">操作</item>
+    </plurals>
+
+    <string name="warning_message_track_stats_lazycolumn">指定されたフィルタに該当する金融操作が見つかりませんでした</string>
+
+    <string name="first_notion_new_idea_card">アイデアは財務目標を宣言する方法です</string>
+
+    <string name="second_notion_new_idea_card">利用可能なアイデアの種類: 貯蓄、支出限度額、収入計画</string>
+
+    <string name="third_notion_new_idea_card">アイデアはアプリ内であなたの目標について通知します</string>
+
+    <string name="date">日付</string>
+
+    <string name="limit_end_date_ideas">制限終了日</string>
+
+    <string name="plan_end_date_ideas">予定終了日</string>
+
+    <string name="related_to_all_categories_ideas">すべてのカテゴリに関連する</string>
+
+    <string name="new_idea_main_screen_feed">新しいアイデア</string>
+
+    <string name="add_new_idea">新しいアイデアを追加</string>
+
+    <string name="expense_categories_groceries">食料品</string>
+
+    <string name="expense_categories_Utilities">ユーティリティ</string>
+
+    <string name="expense_categories_Household">家庭</string>
+
+    <string name="expense_categories_Transportation">交通機関</string>
+
+    <string name="expense_categories_DiningOut">外食</string>
+
+    <string name="expense_categories_Entertainment">エンターテインメント</string>
+
+    <string name="expense_categories_Gifts">ギフト</string>
+
+    <string name="expense_categories_ClothingAndAccessories">衣類とアクセサリー</string>
+
+    <string name="expense_categories_PersonalCare">パーソナルケア</string>
+
+    <string name="expense_categories_TechnologyAndElectronics">テクノロジーとエレクトロニクス</string>
+
+    <string name="expense_categories_Investments">投資</string>
+
+    <string name="expense_categories_Unique">個性的</string>
+
+    <string name="expense_categories_Other">他の</string>
+
+    <string name="income_categories_Salary">給料</string>
+
+    <string name="income_categories_Freelance">フリーランス</string>
+
+    <string name="income_categories_Investment">投資</string>
+
+    <string name="income_categories_RentalIncome">賃貸収入</string>
+
+    <string name="income_categories_BusinessIncome">事業所得</string>
+
+    <string name="income_categories_Dividends">配当金</string>
+
+    <string name="income_categories_Grants">助成金</string>
+
+    <string name="income_categories_Royalties">ロイヤリティ</string>
+
+    <string name="expense_limit">経費限度額</string>
+
+    <string name="already_spent_expense_limit_card">すでに使用済み</string>
+
+    <string name="categories_message_expense_limit_card">カテゴリー:</string>
+
+    <string name="related_to_all_categories_expense_limit_card">すべてのカテゴリに関連する</string>
+
+    <string name="saving">節約</string>
+
+    <string name="income_plan">収入計画</string>
+
+    <string name="planned">計画中</string>
+
+    <string name="completed_for">完了しました</string>
+
+    <string name="preferable_period_income_plan_card">推奨期間: %1$s - %2$s</string>
+
+    <string name="other">他の</string>
+
+    <string name="income">所得</string>
+
+    <string name="warning_track_statistic_chart">グラフを作成するのに十分なデータがありません</string>
+
+    <string name="hide_chart">グラフを非表示</string>
+
+    <string name="show_chart">チャートを表示</string>
+
+    <string name="selected_time_period_track_stats_options">選択した期間 : %1$s - %2$s</string>
+
+    <string name="expenses_fin_item_card" tools:ignore="StringFormatCount">%1$s の経費: </string>
+
+    <string name="incomes_fin_item_card" tools:ignore="StringFormatCount">%1$s の収入: </string>
+
+    <string name="warning_message_info_cards">今月の手術件数 0 件</string>
+
+    <string name="add">追加</string>
+
+    <string name="add_it">追加する</string>
+
+    <string name="aprox_month_income_login_screen">およその月収</string>
+
+    <string name="you_havent_added_incomes_yet_lazy_column">収入はまだ追加されていません</string>
+
+    <string name="add_expense">経費を追加</string>
+
+    <string name="add_incomes">収入を追加</string>
+
+    <string name="create_new_category">新しいカテゴリーを作成</string>
+
+    <string name="category_exist_warning_new_category_dialog">このカテゴリは既に存在します</string>
+
+    <string name="back_to_settings_screen_CD">設定画面に戻る</string>
+
+    <string name="statistic">統計</string>
+
+    <string name="financial">金融</string>
+
+    <string name="financial_operation_statistic_screen">財務業務</string>
+
+    <string name="expense_operation_statistic_screen">経費処理</string>
+
+    <string name="income_operation_statistic_screen">収益事業</string>
+
+    <string name="cd_add_new_category">新しいカテゴリーを作成</string>
+
+    <string name="both">両方</string>
+
+    <string name="week">週</string>
+
+    <string name="month">月</string>
+
+    <string name="year">年</string>
+
+    <string name="limit_planned">制限予定</string>
+
+    <string name="income_planned">予定収入</string>
+
+    <string name="savings_planned">貯蓄計画</string>
+
+    <string name="add_idea">アイデアを追加</string>
+
+    <string name="optional">オプション</string>
+
+    <string name="saving_for">貯蓄中</string>
+
+    <string name="planned_main_track_screen">計画中</string>
+
+    <string name="spent_main_track_screen">過ごした</string>
+
+    <string name="scroll_up_CD">上にスクロール</string>
+
+    <string name="budget_main_feed_card">%1$s 予算</string>
+
+    <string name="empty_income_lazyColumn_additional1">右下のボタンを使って試してみてください。どのアプリ画面でも利用できます。</string>
+
+    <string name="add_to_adding_to_saving_idea_dialog">に追加 </string>
+
+    <string name="planned_adding_to_saving_idea_dialog">計画中 %1$s</string>
+
+    <string name="completed_for_adding_to_saving_idea_dialog">完了しました</string>
+
+    <string name="specified_category_fin_item_card">%1$s の %2$s: </string>
+
+    <string name="each_month_limit_new_idea_dialog">毎月の制限</string>
+
+    <string name="confirm">確認する</string>
+
+    <string name="cancel">キャンセル</string>
+
+    <string name="incorrect_input_value_BS_error">入力値が正しくありません</string>
+
+    <string name="select_financial_category_BS_error">金融カテゴリを選択</string>
+
+    <string name="incorrect_goal_value_newIdeaDialog_error">目標値が間違っています</string>
+
+    <string name="incorrect_saving_label_error">保存ラベルが空です</string>
+
+    <string name="select_correct_date_error">正しい日付を選択してください</string>
+
+    <string name="you_have_already_selected_categories_error">すでに 3 つのカテゴリを選択しています</string>
+
+    <string name="additional">追加</string>
+
+    <string name="select_category_new_idea_dialog_error">カテゴリを選択するか、すべてのカテゴリに関連する支出制限を設定します</string>
+
+    <string name="non_categorised_expenses_error_BS">分類されていない経費のグループ化カテゴリを選択する</string>
+
+    <string name="non_categorised_incomes_error_BS">分類されていない収入のグループ化カテゴリを選択</string>
+
+    <string name="edit_personal_info">個人情報を編集する</string>
+
+    <string name="delete_financial_item_CD">財務項目を削除</string>
+
+    <string name="currency_in_use_error">%1$s はすでに使用されています</string>
+
+    <string name="changing_preferable_currency_error">優先通貨を変更する際にエラーが発生しました</string>
+
+    <string name="income_category">所得区分</string>
+
+    <string name="expense_category">経費カテゴリ</string>
+
+    <string name="allow_non_categorised_expenses">分類されていない経費を許可する</string>
+
+    <string name="show_as">表示形式</string>
+
+    <string name="allow_non_categorised_incomes">分類されていない収入を許可する</string>
+
+    <string name="category_name_new_category_dialog">カテゴリ名</string>
+
+    <string name="filter_currencies">通貨をフィルター</string>
+
+    <string name="hide_additional_currencies">追加の通貨を非表示</string>
+
+    <string name="show_additional_currencies">追加の通貨を表示</string>
+
+    <string name="user">ユーザー</string>
+
+    <string name="plan_started_income_plan_card">計画開始 : %1$s</string>
+
+    <string name="your_ideas_setting_screen">あなたのアイデア</string>
+
+    <string name="set_as_preferable_currency_currencies_settings">優先通貨として設定</string>
+
+    <string name="set_as_first_priority_additional">最優先追加として設定</string>
+
+    <string name="set_as_second_priority_additional">2 番目の優先順位として追加設定</string>
+
+    <string name="set_as_third_priority_additional">3 番目の優先順位として追加設定</string>
+
+    <string name="set_as_fourth_priority_additional">4 番目の優先事項として設定</string>
+
+    <string name="list_categories_settings_view_option">リスト</string>
+
+    <string name="cards_categories_settings_view_option">カード</string>
+
+    <string name="show_only_custom_categories_settings">カスタムカテゴリのみ表示</string>
+
+    <string name="filter_categories_categories_screen">カテゴリを探す</string>
+
+    <string name="no_categories_for_specified_filters_categories_settings">指定されたフィルターにカテゴリがありません</string>
+
+    <string name="shows_as_categories_settings">表示形式</string>
+
+    <string name="month_summary_header">%1$s の概要</string>
+
+    <string name="total_expenses_month_summary">総費用 :</string>
+
+    <string name="total_incomes_month_summary">総収入 :</string>
+
+    <string name="total_operations_month_summary">総操作数 :</string>
+
+    <string name="overall_month_summary">全体 ：</string>
+
+    <string name="financials_quantity_stats_info_cards">財務数量 :</string>
+
+    <string name="average_income_stats_info_cards">平均収入 :</string>
+
+    <string name="average_expenses_stats_info_cards">1 日あたりの平均費用：</string>
+
+    <string name="period_summary_statistics_info_cards">期間の概要</string>
+
+    <string name="describe_your_financial_bottom_sheet">あなたの財務状況を説明する</string>
+</resources>
