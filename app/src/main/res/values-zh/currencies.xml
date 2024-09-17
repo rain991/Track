@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="currency_uae_dirham">阿联酋迪拉姆</string>
+
+    <string name="currency_argentine_peso">阿根廷比索</string>
+
+    <string name="currency_australian_dollar">澳元</string>
+
+    <string name="currency_brazilian_real">巴西雷亚尔</string>
+
+    <string name="currency_canadian_dollar">加元</string>
+
+    <string name="currency_swiss_franc">瑞士法郎</string>
+
+    <string name="currency_chilean_peso">智利比索</string>
+
+    <string name="currency_chinese_yuan">人民币</string>
+
+    <string name="currency_colombian_peso">哥伦比亚比索</string>
+
+    <string name="currency_czech_koruna">捷克克朗</string>
+
+    <string name="currency_danish_krone">丹麦克朗</string>
+
+    <string name="currency_egyptian_pound">埃及镑</string>
+
+    <string name="currency_euro">欧元</string>
+
+    <string name="currency_british_pound_sterling">英镑</string>
+
+    <string name="currency_hong_kong_dollar">港币</string>
+
+    <string name="currency_hungarian_forint">匈牙利福林</string>
+
+    <string name="currency_indonesian_rupiah">印尼盾</string>
+
+    <string name="currency_israeli_new_shekel">以色列新谢克尔</string>
+
+    <string name="currency_indian_rupee">印度卢比</string>
+
+    <string name="currency_japanese_yen">日圆</string>
+
+    <string name="currency_south_korean_won">韩元</string>
+
+    <string name="currency_mexican_peso">墨西哥比索</string>
+
+    <string name="currency_malaysian_ringgit">马来西亚林吉特</string>
+
+    <string name="currency_nigerian_naira">尼日利亚奈拉</string>
+
+    <string name="currency_norwegian_krone">挪威克朗</string>
+
+    <string name="currency_new_zealand_dollar">新西兰元</string>
+
+    <string name="currency_peruvian_sol">秘鲁索尔</string>
+
+    <string name="currency_philippine_peso">菲律宾比索</string>
+
+    <string name="currency_pakistani_rupee">巴基斯坦卢比</string>
+
+    <string name="currency_polish_zloty">波兰兹罗提</string>
+
+    <string name="currency_russian_ruble">俄罗斯卢布</string>
+
+    <string name="currency_saudi_riyal">沙特里亚尔</string>
+
+    <string name="currency_swedish_krona">瑞典克朗</string>
+
+    <string name="currency_singapore_dollar">新加坡元</string>
+
+    <string name="currency_thai_baht">泰铢</string>
+
+    <string name="currency_turkish_lira">土耳其里拉</string>
+
+    <string name="currency_new_taiwan_dollar">新台币</string>
+
+    <string name="currency_ukrainian_hryvnia">乌克兰格里夫纳</string>
+
+    <string name="currency_united_states_dollar">美元</string>
+
+    <string name="currency_south_african_rand">南非兰特</string>
+
+    <string name="currency_cardano" translatable="false">Cardano</string>
+
+    <string name="currency_bitcoin_cash" translatable="false">Bitcoin Cash</string>
+
+    <string name="currency_binance_coin" translatable="false">Binance Coin</string>
+
+    <string name="currency_bitcoin" translatable="false">Bitcoin</string>
+
+    <string name="currency_binance_usd" translatable="false">Binance USD</string>
+
+    <string name="currency_dogecoin" translatable="false">Dogecoin</string>
+
+    <string name="currency_polkadot" translatable="false">Polkadot</string>
+
+    <string name="currency_ethereum" translatable="false">Ethereum</string>
+
+    <string name="currency_litecoin" translatable="false">Litecoin</string>
+
+    <string name="currency_shiba_inu" translatable="false">Shiba Inu</string>
+
+    <string name="currency_solana" translatable="false">Solana</string>
+
+    <string name="currency_tron" translatable="false">TRON</string>
+
+    <string name="currency_usd_coin" translatable="false">USD Coin</string>
+
+    <string name="currency_tether" translatable="false">Tether</string>
+
+    <string name="currency_ripple" translatable="false">Ripple</string>
+
+    <string name="currency_gold">金子</string>
+
+    <string name="currency_silver">银</string>
+
+</resources>

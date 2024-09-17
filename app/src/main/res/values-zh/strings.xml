@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name" translatable="false">Track</string>
+
+    <string name="app_logo" translatable="false">Application Logo</string>
+
+    <string name="logo_app_description">方便易用的财务追踪器</string>
+
+    <string name="currency">货币</string>
+
+    <string name="error">错误</string>
+
+    <string name="unknown">未知</string>
+
+    <string name="lets_start">开始吧！</string>
+
+    <string name="name">姓名</string>
+
+    <string name="expenses">开支</string>
+
+    <string name="incomes">收入</string>
+
+    <string name="january">一月</string>
+
+    <string name="february">二月</string>
+
+    <string name="march">行进</string>
+
+    <string name="april">四月</string>
+
+    <string name="may">可能</string>
+
+    <string name="june">六月</string>
+
+    <string name="july">七月</string>
+
+    <string name="august">八月</string>
+
+    <string name="september">九月</string>
+
+    <string name="october">十月</string>
+
+    <string name="november">十一月</string>
+
+    <string name="december">十二月</string>
+
+    <string name="unknown_month">未知月份</string>
+
+    <string name="expense">费用</string>
+
+    <string name="today">今天</string>
+
+    <string name="yesterday">昨天</string>
+
+    <string name="selected_date_add_exp">選擇日期</string>
+
+    <string name="your_note_adding_exp">笔记</string>
+
+    <string name="checked_category_add_exp_CD">已检查类别</string>
+
+    <string name="note_exp_list">注意：%1$s</string>
+
+    <string name="empty_exp_lazyColumn_title">您尚未添加费用</string>
+
+    <string name="empty_exp_lazyColumn_additional1">使用右下角的按钮尝试一下，它在每个应用程序屏幕上都可用</string>
+
+    <string name="account">帐号</string>
+
+    <string name="personal">个人的</string>
+
+    <string name="ideas">想法</string>
+
+    <string name="currencies">货币</string>
+
+    <string name="categories">类别</string>
+
+    <string name="settings">偏好设置</string>
+
+    <string name="theme_settings_screen">主题</string>
+
+    <string name="preferable_currency_settings_screen">首选货币</string>
+
+    <string name="use_device_theme_settings_screen">使用设备配色方案</string>
+
+    <string name="show_page_name_settings_screen">显示页面名称</string>
+
+    <string name="preferable_theme_settings_screen">偏好主题</string>
+
+    <string name="extra_currency_settings_screen">额外货币</string>
+
+    <string name="delete_latest_currency_settings_screen">删除最新货币</string>
+
+    <string name="warning_message_idea_settings_screen">未找到指定过滤器的创意</string>
+
+    <string name="show_completed_ideas_idea_settings_screen">显示已完成的想法</string>
+
+    <string name="sorted_date_idea_settings_screen">排序日期</string>
+
+    <string name="newest_first_idea_settings_screen">最新</string>
+
+    <string name="oldest_first_idea_settings_screen">最早</string>
+
+    <string name="message_currencies_settings_screen">您可以通过触摸卡上的货币代码来转换货币。您首选的货币在赛道的大部分地区用作基本货币。</string>
+
+    <string name="name_personal_settings_screen">姓名：%1$s</string>
+
+    <string name="budget_personal_settings_screen">预算：%1$s %2$s</string>
+
+    <string name="new_budget_personal_settings_screen">新预算</string>
+
+    <string name="new_name_personal_settings_screen">新名称</string>
+
+    <string name="decline">衰退</string>
+
+    <string name="save">节省</string>
+
+    <string name="your_stats_personal_settings_screen">您的统计数据</string>
+
+    <string name="not_added_any_expenses_yet_personal_settings_screen">您尚未添加任何费用</string>
+
+    <string name="you_have_already_added_expenses_worth_of">您已添加 %1$s 项支出，价值为 %2$s %3$s</string>
+
+    <string name="not_added_any_incomes_yet_personal_settings_screen">您尚未添加任何收入</string>
+
+    <string name="you_have_already_added_incomes_worth_of">您已添加 %1$s 笔收入，价值 %2$s %3$s</string>
+
+    <string name="login_message_personal_settings_screen">您已进入赛道 %1$s 次</string>
+
+    <string name="expense_categories_categories_settings_screen">费用类别</string>
+
+    <string name="delete">删除</string>
+
+    <string name="income_categories">收入类别</string>
+
+    <string name="expenses_lazy_column">开支</string>
+
+    <string name="incomes_lazy_column">收入</string>
+
+    <plurals name="operations_screen_info_cards">
+        <item quantity="other">运营</item>
+    </plurals>
+
+    <string name="warning_message_track_stats_lazycolumn">我们未找到符合指定过滤器的财务操作</string>
+
+    <string name="first_notion_new_idea_card">创意是你宣布财务目标的方式</string>
+
+    <string name="second_notion_new_idea_card">可用的想法类型：储蓄、支出限制和收入计划</string>
+
+    <string name="third_notion_new_idea_card">Ideas 将在应用程序中通知你的目标</string>
+
+    <string name="date">日期</string>
+
+    <string name="limit_end_date_ideas">限制结束日期</string>
+
+    <string name="plan_end_date_ideas">计划结束日期</string>
+
+    <string name="related_to_all_categories_ideas">与所有类别相关</string>
+
+    <string name="new_idea_main_screen_feed">新想法</string>
+
+    <string name="add_new_idea">添加新想法</string>
+
+    <string name="expense_categories_groceries">杂货</string>
+
+    <string name="expense_categories_Utilities">实用工具</string>
+
+    <string name="expense_categories_Household">家庭</string>
+
+    <string name="expense_categories_Transportation">运输</string>
+
+    <string name="expense_categories_DiningOut">外出就餐</string>
+
+    <string name="expense_categories_Entertainment">娱乐</string>
+
+    <string name="expense_categories_Gifts">礼物</string>
+
+    <string name="expense_categories_ClothingAndAccessories">服装和配饰</string>
+
+    <string name="expense_categories_PersonalCare">个人护理</string>
+
+    <string name="expense_categories_TechnologyAndElectronics">科技与电子</string>
+
+    <string name="expense_categories_Investments">投资</string>
+
+    <string name="expense_categories_Unique">独特的</string>
+
+    <string name="expense_categories_Other">其他</string>
+
+    <string name="income_categories_Salary">薪水</string>
+
+    <string name="income_categories_Freelance">自由职业</string>
+
+    <string name="income_categories_Investment">投资</string>
+
+    <string name="income_categories_RentalIncome">租金收入</string>
+
+    <string name="income_categories_BusinessIncome">营业收入</string>
+
+    <string name="income_categories_Dividends">股息</string>
+
+    <string name="income_categories_Grants">赠款</string>
+
+    <string name="income_categories_Royalties">特许权使用费</string>
+
+    <string name="expense_limit">费用限额</string>
+
+    <string name="already_spent_expense_limit_card">已花费</string>
+
+    <string name="categories_message_expense_limit_card">类别：</string>
+
+    <string name="related_to_all_categories_expense_limit_card">与所有类别相关</string>
+
+    <string name="saving">保存</string>
+
+    <string name="income_plan">收入计划</string>
+
+    <string name="planned">计划</string>
+
+    <string name="completed_for">已完成</string>
+
+    <string name="preferable_period_income_plan_card">首选时间段：%1$s - %2$s</string>
+
+    <string name="other">其他</string>
+
+    <string name="income">收入</string>
+
+    <string name="warning_track_statistic_chart">我们没有足够的数据来构建图表</string>
+
+    <string name="hide_chart">隐藏图表</string>
+
+    <string name="show_chart">显示图表</string>
+
+    <string name="selected_time_period_track_stats_options">选定时间段：%1$s - %2$s</string>
+
+    <string name="expenses_fin_item_card" tools:ignore="StringFormatCount">%1$s费用：</string>
+
+    <string name="incomes_fin_item_card" tools:ignore="StringFormatCount">%1$s收入：</string>
+
+    <string name="warning_message_info_cards">本月 0 项操作</string>
+
+    <string name="add">添加</string>
+
+    <string name="add_it">添加</string>
+
+    <string name="aprox_month_income_login_screen">大约月收入</string>
+
+    <string name="you_havent_added_incomes_yet_lazy_column">您尚未添加收入</string>
+
+    <string name="add_expense">添加费用</string>
+
+    <string name="add_incomes">添加收入</string>
+
+    <string name="create_new_category">创建新类别</string>
+
+    <string name="category_exist_warning_new_category_dialog">该类别已存在</string>
+
+    <string name="back_to_settings_screen_CD">返回设置屏幕</string>
+
+    <string name="statistic">统计</string>
+
+    <string name="financial">金融的</string>
+
+    <string name="financial_operation_statistic_screen">财务运作</string>
+
+    <string name="expense_operation_statistic_screen">费用操作</string>
+
+    <string name="income_operation_statistic_screen">收入业务</string>
+
+    <string name="cd_add_new_category">创建新类别</string>
+
+    <string name="both">两个都</string>
+
+    <string name="week">星期</string>
+
+    <string name="month">月</string>
+
+    <string name="year">年</string>
+
+    <string name="limit_planned">限制计划</string>
+
+    <string name="income_planned">收入计划</string>
+
+    <string name="savings_planned">计划节省开支</string>
+
+    <string name="add_idea">添加想法</string>
+
+    <string name="optional">选修的</string>
+
+    <string name="saving_for">节省</string>
+
+    <string name="planned_main_track_screen">计划</string>
+
+    <string name="spent_main_track_screen">花费</string>
+
+    <string name="scroll_up_CD">向上滚动</string>
+
+    <string name="budget_main_feed_card">%1$s 预算</string>
+
+    <string name="empty_income_lazyColumn_additional1">使用右下角的按钮尝试一下，它在每个应用程序屏幕上都可用</string>
+
+    <string name="add_to_adding_to_saving_idea_dialog">添加 </string>
+
+    <string name="planned_adding_to_saving_idea_dialog">计划于 %1$s</string>
+
+    <string name="completed_for_adding_to_saving_idea_dialog">已完成</string>
+
+    <string name="specified_category_fin_item_card">%2$s 中的 %1$s：</string>
+
+    <string name="each_month_limit_new_idea_dialog">每个月限额</string>
+
+    <string name="confirm">确认</string>
+
+    <string name="cancel">取消</string>
+
+    <string name="incorrect_input_value_BS_error">输入值不正确</string>
+
+    <string name="select_financial_category_BS_error">选择财务类别</string>
+
+    <string name="incorrect_goal_value_newIdeaDialog_error">目标值不正确</string>
+
+    <string name="incorrect_saving_label_error">空的保存标签</string>
+
+    <string name="select_correct_date_error">选择正确的日期</string>
+
+    <string name="you_have_already_selected_categories_error">您已选择 3 个类别</string>
+
+    <string name="additional">额外的</string>
+
+    <string name="select_category_new_idea_dialog_error">选择类别或设置与所有类别相关的费用限额</string>
+
+    <string name="non_categorised_expenses_error_BS">选择未分类费用的分组类别</string>
+
+    <string name="non_categorised_incomes_error_BS">选择未分类收入的分组类别</string>
+
+    <string name="edit_personal_info">编辑个人信息</string>
+
+    <string name="delete_financial_item_CD">删除财务项目</string>
+
+    <string name="currency_in_use_error">%1$s 已在使用中</string>
+
+    <string name="changing_preferable_currency_error">更改首选货币时发生错误</string>
+
+    <string name="track_version" translatable="false">Track %1$s</string>
+
+    <string name="income_category">收入类别</string>
+
+    <string name="expense_category">费用类别</string>
+
+    <string name="allow_non_categorised_expenses">允许未分类的支出</string>
+
+    <string name="show_as">显示为</string>
+
+    <string name="allow_non_categorised_incomes">允许未分类的收入</string>
+
+    <string name="category_name_new_category_dialog">类别名称</string>
+
+    <string name="filter_currencies">过滤货币</string>
+
+    <string name="hide_additional_currencies">隐藏其他货币</string>
+
+    <string name="show_additional_currencies">显示其他货币</string>
+
+    <string name="user">用户</string>
+
+    <string name="plan_started_income_plan_card">计划已开始：%1$s</string>
+
+    <string name="your_ideas_setting_screen">您的想法</string>
+
+    <string name="set_as_preferable_currency_currencies_settings">设置为首选货币</string>
+
+    <string name="set_as_first_priority_additional">设置为第一优先级附加</string>
+
+    <string name="set_as_second_priority_additional">设置为第二优先级附加</string>
+
+    <string name="set_as_third_priority_additional">设置为第三优先级附加</string>
+
+    <string name="set_as_fourth_priority_additional">设为第四优先级附加</string>
+
+    <string name="list_categories_settings_view_option">列表</string>
+
+    <string name="cards_categories_settings_view_option">卡片</string>
+
+    <string name="show_only_custom_categories_settings">仅显示自定义类别</string>
+
+    <string name="filter_categories_categories_screen">查找类别</string>
+
+    <string name="no_categories_for_specified_filters_categories_settings">没有指定过滤器的类别</string>
+
+    <string name="shows_as_categories_settings">显示为</string>
+
+    <string name="month_summary_header">%1$s摘要</string>
+
+    <string name="total_expenses_month_summary">总费用：</string>
+
+    <string name="total_incomes_month_summary">总收入：</string>
+
+    <string name="total_operations_month_summary">总运营量：</string>
+
+    <string name="overall_month_summary">全面的 ：</string>
+
+    <string name="financials_quantity_stats_info_cards">财务数量：</string>
+
+    <string name="average_income_stats_info_cards">平均收入：</string>
+
+    <string name="average_expenses_stats_info_cards">每日平均开支：</string>
+
+    <string name="period_summary_statistics_info_cards">期间摘要</string>
+
+    <string name="describe_your_financial_bottom_sheet">描述您的财务状况</string>
+
+</resources>
