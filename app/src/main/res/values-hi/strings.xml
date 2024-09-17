@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="logo_app_description">सुविधाजनक और उपयोग में आसान वित्तीय ट्रैकर</string>
+
+    <string name="currency">मुद्रा</string>
+
+    <string name="error">गलती</string>
+
+    <string name="unknown">अज्ञात</string>
+
+    <string name="lets_start">चलो शुरू करें!</string>
+
+    <string name="name">नाम</string>
+
+    <string name="expenses">खर्च</string>
+
+    <string name="incomes">आय</string>
+
+    <string name="january">जनवरी</string>
+
+    <string name="february">फ़रवरी</string>
+
+    <string name="march">मार्च</string>
+
+    <string name="april">अप्रैल</string>
+
+    <string name="may">मई</string>
+
+    <string name="june">जून</string>
+
+    <string name="july">जुलाई</string>
+
+    <string name="august">अगस्त</string>
+
+    <string name="september">सितम्बर</string>
+
+    <string name="october">अक्टूबर</string>
+
+    <string name="november">नवंबर</string>
+
+    <string name="december">दिसंबर</string>
+
+    <string name="unknown_month">अज्ञात माह</string>
+
+    <string name="expense">व्यय</string>
+
+    <string name="today">आज</string>
+
+    <string name="yesterday">कल</string>
+
+    <string name="selected_date_add_exp">चयनित तिथि</string>
+
+    <string name="your_note_adding_exp">टिप्पणी</string>
+
+    <string name="checked_category_add_exp_CD">जाँची गई श्रेणी</string>
+
+    <string name="note_exp_list">नोट: %1$s</string>
+
+    <string name="empty_exp_lazyColumn_title">आपने अभी तक व्यय नहीं जोड़ा है</string>
+
+    <string name="empty_exp_lazyColumn_additional1">दाएं निचले कोने में बटन का उपयोग करके इसे आज़माएं, यह हर ऐप स्क्रीन में उपलब्ध है</string>
+
+    <string name="account">खाता</string>
+
+    <string name="personal">निजी</string>
+
+    <string name="ideas">विचारों</string>
+
+    <string name="currencies">मुद्राओं</string>
+
+    <string name="categories">श्रेणियाँ</string>
+
+    <string name="settings">प्राथमिकताएं</string>
+
+    <string name="theme_settings_screen">विषय</string>
+
+    <string name="preferable_currency_settings_screen">पसंदीदा मुद्रा</string>
+
+    <string name="use_device_theme_settings_screen">डिवाइस रंग योजना का उपयोग करें</string>
+
+    <string name="show_page_name_settings_screen">पेज का नाम दिखाएं</string>
+
+    <string name="preferable_theme_settings_screen">पसंदीदा विषय</string>
+
+    <string name="extra_currency_settings_screen">अतिरिक्त मुद्रा</string>
+
+    <string name="delete_latest_currency_settings_screen">नवीनतम मुद्रा हटाएं</string>
+
+    <string name="warning_message_idea_settings_screen">निर्दिष्ट फ़िल्टर के लिए कोई विचार नहीं मिला</string>
+
+    <string name="show_completed_ideas_idea_settings_screen">पूर्ण विचार दिखाएं</string>
+
+    <string name="sorted_date_idea_settings_screen">क्रमबद्ध तिथि</string>
+
+    <string name="newest_first_idea_settings_screen">सबसे नया पहले</string>
+
+    <string name="oldest_first_idea_settings_screen">सबसे पुराना पहले</string>
+
+    <string name="message_currencies_settings_screen">आप कार्ड के टिकर को छूकर मुद्रा बदल सकते हैं. आपकी पसंदीदा मुद्रा का उपयोग ट्रैक के अधिकांश भागों में आधार के रूप में किया जाता है.</string>
+
+    <string name="name_personal_settings_screen">नाम : %1$s</string>
+
+    <string name="budget_personal_settings_screen">बजट : %1$s %2$s</string>
+
+    <string name="new_budget_personal_settings_screen">नया बजट</string>
+
+    <string name="new_name_personal_settings_screen">नया नाम</string>
+
+    <string name="decline">गिरावट</string>
+
+    <string name="save">बचाना</string>
+
+    <string name="your_stats_personal_settings_screen">आपके आँकड़े</string>
+
+    <string name="not_added_any_expenses_yet_personal_settings_screen">आपने अभी तक कोई व्यय नहीं जोड़ा है</string>
+
+    <string name="you_have_already_added_expenses_worth_of">आपने पहले ही %1$s खर्च जोड़ दिए हैं, जिनकी कीमत %2$s %3$s है</string>
+
+    <string name="not_added_any_incomes_yet_personal_settings_screen">आपने अभी तक कोई आय नहीं जोड़ी है</string>
+
+    <string name="you_have_already_added_incomes_worth_of">आपने पहले ही %1$s आय जोड़ दी है, जिसका मूल्य %2$s %3$s है</string>
+
+    <string name="login_message_personal_settings_screen">आपने ट्रैक %1$s बार दर्ज किया है</string>
+
+    <string name="expense_categories_categories_settings_screen">व्यय श्रेणियाँ</string>
+
+    <string name="delete">मिटाना</string>
+
+    <string name="income_categories">आय श्रेणियाँ</string>
+
+    <string name="expenses_lazy_column">खर्च</string>
+
+    <string name="incomes_lazy_column">आय</string>
+
+    <plurals name="operations_screen_info_cards">
+        <item quantity="one" tools:ignore="ImpliedQuantity">संचालन</item>
+        <item quantity="other">संचालन</item>
+    </plurals>
+
+    <string name="warning_message_track_stats_lazycolumn">हमें निर्दिष्ट फ़िल्टर के लिए वित्तीय संचालन नहीं मिला है</string>
+
+    <string name="first_notion_new_idea_card">विचार वह तरीका है जिससे आप वित्तीय लक्ष्य घोषित करते हैं</string>
+
+    <string name="second_notion_new_idea_card">उपलब्ध विचार प्रकार: बचत, व्यय सीमा और आय योजनाएँ</string>
+
+    <string name="third_notion_new_idea_card">आइडियाज़ ऐप में आपके लक्ष्यों के बारे में सूचित करेंगे</string>
+
+    <string name="date">तारीख</string>
+
+    <string name="limit_end_date_ideas">सीमा समाप्ति तिथि</string>
+
+    <string name="plan_end_date_ideas">नियोजित समाप्ति तिथि</string>
+
+    <string name="related_to_all_categories_ideas">सभी श्रेणियों से संबंधित</string>
+
+    <string name="new_idea_main_screen_feed">नया विचार</string>
+
+    <string name="add_new_idea">नया विचार जोड़ें</string>
+
+    <string name="expense_categories_groceries">किराने का सामान</string>
+
+    <string name="expense_categories_Utilities">उपयोगिताओं</string>
+
+    <string name="expense_categories_Household">परिवार</string>
+
+    <string name="expense_categories_Transportation">परिवहन</string>
+
+    <string name="expense_categories_DiningOut">बाहर खाएं</string>
+
+    <string name="expense_categories_Entertainment">मनोरंजन</string>
+
+    <string name="expense_categories_Gifts">उपहार</string>
+
+    <string name="expense_categories_ClothingAndAccessories">कपड़ें और एक्सेसरीज़</string>
+
+    <string name="expense_categories_PersonalCare">व्यक्तिगत देखभाल</string>
+
+    <string name="expense_categories_TechnologyAndElectronics">प्रौद्योगिकी और इलेक्ट्रॉनिक्स</string>
+
+    <string name="expense_categories_Investments">निवेश</string>
+
+    <string name="expense_categories_Unique">अद्वितीय</string>
+
+    <string name="expense_categories_Other">अन्य</string>
+
+    <string name="income_categories_Salary">वेतन</string>
+
+    <string name="income_categories_Freelance">फ्रीलांस</string>
+
+    <string name="income_categories_Investment">निवेश</string>
+
+    <string name="income_categories_RentalIncome">किराये की आय</string>
+
+    <string name="income_categories_BusinessIncome">व्यवसाय आय</string>
+
+    <string name="income_categories_Dividends">लाभांश</string>
+
+    <string name="income_categories_Grants">अनुदान</string>
+
+    <string name="income_categories_Royalties">रॉयल्टी</string>
+
+    <string name="expense_limit">व्यय सीमा</string>
+
+    <string name="already_spent_expense_limit_card">पहले ही खर्च हो चुका है</string>
+
+    <string name="categories_message_expense_limit_card">श्रेणियाँ:</string>
+
+    <string name="related_to_all_categories_expense_limit_card"> सभी श्रेणियों से संबंधित</string>
+
+    <string name="saving">सहेजा जा रहा है</string>
+
+    <string name="income_plan">आय योजना</string>
+
+    <string name="planned">की योजना बनाई</string>
+
+    <string name="completed_for">के लिए पूरा किया गया</string>
+
+    <string name="preferable_period_income_plan_card">पसंदीदा अवधि: %1$s - %2$s</string>
+
+    <string name="other">अन्य</string>
+
+    <string name="income">आय</string>
+
+    <string name="warning_track_statistic_chart">हमारे पास चार्ट बनाने के लिए पर्याप्त डेटा नहीं है</string>
+
+    <string name="hide_chart">चार्ट छिपाएँ</string>
+
+    <string name="show_chart">चार्ट दिखाएं</string>
+
+    <string name="selected_time_period_track_stats_options">चयनित समय अवधि : %1$s - %2$s</string>
+
+    <string name="expenses_fin_item_card" tools:ignore="StringFormatCount">%1$s व्यय: </string>
+
+    <string name="incomes_fin_item_card" tools:ignore="StringFormatCount">%1$s आय: </string>
+
+    <string name="warning_message_info_cards">इस महीने 0 ऑपरेशन</string>
+
+    <string name="add">जोड़ना</string>
+
+    <string name="add_it">इसे जोड़ें</string>
+
+    <string name="aprox_month_income_login_screen">अनुमानित मासिक आय</string>
+
+    <string name="you_havent_added_incomes_yet_lazy_column">आपने अभी तक आय नहीं जोड़ी है</string>
+
+    <string name="add_expense">व्यय जोड़ें</string>
+
+    <string name="add_incomes">आय जोड़ें</string>
+
+    <string name="create_new_category">नई श्रेणी बनाएं</string>
+
+    <string name="category_exist_warning_new_category_dialog">यह श्रेणी पहले से मौजूद है</string>
+
+    <string name="back_to_settings_screen_CD">सेटिंग्स स्क्रीन पर वापस जाएँ</string>
+
+    <string name="statistic">सांख्यिकीय</string>
+
+    <string name="financial">वित्तीय</string>
+    <string name="financial_operation_statistic_screen">वित्तीय संचालन</string>
+
+    <string name="expense_operation_statistic_screen">व्यय संचालन</string>
+
+    <string name="income_operation_statistic_screen">आय संचालन</string>
+
+    <string name="cd_add_new_category">नई श्रेणी बनाएं</string>
+
+    <string name="both">दोनों</string>
+
+    <string name="week">सप्ताह</string>
+
+    <string name="month">महीना</string>
+
+    <string name="year">वर्ष</string>
+
+    <string name="limit_planned">नियोजित सीमा</string>
+
+    <string name="income_planned">आय की योजना बनाई</string>
+
+    <string name="savings_planned">बचत की योजना</string>
+
+    <string name="add_idea">विचार जोड़ें</string>
+
+    <string name="optional">वैकल्पिक</string>
+
+    <string name="saving_for">बचत के लिए</string>
+
+    <string name="planned_main_track_screen">की योजना बनाई</string>
+
+    <string name="spent_main_track_screen">खर्च किया</string>
+
+    <string name="scroll_up_CD">ऊपर स्क्रॉल करें</string>
+
+    <string name="budget_main_feed_card">%1$s बजट</string>
+
+    <string name="empty_income_lazyColumn_additional1">दाएं निचले कोने में बटन का उपयोग करके इसे आज़माएं, यह हर ऐप स्क्रीन में उपलब्ध है</string>
+
+    <string name="add_to_adding_to_saving_idea_dialog">इसमें जोड़ें </string>
+
+    <string name="planned_adding_to_saving_idea_dialog">नियोजित %1$s </string>
+
+    <string name="completed_for_adding_to_saving_idea_dialog">के लिए पूरा किया गया</string>
+
+    <string name="specified_category_fin_item_card">%2$s में %1$s: </string>
+
+    <string name="each_month_limit_new_idea_dialog">प्रत्येक माह की सीमा</string>
+
+    <string name="confirm">पुष्टि करना</string>
+
+    <string name="cancel">रद्द करना</string>
+
+    <string name="incorrect_input_value_BS_error">गलत इनपुट मान</string>
+
+    <string name="select_financial_category_BS_error">वित्तीय श्रेणी चुनें</string>
+
+    <string name="incorrect_goal_value_newIdeaDialog_error">ग़लत लक्ष्य मान</string>
+
+    <string name="incorrect_saving_label_error">खाली बचत लेबल</string>
+
+    <string name="select_correct_date_error">सही तारीख चुनें</string>
+
+    <string name="you_have_already_selected_categories_error">आपने पहले ही 3 श्रेणियां चुन ली हैं</string>
+
+    <string name="additional">अतिरिक्त</string>
+
+    <string name="select_category_new_idea_dialog_error">श्रेणी का चयन करें या सभी श्रेणियों से संबंधित व्यय सीमा निर्धारित करें</string>
+
+    <string name="non_categorised_expenses_error_BS">गैर-वर्गीकृत व्ययों के लिए समूहीकरण श्रेणी का चयन करें</string>
+
+    <string name="non_categorised_incomes_error_BS">गैर-वर्गीकृत आय के लिए समूहीकरण श्रेणी का चयन करें</string>
+
+    <string name="edit_personal_info">व्यक्तिगत जानकारी संपादित करें</string>
+
+    <string name="delete_financial_item_CD">वित्तीय आइटम हटाएं</string>
+
+    <string name="currency_in_use_error">%1$s पहले से उपयोग में है</string>
+
+    <string name="changing_preferable_currency_error">पसंदीदा मुद्रा बदलते समय त्रुटि हुई</string>
+
+    <string name="income_category">आय श्रेणी</string>
+
+    <string name="expense_category">व्यय श्रेणी</string>
+
+    <string name="allow_non_categorised_expenses">गैर-वर्गीकृत व्यय की अनुमति दें</string>
+
+    <string name="show_as">के रूप में दर्शाएं</string>
+
+    <string name="allow_non_categorised_incomes">गैर-वर्गीकृत आय की अनुमति दें</string>
+
+    <string name="category_name_new_category_dialog">श्रेणी नाम</string>
+
+    <string name="filter_currencies">मुद्राएं फ़िल्टर करें</string>
+
+    <string name="hide_additional_currencies">अतिरिक्त मुद्राएँ छिपाएँ</string>
+
+    <string name="show_additional_currencies">अतिरिक्त मुद्राएँ दिखाएँ</string>
+
+    <string name="user">उपयोगकर्ता</string>
+
+    <string name="plan_started_income_plan_card">योजना शुरू हुई : %1$s</string>
+
+    <string name="your_ideas_setting_screen">आपके विचार</string>
+
+    <string name="set_as_preferable_currency_currencies_settings">पसंदीदा मुद्रा के रूप में सेट करें</string>
+
+    <string name="set_as_first_priority_additional">प्रथम प्राथमिकता के रूप में अतिरिक्त सेट करें</string>
+
+    <string name="set_as_second_priority_additional">दूसरी प्राथमिकता के रूप में अतिरिक्त सेट करें</string>
+
+    <string name="set_as_third_priority_additional">तीसरी प्राथमिकता के रूप में अतिरिक्त सेट करें</string>
+
+    <string name="set_as_fourth_priority_additional">चौथी प्राथमिकता अतिरिक्त के रूप में सेट करें</string>
+
+    <string name="list_categories_settings_view_option">सूची</string>
+
+    <string name="cards_categories_settings_view_option">कार्ड</string>
+
+    <string name="show_only_custom_categories_settings">केवल कस्टम श्रेणियां दिखाएं</string>
+
+    <string name="filter_categories_categories_screen">श्रेणियाँ खोजें</string>
+
+    <string name="no_categories_for_specified_filters_categories_settings">निर्दिष्ट फ़िल्टर के लिए कोई श्रेणी नहीं</string>
+
+    <string name="shows_as_categories_settings">इस प्रकार दिखाता है</string>
+
+    <string name="month_summary_header">%1$s सारांश</string>
+
+    <string name="total_expenses_month_summary">कुल व्यय :</string>
+
+    <string name="total_incomes_month_summary">कुल आय :</string>
+
+    <string name="total_operations_month_summary">कुल परिचालन :</string>
+
+    <string name="overall_month_summary">कुल मिलाकर :</string>
+
+    <string name="financials_quantity_stats_info_cards">वित्तीय मात्रा :</string>
+
+    <string name="average_income_stats_info_cards">औसत आय :</string>
+
+    <string name="average_expenses_stats_info_cards">प्रतिदिन औसत व्यय :</string>
+
+    <string name="period_summary_statistics_info_cards">अवधि सारांश</string>
+
+    <string name="describe_your_financial_bottom_sheet">अपनी वित्तीय स्थिति का वर्णन करें</string>
+
+</resources>
