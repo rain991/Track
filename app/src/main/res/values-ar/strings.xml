@@ -1,0 +1,414 @@
+<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name" translatable="false">Track</string>
+
+    <string name="app_logo" translatable="false">Application Logo</string>
+
+    <string name="logo_app_description">متتبع مالي مريح وسهل الاستخدام</string>
+
+    <string name="currency">عملة</string>
+
+    <string name="error">خطأ</string>
+
+    <string name="unknown">مجهول</string>
+
+    <string name="lets_start">لنبدأ!</string>
+
+    <string name="name">اسم</string>
+
+    <string name="expenses">نفقات</string>
+
+    <string name="incomes">الدخل</string>
+
+    <string name="january">يناير</string>
+
+    <string name="february">فبراير</string>
+
+    <string name="march">يمشي</string>
+
+    <string name="april">ابريل</string>
+
+    <string name="may">يمكن</string>
+
+    <string name="june">يونيو</string>
+
+    <string name="july">يوليو</string>
+
+    <string name="august">أغسطس</string>
+
+    <string name="september">سبتمبر</string>
+
+    <string name="october">أكتوبر</string>
+
+    <string name="november">نوفمبر</string>
+
+    <string name="december">ديسمبر</string>
+
+    <string name="unknown_month">شهر غير معروف</string>
+
+    <string name="expense">المصروفات</string>
+
+    <string name="today">اليوم</string>
+
+    <string name="yesterday">أمس</string>
+
+    <string name="selected_date_add_exp">التاريخ المحدد</string>
+
+    <string name="your_note_adding_exp">ملحوظة</string>
+
+    <string name="checked_category_add_exp_CD">الفئة المحددة</string>
+
+    <string name="note_exp_list">ملحوظة: %1$s</string>
+
+    <string name="empty_exp_lazyColumn_title">لم تقم بإضافة النفقات بعد</string>
+
+    <string name="empty_exp_lazyColumn_additional1">جربه باستخدام الزر الموجود في الزاوية اليمنى السفلية، فهو متاح في كل شاشة تطبيق</string>
+
+    <string name="account">حساب</string>
+
+    <string name="personal">شخصي</string>
+
+    <string name="ideas">الأفكار</string>
+
+    <string name="currencies">العملات</string>
+
+    <string name="categories">فئات</string>
+
+    <string name="settings">التفضيلات</string>
+
+    <string name="theme_settings_screen">سمة</string>
+
+    <string name="preferable_currency_settings_screen">العملة المفضلة</string>
+
+    <string name="use_device_theme_settings_screen">استخدم مخطط ألوان الجهاز</string>
+
+    <string name="show_page_name_settings_screen">إظهار اسم الصفحة</string>
+
+    <string name="preferable_theme_settings_screen">الموضوع المفضل</string>
+
+    <string name="extra_currency_settings_screen">عملة اضافية</string>
+
+    <string name="delete_latest_currency_settings_screen">حذف العملة الأخيرة</string>
+
+    <string name="warning_message_idea_settings_screen">لم يتم العثور على أفكار للمرشحات المحددة</string>
+
+    <string name="show_completed_ideas_idea_settings_screen">عرض الأفكار المكتملة</string>
+
+    <string name="sorted_date_idea_settings_screen">تاريخ مرتب</string>
+
+    <string name="newest_first_idea_settings_screen">الأحدث أولاً</string>
+
+    <string name="oldest_first_idea_settings_screen">الأقدم أولاً</string>
+
+    <string name="message_currencies_settings_screen">بإمكانك تبديل العملات عن طريق لمس شريطها الموجود على البطاقات. سيتم استخدام العملة المفضلة لديك كأساس في معظم أجزاء المسار.</string>
+
+    <string name="name_personal_settings_screen">الاسم : %1$s</string>
+
+    <string name="budget_personal_settings_screen">الميزانية : %1$s %2$s</string>
+
+    <string name="new_budget_personal_settings_screen">الميزانية الجديدة</string>
+
+    <string name="new_name_personal_settings_screen">اسم جديد</string>
+
+    <string name="decline">انخفاض</string>
+
+    <string name="save">يحفظ</string>
+
+    <string name="your_stats_personal_settings_screen">إحصائياتك</string>
+
+    <string name="not_added_any_expenses_yet_personal_settings_screen">لم تقم بإضافة أي نفقات بعد</string>
+
+    <string name="you_have_already_added_expenses_worth_of">لقد قمت بالفعل بإضافة %1$s نفقات بقيمة %2$s %3$s</string>
+
+    <string name="not_added_any_incomes_yet_personal_settings_screen">لم تقم بإضافة أي دخل بعد</string>
+
+    <string name="you_have_already_added_incomes_worth_of">لقد قمت بالفعل بإضافة %1$s دخل بقيمة %2$s %3$s</string>
+
+    <string name="login_message_personal_settings_screen">لقد قمت بإدخال المسار %1$s مرة</string>
+
+    <string name="expense_categories_categories_settings_screen">فئات النفقات</string>
+
+    <string name="delete">يمسح</string>
+
+    <string name="income_categories">فئات الدخل</string>
+
+    <string name="expenses_lazy_column">نفقات</string>
+
+    <string name="incomes_lazy_column">الدخل</string>
+
+    <plurals name="operations_screen_info_cards">
+        <item quantity="zero">العمليات</item>
+        <item quantity="one">عملية</item>
+        <item quantity="two">العمليات</item>
+        <item quantity="few">العمليات</item>
+        <item quantity="many">العمليات</item>
+        <item quantity="other">العمليات</item>
+    </plurals>
+
+    <string name="warning_message_track_stats_lazycolumn">لم نعثر على عمليات مالية للمرشحات المحددة</string>
+
+    <string name="first_notion_new_idea_card">الأفكار هي الطريقة التي تعلن بها أهدافك المالية</string>
+
+    <string name="second_notion_new_idea_card">أنواع الأفكار المتاحة: الادخار وحدود النفقات وخطط الدخل</string>
+
+    <string name="third_notion_new_idea_card">سيتم إعلامك بالأفكار حول أهدافك في التطبيق</string>
+
+    <string name="date">تاريخ</string>
+
+    <string name="limit_end_date_ideas">تاريخ انتهاء الحد</string>
+
+    <string name="plan_end_date_ideas">تاريخ النهاية المخطط له</string>
+
+    <string name="related_to_all_categories_ideas">متعلق بجميع الفئات</string>
+
+    <string name="new_idea_main_screen_feed">فكرة جديدة</string>
+
+    <string name="add_new_idea">أضف فكرة جديدة</string>
+
+    <string name="expense_categories_groceries">البقالة</string>
+
+    <string name="expense_categories_Utilities">المرافق</string>
+
+    <string name="expense_categories_Household">أُسرَة</string>
+
+    <string name="expense_categories_Transportation">مواصلات</string>
+
+    <string name="expense_categories_DiningOut">تناول الطعام خارج المنزل</string>
+
+    <string name="expense_categories_Entertainment">ترفيه</string>
+
+    <string name="expense_categories_Gifts">الهدايا</string>
+
+    <string name="expense_categories_ClothingAndAccessories">الملابس والاكسسوارات</string>
+
+    <string name="expense_categories_PersonalCare">العناية الشخصية</string>
+
+    <string name="expense_categories_TechnologyAndElectronics">التكنولوجيا والالكترونيات</string>
+
+    <string name="expense_categories_Investments">الاستثمارات</string>
+
+    <string name="expense_categories_Unique">فريد</string>
+
+    <string name="expense_categories_Other">آخر</string>
+
+    <string name="income_categories_Salary">مرتب</string>
+
+    <string name="income_categories_Freelance">مستقل</string>
+
+    <string name="income_categories_Investment">استثمار</string>
+
+    <string name="income_categories_RentalIncome">الدخل من الإيجار</string>
+
+    <string name="income_categories_BusinessIncome">دخل الأعمال</string>
+
+    <string name="income_categories_Dividends">أرباح الأسهم</string>
+
+    <string name="income_categories_Grants">المنح</string>
+
+    <string name="income_categories_Royalties">حقوق الملكية</string>
+
+    <string name="expense_limit">حد النفقات</string>
+
+    <string name="already_spent_expense_limit_card">لقد تم إنفاقها بالفعل</string>
+
+    <string name="categories_message_expense_limit_card">فئات:</string>
+
+    <string name="related_to_all_categories_expense_limit_card"> متعلق بجميع الفئات</string>
+
+    <string name="saving">توفير</string>
+
+    <string name="income_plan">خطة الدخل</string>
+
+    <string name="planned">مخطط</string>
+
+    <string name="completed_for">تم الانتهاء منه</string>
+
+    <string name="preferable_period_income_plan_card">الفترة المفضلة: %1$s - %2$s</string>
+
+    <string name="other">آخر</string>
+
+    <string name="income">دخل</string>
+
+    <string name="warning_track_statistic_chart">ليس لدينا بيانات كافية لبناء مخطط</string>
+
+    <string name="hide_chart">إخفاء الرسم البياني</string>
+
+    <string name="show_chart">إظهار الرسم البياني</string>
+
+    <string name="selected_time_period_track_stats_options">الفترة الزمنية المحددة : %1$s - %2$s</string>
+
+    <string name="expenses_fin_item_card" tools:ignore="StringFormatCount">%1$sالمصاريف: </string>
+
+    <string name="incomes_fin_item_card" tools:ignore="StringFormatCount">%1$s الدخل: </string>
+
+    <string name="warning_message_info_cards">0 عمليات هذا الشهر</string>
+
+    <string name="add">يضيف</string>
+
+    <string name="add_it">أضفه</string>
+
+    <string name="aprox_month_income_login_screen">الدخل الشهري التقريبي</string>
+
+    <string name="you_havent_added_incomes_yet_lazy_column">لم تقم بإضافة الدخل بعد</string>
+
+    <string name="add_expense">إضافة النفقات</string>
+
+    <string name="add_incomes">إضافة الدخل</string>
+
+    <string name="create_new_category">إنشاء فئة جديدة</string>
+
+    <string name="category_exist_warning_new_category_dialog">هذه الفئة موجودة بالفعل</string>
+
+    <string name="back_to_settings_screen_CD">العودة إلى شاشة الإعدادات</string>
+
+    <string name="statistic">احصائيات</string>
+
+    <string name="financial">مالي</string>
+    <string name="financial_operation_statistic_screen">العمليات المالية</string>
+
+    <string name="expense_operation_statistic_screen">عمليات المصروفات</string>
+
+    <string name="income_operation_statistic_screen">عمليات الدخل</string>
+
+    <string name="cd_add_new_category">إنشاء فئة جديدة</string>
+
+    <string name="both">كلاهما</string>
+
+    <string name="week">أسبوع</string>
+
+    <string name="month">شهر</string>
+
+    <string name="year">سنة</string>
+
+    <string name="limit_planned">الحد المخطط له</string>
+
+    <string name="income_planned">الدخل المخطط</string>
+
+    <string name="savings_planned">الادخار المخطط له</string>
+
+    <string name="add_idea">أضف فكرة</string>
+
+    <string name="optional">خياري</string>
+
+    <string name="saving_for">الادخار من أجل</string>
+
+    <string name="planned_main_track_screen">مخطط</string>
+
+    <string name="spent_main_track_screen">مُنْفَق</string>
+
+    <string name="scroll_up_CD">انتقل إلى الأعلى</string>
+
+    <string name="budget_main_feed_card">%1$sالميزانية</string>
+
+    <string name="empty_income_lazyColumn_additional1">جربه باستخدام الزر الموجود في الزاوية اليمنى السفلية، فهو متاح في كل شاشة تطبيق</string>
+
+    <string name="add_to_adding_to_saving_idea_dialog">اضف إليه </string>
+
+    <string name="planned_adding_to_saving_idea_dialog">مخطط %1$s </string>
+
+    <string name="completed_for_adding_to_saving_idea_dialog">تم الانتهاء منه</string>
+
+    <string name="specified_category_fin_item_card">%1$s في %2$s: </string>
+
+    <string name="each_month_limit_new_idea_dialog">كل حد شهري</string>
+
+    <string name="confirm">يتأكد</string>
+
+    <string name="cancel">يلغي</string>
+
+    <string name="incorrect_input_value_BS_error">قيمة الإدخال غير صحيحة</string>
+
+    <string name="select_financial_category_BS_error">حدد الفئة المالية</string>
+
+    <string name="incorrect_goal_value_newIdeaDialog_error">قيمة الهدف غير صحيحة</string>
+
+    <string name="incorrect_saving_label_error">ملصق التوفير فارغ</string>
+
+    <string name="select_correct_date_error">حدد التاريخ الصحيح</string>
+
+    <string name="you_have_already_selected_categories_error">لقد قمت بالفعل باختيار 3 فئات</string>
+
+    <string name="additional">إضافي</string>
+
+    <string name="select_category_new_idea_dialog_error">حدد الفئة أو قم بعمل حد للنفقات متعلق بجميع الفئات</string>
+
+    <string name="non_categorised_expenses_error_BS">حدد فئة التجميع للنفقات غير المصنفة</string>
+
+    <string name="non_categorised_incomes_error_BS">حدد فئة التجميع للدخل غير المصنف</string>
+
+    <string name="edit_personal_info">تعديل المعلومات الشخصية</string>
+
+    <string name="delete_financial_item_CD">حذف البند المالي</string>
+
+    <string name="currency_in_use_error">%1$s قيد الاستخدام بالفعل</string>
+
+    <string name="changing_preferable_currency_error">حدث خطأ عند تغيير العملة المفضلة</string>
+
+    <string name="track_version" translatable="false">Track %1$s</string>
+
+    <string name="income_category">فئة الدخل</string>
+
+    <string name="expense_category">فئة المصروفات</string>
+
+    <string name="allow_non_categorised_expenses">السماح بالنفقات غير المصنفة</string>
+
+    <string name="show_as">إظهار كـ</string>
+
+    <string name="allow_non_categorised_incomes">السماح بالدخل غير المصنف</string>
+
+    <string name="category_name_new_category_dialog">اسم الفئة</string>
+
+    <string name="filter_currencies">تصفية العملات</string>
+
+    <string name="hide_additional_currencies">إخفاء العملات الإضافية</string>
+
+    <string name="show_additional_currencies">إظهار العملات الإضافية</string>
+
+    <string name="user">مستخدم</string>
+
+    <string name="plan_started_income_plan_card">بدأت الخطة : %1$s</string>
+
+    <string name="your_ideas_setting_screen">أفكارك</string>
+
+    <string name="set_as_preferable_currency_currencies_settings">تعيين كعملة مفضلة</string>
+
+    <string name="set_as_first_priority_additional">تعيين كأولوية أولى إضافية</string>
+
+    <string name="set_as_second_priority_additional">تعيين كأولوية ثانية إضافية</string>
+
+    <string name="set_as_third_priority_additional">تعيين كأولوية ثالثة إضافية</string>
+
+    <string name="set_as_fourth_priority_additional">تعيين كأولوية رابعة إضافية</string>
+
+    <string name="list_categories_settings_view_option">قائمة</string>
+
+    <string name="cards_categories_settings_view_option">بطاقة</string>
+
+    <string name="show_only_custom_categories_settings">إظهار الفئات المخصصة فقط</string>
+
+    <string name="filter_categories_categories_screen">البحث عن الفئات</string>
+
+    <string name="no_categories_for_specified_filters_categories_settings">لا توجد فئات للمرشحات المحددة</string>
+
+    <string name="shows_as_categories_settings">يظهر كـ</string>
+
+    <string name="month_summary_header">ملخص %1$s</string>
+
+    <string name="total_expenses_month_summary">إجمالي المصروفات :</string>
+
+    <string name="total_incomes_month_summary">إجمالي الدخل :</string>
+
+    <string name="total_operations_month_summary">مجموع العمليات :</string>
+
+    <string name="overall_month_summary">إجمالي :</string>
+
+    <string name="financials_quantity_stats_info_cards">الكمية المالية :</string>
+
+    <string name="average_income_stats_info_cards">متوسط الدخل :</string>
+
+    <string name="average_expenses_stats_info_cards">متوسط النفقات اليومية :</string>
+
+    <string name="period_summary_statistics_info_cards">ملخص الفترة</string>
+
+    <string name="describe_your_financial_bottom_sheet">وصف وضعك المالي</string>
+</resources>

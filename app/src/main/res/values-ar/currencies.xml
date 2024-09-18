@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="currency_uae_dirham">درهم الإمارات العربية المتحدة</string>
+
+    <string name="currency_argentine_peso">البيزو الأرجنتيني</string>
+
+    <string name="currency_australian_dollar">الدولار الاسترالي</string>
+
+    <string name="currency_brazilian_real">ريال برازيلي</string>
+
+    <string name="currency_canadian_dollar">الدولار الكندي</string>
+
+    <string name="currency_swiss_franc">الفرنك السويسري</string>
+
+    <string name="currency_chilean_peso">البيزو التشيلي</string>
+
+    <string name="currency_chinese_yuan">اليوان الصيني</string>
+
+    <string name="currency_colombian_peso">البيزو الكولومبي</string>
+
+    <string name="currency_czech_koruna">الكورونا التشيكية</string>
+
+    <string name="currency_danish_krone">الكرونة الدنماركية</string>
+
+    <string name="currency_egyptian_pound">الجنيه المصري</string>
+
+    <string name="currency_euro">اليورو</string>
+
+    <string name="currency_british_pound_sterling">الجنيه الاسترليني البريطاني</string>
+
+    <string name="currency_hong_kong_dollar">دولار هونج كونج</string>
+
+    <string name="currency_hungarian_forint">الفورنت المجري</string>
+
+    <string name="currency_indonesian_rupiah">الروبية الإندونيسية</string>
+
+    <string name="currency_israeli_new_shekel">الشيكل الإسرائيلي الجديد</string>
+
+    <string name="currency_indian_rupee">الروبية الهندية</string>
+
+    <string name="currency_japanese_yen">الين الياباني</string>
+
+    <string name="currency_south_korean_won">الوون الكوري الجنوبي</string>
+
+    <string name="currency_mexican_peso">البيزو المكسيكي</string>
+
+    <string name="currency_malaysian_ringgit">الرينغيت الماليزي</string>
+
+    <string name="currency_nigerian_naira">النيرة النيجيرية</string>
+
+    <string name="currency_norwegian_krone">الكرونة النرويجية</string>
+
+    <string name="currency_new_zealand_dollar">الدولار النيوزيلندي</string>
+
+    <string name="currency_peruvian_sol">الشمس البيروية</string>
+
+    <string name="currency_philippine_peso">البيزو الفلبيني</string>
+
+    <string name="currency_pakistani_rupee">الروبية الباكستانية</string>
+
+    <string name="currency_polish_zloty">الزلوتي البولندي</string>
+
+    <string name="currency_russian_ruble">الروبل الروسي</string>
+
+    <string name="currency_saudi_riyal">الريال السعودي</string>
+
+    <string name="currency_swedish_krona">الكرونة السويدية</string>
+
+    <string name="currency_singapore_dollar">الدولار السنغافوري</string>
+
+    <string name="currency_thai_baht">البات التايلندي</string>
+
+    <string name="currency_turkish_lira">الليرة التركية</string>
+
+    <string name="currency_new_taiwan_dollar">الدولار التايواني الجديد</string>
+
+    <string name="currency_ukrainian_hryvnia">الهريفنيا الأوكرانية</string>
+
+    <string name="currency_united_states_dollar">الدولار الأمريكي</string>
+
+    <string name="currency_south_african_rand">الراند الجنوب أفريقي</string>
+
+    <string name="currency_cardano" translatable="false">Cardano</string>
+
+    <string name="currency_bitcoin_cash" translatable="false">Bitcoin Cash</string>
+
+    <string name="currency_binance_coin" translatable="false">Binance Coin</string>
+
+    <string name="currency_bitcoin" translatable="false">Bitcoin</string>
+
+    <string name="currency_binance_usd" translatable="false">Binance USD</string>
+
+    <string name="currency_dogecoin" translatable="false">Dogecoin</string>
+
+    <string name="currency_polkadot" translatable="false">Polkadot</string>
+
+    <string name="currency_ethereum" translatable="false">Ethereum</string>
+
+    <string name="currency_litecoin" translatable="false">Litecoin</string>
+
+    <string name="currency_shiba_inu" translatable="false">Shiba Inu</string>
+
+    <string name="currency_solana" translatable="false">Solana</string>
+
+    <string name="currency_tron" translatable="false">TRON</string>
+
+    <string name="currency_usd_coin" translatable="false">USD Coin</string>
+
+    <string name="currency_tether" translatable="false">Tether</string>
+
+    <string name="currency_ripple" translatable="false">Ripple</string>
+
+    <string name="currency_gold">ذهب</string>
+
+    <string name="currency_silver">فضي</string>
+
+</resources>
