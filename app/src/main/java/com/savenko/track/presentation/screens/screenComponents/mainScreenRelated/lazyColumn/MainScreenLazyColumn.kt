@@ -2,6 +2,7 @@ package com.savenko.track.presentation.screens.screenComponents.mainScreenRelate
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.fadeOut
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -57,6 +58,7 @@ import org.koin.androidx.compose.koinViewModel
  * @param switchBottomSheetToExpenses callback called when user triggers switching to expenses financials
  * @param switchBottomSheetToIncomes callback called when user triggers switching to incomes financials
  */
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun MainScreenLazyColumn(
     containsInfoCards: Boolean,
@@ -212,7 +214,7 @@ fun MainScreenLazyColumn(
                                 visible = isVisible,
                                 exit = fadeOut()
                             ) {
-                                Box {
+                                Box{
                                     if (isScrollingUp) {
                                         LaunchedEffect(listState) {
                                             listState.animateScrollToItem(index = 0)
