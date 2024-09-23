@@ -18,7 +18,6 @@ import java.util.Date
  * @property relatedToAllCategories
  * @property listOfSelectedCategories
  * @property warningMessage
- * @constructor Create empty New idea dialog state
  */
 data class NewIdeaDialogState(
     val goal: Float,

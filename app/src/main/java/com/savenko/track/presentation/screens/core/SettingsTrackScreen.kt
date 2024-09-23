@@ -19,6 +19,13 @@ import com.savenko.track.presentation.screens.screenComponents.settingsScreenRel
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
+/**
+ * One of three main Track screens.
+ *
+ * Most user preferences and settings are handled in SettingsTrackScreen.
+ *
+ * Some user preferences is located in specific settings screen, e.g [CurrenciesSettingsScreen](com.savenko.track.presentation.screens.additional.settingsScreens.CurrenciesSettingsScreenKt.CurrenciesSettingsScreen) or [IdeasSettingsScreen](com.savenko.track.presentation.screens.additional.settingsScreens.IdeasSettingsScreenKt.IdeasSettingsScreen)
+ */
 @Composable
 fun SettingsTrackScreen(navHostController: NavHostController) {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()

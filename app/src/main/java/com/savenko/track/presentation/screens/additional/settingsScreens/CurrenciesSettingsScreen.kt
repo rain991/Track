@@ -16,6 +16,11 @@ import com.savenko.track.presentation.screens.screenComponents.additional.Curren
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * Part of Track [settings screen](com.savenko.track.presentation.screens.core.SettingsTrackScreenKt.SettingsTrackScreen)
+ *
+ * Handles user currencies preferences and shows all available Track currencies
+ */
 @Composable
 fun CurrenciesSettingsScreen(navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()
