@@ -28,7 +28,7 @@ class NewCategoryViewModel(
     private val listOfIncomeCategories = mutableListOf<IncomeCategory>()
 
     private val _newCategoryDialogState =
-        MutableStateFlow(NewCategoryDialogState(isDialogVisible = false, dialogErrors = null))
+        MutableStateFlow(NewCategoryDialogState(isDialogVisible = false, dialogError = null))
     val newCategoryDialogState = _newCategoryDialogState.asStateFlow()
 
     init {
@@ -56,7 +56,7 @@ class NewCategoryViewModel(
                 .contains(categoryName)) || (categoryType is CategoriesTypes.IncomeCategory && !listOfIncomeCategories.map { it.note }
                 .contains(categoryName))) {
 
-            if (_newCategoryDialogState.value.dialogErrors is NewCategoryDialogErrors.CategoryAlreadyExist) {
+            if (_newCategoryDialogState.value.dialogError is NewCategoryDialogErrors.CategoryAlreadyExist) {
                 setDialogError(null)
             }
             val category = if (categoryType is CategoriesTypes.ExpenseCategory) {
@@ -86,6 +86,6 @@ class NewCategoryViewModel(
     }
 
     private fun setDialogError(value: NewCategoryDialogErrors?) {
-        _newCategoryDialogState.update { _newCategoryDialogState.value.copy(dialogErrors = value) }
+        _newCategoryDialogState.update { _newCategoryDialogState.value.copy(dialogError = value) }
     }
 }

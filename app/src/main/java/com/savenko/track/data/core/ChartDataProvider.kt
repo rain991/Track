@@ -30,7 +30,7 @@ class ChartDataProvider(
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
 ) {
     /**
-     * [requestDataForChart] summarizes financials stats by type in specific day.
+     * Summarizes financials stats by type in specific day.
      * If user has few financials at same date they will be summarized.
      * Only 1 map entry will be retrieved for specific financial day.
      * @return map of financials summary in [otherTimeSpan]
