@@ -25,6 +25,13 @@ import com.savenko.track.presentation.navigation.Screen
 import com.savenko.track.presentation.screens.screenComponents.additional.IdeasSettingsScreenComponent
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * Part of Track [settings screen](com.savenko.track.presentation.screens.core.SettingsTrackScreenKt.SettingsTrackScreen)
+ *
+ * Shows user created Ideas.
+ *
+ * Supports few filters.
+ */
 @Composable
 fun IdeasSettingsScreen(navController: NavHostController) {
     val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()

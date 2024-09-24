@@ -50,6 +50,7 @@ import kotlinx.coroutines.withContext
 
 /**
  * Shows user filtered financials in StatisticScreen
+ *
  * Data is filtered via [TrackStatisticChartOptionsSelector]
  */
 @Composable

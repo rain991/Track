@@ -22,6 +22,13 @@ import com.savenko.track.presentation.screens.screenComponents.mainScreenRelated
 import org.koin.androidx.compose.koinViewModel
 import org.koin.compose.koinInject
 
+/**
+ * One of three main Track screens.
+ *
+ * Track main screen shows: *TrackScreenFeed* and *MainScreenLazyColumn*
+ *
+ * Also shows *TrackScreenInfoCards* which could be part of *screen feed* or *lazy column* depending on screen component type
+ */
 @Composable
 fun MainTrackScreen() {
     val bottomSheetViewModel = koinViewModel<BottomSheetViewModel>()

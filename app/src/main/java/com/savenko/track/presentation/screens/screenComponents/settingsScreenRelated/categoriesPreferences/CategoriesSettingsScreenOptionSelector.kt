@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Card
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SegmentedButton
 import androidx.compose.material3.SegmentedButtonDefaults
@@ -27,7 +26,11 @@ import com.savenko.track.presentation.screens.states.additional.settings.categor
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenState
 import com.savenko.track.presentation.screens.states.additional.settings.categoriesSettings.CategoriesSettingsScreenViewOptions
 
-@OptIn(ExperimentalMaterial3Api::class)
+/**
+ * Categories screen options selector
+ *
+ * Regulates [CategoriesSettingsScreen](com.savenko.track.presentation.screens.additional.settingsScreens.CategoriesSettingsScreenKt.CategoriesSettingsScreen) filters
+ */
 @Composable
 fun CategoriesScreenOptionsSelector(
     screenState: CategoriesSettingsScreenState,

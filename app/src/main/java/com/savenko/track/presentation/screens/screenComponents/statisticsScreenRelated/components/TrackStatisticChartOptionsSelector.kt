@@ -45,6 +45,9 @@ import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePe
 import kotlinx.coroutines.launch
 import java.util.Date
 
+/**
+ * Composable used for filters in Track Statistic Screen.
+ */
 @Composable
 fun TrackStatisticChartOptionsSelector(modifier : Modifier,chartViewModel: StatisticChartViewModel) {
     val coroutineScope = rememberCoroutineScope()

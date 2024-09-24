@@ -27,6 +27,11 @@ import com.savenko.track.presentation.screens.screenComponents.additional.Catego
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * Categories settings screen
+ *
+ * Part of Track settings screen
+ */
 @Composable
 fun CategoriesSettingsScreen(navController: NavHostController) {
     val viewModel = koinViewModel<CategoriesSettingsScreenViewModel>()
@@ -53,7 +58,7 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
         if (newCategoryDialogState.value.isDialogVisible) {
             NewCategoryDialog(
                 onDismissRequest = { newCategoryViewModel.setDialogVisibility(false) },
-                error = newCategoryDialogState.value.dialogErrors
+                error = newCategoryDialogState.value.dialogError
             ) { categoryName, categoryType, rawCategoryColor ->
                 coroutineScope.launch {
                     newCategoryViewModel.addNewFinancialCategory(

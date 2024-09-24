@@ -1,0 +1,410 @@
+<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="app_name" translatable="false">Track</string>
+
+    <string name="app_logo" translatable="false">Application Logo</string>
+
+    <string name="logo_app_description">Công cụ theo dõi tài chính tiện lợi và dễ sử dụng</string>
+
+    <string name="currency">Tiền tệ</string>
+
+    <string name="error">Lỗi</string>
+
+    <string name="unknown">Không rõ</string>
+
+    <string name="lets_start">Chúng ta hãy bắt đầu!</string>
+
+    <string name="name">Tên</string>
+
+    <string name="expenses">Chi phí</string>
+
+    <string name="incomes">Thu nhập</string>
+
+    <string name="january">Tháng Một</string>
+
+    <string name="february">Tháng hai</string>
+
+    <string name="march">Bước đều</string>
+
+    <string name="april">Tháng tư</string>
+
+    <string name="may">Có thể</string>
+
+    <string name="june">Tháng sáu</string>
+
+    <string name="july">Tháng bảy</string>
+
+    <string name="august">Tháng tám</string>
+
+    <string name="september">Tháng 9</string>
+
+    <string name="october">Tháng Mười</string>
+
+    <string name="november">Tháng mười một</string>
+
+    <string name="december">Tháng 12</string>
+
+    <string name="unknown_month">Tháng không xác định</string>
+
+    <string name="expense">Chi phí</string>
+
+    <string name="today">Hôm nay</string>
+
+    <string name="yesterday">Hôm qua</string>
+
+    <string name="selected_date_add_exp">Ngày đã chọn</string>
+
+    <string name="your_note_adding_exp">Ghi chú</string>
+
+    <string name="checked_category_add_exp_CD">Đã kiểm tra danh mục</string>
+
+    <string name="note_exp_list">Lưu ý: %1$s</string>
+
+    <string name="empty_exp_lazyColumn_title">Bạn vẫn chưa thêm chi phí</string>
+
+    <string name="empty_exp_lazyColumn_additional1">Hãy thử sử dụng nút ở góc dưới bên phải, nó có sẵn trên mọi màn hình ứng dụng</string>
+
+    <string name="account">Tài khoản</string>
+
+    <string name="personal">Riêng tư</string>
+
+    <string name="ideas">Ý tưởng</string>
+
+    <string name="currencies">Tiền tệ</string>
+
+    <string name="categories">Thể loại</string>
+
+    <string name="settings">Sở thích</string>
+
+    <string name="theme_settings_screen">Chủ đề</string>
+
+    <string name="preferable_currency_settings_screen">Tiền tệ ưa thích</string>
+
+    <string name="use_device_theme_settings_screen">Sử dụng bảng màu thiết bị</string>
+
+    <string name="show_page_name_settings_screen">Hiển thị tên trang</string>
+
+    <string name="preferable_theme_settings_screen">Chủ đề ưa thích</string>
+
+    <string name="extra_currency_settings_screen">Tiền tệ bổ sung</string>
+
+    <string name="delete_latest_currency_settings_screen">Xóa loại tiền tệ mới nhất</string>
+
+    <string name="warning_message_idea_settings_screen">Không tìm thấy ý tưởng nào cho các bộ lọc được chỉ định</string>
+
+    <string name="show_completed_ideas_idea_settings_screen">Hiển thị ý tưởng đã hoàn thành</string>
+
+    <string name="sorted_date_idea_settings_screen">Ngày sắp xếp</string>
+
+    <string name="newest_first_idea_settings_screen">Mới nhất trước</string>
+
+    <string name="oldest_first_idea_settings_screen">Cũ nhất trước</string>
+
+    <string name="message_currencies_settings_screen">Bạn có thể chuyển đổi tiền tệ bằng cách chạm vào mã tiền tệ trên thẻ. Đơn vị tiền tệ ưa thích của bạn được sử dụng làm đơn vị tiền tệ cơ bản ở hầu hết các phần của Đường đua.</string>
+
+    <string name="name_personal_settings_screen">Tên : %1$s</string>
+
+    <string name="budget_personal_settings_screen">Ngân sách : %1$s %2$s</string>
+
+    <string name="new_budget_personal_settings_screen">Ngân sách mới</string>
+
+    <string name="new_name_personal_settings_screen">Tên mới</string>
+
+    <string name="decline">Sự suy sụp</string>
+
+    <string name="save">Cứu</string>
+
+    <string name="your_stats_personal_settings_screen">Số liệu thống kê của bạn</string>
+
+    <string name="not_added_any_expenses_yet_personal_settings_screen">Bạn chưa thêm bất kỳ chi phí nào</string>
+
+    <string name="you_have_already_added_expenses_worth_of">Bạn đã thêm %1$s chi phí, trị giá %2$s %3$s</string>
+
+    <string name="not_added_any_incomes_yet_personal_settings_screen">Bạn vẫn chưa thêm bất kỳ khoản thu nhập nào</string>
+
+    <string name="you_have_already_added_incomes_worth_of">Bạn đã thêm %1$s thu nhập, trị giá %2$s %3$s</string>
+
+    <string name="login_message_personal_settings_screen">Bạn đã nhập Track %1$s lần</string>
+
+    <string name="expense_categories_categories_settings_screen">Các loại chi phí</string>
+
+    <string name="delete">Xóa bỏ</string>
+
+    <string name="income_categories">Các loại thu nhập</string>
+
+    <string name="expenses_lazy_column">Chi phí</string>
+
+    <string name="incomes_lazy_column">Thu nhập</string>
+
+    <plurals name="operations_screen_info_cards">
+        <item quantity="other">hoạt động</item>
+    </plurals>
+
+    <string name="warning_message_track_stats_lazycolumn">Chúng tôi không tìm thấy hoạt động tài chính cho các bộ lọc được chỉ định</string>
+
+    <string name="first_notion_new_idea_card">Ý tưởng là cách bạn tuyên bố mục tiêu tài chính</string>
+
+    <string name="second_notion_new_idea_card">Các loại ý tưởng khả dụng: tiết kiệm, giới hạn chi tiêu và kế hoạch thu nhập</string>
+
+    <string name="third_notion_new_idea_card">Ý tưởng sẽ thông báo về mục tiêu của bạn trong ứng dụng</string>
+
+    <string name="date">Ngày</string>
+
+    <string name="limit_end_date_ideas">Ngày kết thúc giới hạn</string>
+
+    <string name="plan_end_date_ideas">Ngày kết thúc dự kiến</string>
+
+    <string name="related_to_all_categories_ideas">Liên quan đến tất cả các danh mục</string>
+
+    <string name="new_idea_main_screen_feed">Ý tưởng mới</string>
+
+    <string name="add_new_idea">Thêm ý tưởng mới</string>
+
+    <string name="expense_categories_groceries">Hàng tạp hóa</string>
+
+    <string name="expense_categories_Utilities">Tiện ích</string>
+
+    <string name="expense_categories_Household">Hộ gia đình</string>
+
+    <string name="expense_categories_Transportation">Vận tải</string>
+
+    <string name="expense_categories_DiningOut">Ăn tối ngoài trời</string>
+
+    <string name="expense_categories_Entertainment">Sự giải trí</string>
+
+    <string name="expense_categories_Gifts">Quà tặng</string>
+
+    <string name="expense_categories_ClothingAndAccessories">Quần áo và phụ kiện</string>
+
+    <string name="expense_categories_PersonalCare">Chăm sóc cá nhân</string>
+
+    <string name="expense_categories_TechnologyAndElectronics">Công nghệ và Điện tử</string>
+
+    <string name="expense_categories_Investments">Đầu tư</string>
+
+    <string name="expense_categories_Unique">Độc nhất</string>
+
+    <string name="expense_categories_Other">Khác</string>
+
+    <string name="income_categories_Salary">Lương</string>
+
+    <string name="income_categories_Freelance">Làm việc tự do</string>
+
+    <string name="income_categories_Investment">Sự đầu tư</string>
+
+    <string name="income_categories_RentalIncome">Thu nhập cho thuê</string>
+
+    <string name="income_categories_BusinessIncome">Thu nhập kinh doanh</string>
+
+    <string name="income_categories_Dividends">Cổ tức</string>
+
+    <string name="income_categories_Grants">Tài trợ</string>
+
+    <string name="income_categories_Royalties">Tiền bản quyền</string>
+
+    <string name="expense_limit">Giới hạn chi phí</string>
+
+    <string name="already_spent_expense_limit_card">Đã chi tiêu</string>
+
+    <string name="categories_message_expense_limit_card">Thể loại:</string>
+
+    <string name="related_to_all_categories_expense_limit_card"> Liên quan đến tất cả các danh mục</string>
+
+    <string name="saving">Tiết kiệm</string>
+
+    <string name="income_plan">Kế hoạch thu nhập</string>
+
+    <string name="planned">Đã lên kế hoạch</string>
+
+    <string name="completed_for">Hoàn thành cho</string>
+
+    <string name="preferable_period_income_plan_card">Thời gian ưu tiên: %1$s - %2$s</string>
+
+    <string name="other">Khác</string>
+
+    <string name="income">Thu nhập</string>
+
+    <string name="warning_track_statistic_chart">Chúng tôi không có đủ dữ liệu để xây dựng biểu đồ</string>
+
+    <string name="hide_chart">Ẩn biểu đồ</string>
+
+    <string name="show_chart">Hiển thị biểu đồ</string>
+
+    <string name="selected_time_period_track_stats_options">Khoảng thời gian đã chọn : %1$s - %2$s</string>
+
+    <string name="expenses_fin_item_card" tools:ignore="StringFormatCount">%1$s chi phí: </string>
+
+    <string name="incomes_fin_item_card" tools:ignore="StringFormatCount">%1$s thu nhập: </string>
+
+    <string name="warning_message_info_cards">0 hoạt động trong tháng này</string>
+
+    <string name="add">Thêm vào</string>
+
+    <string name="add_it">Thêm nó vào</string>
+
+    <string name="aprox_month_income_login_screen">Thu nhập ước tính hàng tháng</string>
+
+    <string name="you_havent_added_incomes_yet_lazy_column">Bạn vẫn chưa thêm thu nhập</string>
+
+    <string name="add_expense">Thêm chi phí</string>
+
+    <string name="add_incomes">Thêm Thu nhập</string>
+
+    <string name="create_new_category">Tạo danh mục mới</string>
+
+    <string name="category_exist_warning_new_category_dialog">Thể loại này đã tồn tại</string>
+
+    <string name="back_to_settings_screen_CD">quay lại màn hình cài đặt</string>
+
+    <string name="statistic">Thống kê</string>
+
+    <string name="financial">Tài chính</string>
+    <string name="financial_operation_statistic_screen">Hoạt động tài chính</string>
+
+    <string name="expense_operation_statistic_screen">Hoạt động chi phí</string>
+
+    <string name="income_operation_statistic_screen">Hoạt động thu nhập</string>
+
+    <string name="cd_add_new_category">Tạo danh mục mới</string>
+
+    <string name="both">Cả hai</string>
+
+    <string name="week">Tuần</string>
+
+    <string name="month">Tháng</string>
+
+    <string name="year">Năm</string>
+
+    <string name="limit_planned">Giới hạn đã lên kế hoạch</string>
+
+    <string name="income_planned">Thu nhập đã lên kế hoạch</string>
+
+    <string name="savings_planned">Kế hoạch tiết kiệm</string>
+
+    <string name="add_idea">Thêm ý tưởng</string>
+
+    <string name="optional">không bắt buộc</string>
+
+    <string name="saving_for">Tiết kiệm cho</string>
+
+    <string name="planned_main_track_screen">Đã lên kế hoạch</string>
+
+    <string name="spent_main_track_screen">Đã tiêu</string>
+
+    <string name="scroll_up_CD">cuộn lên</string>
+
+    <string name="budget_main_feed_card">Ngân sách %1$s</string>
+
+    <string name="empty_income_lazyColumn_additional1">Hãy thử sử dụng nút ở góc dưới bên phải, nó có sẵn trên mọi màn hình ứng dụng</string>
+
+    <string name="add_to_adding_to_saving_idea_dialog">Thêm vào </string>
+
+    <string name="planned_adding_to_saving_idea_dialog">Đã lên kế hoạch %1$s </string>
+
+    <string name="completed_for_adding_to_saving_idea_dialog">Hoàn thành cho</string>
+
+    <string name="specified_category_fin_item_card">%1$s trong %2$s: </string>
+
+    <string name="each_month_limit_new_idea_dialog">Giới hạn mỗi tháng</string>
+
+    <string name="confirm">Xác nhận</string>
+
+    <string name="cancel">Hủy bỏ</string>
+
+    <string name="incorrect_input_value_BS_error">Giá trị đầu vào không đúng</string>
+
+    <string name="select_financial_category_BS_error">Chọn danh mục tài chính</string>
+
+    <string name="incorrect_goal_value_newIdeaDialog_error">Giá trị mục tiêu không chính xác</string>
+
+    <string name="incorrect_saving_label_error">Nhãn lưu trữ trống</string>
+
+    <string name="select_correct_date_error">Chọn ngày chính xác</string>
+
+    <string name="you_have_already_selected_categories_error">Bạn đã chọn 3 danh mục</string>
+
+    <string name="additional">Thêm vào</string>
+
+    <string name="select_category_new_idea_dialog_error">Chọn danh mục hoặc tạo giới hạn chi phí liên quan đến tất cả các danh mục</string>
+
+    <string name="non_categorised_expenses_error_BS">Chọn danh mục nhóm cho các chi phí không được phân loại</string>
+
+    <string name="non_categorised_incomes_error_BS">Chọn danh mục nhóm cho thu nhập không được phân loại</string>
+
+    <string name="edit_personal_info">chỉnh sửa thông tin cá nhân</string>
+
+    <string name="delete_financial_item_CD">Xóa mục tài chính</string>
+
+    <string name="currency_in_use_error">%1$s đã được sử dụng</string>
+
+    <string name="changing_preferable_currency_error">Đã xảy ra lỗi khi thay đổi loại tiền tệ mong muốn</string>
+
+    <string name="track_version" translatable="false">Track %1$s</string>
+
+    <string name="income_category">Loại thu nhập</string>
+
+    <string name="expense_category">Loại chi phí</string>
+
+    <string name="allow_non_categorised_expenses">Cho phép chi phí không được phân loại</string>
+
+    <string name="show_as">Hiển thị như</string>
+
+    <string name="allow_non_categorised_incomes">Cho phép thu nhập không được phân loại</string>
+
+    <string name="category_name_new_category_dialog">Tên danh mục</string>
+
+    <string name="filter_currencies">Lọc tiền tệ</string>
+
+    <string name="hide_additional_currencies">Ẩn các loại tiền tệ bổ sung</string>
+
+    <string name="show_additional_currencies">Hiển thị thêm các loại tiền tệ</string>
+
+    <string name="user">Người sử dụng</string>
+
+    <string name="plan_started_income_plan_card">Kế hoạch bắt đầu : %1$s</string>
+
+    <string name="your_ideas_setting_screen">Ý tưởng của bạn</string>
+
+    <string name="set_as_preferable_currency_currencies_settings">Đặt làm loại tiền tệ ưa thích</string>
+
+    <string name="set_as_first_priority_additional">Đặt làm ưu tiên bổ sung đầu tiên</string>
+
+    <string name="set_as_second_priority_additional">Đặt làm ưu tiên thứ hai bổ sung</string>
+
+    <string name="set_as_third_priority_additional">Đặt làm ưu tiên thứ ba bổ sung</string>
+
+    <string name="set_as_fourth_priority_additional">Đặt làm ưu tiên thứ tư bổ sung</string>
+
+    <string name="list_categories_settings_view_option">Danh sách</string>
+
+    <string name="cards_categories_settings_view_option">Thẻ</string>
+
+    <string name="show_only_custom_categories_settings">Chỉ hiển thị các danh mục tùy chỉnh</string>
+
+    <string name="filter_categories_categories_screen">Tìm danh mục</string>
+
+    <string name="no_categories_for_specified_filters_categories_settings">Không có danh mục nào cho bộ lọc được chỉ định</string>
+
+    <string name="shows_as_categories_settings">Hiển thị như</string>
+
+    <string name="month_summary_header">Tóm tắt %1$s</string>
+
+    <string name="total_expenses_month_summary">Tổng chi phí :</string>
+
+    <string name="total_incomes_month_summary">Tổng thu nhập :</string>
+
+    <string name="total_operations_month_summary">Tổng số hoạt động :</string>
+
+    <string name="overall_month_summary">Tổng thể :</string>
+
+    <string name="financials_quantity_stats_info_cards">Số lượng tài chính :</string>
+
+    <string name="average_income_stats_info_cards">Thu nhập trung bình :</string>
+
+    <string name="average_expenses_stats_info_cards">Chi phí trung bình mỗi ngày :</string>
+
+    <string name="period_summary_statistics_info_cards">Tóm tắt giai đoạn</string>
+
+    <string name="describe_your_financial_bottom_sheet">Mô tả tình hình tài chính của bạn</string>
+
+</resources>

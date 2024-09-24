@@ -60,6 +60,13 @@ import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePe
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
+/**
+ * Track statistic chart used to display chart in Track statistic screen
+ *
+ * Uses Vico chart
+ *
+ * Only shows chart, handling of filters is implemented in [TrackStatisticChartOptionsSelector]
+ */
 @Composable
 fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: StatisticChartViewModel) {
     val chartState = chartViewModel.statisticChartState.collectAsState()
@@ -81,10 +88,6 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
             )
         }
     }
-//    LaunchedEffect(key1 = chartState.value.timePeriod, key2 = chartState.value.financialEntities)
-//    {
-//        chartViewModel.initializeValues()
-//    }
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)
@@ -192,10 +195,12 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                             zoomEnabled = false,
                             initialZoom = Zoom.Content
                         ),
-                        modifier = Modifier.fillMaxWidth().weight(1f, fill = false)
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .weight(1f, fill = false)
                     )
                 }
-                Column(Modifier.wrapContentHeight()){
+                Column(Modifier.wrapContentHeight()) {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -208,7 +213,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                             if (index % valuesStep == 0 || index == 0 || index == chartData.size - 1) {
                                 Text(
                                     text = dateTimeFormatter.format(entry.key),
-                                    style = MaterialTheme.typography.bodySmall,maxLines = 1,
+                                    style = MaterialTheme.typography.bodySmall, maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )
                             }

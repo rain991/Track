@@ -6,6 +6,11 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
+/**
+ * Use rememberWindowInfo to show UI depending on user screen sizes
+ *
+ * @return [WindowInfo] object with current state of screen
+ */
 @Composable
 fun rememberWindowInfo(): WindowInfo {
     val configuration = LocalConfiguration.current
@@ -25,6 +30,12 @@ fun rememberWindowInfo(): WindowInfo {
     )
 }
 
+/**
+ * Set of user window info
+ *
+ * @param screenWidthInfo type of screen depending on its width : Compact, Medium, Expanded
+ * @param screenWidthInfo type of screen depending on its height : Compact, Medium, Expanded
+ */
 data class WindowInfo(
     val screenWidthInfo: WindowType,
     val screenHeightInfo: WindowType,

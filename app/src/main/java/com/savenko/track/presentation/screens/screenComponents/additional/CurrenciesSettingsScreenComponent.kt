@@ -14,8 +14,9 @@ import com.savenko.track.presentation.screens.screenComponents.settingsScreenRel
 import com.savenko.track.presentation.screens.states.additional.settings.currenciesSettings.CurrenciesSettingsScreenEvent
 import com.savenko.track.presentation.screens.states.additional.settings.currenciesSettings.SelectedCurrenciesSettingsState
 
-/*  Contains component of currencies settings screen(except header).
-    Also contains CurrenciesMinusTextButton and Plus buttons to remove and add new currencies relatively    */
+/**
+ *  Contains [SelectedCurrenciesComponent] and [CurrencyListComponent]
+ */
 @Composable
 fun CurrenciesSettingsScreenComponent(
     paddingValues: PaddingValues,

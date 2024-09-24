@@ -32,12 +32,22 @@ import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.presentation.components.customComponents.HorizontalDashedDivider
 
+
+/**
+ * MonthSummaryRow creates summary of user month financials
+ *
+ * @param monthName month name of summary row
+ * @param summary summary of predefined period
+ * @param quantity quantity of financials in predefined period
+ * @param preferableCurrency user preferable currency
+ * @param financialTypes type of financials
+ */
 @Composable
 fun MonthSummaryRow(
+    monthName: String,
     modifier: Modifier,
     summary: Float,
     quantity: Int,
-    monthName: String,
     preferableCurrency: Currency,
     financialTypes: FinancialTypes
 ) {
@@ -57,10 +67,6 @@ fun MonthSummaryRow(
 
                     FinancialTypes.Income -> {
                         stringResource(R.string.total_incomes_month_summary)
-                    }
-
-                    else -> {
-                        stringResource(R.string.total_operations_month_summary)
                     }
                 }
             )

@@ -134,26 +134,6 @@ val appModule = module {
     single<NotesRepository> { NotesRepositoryImpl(get(), get(), get(), get(), get(), get()) }
 }
 
-
-val databaseModule = module {
-    // Income related
-    single<IncomeDao> { ExpensesDB.getInstance(androidContext()).incomeDao }
-    single<IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao }
-    single<IncomeCategoryDao> { ExpensesDB.getInstance(androidContext()).incomeCategoryDao }
-
-    // Expense related
-    single<ExpenseItemsDAO> { ExpensesDB.getInstance(androidContext()).expenseItemsDao }
-    single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
-    single<ExpenseLimitsDao> { ExpensesDB.getInstance(androidContext()).expenseLimitsDao }
-
-    // Currencies
-    single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
-    single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
-
-    // Savings idea
-    single<SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao }
-}
-
 val domainModule = module {
     // CRUD
     factory<UpdateUserDataUseCase> { UpdateUserDataUseCase(get()) }
@@ -175,6 +155,25 @@ val domainModule = module {
     factory<GetIdeaCompletedValueUseCase> { GetIdeaCompletedValueUseCase(get()) }
     factory<ChangeCurrenciesPreferenceUseCase> { ChangeCurrenciesPreferenceUseCase(get(), get(), get(), get()) }
     factory<GetPeriodSummaryUseCase> { GetPeriodSummaryUseCase(get(), get()) }
+}
+
+val databaseModule = module {
+    // Income related
+    single<IncomeDao> { ExpensesDB.getInstance(androidContext()).incomeDao }
+    single<IncomePlansDao> { ExpensesDB.getInstance(androidContext()).incomePlansDao }
+    single<IncomeCategoryDao> { ExpensesDB.getInstance(androidContext()).incomeCategoryDao }
+
+    // Expense related
+    single<ExpenseItemsDAO> { ExpensesDB.getInstance(androidContext()).expenseItemsDao }
+    single<ExpenseCategoryDao> { ExpensesDB.getInstance(androidContext()).categoryDao }
+    single<ExpenseLimitsDao> { ExpensesDB.getInstance(androidContext()).expenseLimitsDao }
+
+    // Currencies
+    single<CurrenciesPreferenceDao> { ExpensesDB.getInstance(androidContext()).currenciesPreferenceDao }
+    single<CurrencyDao> { ExpensesDB.getInstance(androidContext()).currencyDao }
+
+    // Savings idea
+    single<SavingsDao> { ExpensesDB.getInstance(androidContext()).savingsDao }
 }
 
 val viewModelModule = module {

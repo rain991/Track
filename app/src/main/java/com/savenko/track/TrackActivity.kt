@@ -20,6 +20,16 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 /**
  * **Track** is build as single activity no-fragment app with 100% Kotlin codebase
+ *
+ * Track uses Jetpack Compose for UI and Jetpack Navigation for navigation
+ *
+ * To handle screen sizes correctly **Track** in some cases creates child composable for specific screens;
+ *
+ * e.g : MainTrackScreen shows MainTrackScreenCompactComponent or MainTrackScreenExpandedComponent depending on screen width or height.
+ *
+ * Use *rememberWindowInfo* to handle screen parameters reliably
+ *
+ * @see [rememberWindowInfo](com.savenko.track.presentation.other.windowInfo.WindowInfoKt.rememberWindowInfo)
  */
 class TrackActivity : ComponentActivity() {
     private val dataStoreManager: DataStoreManager by inject()

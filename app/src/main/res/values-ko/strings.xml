@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
+
+    <string name="logo_app_description">편리하고 사용하기 쉬운 금융 추적기</string>
+
+    <string name="currency">통화</string>
+
+    <string name="error">오류</string>
+
+    <string name="unknown">알려지지 않은</string>
+
+    <string name="lets_start">시작하자!</string>
+
+    <string name="name">이름</string>
+
+    <string name="expenses">경비</string>
+
+    <string name="incomes">소득</string>
+
+    <string name="january">1월</string>
+
+    <string name="february">2월</string>
+
+    <string name="march">3월</string>
+
+    <string name="april">4월</string>
+
+    <string name="may">5월</string>
+
+    <string name="june">6월</string>
+
+    <string name="july">칠월</string>
+
+    <string name="august">팔월</string>
+
+    <string name="september">구월</string>
+
+    <string name="october">십월</string>
+
+    <string name="november">십일월</string>
+
+    <string name="december">12월</string>
+
+    <string name="unknown_month">알 수 없는 달</string>
+
+    <string name="expense">비용</string>
+
+    <string name="today">오늘</string>
+
+    <string name="yesterday">어제</string>
+
+    <string name="selected_date_add_exp">선택한 날짜</string>
+
+    <string name="your_note_adding_exp">메모</string>
+
+    <string name="checked_category_add_exp_CD">체크된 카테고리</string>
+
+    <string name="note_exp_list">참고사항: %1$s</string>
+
+    <string name="empty_exp_lazyColumn_title">아직 비용을 추가하지 않았습니다.</string>
+
+    <string name="empty_exp_lazyColumn_additional1">오른쪽 하단 구속에 있는 버튼을 사용하여 시도해보세요. 모든 앱 화면에서 사용할 수 있습니다.</string>
+
+    <string name="account">계정</string>
+
+    <string name="personal">개인의</string>
+
+    <string name="ideas">아이디어</string>
+
+    <string name="currencies">통화</string>
+
+    <string name="categories">카테고리</string>
+
+    <string name="settings">선호사항</string>
+
+    <string name="theme_settings_screen">주제</string>
+
+    <string name="preferable_currency_settings_screen">선호되는 통화</string>
+
+    <string name="use_device_theme_settings_screen">기기 색상 구성표 사용</string>
+
+    <string name="show_page_name_settings_screen">페이지 이름 표시</string>
+
+    <string name="preferable_theme_settings_screen">선호하는 테마</string>
+
+    <string name="extra_currency_settings_screen">추가 통화</string>
+
+    <string name="delete_latest_currency_settings_screen">최신 통화 삭제</string>
+
+    <string name="warning_message_idea_settings_screen">지정된 필터에 대한 아이디어가 없습니다.</string>
+
+    <string name="show_completed_ideas_idea_settings_screen">완성된 아이디어 보기</string>
+
+    <string name="sorted_date_idea_settings_screen">정렬된 날짜</string>
+
+    <string name="newest_first_idea_settings_screen">최신 먼저</string>
+
+    <string name="oldest_first_idea_settings_screen">가장 오래된 것부터</string>
+
+    <string name="message_currencies_settings_screen">카드의 티커를 터치하여 통화를 전환할 수 있습니다. 대부분의 트랙에서는 기본 통화가 사용됩니다.</string>
+
+    <string name="name_personal_settings_screen">이름 : %1$s</string>
+
+    <string name="budget_personal_settings_screen">예산 : %1$s %2$s</string>
+
+    <string name="new_budget_personal_settings_screen">새로운 예산</string>
+
+    <string name="new_name_personal_settings_screen">새로운 이름</string>
+
+    <string name="decline">감소</string>
+
+    <string name="save">구하다</string>
+
+    <string name="your_stats_personal_settings_screen">당신의 통계</string>
+
+    <string name="not_added_any_expenses_yet_personal_settings_screen">아직 비용을 추가하지 않았습니다.</string>
+
+    <string name="you_have_already_added_expenses_worth_of">이미 %1$s 비용을 추가했습니다. %2$s %3$s 가치</string>
+
+    <string name="not_added_any_incomes_yet_personal_settings_screen">아직 수입을 추가하지 않았습니다.</string>
+
+    <string name="you_have_already_added_incomes_worth_of">이미 %1$s 소득을 추가했습니다. 가치는 %2$s %3$s</string>
+
+    <string name="login_message_personal_settings_screen">트랙 %1$s번을 입력했습니다.</string>
+
+    <string name="expense_categories_categories_settings_screen">비용 범주</string>
+
+    <string name="delete">삭제</string>
+
+    <string name="income_categories">소득 범주</string>
+
+    <string name="expenses_lazy_column">경비</string>
+
+    <string name="incomes_lazy_column">소득</string>
+
+    <plurals name="operations_screen_info_cards">
+        <item quantity="other">운영</item>
+    </plurals>
+
+    <string name="warning_message_track_stats_lazycolumn">지정된 필터에 대한 재무 작업을 찾을 수 없습니다.</string>
+
+    <string name="first_notion_new_idea_card">아이디어는 당신이 재정적인 목표를 선언하는 방식입니다</string>
+
+    <string name="second_notion_new_idea_card">사용 가능한 아이디어 유형: 저축, 지출 한도 및 수입 계획</string>
+
+    <string name="third_notion_new_idea_card">아이디어는 앱에서 당신의 목표에 대해 알려줍니다.</string>
+
+    <string name="date">날짜</string>
+
+    <string name="limit_end_date_ideas">제한 종료일</string>
+
+    <string name="plan_end_date_ideas">계획된 종료 날짜</string>
+
+    <string name="related_to_all_categories_ideas">모든 카테고리와 관련됨</string>
+
+    <string name="new_idea_main_screen_feed">신안</string>
+
+    <string name="add_new_idea">새로운 아이디어 추가</string>
+
+    <string name="expense_categories_groceries">식료 잡화류</string>
+
+    <string name="expense_categories_Utilities">유용</string>
+
+    <string name="expense_categories_Household">가정</string>
+
+    <string name="expense_categories_Transportation">운송</string>
+
+    <string name="expense_categories_DiningOut">외식</string>
+
+    <string name="expense_categories_Entertainment">오락</string>
+
+    <string name="expense_categories_Gifts">선물</string>
+
+    <string name="expense_categories_ClothingAndAccessories">의류 및 액세서리</string>
+
+    <string name="expense_categories_PersonalCare">개인 관리</string>
+
+    <string name="expense_categories_TechnologyAndElectronics">기술 및 전자</string>
+
+    <string name="expense_categories_Investments">투자</string>
+
+    <string name="expense_categories_Unique">고유한</string>
+
+    <string name="expense_categories_Other">다른</string>
+
+    <string name="income_categories_Salary">샐러리</string>
+
+    <string name="income_categories_Freelance">프리랜서</string>
+
+    <string name="income_categories_Investment">투자</string>
+
+    <string name="income_categories_RentalIncome">임대 수입</string>
+
+    <string name="income_categories_BusinessIncome">사업소득</string>
+
+    <string name="income_categories_Dividends">배당금</string>
+
+    <string name="income_categories_Grants">보조금</string>
+
+    <string name="income_categories_Royalties">로열티</string>
+
+    <string name="expense_limit">지출 한도</string>
+
+    <string name="already_spent_expense_limit_card">이미 지출됨</string>
+
+    <string name="categories_message_expense_limit_card">카테고리:</string>
+
+    <string name="related_to_all_categories_expense_limit_card"> 모든 카테고리와 관련됨</string>
+
+    <string name="saving">절약</string>
+
+    <string name="income_plan">소득 계획</string>
+
+    <string name="planned">계획됨</string>
+
+    <string name="completed_for">완료됨</string>
+
+    <string name="preferable_period_income_plan_card">추천 기간: %1$s - %2$s</string>
+
+    <string name="other">다른</string>
+
+    <string name="income">소득</string>
+
+    <string name="warning_track_statistic_chart">차트를 작성할 만큼의 데이터가 없습니다.</string>
+
+    <string name="hide_chart">차트 숨기기</string>
+
+    <string name="show_chart">차트 보기</string>
+
+    <string name="selected_time_period_track_stats_options">선택된 기간 : %1$s - %2$s</string>
+
+    <string name="expenses_fin_item_card" tools:ignore="StringFormatCount">%1$s 비용: </string>
+
+    <string name="incomes_fin_item_card" tools:ignore="StringFormatCount">%1$s 소득: </string>
+
+    <string name="warning_message_info_cards">이번 달 0개의 작업</string>
+
+    <string name="add">추가하다</string>
+
+    <string name="add_it">추가하세요</string>
+
+    <string name="aprox_month_income_login_screen">대략 월수입</string>
+
+    <string name="you_havent_added_incomes_yet_lazy_column">아직 수입을 추가하지 않았습니다.</string>
+
+    <string name="add_expense">비용 추가</string>
+
+    <string name="add_incomes">소득 추가</string>
+
+    <string name="create_new_category">새로운 카테고리를 생성하세요</string>
+
+    <string name="category_exist_warning_new_category_dialog">이 카테고리는 이미 존재합니다</string>
+
+    <string name="back_to_settings_screen_CD">설정 화면으로 돌아가기</string>
+
+    <string name="statistic">통계량</string>
+
+    <string name="financial">재정적인</string>
+
+    <string name="financial_operation_statistic_screen">재무 운영</string>
+
+    <string name="expense_operation_statistic_screen">경비 운영</string>
+
+    <string name="income_operation_statistic_screen">소득 운영</string>
+
+    <string name="cd_add_new_category">새로운 카테고리를 생성하세요</string>
+
+    <string name="both">둘 다</string>
+
+    <string name="week">주</string>
+
+    <string name="month">월</string>
+
+    <string name="year">년도</string>
+
+    <string name="limit_planned">계획된 제한</string>
+
+    <string name="income_planned">수입 계획</string>
+
+    <string name="savings_planned">저축 계획</string>
+
+    <string name="add_idea">아이디어 추가</string>
+
+    <string name="optional">선택 과목</string>
+
+    <string name="saving_for">저장하기</string>
+
+    <string name="planned_main_track_screen">계획됨</string>
+
+    <string name="spent_main_track_screen">소비하다</string>
+
+    <string name="scroll_up_CD">위로 스크롤하다</string>
+
+    <string name="budget_main_feed_card">%1$s 예산</string>
+
+    <string name="empty_income_lazyColumn_additional1">오른쪽 하단 구속에 있는 버튼을 사용하여 시도해보세요. 모든 앱 화면에서 사용할 수 있습니다.</string>
+
+    <string name="add_to_adding_to_saving_idea_dialog">추가하다 </string>
+
+    <string name="planned_adding_to_saving_idea_dialog">계획됨 %1$s </string>
+
+    <string name="completed_for_adding_to_saving_idea_dialog">완료됨</string>
+
+    <string name="specified_category_fin_item_card">%1$s에서 %2$s: </string>
+
+    <string name="each_month_limit_new_idea_dialog">매월 한도</string>
+
+    <string name="confirm">확인하다</string>
+
+    <string name="cancel">취소</string>
+
+    <string name="incorrect_input_value_BS_error">잘못된 입력 값입니다</string>
+
+    <string name="select_financial_category_BS_error">금융 카테고리를 선택하세요</string>
+
+    <string name="incorrect_goal_value_newIdeaDialog_error">잘못된 목표 값</string>
+
+    <string name="incorrect_saving_label_error">빈 저장 라벨</string>
+
+    <string name="select_correct_date_error">올바른 날짜를 선택하세요</string>
+
+    <string name="you_have_already_selected_categories_error">이미 3개의 카테고리를 선택하셨습니다.</string>
+
+    <string name="additional">추가의</string>
+
+    <string name="select_category_new_idea_dialog_error">카테고리를 선택하거나 모든 카테고리와 관련된 비용 한도를 만드세요</string>
+
+    <string name="non_categorised_expenses_error_BS">분류되지 않은 비용에 대한 그룹화 범주를 선택하세요</string>
+
+    <string name="non_categorised_incomes_error_BS">비분류 소득에 대한 그룹화 범주를 선택하세요</string>
+
+    <string name="edit_personal_info">개인 정보 수정</string>
+
+    <string name="delete_financial_item_CD">재무 항목 삭제</string>
+
+    <string name="currency_in_use_error">%1$s은 이미 사용 중입니다.</string>
+
+    <string name="changing_preferable_currency_error">선호화폐 변경 중 오류가 발생했습니다.</string>
+
+    <string name="income_category">소득 범주</string>
+
+    <string name="expense_category">비용 카테고리</string>
+
+    <string name="allow_non_categorised_expenses">분류되지 않은 비용 허용</string>
+
+    <string name="show_as">으로 표시</string>
+
+    <string name="allow_non_categorised_incomes">분류되지 않은 소득 허용</string>
+
+    <string name="category_name_new_category_dialog">카테고리 이름</string>
+
+    <string name="filter_currencies">통화 필터링</string>
+
+    <string name="hide_additional_currencies">추가 통화 숨기기</string>
+
+    <string name="show_additional_currencies">추가 통화 표시</string>
+
+    <string name="user">사용자</string>
+
+    <string name="plan_started_income_plan_card">계획 시작 : %1$s</string>
+
+    <string name="your_ideas_setting_screen">당신의 아이디어</string>
+
+    <string name="set_as_preferable_currency_currencies_settings">선호 통화로 설정</string>
+
+    <string name="set_as_first_priority_additional">추가적으로 첫 번째 우선순위로 설정</string>
+
+    <string name="set_as_second_priority_additional">2번째 우선순위로 추가 설정</string>
+
+    <string name="set_as_third_priority_additional">추가적으로 3번째 우선순위로 설정</string>
+
+    <string name="set_as_fourth_priority_additional">4번째 우선순위로 추가 설정</string>
+
+    <string name="list_categories_settings_view_option">목록</string>
+
+    <string name="cards_categories_settings_view_option">카드</string>
+
+    <string name="show_only_custom_categories_settings">사용자 정의 카테고리만 표시</string>
+
+    <string name="filter_categories_categories_screen">카테고리 찾기</string>
+
+    <string name="no_categories_for_specified_filters_categories_settings">지정된 필터에 대한 카테고리가 없습니다</string>
+
+    <string name="shows_as_categories_settings">로 표시됨</string>
+
+    <string name="month_summary_header">%1$s 요약</string>
+
+    <string name="total_expenses_month_summary">총 비용 :</string>
+
+    <string name="total_incomes_month_summary">총 수입 :</string>
+
+    <string name="total_operations_month_summary">총 작업 :</string>
+
+    <string name="overall_month_summary">전반적인 :</string>
+
+    <string name="financials_quantity_stats_info_cards">재무 수량 :</string>
+
+    <string name="average_income_stats_info_cards">평균 소득 :</string>
+
+    <string name="average_expenses_stats_info_cards">하루 평균 비용 :</string>
+
+    <string name="period_summary_statistics_info_cards">기간 요약</string>
+
+    <string name="describe_your_financial_bottom_sheet">귀하의 재정을 설명하세요</string>
+
+</resources>

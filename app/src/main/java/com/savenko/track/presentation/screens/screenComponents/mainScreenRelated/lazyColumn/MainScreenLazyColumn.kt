@@ -212,7 +212,7 @@ fun MainScreenLazyColumn(
                                 visible = isVisible,
                                 exit = fadeOut()
                             ) {
-                                Box {
+                                Box{
                                     if (isScrollingUp) {
                                         LaunchedEffect(listState) {
                                             listState.animateScrollToItem(index = 0)

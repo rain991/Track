@@ -42,7 +42,6 @@
     <string name="show_page_name_settings_screen">Показывай назву страницы</string>
     <string name="preferable_theme_settings_screen">Любимая тема</string>
     <string name="extra_currency_settings_screen">Дополнительная валюта</string>
-    <string name="currencies_settings_screen">Валюта</string>
     <string name="delete_latest_currency_settings_screen">Удалить последнюю валюту</string>
     <string name="warning_message_idea_settings_screen">Вы еще не создали никакой идеи</string>
     <string name="show_completed_ideas_idea_settings_screen">Покажи законченные идеи</string>
