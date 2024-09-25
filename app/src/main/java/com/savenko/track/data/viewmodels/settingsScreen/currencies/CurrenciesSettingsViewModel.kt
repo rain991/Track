@@ -24,8 +24,11 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- *  CurrenciesSettingsViewModel uses MVI pattern : exposes [currenciesSettingsScreenState] to UI and receives
- *  [onEvent] callback to handle user interactions
+ *  CurrenciesSettingsViewModel uses MVI pattern :
+ *
+ *  exposes [currenciesSettingsScreenState] to UI
+ *
+ *  receives [onEvent] callback to handle user interactions
  */
 class CurrenciesSettingsViewModel(
     private val changeCurrenciesPreferenceUseCase: ChangeCurrenciesPreferenceUseCase,

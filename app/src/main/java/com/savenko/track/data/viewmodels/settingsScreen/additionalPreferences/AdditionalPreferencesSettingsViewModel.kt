@@ -18,6 +18,7 @@ import kotlinx.coroutines.launch
 
 /**
  * Handles additional settings in settings screen
+ *
  * Provides [additionalPreferencesState]
  */
 class AdditionalPreferencesSettingsViewModel(
