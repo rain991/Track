@@ -1,9 +1,10 @@
 package com.savenko.track.presentation.screens.states.core.mainScreen
 
 import com.savenko.track.domain.models.currency.Currency
+import com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.mainScreenInfoCards.TrackScreenInfoCards
 
 /**
- * [TrackInfoCards](com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.mainScreenInfoCards.TrackScreenInfoCards) state
+ * [TrackScreenInfoCards] state
  *
  * @property preferableCurrency
  * @property currentMonthExpensesCount

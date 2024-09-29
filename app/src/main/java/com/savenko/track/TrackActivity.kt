@@ -12,24 +12,24 @@ import com.savenko.track.data.other.constants.USE_SYSTEM_THEME_DEFAULT
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.viewmodels.common.TrackScreenManagerViewModel
 import com.savenko.track.presentation.navigation.Navigation
+import com.savenko.track.presentation.other.windowInfo.WindowInfo
 import com.savenko.track.presentation.themes.ThemeManager
 import com.savenko.track.presentation.themes.getThemeByName
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
-
 
 /**
  * **Track** is build as single activity no-fragment app with 100% Kotlin codebase
  *
  * Track uses Jetpack Compose for UI and Jetpack Navigation for navigation
  *
- * To handle screen sizes correctly **Track** in some cases creates child composable for specific screens;
+ * To handle screen sizes correctly **Track** in some cases creates child composable called *components* for specific screen sizes
  *
- * e.g : MainTrackScreen shows MainTrackScreenCompactComponent or MainTrackScreenExpandedComponent depending on screen width or height.
+ * e.g : MainTrackScreen shows MainTrackScreenCompactComponent or MainTrackScreenExpandedComponent depending on screen width or height
  *
  * Use *rememberWindowInfo* to handle screen parameters reliably
  *
- * @see [rememberWindowInfo](com.savenko.track.presentation.other.windowInfo.WindowInfoKt.rememberWindowInfo)
+ * @see [WindowInfo]
  */
 class TrackActivity : ComponentActivity() {
     private val dataStoreManager: DataStoreManager by inject()

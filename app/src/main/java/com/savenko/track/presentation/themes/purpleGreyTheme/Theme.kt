@@ -11,7 +11,9 @@ import androidx.core.view.WindowCompat
 
 
 /**
- * PurpleGreyTheme is default Track theme. Purple colorscheme is used for light theme, Grey for dark theme
+ * PurpleGreyTheme is default Track theme
+ *
+ * Purple colorscheme is used for light theme, Grey for dark theme
  */
 
 @Composable

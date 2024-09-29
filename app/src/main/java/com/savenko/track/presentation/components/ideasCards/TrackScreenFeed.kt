@@ -36,7 +36,7 @@ import org.koin.compose.koinInject
 
 /**
  * It is main screen feed which contains automatically scrollable pager which always starts
- * with card [BudgetFeedCard] and ending with [NewIdeaFeedCard]
+ * with card [BudgetFeedCard] and ends with [NewIdeaFeedCard]
  *
  * Scroll and state is handled by [TrackScreenFeedViewModel]
  */

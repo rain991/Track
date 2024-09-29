@@ -16,6 +16,12 @@ import androidx.compose.ui.unit.dp
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.components.customComponents.CategoryChip
 
+/**
+ * Additional preferences categories grid used to select grouping category for non-categorized financials
+ *
+ * @param listOfCategories list of all available categories
+ * @param selectedCategory current selected category
+ */
 @Composable
 fun AdditionalPreferencesCategoriesGrid(
     listOfCategories: List<CategoryEntity>,

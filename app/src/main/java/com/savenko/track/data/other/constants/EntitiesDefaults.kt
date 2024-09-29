@@ -10,6 +10,9 @@ import com.savenko.track.presentation.themes.purpleGreyTheme.purpleGreyNew_Light
 const val NAME_DEFAULT: String = "User"
 const val LOGIN_COUNT_DEFAULT = 0
 const val BUDGET_DEFAULT: Float = 0.0f
+val CURRENCY_DEFAULT = Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)
+
+// Preferences defaults
 const val SHOW_PAGE_NAME_DEFAULT: Boolean = true
 const val USE_SYSTEM_THEME_DEFAULT: Boolean = false
 const val NON_CATEGORY_FINANCIALS_DEFAULT = false
@@ -18,18 +21,16 @@ const val EXPENSE_CATEGORY_GROUPING_ID_DEFAULT = 13
 const val INCOME_CATEGORY_GROUPING_ID_DEFAULT = 9
 const val UNINITIALIZED_LOGIN_COUNT_STATE = -1
 
-// Color scheme and theme
+// Material theme and colorscheme
 val PREFERABLE_THEME_DEFAULT: Themes = Themes.PurpleGreyTheme
 val DEFAULT_LIGHT_COLOR_SCHEME = purpleGreyNew_LightColorScheme
 val DEFAULT_DARK_COLOR_SCHEME = purpleGreyNew_DarkColorScheme
 
-// Entities defaults
-val CURRENCY_DEFAULT =
-    Currency(ticker = "USD", name = "United States Dollar", CurrencyTypes.FIAT, rate = null)
+// Size of default categories in predefined Room DB
 const val DEFAULT_EXPENSE_CATEGORIES_MAX_INDEX = 13
 const val DEFAULT_INCOME_CATEGORIES_MAX_INDEX = 9
 
-// Max entities values
+// Max. components values
 const val CATEGORIES_NAME_MAX_LENGTH = 40
 const val IDEA_NOTE_MAX_LENGTH = 60
 const val NAME_MAX_LENGTH = 40
@@ -40,9 +41,11 @@ const val MAX_IDEA_VALUE = Int.MAX_VALUE
 const val MAX_FINANCIAL_VALUE = Float.MAX_VALUE
 const val MAX_CIRCULAR_PROGRESS_VALUE = 999f
 const val FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE = 16
-
-/*  warning changing this parameter will not increase real max value,
- it is only limit for composables (needed migration in Room from categories IDs parameters to list of categories IDs) */
-const val EXPENSE_LIMIT_MAX_CATEGORIES_SELECTED = 3
 const val MONTH_SUMMARY_MIN_LIST_SIZE =
     10 // defines min. size of list of FinancialEntity needed in MainScreenLazyColumn to show month summary
+
+/** Changing this parameter will not increase real max value,
+    it is only limit for composables
+    (needed migration in Room from categories IDs parameters to list of categories IDs) */
+const val EXPENSE_LIMIT_MAX_CATEGORIES_SELECTED = 3
+

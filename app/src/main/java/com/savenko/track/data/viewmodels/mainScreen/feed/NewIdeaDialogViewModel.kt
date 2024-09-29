@@ -1,9 +1,7 @@
 package com.savenko.track.data.viewmodels.mainScreen.feed
 
-import android.util.Log
 import androidx.lifecycle.ViewModel
 import com.savenko.track.data.other.constants.EXPENSE_LIMIT_MAX_CATEGORIES_SELECTED
-import com.savenko.track.data.other.constants.TAG
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.domain.models.abstractLayer.Idea
@@ -12,6 +10,7 @@ import com.savenko.track.domain.models.idea.ExpenseLimits
 import com.savenko.track.domain.models.idea.IncomePlans
 import com.savenko.track.domain.models.idea.Savings
 import com.savenko.track.domain.usecases.crud.ideasRelated.CreateIdeaUseCase
+import com.savenko.track.presentation.components.dialogs.addToSavingIdeaDialog.AddToSavingDialog
 import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
 import com.savenko.track.presentation.other.composableTypes.options.IdeaSelectorTypes
 import com.savenko.track.presentation.screens.states.core.common.NewIdeaDialogState
@@ -21,7 +20,7 @@ import java.time.LocalDate
 import java.util.Date
 
 /**
- * Handles state of [AddToSavingDialog](com.savenko.track.presentation.components.dialogs.addToSavingIdeaDialog.AddToSavingDialog)
+ * Handles state of [AddToSavingDialog]
  */
 class NewIdeaDialogViewModel(
     private val createIdeaUseCase: CreateIdeaUseCase
@@ -104,7 +103,6 @@ class NewIdeaDialogViewModel(
                     } else if (newIdeaDialogState.value.relatedToAllCategories == false && newIdeaDialogState.value.listOfSelectedCategories.isEmpty()) {
                         setWarningMessage(NewIdeaDialogErrors.SelectCategory)
                     }
-                    Log.d(TAG, "addNewIdea: ${newIdeaDialogState.value.warningMessage}")
                     return
                 }
             }
