@@ -13,10 +13,9 @@ import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
-import org.robolectric.RobolectricTestRunner
 import java.util.Date
 
-@RunWith(RobolectricTestRunner::class)
+//@RunWith(RobolectricTestRunner::class)
 class GetDesiredExpensesUseCaseTest {
     private lateinit var getDesiredExpensesUseCase: GetDesiredExpensesUseCase
     private val expensesListRepositoryImpl: ExpensesListRepository = mock()

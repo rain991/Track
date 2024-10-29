@@ -8,12 +8,13 @@ plugins {
 android {
     android.buildFeatures.buildConfig = true
     namespace = "com.savenko.track"
-    compileSdk = 34
+    compileSdk = 35
 
     defaultConfig {
+        testInstrumentationRunnerArguments += mapOf()
         applicationId = "com.savenko.track"
         minSdk = 26
-        targetSdk = 34
+        targetSdk = 35
         versionCode = 32
         versionName = "1.6.0"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
@@ -98,16 +99,13 @@ dependencies {
     //junit
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.0")
-
-    // (Optional) If you need "Parameterized Tests"
     testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.0")
-
-    // (Optional) If you also have JUnit 4-based tests
     testImplementation("junit:junit:4.13.2")
     testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.11.0")
-   // androidTestImplementation("androidx.test.ext:junit:1.2.1")
+    // androidTestImplementation("androidx.test.ext:junit:1.2.1")
     testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
     androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
 
     //other
     implementation("androidx.work:work-runtime-ktx:$workVersion")
