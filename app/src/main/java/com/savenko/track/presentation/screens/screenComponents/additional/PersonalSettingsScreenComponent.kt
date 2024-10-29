@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -33,7 +34,11 @@ fun PersonalSettingsScreenComponent() {
     val trackVersion = BuildConfig.VERSION_NAME
     Column(modifier = Modifier.fillMaxSize()) {
         Spacer(Modifier.height(8.dp))
-        PersonalSettingsContent(personalSettingsScreenViewmodel)
+        PersonalSettingsContent(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = 16.dp), personalSettingsViewModel = personalSettingsScreenViewmodel
+        )
         Spacer(Modifier.height(16.dp))
         PersonalSettingsStatistics(personalStatsViewmodel)
         Spacer(Modifier.weight(1f))

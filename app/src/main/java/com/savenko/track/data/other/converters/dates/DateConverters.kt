@@ -9,7 +9,7 @@ fun convertDateToLocalDate(date: Date): LocalDate {
     return date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
 }
 
-@Deprecated("Not recommended. LocalDate has only date values, however java.util.date has exactness to seconds")
+@Deprecated("Not recommended. LocalDate operates only on dates, however java.util.date has exactness to seconds")
 fun convertLocalDateToDate(localDate: LocalDate): Date {
     val zoneId: ZoneId = ZoneId.systemDefault()
     val instant = localDate.atStartOfDay().atZone(zoneId).toInstant()

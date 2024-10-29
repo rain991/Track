@@ -8,13 +8,14 @@ import kotlinx.coroutines.flow.firstOrNull
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.test.runTest
 import org.junit.After
+import org.junit.Assert.assertNotNull
 import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.Mockito.`when`
 import java.util.Date
-import kotlin.test.assertNotNull
+
 
 
 class GetDesiredFinancialEntitiesUseCaseTest {
@@ -111,9 +112,9 @@ class GetDesiredFinancialEntitiesUseCaseTest {
 
         val result = getDesiredFinancialEntitiesUseCase(startOfSpan.time, endOfSpan.time).firstOrNull()
 
-        assertNotNull(result, "Result should not be null")
-        assertNotNull(result.containsAll(incomeItems))
-        assertNotNull(result.none { it is ExpenseItem })
+        assertNotNull(result)
+        assertNotNull(result?.containsAll(incomeItems))
+        assertNotNull(result?.none { it is ExpenseItem })
     }
 
 }

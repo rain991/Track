@@ -36,6 +36,11 @@ import com.savenko.track.presentation.other.getMonthResID
 import org.koin.androidx.compose.koinViewModel
 import java.time.LocalDate
 
+/**
+ * Main card of  [TrackScreenFeed](com.savenko.track.presentation.components.ideasCards.TrackScreenFeedKt.TrackScreenFeed)
+ *
+ * Displays user-predefined budget, summary of current month expenses
+ */
 @Composable
 fun BudgetFeedCard() {
     val budgetIdeaCardViewModel = koinViewModel<BudgetIdeaCardViewModel>()

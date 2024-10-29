@@ -27,9 +27,17 @@ import com.savenko.track.R
 import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
 import com.savenko.track.data.viewmodels.settingsScreen.additionalPreferences.AdditionalPreferencesSettingsViewModel
 import com.savenko.track.presentation.components.customComponents.CategoryChip
+import com.savenko.track.presentation.screens.core.SettingsTrackScreen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * Part of *Settings Track screen*
+ *
+ * User can change additional preferences here, such as non-categorized financials
+ *
+ * @see [SettingsTrackScreen]
+ */
 @Composable
 fun SettingsScreenAdditionalPreferences(modifier: Modifier) {
     val coroutineScope = rememberCoroutineScope()

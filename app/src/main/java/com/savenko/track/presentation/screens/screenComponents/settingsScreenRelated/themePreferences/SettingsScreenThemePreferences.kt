@@ -32,6 +32,15 @@ import com.savenko.track.presentation.components.customComponents.ThemeSelectorR
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
+/**
+ * Part of TrackSettingsScreen
+ *
+ * User can select Track material theme via [ThemeSelectorRow]
+ *
+ * User can enable Dynamic Colors instead of Track predefined themes @since [Build.VERSION_CODES.S]
+ *
+ * User can change visibility of Track pages name
+ */
 @Composable
 fun SettingsScreenThemePreferences(modifier: Modifier) {
     val coroutineScope = rememberCoroutineScope()

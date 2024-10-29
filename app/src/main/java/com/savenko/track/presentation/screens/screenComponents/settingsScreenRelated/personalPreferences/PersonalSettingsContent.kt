@@ -50,18 +50,22 @@ import com.savenko.track.data.viewmodels.settingsScreen.personal.PersonalSetting
 import com.savenko.track.domain.models.currency.Currency
 import kotlinx.coroutines.launch
 
-
+/**
+ * Used to represent user main preferences in Personal Settings Screen such as *name* and *budget*
+ *
+ * [DefaultContent]
+ *
+ * [EditModeContent]
+ */
 @Composable
-fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) {
+fun PersonalSettingsContent(modifier: Modifier, personalSettingsViewModel: PersonalSettingsScreenViewmodel) {
     val coroutineScope = rememberCoroutineScope()
-    val name = viewModel.userName.collectAsState()
-    val budget = viewModel.budget.collectAsState()
-    val preferableCurrency = viewModel.preferableCurrency.collectAsState()
+    val name = personalSettingsViewModel.userName.collectAsState()
+    val budget = personalSettingsViewModel.budget.collectAsState()
+    val preferableCurrency = personalSettingsViewModel.preferableCurrency.collectAsState()
     var isInEditingMode by remember { mutableStateOf(false) }
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 16.dp)
+        modifier = modifier
     ) {
         if (!isInEditingMode) {
             DefaultContent(
@@ -79,7 +83,7 @@ fun PersonalSettingsContent(viewModel: PersonalSettingsScreenViewmodel) {
                     isInEditingMode = false
                 }) { editableName: String, editableBudget: Float ->
                 coroutineScope.launch {
-                    viewModel.setNewPersonalPreferences(
+                    personalSettingsViewModel.setNewPersonalPreferences(
                         newName = editableName,
                         newBudget = editableBudget
                     )

@@ -35,6 +35,16 @@ import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.presentation.components.customComponents.CategorySettingsChip
 
+
+/**
+ * Categories settings screen content in list view
+ *
+ * @param listOfExpenseCategories list of filtered user expense categories
+ * @param listOfIncomeCategories list of filtered user incomes categories
+ * @param currentSelectedCategory selected category, on such categories could be performed actions, e.g : deleting category
+ *
+ * @see [CategoriesSettingsScreen](com.savenko.track.presentation.screens.screenComponents.additional.CategoriesSettingsScreenComponentKt)
+ */
 @Composable
 fun CategoriesSettingsCardViewContent(
     listOfExpenseCategories: List<ExpenseCategory>,

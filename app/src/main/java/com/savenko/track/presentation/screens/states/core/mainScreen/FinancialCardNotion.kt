@@ -2,6 +2,7 @@ package com.savenko.track.presentation.screens.states.core.mainScreen
 
 /**
  * Financial card notion
+ *
  * This notion data depends on chosen period
  *
  * @property financialsQuantity depends on UI requirements, represents quantity of financials with same category in time period
