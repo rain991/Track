@@ -31,7 +31,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-
+@Suppress("UNUSED")
 @Composable
 fun CustomTabSample() {
     val (selected, setSelected) = remember {

@@ -22,6 +22,7 @@ import androidx.compose.ui.focus.focusTarget
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 
+@Suppress("UNUSED")
 @Composable
 fun FlippableCard(
     modifier: Modifier,

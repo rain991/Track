@@ -1,3 +1,5 @@
+@file:Suppress("unused", "unused", "unused", "unused")
+
 package com.savenko.track.data.other.constants
 
 import androidx.compose.ui.graphics.Color
@@ -39,7 +41,6 @@ const val FIRST_VISIBLE_INDEX_FEED_DISAPPEARANCE = 8
 // Format constants
 val FIAT_DECIMAL_FORMAT = DecimalFormat("#.##")
 val CRYPTO_DECIMAL_FORMAT = DecimalFormat("#.####")
-val OTHER_CURRENCY_TYPE_DECIMAL_FORMAT = DecimalFormat("#.###")
 val PERCENTAGE_DECIMAL_FORMAT = DecimalFormat("#.##")
 
 // Other constants

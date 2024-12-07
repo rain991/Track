@@ -11,6 +11,7 @@ fun generateRandomColor(): String {
     return String.format("0x%02X%02X%02X%02X", alpha, red, green, blue)
 }
 
+@Suppress("UNUSED")
 fun convertColorFormat(color: String): String? {
     return if (color.startsWith("0x") && color.length == 10) {
         color.substring(4)

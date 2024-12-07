@@ -36,13 +36,11 @@ import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.presentation.components.customComponents.CategoryChip
 import com.savenko.track.presentation.components.customComponents.ErrorText
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
-import com.savenko.track.presentation.other.windowInfo.rememberWindowInfo
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
-    val windowInfo = rememberWindowInfo()
     val coroutineScope = rememberCoroutineScope()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
     val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })

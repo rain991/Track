@@ -234,7 +234,6 @@
     <string name="month_summary_header">%1$s Zusammenfassung</string>
     <string name="total_expenses_month_summary">Gesamtausgaben :</string>
     <string name="total_incomes_month_summary">Gesamteinnahmen :</string>
-    <string name="total_operations_month_summary">Operationen insgesamt :</string>
     <string name="overall_month_summary">Gesamt :</string>
     <string name="financials_quantity_stats_info_cards">Finanzkennzahlen Menge :</string>
     <string name="average_income_stats_info_cards">Durchschnittseinkommen :</string>

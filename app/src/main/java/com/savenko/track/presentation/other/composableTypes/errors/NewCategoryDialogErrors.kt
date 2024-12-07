@@ -1,3 +1,5 @@
+@file:Suppress("SameParameterValue")
+
 package com.savenko.track.presentation.other.composableTypes.errors
 
 import com.savenko.track.R

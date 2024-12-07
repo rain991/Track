@@ -198,7 +198,6 @@
     <string name="month_summary_header">Podsumowanie %1$s</string>
     <string name="total_expenses_month_summary">Wydatków :</string>
     <string name="total_incomes_month_summary">Dochodów :</string>
-    <string name="total_operations_month_summary">Liczba operacji :</string>
     <string name="overall_month_summary">W sumie :</string>
     <string name="financials_quantity_stats_info_cards">Ilość operacji :</string>
     <string name="average_income_stats_info_cards">Średni dochód :</string>
