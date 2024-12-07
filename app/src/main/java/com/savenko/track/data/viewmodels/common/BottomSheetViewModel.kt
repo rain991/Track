@@ -277,7 +277,6 @@ class BottomSheetViewModel(
     }
 
     fun changeSelectedCurrency() {
-        val listOfCurrenciesValues = listOfPreferableCurrencies.map { it }
         val selectedCurrencyIndex = _bottomSheetViewState.value.currentSelectedCurrencyIndex
         for (i in (selectedCurrencyIndex + 1) until listOfPreferableCurrencies.size) {
             setSelectedCurrency(i)

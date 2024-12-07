@@ -21,8 +21,10 @@ import androidx.compose.ui.text.TextStyle
 import com.savenko.track.R
 import com.savenko.track.domain.models.currency.Currency
 
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
+@Suppress("UNUSED")
 fun CurrencyDropDownMenu(currencyList: List<Currency>, selectedOption: Currency, onSelect: (Currency) -> Unit) {
     val uiColor = if (isSystemInDarkTheme()) Color.White else Color.Black
     var isExpanded by remember { mutableStateOf(false) }

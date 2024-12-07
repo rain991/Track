@@ -10,6 +10,7 @@ enum class CurrencyTypes {
     FIAT, CRYPTO, OTHER
 }
 
+@Suppress("UNUSED")
 @Composable
 fun getCurrencyTypeByTicker(ticker: String): CurrencyTypes? {
     val currencyListRepositoryImpl = koinInject<CurrencyListRepository>()

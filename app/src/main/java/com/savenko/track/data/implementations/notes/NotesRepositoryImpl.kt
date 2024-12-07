@@ -20,6 +20,7 @@ import java.time.LocalDate
 import java.util.Date
 
 /* NotesRepository is currently not used */
+@Suppress("UNUSED")
 class NotesRepositoryImpl(
     private val incomeDao: IncomeDao,
     private val expenseItemsDao: ExpenseItemsDAO,

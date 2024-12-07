@@ -101,7 +101,7 @@
 
     <string name="name_personal_settings_screen">Nom : %1$s</string>
 
-    <string name="budget_personal_settings_screen">Budget: %1$s </string>
+    <string name="budget_personal_settings_screen" tools:ignore="StringFormatCount">Budget: %1$s </string>
 
     <string name="new_budget_personal_settings_screen">Nouveau budget</string>
 
@@ -390,8 +390,6 @@
     <string name="total_expenses_month_summary">Dépenses totales :</string>
 
     <string name="total_incomes_month_summary">Revenus totaux :</string>
-
-    <string name="total_operations_month_summary">Total des opérations :</string>
 
     <string name="overall_month_summary">Dans l\'ensemble :</string>
 

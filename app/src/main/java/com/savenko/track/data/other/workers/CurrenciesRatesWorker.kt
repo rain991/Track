@@ -24,6 +24,7 @@ class CurrenciesRatesWorker(
         const val ONE_TIME_CURRENCY_REQUEST_NAME = "additionalCurrenciesRateRequest"
     }
 
+    @Suppress("EmptyMethod")
     override suspend fun getForegroundInfo(): ForegroundInfo {
         return super.getForegroundInfo()
     }

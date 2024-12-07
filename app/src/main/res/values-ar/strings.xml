@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="app_name" translatable="false">Track</string>
-
-    <string name="app_logo" translatable="false">Application Logo</string>
-
     <string name="logo_app_description">متتبع مالي مريح وسهل الاستخدام</string>
 
     <string name="currency">عملة</string>
@@ -344,8 +340,6 @@
 
     <string name="changing_preferable_currency_error">حدث خطأ عند تغيير العملة المفضلة</string>
 
-    <string name="track_version" translatable="false">Track %1$s</string>
-
     <string name="income_category">فئة الدخل</string>
 
     <string name="expense_category">فئة المصروفات</string>
@@ -397,8 +391,6 @@
     <string name="total_expenses_month_summary">إجمالي المصروفات :</string>
 
     <string name="total_incomes_month_summary">إجمالي الدخل :</string>
-
-    <string name="total_operations_month_summary">مجموع العمليات :</string>
 
     <string name="overall_month_summary">إجمالي :</string>
 

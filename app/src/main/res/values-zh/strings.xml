@@ -1,9 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?><resources xmlns:tools="http://schemas.android.com/tools">
 
-    <string name="app_name" translatable="false">Track</string>
-
-    <string name="app_logo" translatable="false">Application Logo</string>
-
     <string name="logo_app_description">方便易用的财务追踪器</string>
 
     <string name="currency">货币</string>
@@ -340,8 +336,6 @@
 
     <string name="changing_preferable_currency_error">更改首选货币时发生错误</string>
 
-    <string name="track_version" translatable="false">Track %1$s</string>
-
     <string name="income_category">收入类别</string>
 
     <string name="expense_category">费用类别</string>
@@ -393,8 +387,6 @@
     <string name="total_expenses_month_summary">总费用：</string>
 
     <string name="total_incomes_month_summary">总收入：</string>
-
-    <string name="total_operations_month_summary">总运营量：</string>
 
     <string name="overall_month_summary">全面的 ：</string>
 

@@ -198,7 +198,6 @@
     <string name="month_summary_header">Итог %1$s</string>
     <string name="total_expenses_month_summary">Всего расходов :</string>
     <string name="total_incomes_month_summary">Всего доходов :</string>
-    <string name="total_operations_month_summary">Всего операций :</string>
     <string name="overall_month_summary">В сумме :</string>
     <string name="financials_quantity_stats_info_cards">Операций :</string>
     <string name="average_income_stats_info_cards">Средний доход :</string>

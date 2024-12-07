@@ -10,7 +10,7 @@ import com.savenko.track.presentation.themes.Themes
  */
 class ThemePreferenceSettingsViewModel(
     private val updateUserDataUseCase: UpdateUserDataUseCase,
-    private val dataStoreManager: DataStoreManager
+    dataStoreManager: DataStoreManager
 ) : ViewModel() {
     val showPagesNameFlow = dataStoreManager.isShowPageName
     suspend fun setShowPagesNameFlow(value: Boolean) {

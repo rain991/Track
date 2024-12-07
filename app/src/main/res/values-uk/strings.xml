@@ -198,7 +198,6 @@
     <string name="month_summary_header">Підсумок %1$s</string>
     <string name="total_expenses_month_summary">Загалом витрат :</string>
     <string name="total_incomes_month_summary">Загалом доходів :</string>
-    <string name="total_operations_month_summary">Загалом операцій :</string>
     <string name="overall_month_summary">У сумі :</string>
     <string name="financials_quantity_stats_info_cards">Операцій :</string>
     <string name="average_income_stats_info_cards">Середній дохід</string>

@@ -40,7 +40,7 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         Text(text = stringResource(R.string.each_month_limit_new_idea_dialog))
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
-            checked = newIdeaDialogState.eachMonth ?: true,
+            checked = newIdeaDialogState.eachMonth != false,
             onCheckedChange = { newIdeaDialogViewModel.setEachMonth(it) })
     }
     Spacer(modifier = Modifier.height(4.dp))
@@ -91,7 +91,7 @@ fun ExpenseLimitsDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         Text(text = stringResource(R.string.related_to_all_categories_ideas))
         Spacer(modifier = Modifier.width(8.dp))
         Switch(
-            checked = newIdeaDialogState.relatedToAllCategories ?: true,
+            checked = newIdeaDialogState.relatedToAllCategories != false,
             onCheckedChange = { newIdeaDialogViewModel.setSelectedToAllCategories(it) })
     }
     if (newIdeaDialogState.warningMessage is NewIdeaDialogErrors.SelectCategory) {
