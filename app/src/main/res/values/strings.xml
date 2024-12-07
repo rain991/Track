@@ -51,7 +51,7 @@
     <string name="oldest_first_idea_settings_screen">Oldest first</string>
     <string name="message_currencies_settings_screen">You can switch currencies by touching their ticker in cards. Your preferable currency is used as basic in most parts of the Track.</string>
     <string name="name_personal_settings_screen">Name : %1$s</string>
-    <string name="budget_personal_settings_screen">Budget : %1$s %2$s</string>
+    <string name="budget_personal_settings_screen" tools:ignore="StringFormatCount">Budget : %1$s %2$s</string>
     <string name="new_budget_personal_settings_screen">New budget</string>
     <string name="new_name_personal_settings_screen">New name</string>
     <string name="decline">Decline</string>
@@ -200,7 +200,6 @@
     <string name="month_summary_header">%1$s summary</string>
     <string name="total_expenses_month_summary">Total expenses :</string>
     <string name="total_incomes_month_summary">Total incomes :</string>
-    <string name="total_operations_month_summary">Total operations :</string>
     <string name="overall_month_summary">Overall :</string>
     <string name="financials_quantity_stats_info_cards">Financials quantity :</string>
     <string name="average_income_stats_info_cards">Average income :</string>

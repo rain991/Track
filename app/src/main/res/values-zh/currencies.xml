@@ -80,36 +80,6 @@
 
     <string name="currency_south_african_rand">南非兰特</string>
 
-    <string name="currency_cardano" translatable="false">Cardano</string>
-
-    <string name="currency_bitcoin_cash" translatable="false">Bitcoin Cash</string>
-
-    <string name="currency_binance_coin" translatable="false">Binance Coin</string>
-
-    <string name="currency_bitcoin" translatable="false">Bitcoin</string>
-
-    <string name="currency_binance_usd" translatable="false">Binance USD</string>
-
-    <string name="currency_dogecoin" translatable="false">Dogecoin</string>
-
-    <string name="currency_polkadot" translatable="false">Polkadot</string>
-
-    <string name="currency_ethereum" translatable="false">Ethereum</string>
-
-    <string name="currency_litecoin" translatable="false">Litecoin</string>
-
-    <string name="currency_shiba_inu" translatable="false">Shiba Inu</string>
-
-    <string name="currency_solana" translatable="false">Solana</string>
-
-    <string name="currency_tron" translatable="false">TRON</string>
-
-    <string name="currency_usd_coin" translatable="false">USD Coin</string>
-
-    <string name="currency_tether" translatable="false">Tether</string>
-
-    <string name="currency_ripple" translatable="false">Ripple</string>
-
     <string name="currency_gold">金子</string>
 
     <string name="currency_silver">银</string>
