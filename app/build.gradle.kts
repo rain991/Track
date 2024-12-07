@@ -3,6 +3,7 @@ plugins {
     id("org.jetbrains.kotlin.android")
     id("com.google.devtools.ksp")
     id("de.mannodermaus.android-junit5") version "1.11.0.0"
+    id("org.jetbrains.kotlin.plugin.compose")
 }
 
 android {
