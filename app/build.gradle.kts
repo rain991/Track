@@ -55,14 +55,14 @@ android {
 
 
 dependencies {
-    val workVersion = "2.9.1"
+    val workVersion = "2.10.0"
     val koinVersion = "3.5.3"
     val retrofitVersion = "2.9.0"
     val roomVersion = "2.6.1"
 
     //android
-    implementation("androidx.core:core-ktx:1.13.1")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.6")
+    implementation("androidx.core:core-ktx:1.15.0")
+    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
 
     //data related
     implementation("androidx.datastore:datastore-preferences:1.0.0") // newer dataStore version could lead unexpected crashes
@@ -83,16 +83,16 @@ dependencies {
     implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
 
     //compose
-    implementation("androidx.navigation:navigation-compose:2.8.3")
+    implementation("androidx.navigation:navigation-compose:2.8.4")
     implementation("androidx.activity:activity-compose:1.9.3")
-    implementation(platform("androidx.compose:compose-bom:2024.10.00"))
+    implementation(platform("androidx.compose:compose-bom:2024.11.00"))
     implementation("androidx.compose.ui:ui")
     implementation("androidx.compose.ui:ui-graphics")
     implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3:1.3.0")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.10.00"))
+    implementation("androidx.compose.material3:material3:1.3.1")
+    androidTestImplementation(platform("androidx.compose:compose-bom:2024.11.00"))
     androidTestImplementation("androidx.compose.ui:ui-test-junit5")
-    debugImplementation("androidx.compose.ui:ui-tooling:1.7.4")
+    debugImplementation("androidx.compose.ui:ui-tooling:1.7.5")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("androidx.core:core-splashscreen:1.0.1")
 
