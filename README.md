@@ -49,8 +49,8 @@
 
 ## Get Started with Track
 
-- Android : Track is available in Play Market Store - [Store Page](https://play.google.com/store/apps/details?id=com.savenko.track)
-- IOS : Track has long term plans to be available on Apple devices
+- Android : Track support was suspended on 17 feb 2025
+  
 ## Used Technologies
 - Kotlin
 - Jetpack compose
