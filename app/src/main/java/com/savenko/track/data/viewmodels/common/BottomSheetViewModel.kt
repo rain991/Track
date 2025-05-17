@@ -80,17 +80,18 @@ class BottomSheetViewModel(
             }
         }
         viewModelScope.launch {
-            currenciesPreferenceRepositoryImpl.getCurrenciesPreferenceConverted().collect { currenciesPreference ->
-                _listOfPreferableCurrencies.clear()
-                val listOfNonNullCurrenciesNames = listOfNotNull(
-                    currenciesPreference.preferableCurrency,
-                    currenciesPreference.firstAdditionalCurrency,
-                    currenciesPreference.secondAdditionalCurrency,
-                    currenciesPreference.thirdAdditionalCurrency,
-                    currenciesPreference.fourthAdditionalCurrency
-                )
-                _listOfPreferableCurrencies.addAll(listOfNonNullCurrenciesNames)
-            }
+            currenciesPreferenceRepositoryImpl.getCurrenciesPreferenceConverted()
+                .collect { currenciesPreference ->
+                    _listOfPreferableCurrencies.clear()
+                    val listOfNonNullCurrenciesNames = listOfNotNull(
+                        currenciesPreference.preferableCurrency,
+                        currenciesPreference.firstAdditionalCurrency,
+                        currenciesPreference.secondAdditionalCurrency,
+                        currenciesPreference.thirdAdditionalCurrency,
+                        currenciesPreference.fourthAdditionalCurrency
+                    )
+                    _listOfPreferableCurrencies.addAll(listOfNonNullCurrenciesNames)
+                }
         }
     }
 
@@ -103,78 +104,37 @@ class BottomSheetViewModel(
 
     /**
      * Add financial item
-     *
      */
     suspend fun addFinancialItem() {
         val nonCategorisedExpenses = dataStoreManager.nonCategoryExpenses.first()
         val nonCategorisedIncomes = dataStoreManager.nonCategoryIncomes.first()
         val groupingExpenseCategoryId = dataStoreManager.groupingExpenseCategoryId.first()
         val groupingIncomeCategoryId = dataStoreManager.groupingIncomeCategoryId.first()
-        val selectedCurrency = listOfPreferableCurrencies[_bottomSheetViewState.value.currentSelectedCurrencyIndex]
+        val selectedCurrency =
+            listOfPreferableCurrencies[_bottomSheetViewState.value.currentSelectedCurrencyIndex]
 
-        if (bottomSheetViewState.value.inputValue == null || bottomSheetViewState.value.inputValue == 0.0f) {
-            setWarningMessage(BottomSheetErrors.IncorrectInputValue)
-            return
-        }
-        if (nonCategorisedExpenses && bottomSheetViewState.value.isAddingExpense && (bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId == GROUPING_CATEGORY_ID_DEFAULT)) {
-            setWarningMessage(BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected)
-            return
-        }
-        if (nonCategorisedIncomes && !bottomSheetViewState.value.isAddingExpense && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId == GROUPING_CATEGORY_ID_DEFAULT) {
-            setWarningMessage(BottomSheetErrors.IncomeGroupingCategoryIsNotSelected)
-            return
-        }
-        if (bottomSheetViewState.value.categoryPicked == null && ((bottomSheetViewState.value.isAddingExpense && !nonCategorisedExpenses) || (!bottomSheetViewState.value.isAddingExpense && !nonCategorisedIncomes))) {
-            setWarningMessage(BottomSheetErrors.CategoryNotSelected)
-            return
-        }
-
-        if (bottomSheetViewState.value.datePicked == null) {
-            setWarningMessage(BottomSheetErrors.DateNotSelected)
-            return
-        }
-
-        if (bottomSheetViewState.value.isAddingExpense) {
-            withContext(Dispatchers.IO) {
-                val expenseCategoryPickedId =
-                    if (nonCategorisedExpenses && bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
-                        groupingExpenseCategoryId
-                    } else {
-                        EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
-                    }
-                val currentExpenseItem = ExpenseItem(
-                    categoryId = if (bottomSheetViewState.value.categoryPicked != null) {
-                        bottomSheetViewState.value.categoryPicked!!.categoryId
-                    } else {
-                        expenseCategoryPickedId
-                    },
-                    note = bottomSheetViewState.value.note,
-                    date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
-                    value = bottomSheetViewState.value.inputValue!!,
-                    currencyTicker = selectedCurrency.ticker
+        handleWarnings(
+            nonCategorisedExpenses = nonCategorisedExpenses,
+            nonCategorisedIncomes = nonCategorisedIncomes,
+            groupingExpenseCategoryId = groupingExpenseCategoryId,
+            groupingIncomeCategoryId = groupingIncomeCategoryId
+        )
+        withContext(Dispatchers.IO) {
+            if (bottomSheetViewState.value.isAddingExpense) {
+                handleAddingExpenses(
+                    nonCategorisedExpenses = nonCategorisedExpenses,
+                    groupingExpenseCategoryId = groupingExpenseCategoryId,
+                    selectedCurrency = selectedCurrency
                 )
-                addExpenseItemUseCase(currentExpenseItem)
+            } else {
+                handleAddingIncomes(
+                    nonCategorisedIncomes = nonCategorisedIncomes,
+                    groupingIncomeCategoryId = groupingIncomeCategoryId,
+                    selectedCurrency = selectedCurrency
+                )
             }
-        } else {
-            val incomeCategoryPickedId =
-                if (nonCategorisedIncomes && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
-                    groupingIncomeCategoryId
-                } else {
-                    INCOME_CATEGORY_GROUPING_ID_DEFAULT
-                }
-            val currentIncomeItem = IncomeItem(
-                categoryId = if (bottomSheetViewState.value.categoryPicked != null) {
-                    bottomSheetViewState.value.categoryPicked!!.categoryId
-                } else {
-                    incomeCategoryPickedId
-                },
-                note = bottomSheetViewState.value.note,
-                date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
-                value = bottomSheetViewState.value.inputValue!!,
-                currencyTicker = selectedCurrency.ticker
-            )
-            addIncomeItemUseCase(currentIncomeItem)
         }
+
         setCategoryPicked(DEFAULT_CATEGORY)
         setInputValue(DEFAULT_INPUT_VALUE)
         setDatePicked(DEFAULT_DATE)
@@ -189,7 +149,8 @@ class BottomSheetViewModel(
      * @param value
      */
     fun setBottomSheetExpanded(value: Boolean) {
-        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(isBottomSheetExpanded = value)
+        _bottomSheetViewState.value =
+            _bottomSheetViewState.value.copy(isBottomSheetExpanded = value)
     }
 
     /**
@@ -288,11 +249,91 @@ class BottomSheetViewModel(
         }
     }
 
+    private suspend fun handleAddingExpenses(
+        nonCategorisedExpenses: Boolean,
+        groupingExpenseCategoryId: Int,
+        selectedCurrency: Currency
+    ) {
+        val expenseCategoryPickedId =
+            if (nonCategorisedExpenses && bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
+                groupingExpenseCategoryId
+            } else {
+                EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
+            }
+        val currentExpenseItem = ExpenseItem(
+            categoryId = if (bottomSheetViewState.value.categoryPicked != null) {
+                bottomSheetViewState.value.categoryPicked!!.categoryId
+            } else {
+                expenseCategoryPickedId
+            },
+            note = bottomSheetViewState.value.note,
+            date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
+            value = bottomSheetViewState.value.inputValue!!,
+            currencyTicker = selectedCurrency.ticker
+        )
+        addExpenseItemUseCase(currentExpenseItem)
+    }
+
+    private suspend fun handleAddingIncomes(
+        nonCategorisedIncomes: Boolean,
+        groupingIncomeCategoryId: Int,
+        selectedCurrency: Currency
+    ) {
+        val incomeCategoryPickedId =
+            if (nonCategorisedIncomes && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
+                groupingIncomeCategoryId
+            } else {
+                INCOME_CATEGORY_GROUPING_ID_DEFAULT
+            }
+        val currentIncomeItem = IncomeItem(
+            categoryId = if (bottomSheetViewState.value.categoryPicked != null) {
+                bottomSheetViewState.value.categoryPicked!!.categoryId
+            } else {
+                incomeCategoryPickedId
+            },
+            note = bottomSheetViewState.value.note,
+            date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
+            value = bottomSheetViewState.value.inputValue!!,
+            currencyTicker = selectedCurrency.ticker
+        )
+        addIncomeItemUseCase(currentIncomeItem)
+    }
+
     private fun setSelectedCurrency(index: Int) {
-        _bottomSheetViewState.value = _bottomSheetViewState.value.copy(currentSelectedCurrencyIndex = index)
+        _bottomSheetViewState.value =
+            _bottomSheetViewState.value.copy(currentSelectedCurrencyIndex = index)
     }
 
     private fun setWarningMessage(message: BottomSheetErrors?) {
         _bottomSheetViewState.value = _bottomSheetViewState.value.copy(warningMessage = message)
+    }
+
+    private fun handleWarnings(
+        nonCategorisedExpenses: Boolean,
+        nonCategorisedIncomes: Boolean,
+        groupingExpenseCategoryId: Int,
+        groupingIncomeCategoryId: Int
+    ) {
+        if (bottomSheetViewState.value.inputValue == null || bottomSheetViewState.value.inputValue == 0.0f) {
+            setWarningMessage(BottomSheetErrors.IncorrectInputValue)
+            return
+        }
+        if (nonCategorisedExpenses && bottomSheetViewState.value.isAddingExpense && (bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId == GROUPING_CATEGORY_ID_DEFAULT)) {
+            setWarningMessage(BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected)
+            return
+        }
+        if (nonCategorisedIncomes && !bottomSheetViewState.value.isAddingExpense && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId == GROUPING_CATEGORY_ID_DEFAULT) {
+            setWarningMessage(BottomSheetErrors.IncomeGroupingCategoryIsNotSelected)
+            return
+        }
+        if (bottomSheetViewState.value.categoryPicked == null && ((bottomSheetViewState.value.isAddingExpense && !nonCategorisedExpenses) || (!bottomSheetViewState.value.isAddingExpense && !nonCategorisedIncomes))) {
+            setWarningMessage(BottomSheetErrors.CategoryNotSelected)
+            return
+        }
+
+        if (bottomSheetViewState.value.datePicked == null) {
+            setWarningMessage(BottomSheetErrors.DateNotSelected)
+            return
+        }
     }
 }
