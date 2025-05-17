@@ -41,77 +41,21 @@ class NewIdeaDialogViewModel(
         )
     )
     val newIdeaDialogState = _newIdeaDialogState.asStateFlow()
+
     suspend fun addNewIdea() {
-        lateinit var idea: Idea
         when (newIdeaDialogState.value.typeSelected) {
             IdeaSelectorTypes.Savings -> {
-                if (newIdeaDialogState.value.includedInBudget != null && newIdeaDialogState.value.goal > 0 && newIdeaDialogState.value.label != null && newIdeaDialogState.value.label!!.isNotEmpty()) {
-                    idea = Savings(
-                        goal = newIdeaDialogState.value.goal,
-                        completed = false,
-                        startDate = convertLocalDateToDate(LocalDate.now()),
-                        endDate = newIdeaDialogState.value.endDate,
-                        label = newIdeaDialogState.value.label ?: "",
-                        value = 0f
-                    )
-                } else {
-                    if (newIdeaDialogState.value.goal <= 0) {
-                        setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
-                    } else if (newIdeaDialogState.value.label == null || newIdeaDialogState.value.label!!.isNotEmpty()) {
-                        setWarningMessage(NewIdeaDialogErrors.IncorrectSavingLabel)
-                    }
-                    return
-                }
+                addNewSavings()
             }
 
             IdeaSelectorTypes.IncomePlans -> {
-                if (newIdeaDialogState.value.goal > 0) {
-                    idea = IncomePlans(
-                        goal = newIdeaDialogState.value.goal,
-                        completed = false,
-                        startDate = convertLocalDateToDate(LocalDate.now()),
-                        endDate = newIdeaDialogState.value.endDate
-                    )
-                } else {
-                    setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
-                    return
-                }
+                addNewIncomePlan()
             }
 
             IdeaSelectorTypes.ExpenseLimit -> {
-                if (newIdeaDialogState.value.relatedToAllCategories != null && newIdeaDialogState.value.goal > 0 && (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) && (newIdeaDialogState.value.relatedToAllCategories == true || newIdeaDialogState.value.listOfSelectedCategories.isNotEmpty())) {
-                    idea = ExpenseLimits(
-                        goal = newIdeaDialogState.value.goal,
-                        completed = false,
-                        startDate = if (newIdeaDialogState.value.eachMonth == true) {
-                            getStartOfMonthDate(convertLocalDateToDate(LocalDate.now()))
-                        } else {
-                            convertLocalDateToDate(LocalDate.now())
-                        },
-                        endDate = newIdeaDialogState.value.endDate,
-                        isEachMonth = newIdeaDialogState.value.eachMonth,
-                        isRelatedToAllCategories = newIdeaDialogState.value.relatedToAllCategories!!,
-                        firstRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(0)?.categoryId,
-                        secondRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(1)?.categoryId,
-                        thirdRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(2)?.categoryId
-                    )
-                } else {
-                    if (newIdeaDialogState.value.goal <= 0) {
-                        setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
-                    } else if (newIdeaDialogState.value.eachMonth == null && newIdeaDialogState.value.endDate == null) {
-                        setWarningMessage(NewIdeaDialogErrors.EmptyDate)
-                    } else if (newIdeaDialogState.value.relatedToAllCategories == false && newIdeaDialogState.value.listOfSelectedCategories.isEmpty()) {
-                        setWarningMessage(NewIdeaDialogErrors.SelectCategory)
-                    }
-                    return
-                }
+                addNewExpenseLimit()
             }
         }
-        createIdeaUseCase(idea)
-        setGoal(0.0f)
-        setLabel(null)
-        setEndDate(null)
-        setIsNewIdeaDialogVisible(false)
     }
 
 
@@ -157,9 +101,11 @@ class NewIdeaDialogViewModel(
     fun setSelectedToAllCategories(value: Boolean) {
         if (value) {
             _newIdeaDialogState.value = newIdeaDialogState.value.copy(relatedToAllCategories = true)
-            _newIdeaDialogState.value = newIdeaDialogState.value.copy(listOfSelectedCategories = emptyList())
+            _newIdeaDialogState.value =
+                newIdeaDialogState.value.copy(listOfSelectedCategories = emptyList())
         } else {
-            _newIdeaDialogState.value = newIdeaDialogState.value.copy(relatedToAllCategories = false)
+            _newIdeaDialogState.value =
+                newIdeaDialogState.value.copy(relatedToAllCategories = false)
         }
     }
 
@@ -202,6 +148,93 @@ class NewIdeaDialogViewModel(
         if (_newIdeaDialogState.value.label != null && _newIdeaDialogState.value.label!!.isNotEmpty() && _newIdeaDialogState.value.warningMessage is NewIdeaDialogErrors.IncorrectSavingLabel) {
             setWarningMessage(null)
         }
+    }
+
+    private suspend fun addNewSavings() {
+        if (newIdeaDialogState.value.includedInBudget != null && newIdeaDialogState.value.goal > 0 && newIdeaDialogState.value.label != null && newIdeaDialogState.value.label!!.isNotEmpty()) {
+            addNewIdea(
+                Savings(
+                    goal = newIdeaDialogState.value.goal,
+                    completed = false,
+                    startDate = convertLocalDateToDate(LocalDate.now()),
+                    endDate = newIdeaDialogState.value.endDate,
+                    label = newIdeaDialogState.value.label ?: "",
+                    value = 0f
+                )
+            )
+        } else {
+            if (newIdeaDialogState.value.goal <= 0) {
+                setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
+            } else if (newIdeaDialogState.value.label == null || newIdeaDialogState.value.label!!.isNotEmpty()) {
+                setWarningMessage(NewIdeaDialogErrors.IncorrectSavingLabel)
+            }
+            return
+        }
+    }
+
+    private suspend fun addNewIncomePlan() {
+        if (newIdeaDialogState.value.goal > 0) {
+            addNewIdea(
+                IncomePlans(
+                    goal = newIdeaDialogState.value.goal,
+                    completed = false,
+                    startDate = convertLocalDateToDate(LocalDate.now()),
+                    endDate = newIdeaDialogState.value.endDate
+                )
+            )
+        } else {
+            setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
+            return
+        }
+    }
+
+    private suspend fun addNewExpenseLimit() {
+        if (newIdeaDialogState.value.relatedToAllCategories != null && newIdeaDialogState.value.goal > 0 && (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) && (newIdeaDialogState.value.relatedToAllCategories == true || newIdeaDialogState.value.listOfSelectedCategories.isNotEmpty())) {
+            addNewIdea(
+                ExpenseLimits(
+                    goal = newIdeaDialogState.value.goal,
+                    completed = false,
+                    startDate = if (newIdeaDialogState.value.eachMonth == true) {
+                        getStartOfMonthDate(convertLocalDateToDate(LocalDate.now()))
+                    } else {
+                        convertLocalDateToDate(LocalDate.now())
+                    },
+                    endDate = newIdeaDialogState.value.endDate,
+                    isEachMonth = newIdeaDialogState.value.eachMonth,
+                    isRelatedToAllCategories = newIdeaDialogState.value.relatedToAllCategories!!,
+                    firstRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(
+                        0
+                    )?.categoryId,
+                    secondRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(
+                        1
+                    )?.categoryId,
+                    thirdRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(
+                        2
+                    )?.categoryId
+                )
+            )
+        } else {
+            when {
+                newIdeaDialogState.value.goal <= 0 -> {
+                    setWarningMessage(NewIdeaDialogErrors.IncorrectGoalValue)
+                }
+                newIdeaDialogState.value.eachMonth == null && newIdeaDialogState.value.endDate == null -> {
+                    setWarningMessage(NewIdeaDialogErrors.EmptyDate)
+                }
+                newIdeaDialogState.value.relatedToAllCategories == false && newIdeaDialogState.value.listOfSelectedCategories.isEmpty() -> {
+                    setWarningMessage(NewIdeaDialogErrors.SelectCategory)
+                }
+                else -> return
+            }
+        }
+    }
+
+    private suspend fun addNewIdea(idea: Idea) {
+        createIdeaUseCase(idea)
+        setGoal(0.0f)
+        setLabel(null)
+        setEndDate(null)
+        setIsNewIdeaDialogVisible(false)
     }
 
     private fun setWarningMessage(value: NewIdeaDialogErrors?) {

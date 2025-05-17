@@ -112,7 +112,6 @@ class BottomSheetViewModel(
         val groupingIncomeCategoryId = dataStoreManager.groupingIncomeCategoryId.first()
         val selectedCurrency =
             listOfPreferableCurrencies[_bottomSheetViewState.value.currentSelectedCurrencyIndex]
-
         handleWarnings(
             nonCategorisedExpenses = nonCategorisedExpenses,
             nonCategorisedIncomes = nonCategorisedIncomes,
