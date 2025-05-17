@@ -44,10 +44,11 @@ class CategoriesSettingsScreenViewModel(
     )
     val screenState = _screenState.asStateFlow()
 
+    private val defaultExpenseCategoryIds = LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS
+    private val defaultIncomeCategoryIds = LIST_OF_DEFAULT_INCOMES_CATEGORIES_IDS
+
     init {
-        viewModelScope.launch {
-            initializeCategories()
-        }
+        initializeCategories()
     }
 
     fun onAction(action: CategoriesSettingsScreenEvent) {
@@ -75,95 +76,100 @@ class CategoriesSettingsScreenViewModel(
     }
 
     private fun deleteCategory(category: CategoryEntity) {
-        if (category is ExpenseCategory && !LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS.contains(category.categoryId)) {
-            viewModelScope.launch {
-                deleteCategoryUseCase(category)
+        viewModelScope.launch {
+            val canDelete = when (category) {
+                is ExpenseCategory -> !defaultExpenseCategoryIds.contains(category.categoryId)
+                is IncomeCategory -> !defaultIncomeCategoryIds.contains(category.categoryId)
+                else -> false
             }
-        }
-        if (category is IncomeCategory && !LIST_OF_DEFAULT_INCOMES_CATEGORIES_IDS.contains(category.categoryId)) {
-            viewModelScope.launch {
+
+            if (canDelete) {
                 deleteCategoryUseCase(category)
             }
         }
     }
 
     private fun setFilterOnlyCustomCategories(value: Boolean) {
-        _screenState.update { _screenState.value.copy(filterOnlyCustomCategories = value) }
+        _screenState.update { it.copy(filterOnlyCustomCategories = value) }
         initializeCategories()
     }
 
     private fun setViewOption(value: CategoriesSettingsScreenViewOptions) {
-        _screenState.update { _screenState.value.copy(viewOption = value) }
+        _screenState.update { it.copy(viewOption = value) }
         initializeCategories()
     }
 
     private fun setNameFilter(value: String) {
-        _screenState.update { _screenState.value.copy(nameFilter = value) }
+        _screenState.update { it.copy(nameFilter = value) }
         initializeCategories()
     }
 
     private fun setListOfExpensesCategories(list: List<ExpenseCategory>) {
-        _screenState.update { _screenState.value.copy(listOfExpenseCategories = list) }
+        _screenState.update { it.copy(listOfExpenseCategories = list) }
     }
 
     private fun setListOfIncomesCategories(list: List<IncomeCategory>) {
-        _screenState.update { _screenState.value.copy(listOfIncomeCategories = list) }
+        _screenState.update { it.copy(listOfIncomeCategories = list) }
     }
 
     private fun setSelectedCategory(value: CategoryEntity?) {
-        _screenState.update { _screenState.value.copy(selectedCategory = value) }
+        _screenState.update { it.copy(selectedCategory = value) }
     }
 
     private fun initializeCategories() {
         viewModelScope.launch {
-            launch {
-                expensesCategoriesListRepositoryImpl.getCategoriesList().collect { unfilteredExpenseCategories ->
-                    val filteredExpenseCategories = unfilteredExpenseCategories.filter {
-                        if (_screenState.value.filterOnlyCustomCategories) {
-                            !LIST_OF_DEFAULT_EXPENSE_CATEGORIES_IDS.contains(it.categoryId)
-                        } else {
-                            true
-                        }
-                    }.filter {
-                        if (_screenState.value.nameFilter != "") {
-                            val localizedName = databaseStringResourcesProvider.getCategoryLocalizedName(it)
-                            it.note.contains(
-                                _screenState.value.nameFilter,
-                                ignoreCase = true
-                            ) || localizedName.contains(_screenState.value.nameFilter, ignoreCase = true)
-                        } else {
-                            true
-                        }
-                    }
-                    setListOfExpensesCategories(filteredExpenseCategories)
-                }
-            }
-            launch {
-                incomesCategoriesListRepositoryImpl.getCategoriesList().collect { unfilteredIncomeCategories ->
-                    val filteredIncomeCategories = unfilteredIncomeCategories.filter {
-                        if (_screenState.value.filterOnlyCustomCategories) {
-                            !LIST_OF_DEFAULT_INCOMES_CATEGORIES_IDS.contains(it.categoryId)
-                        } else {
-                            true
-                        }
-                    }.filter {
-                        if (_screenState.value.nameFilter != "") {
-                            if (_screenState.value.nameFilter != "") {
-                                val localizedName = databaseStringResourcesProvider.getCategoryLocalizedName(it)
-                                it.note.contains(
-                                    _screenState.value.nameFilter,
-                                    ignoreCase = true
-                                ) || localizedName.contains(_screenState.value.nameFilter, ignoreCase = true)
-                            } else {
-                                true
-                            }
-                        } else {
-                            true
-                        }
-                    }
-                    setListOfIncomesCategories(filteredIncomeCategories)
-                }
-            }
+            initializeExpenseCategories()
         }
+        viewModelScope.launch {
+            initializeIncomeCategories()
+        }
+    }
+
+    private suspend fun initializeExpenseCategories() {
+        val currentState = _screenState.value
+        expensesCategoriesListRepositoryImpl.getCategoriesList()
+            .collect { unfilteredExpenseCategories ->
+                val filteredExpenseCategories = unfilteredExpenseCategories
+                    .filter {
+                        !currentState.filterOnlyCustomCategories ||
+                                !defaultExpenseCategoryIds.contains(it.categoryId)
+                    }
+                    .filter {
+                        if (currentState.nameFilter.isNotBlank()) {
+                            val localizedName =
+                                databaseStringResourcesProvider.getCategoryLocalizedName(it)
+                            it.note.contains(currentState.nameFilter, ignoreCase = true) ||
+                                    localizedName.contains(
+                                        currentState.nameFilter,
+                                        ignoreCase = true
+                                    )
+                        } else true
+                    }
+                setListOfExpensesCategories(filteredExpenseCategories)
+            }
+    }
+
+    private suspend fun initializeIncomeCategories() {
+        val currentState = _screenState.value
+        incomesCategoriesListRepositoryImpl.getCategoriesList()
+            .collect { unfilteredIncomeCategories ->
+                val filteredIncomeCategories = unfilteredIncomeCategories
+                    .filter {
+                        !currentState.filterOnlyCustomCategories ||
+                                !defaultIncomeCategoryIds.contains(it.categoryId)
+                    }
+                    .filter {
+                        if (currentState.nameFilter.isNotBlank()) {
+                            val localizedName =
+                                databaseStringResourcesProvider.getCategoryLocalizedName(it)
+                            it.note.contains(currentState.nameFilter, ignoreCase = true) ||
+                                    localizedName.contains(
+                                        currentState.nameFilter,
+                                        ignoreCase = true
+                                    )
+                        } else true
+                    }
+                setListOfIncomesCategories(filteredIncomeCategories)
+            }
     }
 }
