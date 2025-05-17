@@ -6,7 +6,6 @@ import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import com.savenko.track.data.other.constants.TAG
-import com.savenko.track.data.retrofit.API_KEY
 import com.savenko.track.data.retrofit.RetrofitClient
 import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import kotlinx.coroutines.Dispatchers
