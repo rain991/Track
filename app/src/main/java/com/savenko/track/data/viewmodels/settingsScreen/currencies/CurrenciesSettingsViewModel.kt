@@ -24,8 +24,6 @@ import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
 /**
- *  CurrenciesSettingsViewModel uses MVI pattern :
- *
  *  exposes [currenciesSettingsScreenState] to UI
  *
  *  receives [onEvent] callback to handle user interactions
@@ -63,7 +61,11 @@ class CurrenciesSettingsViewModel(
         } else {
             currencies.filter { it.matchesSearchQuery(text, databaseStringResourcesProvider) }
         }
-    }.stateIn(scope = viewModelScope, started = SharingStarted.WhileSubscribed(5000), listOfAllCurrencies.value)
+    }.stateIn(
+        scope = viewModelScope,
+        started = SharingStarted.WhileSubscribed(5000),
+        listOfAllCurrencies.value
+    )
 
     init {
         viewModelScope.launch {
@@ -78,29 +80,30 @@ class CurrenciesSettingsViewModel(
                 }
             }
             launch {
-                currenciesPreferenceRepositoryImpl.getCurrenciesPreferences().collect { currenciesPreference ->
-                    _currenciesSettingsScreenState.update {
-                        _currenciesSettingsScreenState.value.copy(
-                            currenciesPreferenceUI = CurrenciesPreferenceUI(
-                                currenciesRatesHandler.getCurrencyByTicker(
-                                    currenciesPreference.preferableCurrency
-                                ) ?: CURRENCY_DEFAULT,
-                                firstAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
-                                    currenciesPreference.firstAdditionalCurrency
-                                ),
-                                secondAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
-                                    currenciesPreference.secondAdditionalCurrency
-                                ),
-                                thirdAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
-                                    currenciesPreference.thirdAdditionalCurrency
-                                ),
-                                fourthAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
-                                    currenciesPreference.fourthAdditionalCurrency
+                currenciesPreferenceRepositoryImpl.getCurrenciesPreferences()
+                    .collect { currenciesPreference ->
+                        _currenciesSettingsScreenState.update {
+                            _currenciesSettingsScreenState.value.copy(
+                                currenciesPreferenceUI = CurrenciesPreferenceUI(
+                                    currenciesRatesHandler.getCurrencyByTicker(
+                                        currenciesPreference.preferableCurrency
+                                    ) ?: CURRENCY_DEFAULT,
+                                    firstAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
+                                        currenciesPreference.firstAdditionalCurrency
+                                    ),
+                                    secondAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
+                                        currenciesPreference.secondAdditionalCurrency
+                                    ),
+                                    thirdAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
+                                        currenciesPreference.thirdAdditionalCurrency
+                                    ),
+                                    fourthAdditionalCurrency = currenciesRatesHandler.getCurrencyByTicker(
+                                        currenciesPreference.fourthAdditionalCurrency
+                                    )
                                 )
                             )
-                        )
+                        }
                     }
-                }
             }
         }
     }
@@ -118,19 +121,31 @@ class CurrenciesSettingsViewModel(
             }
 
             is CurrenciesSettingsScreenEvent.SetFirstAdditionalCurrency -> {
-                setCurrency(currency = event.currency, position = CurrenciesOptions.FIRST_ADDITIONAL)
+                setCurrency(
+                    currency = event.currency,
+                    position = CurrenciesOptions.FIRST_ADDITIONAL
+                )
             }
 
             is CurrenciesSettingsScreenEvent.SetSecondAdditionalCurrency -> {
-                setCurrency(currency = event.currency, position = CurrenciesOptions.SECOND_ADDITIONAL)
+                setCurrency(
+                    currency = event.currency,
+                    position = CurrenciesOptions.SECOND_ADDITIONAL
+                )
             }
 
             is CurrenciesSettingsScreenEvent.SetThirdAdditionalCurrency -> {
-                setCurrency(currency = event.currency, position = CurrenciesOptions.THIRD_ADDITIONAL)
+                setCurrency(
+                    currency = event.currency,
+                    position = CurrenciesOptions.THIRD_ADDITIONAL
+                )
             }
 
             is CurrenciesSettingsScreenEvent.SetFourthAdditionalCurrency -> {
-                setCurrency(currency = event.currency, position = CurrenciesOptions.FOURTH_ADDITIONAL)
+                setCurrency(
+                    currency = event.currency,
+                    position = CurrenciesOptions.FOURTH_ADDITIONAL
+                )
             }
 
             is CurrenciesSettingsScreenEvent.SetCurrencyAsRandomNotUsed -> {
@@ -266,73 +281,46 @@ class CurrenciesSettingsViewModel(
 
     private suspend fun setCurrency(currency: Currency?, position: CurrenciesOptions) {
         val currenciesPreferenceUI = _currenciesSettingsScreenState.value.currenciesPreferenceUI
-        val preferableCurrency = currenciesPreferenceUI.preferableCurrency
-        val firstAdditionalCurrency = currenciesPreferenceUI.firstAdditionalCurrency
-        val secondAdditionalCurrency = currenciesPreferenceUI.secondAdditionalCurrency
-        val thirdAdditionalCurrency = currenciesPreferenceUI.thirdAdditionalCurrency
-        val fourthAdditionalCurrency = currenciesPreferenceUI.fourthAdditionalCurrency
+        val usedCurrencies = listOfNotNull(
+            currenciesPreferenceUI.preferableCurrency,
+            currenciesPreferenceUI.firstAdditionalCurrency,
+            currenciesPreferenceUI.secondAdditionalCurrency,
+            currenciesPreferenceUI.thirdAdditionalCurrency,
+            currenciesPreferenceUI.fourthAdditionalCurrency
+        )
+
         when (position) {
             CurrenciesOptions.PREFERABLE -> {
-                if (currency == null) {
-                    return
-                } else {
-                    setPreferableCurrency(targetCurrency = currency)
-                }
+                currency?.let { setPreferableCurrency(it) }
             }
 
-            CurrenciesOptions.FIRST_ADDITIONAL -> {
-                if (currency != null) {
-                    if (preferableCurrency != currency && secondAdditionalCurrency != currency &&
-                        thirdAdditionalCurrency != currency && fourthAdditionalCurrency != currency
-                    ) {
-                        currenciesPreferenceRepositoryImpl.setFirstAdditionalCurrency(currency)
-                    } else {
-                        setErrorMessage(error = CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse(currency.ticker))
-                    }
-                } else {
-                    currenciesPreferenceRepositoryImpl.setFirstAdditionalCurrency(null)
+            else -> {
+                val isAlreadyUsed = currency != null && usedCurrencies.any { it == currency }
+                val setter = when (position) {
+                    CurrenciesOptions.FIRST_ADDITIONAL -> currenciesPreferenceRepositoryImpl::setFirstAdditionalCurrency
+                    CurrenciesOptions.SECOND_ADDITIONAL -> currenciesPreferenceRepositoryImpl::setSecondAdditionalCurrency
+                    CurrenciesOptions.THIRD_ADDITIONAL -> currenciesPreferenceRepositoryImpl::setThirdAdditionalCurrency
+                    CurrenciesOptions.FOURTH_ADDITIONAL -> currenciesPreferenceRepositoryImpl::setFourthAdditionalCurrency
+                    else -> null
                 }
-            }
 
-            CurrenciesOptions.SECOND_ADDITIONAL -> {
-                if (currency != null) {
-                    if (preferableCurrency != currency && firstAdditionalCurrency != currency &&
-                        thirdAdditionalCurrency != currency && fourthAdditionalCurrency != currency
-                    ) {
-                        currenciesPreferenceRepositoryImpl.setSecondAdditionalCurrency(currency)
+                setter?.let {
+                    if (currency == null) {
+                        it(null)
+                    } else if (!isAlreadyUsed || usedCurrencies.count { it == currency } == 1 && currenciesPreferenceUI.run {
+                            listOf(
+                                firstAdditionalCurrency,
+                                secondAdditionalCurrency,
+                                thirdAdditionalCurrency,
+                                fourthAdditionalCurrency
+                            )[position.ordinal - 1] == currency
+                        }) {
+                        it(currency)
                     } else {
-                        setErrorMessage(error = CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse(currency.ticker))
+                        setErrorMessage(
+                            CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse(currency.ticker)
+                        )
                     }
-                } else {
-                    currenciesPreferenceRepositoryImpl.setSecondAdditionalCurrency(null)
-                }
-            }
-
-            CurrenciesOptions.THIRD_ADDITIONAL -> {
-                if (currency != null) {
-                    if (preferableCurrency != currency && firstAdditionalCurrency != currency &&
-                        secondAdditionalCurrency != currency && fourthAdditionalCurrency != currency
-                    ) {
-                        currenciesPreferenceRepositoryImpl.setThirdAdditionalCurrency(currency)
-                    } else {
-                        setErrorMessage(error = CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse(currency.ticker))
-                    }
-                } else {
-                    currenciesPreferenceRepositoryImpl.setThirdAdditionalCurrency(null)
-                }
-            }
-
-            CurrenciesOptions.FOURTH_ADDITIONAL -> {
-                if (currency != null) {
-                    if (preferableCurrency != currency && firstAdditionalCurrency != currency &&
-                        secondAdditionalCurrency != currency && thirdAdditionalCurrency != currency
-                    ) {
-                        currenciesPreferenceRepositoryImpl.setFourthAdditionalCurrency(currency)
-                    } else {
-                        setErrorMessage(error = CurrenciesSettingsScreenErrors.CurrencyIsAlreadyInUse(currency.ticker))
-                    }
-                } else {
-                    currenciesPreferenceRepositoryImpl.setFourthAdditionalCurrency(null)
                 }
             }
         }
