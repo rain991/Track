@@ -1,5 +1,6 @@
 package com.savenko.track.data.viewmodels.common
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -118,6 +119,13 @@ class BottomSheetViewModel(
             groupingExpenseCategoryId = groupingExpenseCategoryId,
             groupingIncomeCategoryId = groupingIncomeCategoryId
         )
+        if (_bottomSheetViewState.value.warningMessage != null) {
+            Log.d(
+                this.javaClass.name,
+                "addFinancialItem: warning appeared ${_bottomSheetViewState.value.warningMessage}"
+            )
+            return
+        }
         withContext(Dispatchers.IO) {
             if (bottomSheetViewState.value.isAddingExpense) {
                 handleAddingExpenses(
@@ -132,14 +140,15 @@ class BottomSheetViewModel(
                     selectedCurrency = selectedCurrency
                 )
             }
+            withContext(Dispatchers.Main) {
+                setCategoryPicked(DEFAULT_CATEGORY)
+                setInputValue(DEFAULT_INPUT_VALUE)
+                setDatePicked(DEFAULT_DATE)
+                setNote(DEFAULT_NOTE)
+                setWarningMessage(null)
+                setBottomSheetExpanded(false)
+            }
         }
-
-        setCategoryPicked(DEFAULT_CATEGORY)
-        setInputValue(DEFAULT_INPUT_VALUE)
-        setDatePicked(DEFAULT_DATE)
-        setNote(DEFAULT_NOTE)
-        setWarningMessage(null)
-        setBottomSheetExpanded(false)
     }
 
     /**
