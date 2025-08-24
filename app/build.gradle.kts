@@ -12,14 +12,13 @@ android {
     compileSdk = 35
 
     defaultConfig {
-        testInstrumentationRunnerArguments += mapOf()
+        testInstrumentationRunnerArguments += mapOf("runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder")
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 35
         versionCode = 37
         versionName = "1.6.1.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments["runnerBuilder"] = "de.mannodermaus.junit5.AndroidJUnit5Builder"
         vectorDrawables {
             useSupportLibrary = true
         }
@@ -109,5 +108,6 @@ dependencies {
 
     //other
     implementation("androidx.work:work-runtime-ktx:$workVersion")
+    implementation("com.pinterest.ktlint:ktlint-cli:1.7.1")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
 }
