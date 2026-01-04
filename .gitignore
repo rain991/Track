@@ -7,6 +7,8 @@
 /captures
 .externalNativeBuild
 .cxx
+.apk
+.aab
 local.properties
 gradle.properties
 CurrencyAPI.kt

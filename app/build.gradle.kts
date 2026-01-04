@@ -42,12 +42,13 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.0"
-    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "kotlin/internal/internal.kotlin_builtins"
+            excludes += "kotlin/reflect/reflect.kotlin_builtins"
+            excludes += "kotlin/kotlin.kotlin_builtins"
         }
     }
 
@@ -108,6 +109,5 @@ dependencies {
 
     //other
     implementation("androidx.work:work-runtime-ktx:$workVersion")
-    implementation("com.pinterest.ktlint:ktlint-cli:1.7.1")
     androidTestImplementation("androidx.work:work-testing:$workVersion")
 }
