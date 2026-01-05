@@ -8,7 +8,7 @@ sonarqube = "6.0.1.5171"
 # AndroidX
 coreKtx = "1.15.0"
 lifecycle = "2.8.7"
-datastore = "1.0.0"
+datastore = "1.0.0" # Newer datastore version could lead unexpected crashes, investigate under [TW-36]
 room = "2.6.1"
 navigationCompose = "2.8.4"
 activityCompose = "1.9.3"
