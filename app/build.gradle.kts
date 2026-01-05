@@ -6,6 +6,8 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
+val currenciesApiKey : String = project.findProperty("CURRENCIES_API_KEY") as String? ?: ""
+
 android {
     android.buildFeatures.buildConfig = true
     namespace = "com.savenko.track"
@@ -22,6 +24,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "CURRENCIES_API_KEY","\"$currenciesApiKey\"" )
     }
     buildTypes {
         release {
