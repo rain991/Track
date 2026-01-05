@@ -5,8 +5,9 @@ import android.util.Log
 import androidx.work.CoroutineWorker
 import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
+import com.savenko.track.BuildConfig
 import com.savenko.track.data.other.constants.TAG
-import com.savenko.track.data.retrofit.API_KEY
+import com.savenko.track.data.retrofit.CurrencyResponse
 import com.savenko.track.data.retrofit.RetrofitClient
 import com.savenko.track.domain.repository.currencies.CurrencyListRepository
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +35,7 @@ class CurrenciesRatesWorker(
             val allTickersList = allCurrenciesList.map { it.ticker }
             val symbols = allTickersList.joinToString(separator = ", ")
             try {
-                val response = RetrofitClient.currencyApi.getLatestRates(API_KEY, symbols)
+                val response = RetrofitClient.currencyApi.getLatestRates(BuildConfig.CURRENCIES_API_KEY, symbols)
                 response.rates.forEach { (currency, rate) ->
                     currencyListRepositoryImpl.editCurrencyRate(
                         rate = (1.0 / rate.toDouble()),

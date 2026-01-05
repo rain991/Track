@@ -1,5 +1,6 @@
 package com.savenko.track.data.viewmodels.statistics
 
+import android.util.Log
 import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -107,16 +108,24 @@ class StatisticChartViewModel(
 
     private suspend fun initializeSeparateFinancialValues() {
         setAdditionalData(null)
-        chartDataProvider.requestDataForChart(
-            financialEntities = _statisticChartState.value.financialEntities,
-            statisticChartTimePeriod = _statisticChartState.value.timePeriod,
-            otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
-        ).collect { chartData ->
+        val data = if(_statisticChartState.value.financialEntities is FinancialEntities.ExpenseFinancialEntity){
+            chartDataProvider.requestExpenseDataForVicoChart(
+                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+            )
+        }else{
+            chartDataProvider.requestIncomeDataForVicoChart(
+                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+            )
+        }
+        data.collect { chartData ->
             setDataSet(chartData)
             val xToDates = chartData.keys.associateBy {
                 try {
                     it.toEpochDay().toFloat()
                 } catch (exception: Exception) {
+                    Log.e("${this.javaClass.name}","Exception during converting : $exception")
                     0.0f
                 }
             }
@@ -136,13 +145,11 @@ class StatisticChartViewModel(
 
     private suspend fun initializeGroupedFinancialValues() {
         setAdditionalData(null)
-        val expenseFlow = chartDataProvider.requestDataForChart(
-            financialEntities = FinancialEntities.ExpenseFinancialEntity(),
+        val expenseFlow = chartDataProvider.requestExpenseDataForVicoChart(
             statisticChartTimePeriod = _statisticChartState.value.timePeriod,
             otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
         )
-        val incomeFlow = chartDataProvider.requestDataForChart(
-            financialEntities = FinancialEntities.IncomeFinancialEntity(),
+        val incomeFlow = chartDataProvider.requestIncomeDataForVicoChart(
             statisticChartTimePeriod = _statisticChartState.value.timePeriod,
             otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
         )

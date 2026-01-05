@@ -6,23 +6,25 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
+val currenciesApiKey : String = project.findProperty("CURRENCIES_API_KEY") as String? ?: ""
+
 android {
     android.buildFeatures.buildConfig = true
     namespace = "com.savenko.track"
     compileSdk = 35
 
     defaultConfig {
-        testInstrumentationRunnerArguments += mapOf()
+        testInstrumentationRunnerArguments += mapOf("runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder")
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 35
         versionCode = 37
         versionName = "1.6.1.3"
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        testInstrumentationRunnerArguments["runnerBuilder"] = "de.mannodermaus.junit5.AndroidJUnit5Builder"
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "CURRENCIES_API_KEY","\"$currenciesApiKey\"" )
     }
     buildTypes {
         release {
@@ -43,12 +45,13 @@ android {
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = "1.5.0"
-    }
+
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
+            excludes += "kotlin/internal/internal.kotlin_builtins"
+            excludes += "kotlin/reflect/reflect.kotlin_builtins"
+            excludes += "kotlin/kotlin.kotlin_builtins"
         }
     }
 
@@ -92,7 +95,6 @@ dependencies {
     implementation("androidx.compose.ui:ui-tooling-preview")
     implementation("androidx.compose.material3:material3:1.3.1")
     androidTestImplementation(platform("androidx.compose:compose-bom:2024.11.00"))
-    androidTestImplementation("androidx.compose.ui:ui-test-junit5")
     debugImplementation("androidx.compose.ui:ui-tooling:1.7.5")
     debugImplementation("androidx.compose.ui:ui-test-manifest")
     implementation ("androidx.core:core-splashscreen:1.0.1")

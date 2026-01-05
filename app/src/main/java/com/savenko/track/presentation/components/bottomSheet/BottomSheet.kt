@@ -33,191 +33,211 @@ import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
+import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.components.customComponents.CategoryChip
 import com.savenko.track.presentation.components.customComponents.ErrorText
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
+import com.savenko.track.presentation.screens.states.core.common.BottomSheetViewState
+import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheet(bottomSheetViewModel: BottomSheetViewModel) {
-    val coroutineScope = rememberCoroutineScope()
     val bottomSheetViewState = bottomSheetViewModel.bottomSheetViewState.collectAsState()
-    val sheetState = rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
+    val sheetState =
+        rememberModalBottomSheetState(skipPartiallyExpanded = true, confirmValueChange = { true })
     val isAddingExpense = bottomSheetViewState.value.isAddingExpense
-    val categoryList = if (isAddingExpense) {
-        bottomSheetViewModel.expenseCategoryList
-    } else {
-        bottomSheetViewModel.incomeCategoryList
-    }
-    val bottomSheetTitle = if (isAddingExpense) {
-        stringResource(R.string.expense)
-    } else {
-        stringResource(R.string.income)
-    }
+    val categoryList =
+        if (isAddingExpense) bottomSheetViewModel.expenseCategoryList else bottomSheetViewModel.incomeCategoryList
+    val bottomSheetTitle =
+        stringResource(if (isAddingExpense) R.string.expense else R.string.income)
+
     if (bottomSheetViewState.value.isBottomSheetExpanded) {
         ModalBottomSheet(
-            onDismissRequest = {
-                bottomSheetViewModel.setBottomSheetExpanded(false)
-            },
+            onDismissRequest = { bottomSheetViewModel.setBottomSheetExpanded(false) },
             sheetState = sheetState,
         ) {
-            Column(
-                modifier = Modifier
-                    .wrapContentHeight()
-                    .fillMaxWidth()
-                    .windowInsetsPadding(WindowInsets.navigationBars)
+            BottomSheetContent(
+                viewModel = bottomSheetViewModel,
+                bottomSheetTitle = bottomSheetTitle,
+                categoryList = categoryList
             )
-            {
-                Column(modifier = Modifier.fillMaxWidth()) {
-                    val listOfAvailableCurrencies = bottomSheetViewModel.listOfPreferableCurrencies
-                    val selectedCurrencyIndex = bottomSheetViewState.value.currentSelectedCurrencyIndex
-                    val currentCurrency =
-                        listOfAvailableCurrencies.getOrNull(selectedCurrencyIndex) ?: CURRENCY_DEFAULT
-                    val focusRequester = remember { FocusRequester() }
-                    val controller = LocalSoftwareKeyboardController.current
-                    LaunchedEffect(key1 = Unit) {
-                        focusRequester.requestFocus()
-                        controller?.show()
-                    }
+        }
+    }
+}
 
-                    Column {
-                        BottomSheetTransactionHeader(
-                            bottomSheetTitle = bottomSheetTitle,
-                            bottomSheetViewState = bottomSheetViewState
-                        ) {
-                            bottomSheetViewModel.toggleIsAddingExpense()
-                        }
-                        BottomSheetAmountInput(
-                            currentCurrency = currentCurrency,
-                            listOfAvailableCurrencies = listOfAvailableCurrencies,
-                            hasErrors = bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue,
-                            currentInputValue = bottomSheetViewState.value.inputValue ?: 0.0f,
-                            focusRequester = focusRequester,
-                            onInputValueChange = {
-                                bottomSheetViewModel.setInputValue(it)
-                            },
-                            keyboardController = controller,
-                            onCurrencyChange = {
-                                bottomSheetViewModel.changeSelectedCurrency()
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(16.dp))
-                        AnimatedVisibility(
-                            visible = bottomSheetViewState.value.categoryPicked != null,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        ) {
-                            bottomSheetViewState.value.categoryPicked?.let { category ->
-                                CategoryChip(
-                                    modifier = Modifier.requiredHeightIn(min = 32.dp, max = 40.dp),
-                                    category = category,
-                                    isSelected = true,
-                                    borderColor = MaterialTheme.colorScheme.primary,
-                                    onSelect = { bottomSheetViewModel.setCategoryPicked(null) }
-                                )
-                            }
-                        }
-                        Spacer(modifier = Modifier.height(16.dp))
-                        AnimatedVisibility(
-                            visible = bottomSheetViewState.value.datePicked != null,
-                            modifier = Modifier.align(Alignment.CenterHorizontally)
-                        ) {
-                            bottomSheetViewState.value.datePicked?.let {
-                                bottomSheetViewState.value.datePicked?.let { localDate ->
-                                    BottomSheetDateButton(
-                                        modifier = Modifier.height(IntrinsicSize.Min),
-                                        text = if (bottomSheetViewState.value.todayButtonActiveState) {
-                                            stringResource(id = R.string.today)
-                                        } else if (bottomSheetViewState.value.yesterdayButtonActiveState) {
-                                            stringResource(id = R.string.yesterday)
-                                        } else {
-                                            formatDateWithoutYear(convertLocalDateToDate(localDate))
-                                        },
-                                        isSelected = true,
-                                        date = localDate,
-                                        needsAdditionalDateNotation = (bottomSheetViewState.value.todayButtonActiveState || bottomSheetViewState.value.yesterdayButtonActiveState)
-                                    ) {
-                                        bottomSheetViewModel.setDatePicked(null)
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                Spacer(modifier = Modifier.height(16.dp))
-                Column(modifier = Modifier.align(Alignment.End)) {
-                    val note = bottomSheetViewState.value.note
-                    BottomSheetNoteInput(modifier = Modifier.padding(start = 8.dp), note = note) {
-                        bottomSheetViewModel.setNote(it)
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
+@Composable
+private fun BottomSheetContent(
+    viewModel: BottomSheetViewModel,
+    bottomSheetTitle: String,
+    categoryList: List<CategoryEntity>
+) {
+    Column(
+        modifier = Modifier
+            .wrapContentHeight()
+            .fillMaxWidth()
+            .windowInsetsPadding(WindowInsets.navigationBars)
+    ) {
+        TopSection(viewModel, bottomSheetTitle)
+        Spacer(modifier = Modifier.height(16.dp))
+        BottomSection(viewModel, categoryList)
+    }
+}
 
-                    AnimatedVisibility(
-                        visible = bottomSheetViewState.value.datePicked == null,
-                        modifier = Modifier.wrapContentHeight()
-                    ) {
-                        BottomSheetDateSelection(
-                            bottomSheetViewState = bottomSheetViewState.value,
-                            isDayOutOfPredefinedSpan = { localDate ->
-                                bottomSheetViewModel.isDateInOtherSpan(
-                                    localDate
-                                )
-                            },
-                            onSetDatePicked = { localDate -> bottomSheetViewModel.setDatePicked(localDate) },
-                            onTogglePickerState = { bottomSheetViewModel.togglePickerState() })
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
+@Composable
+private fun TopSection(
+    viewModel: BottomSheetViewModel,
+    bottomSheetTitle: String
+) {
+    val viewState = viewModel.bottomSheetViewState.collectAsState()
+    val currencies = viewModel.listOfPreferableCurrencies
+    val focusRequester = remember { FocusRequester() }
+    val controller = LocalSoftwareKeyboardController.current
 
-                    if (bottomSheetViewState.value.warningMessage is BottomSheetErrors.CategoryNotSelected || bottomSheetViewState.value.warningMessage is BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected || bottomSheetViewState.value.warningMessage is BottomSheetErrors.IncomeGroupingCategoryIsNotSelected) {
-                        Box(modifier = Modifier.height(24.dp)) {
-                            val text = when (bottomSheetViewState.value.warningMessage) {
-                                is BottomSheetErrors.CategoryNotSelected -> {
-                                    BottomSheetErrors.CategoryNotSelected.error
-                                }
+    LaunchedEffect(Unit) {
+        focusRequester.requestFocus()
+        controller?.show()
+    }
 
-                                is BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected -> {
-                                    BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected.error
-                                }
+    Column(modifier = Modifier.fillMaxWidth()) {
+        val selectedCurrencyIndex = viewState.value.currentSelectedCurrencyIndex
+        val currentCurrency = currencies.getOrNull(selectedCurrencyIndex) ?: CURRENCY_DEFAULT
 
-                                is BottomSheetErrors.IncomeGroupingCategoryIsNotSelected -> {
-                                    BottomSheetErrors.IncomeGroupingCategoryIsNotSelected.error
-                                }
+        BottomSheetTransactionHeader(bottomSheetTitle, viewState) {
+            viewModel.toggleIsAddingExpense()
+        }
 
-                                else -> {
-                                    R.string.error
-                                }
-                            }
-                            ErrorText(
-                                modifier = Modifier.padding(horizontal = 8.dp),
-                                text = stringResource(id = text)
-                            )
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(8.dp))
-                    AnimatedVisibility(
-                        visible = bottomSheetViewState.value.categoryPicked == null
-                    ) {
-                        BottomSheetCategorySelectionGrid(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .height(80.dp),
-                            categoryList = categoryList
-                        ) {
-                            bottomSheetViewModel.setCategoryPicked(it)
-                        }
-                    }
-                    Spacer(modifier = Modifier.height(16.dp))
-                    BottomSheetAcceptButton(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(40.dp),
-                    ) {
-                        coroutineScope.launch {
-                            bottomSheetViewModel.addFinancialItem()
-                        }
-                    }
-                }
+        BottomSheetAmountInput(
+            currentCurrency = currentCurrency,
+            listOfAvailableCurrencies = currencies,
+            currentInputValue = viewState.value.inputValue ?: 0.0f,
+            focusRequester = focusRequester,
+            onInputValueChange = { viewModel.setInputValue(it) },
+            keyboardController = controller,
+            onCurrencyChange = { viewModel.changeSelectedCurrency() },
+            hasErrors = viewState.value.warningMessage is BottomSheetErrors.IncorrectInputValue
+        )
+        Spacer(modifier = Modifier.height(16.dp))
+        SelectedCategoryChip(viewState.value, onRemove = { viewModel.setCategoryPicked(null) })
+        Spacer(modifier = Modifier.height(16.dp))
+        SelectedDateChip(viewState.value, onRemove = { viewModel.setDatePicked(null) })
+    }
+}
+
+@Composable
+private fun BottomSection(
+    viewModel: BottomSheetViewModel,
+    categoryList: List<CategoryEntity>
+) {
+    val coroutineScope = rememberCoroutineScope()
+    val viewState = viewModel.bottomSheetViewState.collectAsState()
+    Column {
+        BottomSheetNoteInput(modifier = Modifier.padding(start = 8.dp), note = viewState.value.note) {
+            viewModel.setNote(it)
+        }
+        Spacer(modifier = Modifier.height(8.dp))
+
+        AnimatedVisibility(
+            visible = viewState.value.datePicked == null
+        ) {
+            BottomSheetDateSelection(
+                bottomSheetViewState = viewState.value,
+                isDayOutOfPredefinedSpan = { viewModel.isDateInOtherSpan(it) },
+                onSetDatePicked = { viewModel.setDatePicked(it) },
+                onTogglePickerState = { viewModel.togglePickerState() }
+            )
+        }
+
+        Spacer(modifier = Modifier.height(8.dp))
+        ErrorDisplay(viewState.value)
+
+        Spacer(modifier = Modifier.height(8.dp))
+        AnimatedVisibility(
+            visible = viewState.value.categoryPicked == null
+        ) {
+            BottomSheetCategorySelectionGrid(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(80.dp),
+                categoryList = categoryList
+            ) {
+                viewModel.setCategoryPicked(it)
             }
+        }
+
+        Spacer(modifier = Modifier.height(16.dp))
+        BottomSheetAcceptButton(
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(40.dp)
+        ) {
+            coroutineScope.launch { viewModel.addFinancialItem() }
+        }
+    }
+}
+
+
+@Composable
+private fun SelectedCategoryChip(viewState: BottomSheetViewState, onRemove: () -> Unit) {
+    AnimatedVisibility(
+        visible = viewState.categoryPicked != null,
+        //modifier = Modifier.align(Alignment.CenterHorizontally)
+    ) {
+        viewState.categoryPicked?.let { category ->
+            CategoryChip(
+                modifier = Modifier.requiredHeightIn(min = 32.dp, max = 40.dp),
+                category = category,
+                isSelected = true,
+                borderColor = MaterialTheme.colorScheme.primary,
+                onSelect = { onRemove() }
+            )
+        }
+    }
+}
+
+@Composable
+private fun SelectedDateChip(viewState: BottomSheetViewState, onRemove: () -> Unit) {
+    AnimatedVisibility(
+        visible = viewState.datePicked != null,
+        // modifier = Modifier.align(Alignment.CenterHorizontally)
+    ) {
+        viewState.datePicked?.let { localDate ->
+            BottomSheetDateButton(
+                modifier = Modifier.height(IntrinsicSize.Min),
+                text = when {
+                    viewState.todayButtonActiveState -> stringResource(R.string.today)
+                    viewState.yesterdayButtonActiveState -> stringResource(R.string.yesterday)
+                    else -> formatDateWithoutYear(convertLocalDateToDate(localDate))
+                },
+                isSelected = true,
+                date = localDate,
+                needsAdditionalDateNotation = (viewState.todayButtonActiveState || viewState.yesterdayButtonActiveState)
+            ) {
+                onRemove()
+            }
+        }
+    }
+}
+
+@Composable
+private fun ErrorDisplay(viewState: BottomSheetViewState) {
+    if (
+        viewState.warningMessage is BottomSheetErrors.CategoryNotSelected ||
+        viewState.warningMessage is BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected ||
+        viewState.warningMessage is BottomSheetErrors.IncomeGroupingCategoryIsNotSelected
+    ) {
+        Box(modifier = Modifier.height(24.dp)) {
+            val textRes = when (viewState.warningMessage) {
+                is BottomSheetErrors.CategoryNotSelected -> BottomSheetErrors.CategoryNotSelected.error
+                is BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected -> BottomSheetErrors.ExpenseGroupingCategoryIsNotSelected.error
+                is BottomSheetErrors.IncomeGroupingCategoryIsNotSelected -> BottomSheetErrors.IncomeGroupingCategoryIsNotSelected.error
+                else -> R.string.error
+            }
+            ErrorText(
+                modifier = Modifier.padding(horizontal = 8.dp),
+                text = stringResource(id = textRes)
+            )
         }
     }
 }
