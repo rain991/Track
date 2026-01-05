@@ -59,58 +59,53 @@ android {
 
 
 dependencies {
-    val workVersion = "2.10.0"
-    val koinVersion = "3.5.3"
-    val retrofitVersion = "2.9.0"
-    val roomVersion = "2.6.1"
+    // Android
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.lifecycle.runtime)
 
-    //android
-    implementation("androidx.core:core-ktx:1.15.0")
-    implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.8.7")
+    // Data
+    implementation(libs.androidx.datastore)
+    implementation(libs.androidx.room.ktx)
+    ksp(libs.androidx.room.compiler)
 
-    //data related
-    implementation("androidx.datastore:datastore-preferences:1.0.0") // newer dataStore version could lead unexpected crashes
-    implementation("androidx.room:room-ktx:$roomVersion")
-    ksp("androidx.room:room-compiler:$roomVersion")
+    // Charts
+    implementation(libs.vico.compose)
 
-    //third-party libraries
-    implementation("com.patrykandpatrick.vico:compose-m3:2.0.0-alpha.22")
+    // Koin
+    implementation(libs.koin.core)
+    implementation(libs.koin.android)
+    implementation(libs.koin.compose)
+    implementation(libs.koin.workmanager)
 
-    //koin DI
-    implementation("io.insert-koin:koin-core:$koinVersion")
-    implementation("io.insert-koin:koin-android:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-compose:$koinVersion")
-    implementation("io.insert-koin:koin-androidx-workmanager:$koinVersion")
+    // Retrofit
+    implementation(libs.retrofit.core)
+    implementation(libs.retrofit.gson)
 
-    //retrofit
-    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
-    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    // Compose
+    implementation(libs.androidx.navigation.compose)
+    implementation(libs.androidx.activity.compose)
+    implementation(platform(libs.androidx.compose.bom))
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.graphics)
+    implementation(libs.androidx.compose.ui.preview)
+    implementation(libs.androidx.material3)
 
-    //compose
-    implementation("androidx.navigation:navigation-compose:2.8.4")
-    implementation("androidx.activity:activity-compose:1.9.3")
-    implementation(platform("androidx.compose:compose-bom:2024.11.00"))
-    implementation("androidx.compose.ui:ui")
-    implementation("androidx.compose.ui:ui-graphics")
-    implementation("androidx.compose.ui:ui-tooling-preview")
-    implementation("androidx.compose.material3:material3:1.3.1")
-    androidTestImplementation(platform("androidx.compose:compose-bom:2024.11.00"))
-    debugImplementation("androidx.compose.ui:ui-tooling:1.7.5")
-    debugImplementation("androidx.compose.ui:ui-test-manifest")
-    implementation ("androidx.core:core-splashscreen:1.0.1")
+    debugImplementation(libs.androidx.compose.ui.tooling)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    //junit
-    testImplementation("org.junit.jupiter:junit-jupiter-api:5.11.0")
-    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.11.0")
-    testImplementation("org.junit.jupiter:junit-jupiter-params:5.11.0")
-    testImplementation("junit:junit:4.13.2")
-    testRuntimeOnly("org.junit.vintage:junit-vintage-engine:5.11.0")
-    // androidTestImplementation("androidx.test.ext:junit:1.2.1")
-    testImplementation("org.mockito.kotlin:mockito-kotlin:5.3.1")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.1")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.9.0")
+    implementation(libs.androidx.splashscreen)
 
-    //other
-    implementation("androidx.work:work-runtime-ktx:$workVersion")
-    androidTestImplementation("androidx.work:work-testing:$workVersion")
+    // WorkManager
+    implementation(libs.androidx.work.runtime)
+    androidTestImplementation(libs.androidx.work.testing)
+
+    // Tests
+    testImplementation(libs.junit.jupiter.api)
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testImplementation(libs.junit.jupiter.params)
+    testImplementation(libs.junit4)
+    testRuntimeOnly(libs.junit.vintage)
+    testImplementation(libs.mockito.kotlin)
+    androidTestImplementation(libs.espresso.core)
+    testImplementation(libs.coroutines.test)
 }
