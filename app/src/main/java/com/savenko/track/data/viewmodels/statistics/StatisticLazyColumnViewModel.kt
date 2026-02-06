@@ -39,7 +39,7 @@ class StatisticLazyColumnViewModel(
     private val _incomeCategoriesList = mutableStateListOf<IncomeCategory>()
     val incomeCategoriesList: List<IncomeCategory> = _incomeCategoriesList
 
-    suspend fun initializeListOfEntities(
+    fun initializeListOfEntities(
         timePeriod: Range<Date>,
         financialEntities: FinancialEntities
     ) {
@@ -87,7 +87,7 @@ class StatisticLazyColumnViewModel(
         }
     }
 
-    suspend fun requestCountInDateRangeNotion(
+    fun requestCountInDateRangeNotion(
         financialEntity: FinancialEntity,
         financialCategory: CategoryEntity,
         dateRange: Range<Date>

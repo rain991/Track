@@ -4,9 +4,9 @@ import kotlinx.coroutines.flow.Flow
 import java.util.Date
 
 interface IncomeCoreRepository {
-    suspend fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float>
-    suspend fun getSumOfIncomesInTimeSpanByCategoriesIds(startOfSpan: Date, endOfSpan: Date, categoriesIds : List<Int>): Flow<Float>
-    suspend fun getCountOfIncomesInSpan(startDate: Date, endDate: Date): Flow<Int>
-    suspend fun getCountOfIncomesInSpanByCategoriesIds(startDate: Date, endDate: Date, categoriesIds: List<Int>): Flow<Int>
-    suspend fun getAverageInTimeSpan(startDate: Date, endDate: Date) : Flow<Float>
+    fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float>
+    fun getSumOfIncomesInTimeSpanByCategoriesIds(startOfSpan: Date, endOfSpan: Date, categoriesIds : List<Int>): Flow<Float>
+    fun getCountOfIncomesInSpan(startDate: Date, endDate: Date): Flow<Int>
+    fun getCountOfIncomesInSpanByCategoriesIds(startDate: Date, endDate: Date, categoriesIds: List<Int>): Flow<Int>
+    fun getAverageInTimeSpan(startDate: Date, endDate: Date) : Flow<Float>
 }

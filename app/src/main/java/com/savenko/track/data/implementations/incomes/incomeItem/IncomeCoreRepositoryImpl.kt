@@ -17,7 +17,7 @@ class IncomeCoreRepositoryImpl(
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : IncomeCoreRepository {
     // Sum of incomes
-    override suspend fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float> = channelFlow {
+    override fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         incomeDao.getIncomesInTimeSpanDateDesc(
             start = startOfSpan.time,
@@ -40,7 +40,7 @@ class IncomeCoreRepositoryImpl(
         }
     }
 
-    override suspend fun getSumOfIncomesInTimeSpanByCategoriesIds(
+    override fun getSumOfIncomesInTimeSpanByCategoriesIds(
         startOfSpan: Date,
         endOfSpan: Date,
         categoriesIds: List<Int>
@@ -67,11 +67,11 @@ class IncomeCoreRepositoryImpl(
     }
 
     // Count of incomes
-    override suspend fun getCountOfIncomesInSpan(startDate: Date, endDate: Date): Flow<Int> {
+    override fun getCountOfIncomesInSpan(startDate: Date, endDate: Date): Flow<Int> {
         return incomeDao.getCountOfIncomesInTimeSpan(start = startDate.time, end = endDate.time)
     }
 
-    override suspend fun getCountOfIncomesInSpanByCategoriesIds(
+    override fun getCountOfIncomesInSpanByCategoriesIds(
         startDate: Date,
         endDate: Date,
         categoriesIds: List<Int>
@@ -84,7 +84,7 @@ class IncomeCoreRepositoryImpl(
     }
 
     // Average - average throughout values
-    override suspend fun getAverageInTimeSpan(startDate: Date, endDate: Date): Flow<Float> {
+    override fun getAverageInTimeSpan(startDate: Date, endDate: Date): Flow<Float> {
         return combine(getSumOfIncomesInTimeSpan(startDate,endDate), getCountOfIncomesInSpan(startDate,endDate)){
             sumOfIncomes, countOfIncomes ->
             sumOfIncomes.div(countOfIncomes)

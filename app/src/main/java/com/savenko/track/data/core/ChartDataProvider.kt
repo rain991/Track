@@ -7,7 +7,6 @@ import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
 import com.savenko.track.data.other.converters.dates.getStartOfWeekDate
 import com.savenko.track.data.other.converters.dates.getStartOfYearDate
-import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.expenses.ExpensesListRepository
