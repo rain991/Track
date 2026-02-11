@@ -7,7 +7,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
 
 class CurrencyListRepositoryImpl(private val currencyDao: CurrencyDao) : CurrencyListRepository {
-    override suspend fun getCurrencyList(context: CoroutineContext): Flow<List<Currency>> {
+    override fun getCurrencyList(context: CoroutineContext): Flow<List<Currency>> {
         return currencyDao.getAllData()
     }
 

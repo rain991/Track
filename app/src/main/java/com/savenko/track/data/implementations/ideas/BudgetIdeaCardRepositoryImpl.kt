@@ -10,13 +10,13 @@ class BudgetIdeaCardRepositoryImpl(
     private val dataStoreManager: DataStoreManager,
     private val expensesCoreRepositoryImpl: ExpensesCoreRepository
 ) : BudgetIdeaCardRepository {
-    override suspend fun requestMonthBudget(): Flow<Float> {
+    override fun requestMonthBudget(): Flow<Float> {
         return dataStoreManager.budgetFlow
     }
-    override suspend fun requestCurrentMonthExpenses(): Flow<Float> {
+    override fun requestCurrentMonthExpenses(): Flow<Float> {
         return expensesCoreRepositoryImpl.getCurrentMonthSumOfExpense()
     }
-    override suspend fun requestBudgetExpectancy(): Flow<Float> {
+    override fun requestBudgetExpectancy(): Flow<Float> {
         return requestMonthBudget().combine(requestCurrentMonthExpenses()){
             monthBudget, currentMonthExpense -> currentMonthExpense.div(monthBudget)
         }
