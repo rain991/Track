@@ -18,7 +18,7 @@ class CurrenciesPreferenceRepositoryImpl(
         return currenciesPreferenceDao.getCurrenciesPreferences()
     }
 
-    override suspend fun getCurrenciesPreferenceConverted(): Flow<CurrenciesPreferenceConverted> {
+    override fun getCurrenciesPreferenceConverted(): Flow<CurrenciesPreferenceConverted> {
         val allCurrenciesList = currenciesListRepositoryImpl.getCurrencyList()
         val currenciesPreference = currenciesPreferenceDao.getCurrenciesPreferences()
         return combine(allCurrenciesList, currenciesPreference) { currenciesList, preference ->

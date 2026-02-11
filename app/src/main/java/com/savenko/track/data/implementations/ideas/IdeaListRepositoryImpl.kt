@@ -43,41 +43,42 @@ class IdeaListRepositoryImpl(
 
     override fun getIdeaCompletedValue(idea: Idea): Flow<Float> = channelFlow {
         val currentTimeMillis = System.currentTimeMillis()
-        withContext(Dispatchers.IO) {
-            when (idea) {
-                is ExpenseLimits -> {
-                    if (idea.isRelatedToAllCategories) {
-                        expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(idea.startDate.time, currentTimeMillis).collect {
-                            send(it)
-                        }
-                    } else {
-                        val relatedGroups =
-                            listOfNotNull(
-                                idea.firstRelatedCategoryId,
-                                idea.secondRelatedCategoryId,
-                                idea.thirdRelatedCategoryId
-                            )
-                        expensesCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
-                            idea.startDate.time,
-                            currentTimeMillis,
-                            relatedGroups
-                        ).collect {
-                                send(it)
-                            }
+        when (idea) {
+            is ExpenseLimits -> {
+                if (idea.isRelatedToAllCategories) {
+                    expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(
+                        idea.startDate.time,
+                        currentTimeMillis
+                    ).collect {
+                        send(it)
                     }
-                }
-
-                is IncomePlans -> {
-                    incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
-                        idea.startDate,
-                        Date(currentTimeMillis)
+                } else {
+                    val relatedGroups =
+                        listOfNotNull(
+                            idea.firstRelatedCategoryId,
+                            idea.secondRelatedCategoryId,
+                            idea.thirdRelatedCategoryId
+                        )
+                    expensesCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
+                        idea.startDate.time,
+                        currentTimeMillis,
+                        relatedGroups
                     ).collect {
                         send(it)
                     }
                 }
-
-                is Savings -> send(idea.value)
             }
+
+            is IncomePlans -> {
+                incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
+                    idea.startDate,
+                    Date(currentTimeMillis)
+                ).collect {
+                    send(it)
+                }
+            }
+
+            is Savings -> send(idea.value)
         }
     }
 

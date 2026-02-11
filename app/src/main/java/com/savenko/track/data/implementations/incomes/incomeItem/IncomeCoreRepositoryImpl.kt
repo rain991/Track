@@ -28,8 +28,8 @@ class IncomeCoreRepositoryImpl(
                 foundedIncomeItems.filter { it.currencyTicker == preferableCurrency.ticker }
             val listOfIncomesNotInPreferableCurrency =
                 foundedIncomeItems.filter { it.currencyTicker != preferableCurrency.ticker }
-            listOfIncomesInPreferableCurrency.forEach { it -> sumOfIncomesInPreferableCurrency += it.value }
-            listOfIncomesNotInPreferableCurrency.forEach { it ->
+            listOfIncomesInPreferableCurrency.forEach { sumOfIncomesInPreferableCurrency += it.value }
+            listOfIncomesNotInPreferableCurrency.forEach {
                 val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
                 if (convertedValue != INCORRECT_CONVERSION_RESULT) {
                     sumOfIncomesInPreferableCurrency += convertedValue
