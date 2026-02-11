@@ -1,7 +1,7 @@
 [versions]
 # Gradle / Kotlin / Plugins
-agp = "8.12.1"
-kotlin = "2.1.0"
+agp = "8.13.2"
+kotlin = "2.3.10"
 ksp = "2.1.0-1.0.29"
 sonarqube = "7.2.2.6593"
 ktlint = "14.0.1"
