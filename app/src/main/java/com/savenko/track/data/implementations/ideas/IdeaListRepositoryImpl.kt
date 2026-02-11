@@ -28,25 +28,20 @@ class IdeaListRepositoryImpl(
     private val incomeCoreRepositoryImpl: IncomeCoreRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : IdeaListRepository {
-    override suspend fun getIncomesPlansList(context: CoroutineContext): Flow<List<IncomePlans>> {
-        return withContext(context) {
-            incomePlansDao.getAllData()
-        }
+    override fun getIncomesPlansList(context: CoroutineContext): Flow<List<IncomePlans>> {
+        return incomePlansDao.getAllData()
     }
 
-    override suspend fun getExpenseLimitsList(context: CoroutineContext): Flow<List<ExpenseLimits>> {
-        return withContext(context) {
-            expenseLimitsDao.getAllData()
-        }
+    override fun getExpenseLimitsList(context: CoroutineContext): Flow<List<ExpenseLimits>> {
+        return expenseLimitsDao.getAllData()
+
     }
 
-    override suspend fun getSavingsList(context: CoroutineContext): Flow<List<Savings>> {
-        return withContext(context) {
-            savingsDao.getAllData()
-        }
+    override fun getSavingsList(context: CoroutineContext): Flow<List<Savings>> {
+        return savingsDao.getAllData()
     }
 
-    override suspend fun getIdeaCompletedValue(idea: Idea): Flow<Float> = channelFlow {
+    override fun getIdeaCompletedValue(idea: Idea): Flow<Float> = channelFlow {
         val currentTimeMillis = System.currentTimeMillis()
         withContext(Dispatchers.IO) {
             when (idea) {

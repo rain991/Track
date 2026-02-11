@@ -10,10 +10,10 @@ import kotlinx.coroutines.flow.Flow
 import kotlin.coroutines.CoroutineContext
 
 interface IdeaListRepository {
-    suspend fun getIncomesPlansList(context: CoroutineContext = Dispatchers.IO): Flow<List<IncomePlans>>
-    suspend fun getExpenseLimitsList(context: CoroutineContext = Dispatchers.IO): Flow<List<ExpenseLimits>>
-    suspend fun getSavingsList(context: CoroutineContext = Dispatchers.IO): Flow<List<Savings>>
-    suspend fun getIdeaCompletedValue(idea: Idea): Flow<Float>
+    fun getIncomesPlansList(context: CoroutineContext = Dispatchers.IO): Flow<List<IncomePlans>>
+    fun getExpenseLimitsList(context: CoroutineContext = Dispatchers.IO): Flow<List<ExpenseLimits>>
+    fun getSavingsList(context: CoroutineContext = Dispatchers.IO): Flow<List<Savings>>
+    fun getIdeaCompletedValue(idea: Idea): Flow<Float>
     suspend fun changePreferableCurrenciesOnIdeas(newPreferableCurrency: Currency, previousPreferableCurrency: Currency)
     suspend fun getCountOfIdeas(): Int
 }

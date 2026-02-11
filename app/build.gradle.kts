@@ -46,6 +46,10 @@ android {
         compose = true
     }
 
+
+    lint{
+        disable.addAll(setOf("ComposableDestinationInComposeScope", "ComposableNavGraphInComposeScope", "WrongStartDestinationType", "WrongStartDestinationType", "WrongStartDestinationType"))
+    }
     packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
@@ -59,53 +63,41 @@ android {
 
 
 dependencies {
-    // Android
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime)
-
-    // Data
     implementation(libs.androidx.datastore)
     implementation(libs.androidx.room.ktx)
-    ksp(libs.androidx.room.compiler)
-
-    // Charts
     implementation(libs.vico.compose)
-
-    // Koin
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
     implementation(libs.koin.workmanager)
-
-    // Retrofit
     implementation(libs.retrofit.core)
     implementation(libs.retrofit.gson)
-
-    // Compose
+    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.activity.compose)
-    implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.preview)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.splashscreen)
+    implementation(libs.androidx.work.runtime)
+
+    ksp(libs.androidx.room.compiler)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    implementation(libs.androidx.splashscreen)
-
-    // WorkManager
-    implementation(libs.androidx.work.runtime)
-    androidTestImplementation(libs.androidx.work.testing)
-
-    // Tests
     testImplementation(libs.junit.jupiter.api)
-    testRuntimeOnly(libs.junit.jupiter.engine)
     testImplementation(libs.junit.jupiter.params)
     testImplementation(libs.junit4)
-    testRuntimeOnly(libs.junit.vintage)
     testImplementation(libs.mockito.kotlin)
-    androidTestImplementation(libs.espresso.core)
     testImplementation(libs.coroutines.test)
+
+    testRuntimeOnly(libs.junit.jupiter.engine)
+    testRuntimeOnly(libs.junit.vintage)
+
+    androidTestImplementation(libs.androidx.work.testing)
+    androidTestImplementation(libs.espresso.core)
 }

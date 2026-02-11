@@ -20,52 +20,58 @@ class FinancialCardNotesProvider(
     private val expenseCoreRepositoryImpl: ExpensesCoreRepository,
     private val incomeCoreRepositoryImpl: IncomeCoreRepository
 ) {
-    suspend fun requestCountNotionForFinancialCard(
+    fun requestCountNotionForFinancialCard(
         financialEntity: FinancialEntity,
         financialCategory: CategoryEntity,
         timeSpan: Range<Date>
     ): Flow<Int> {
         val startDate = timeSpan.lower
         val endDate = timeSpan.upper
-        if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
-            val result = expenseCoreRepositoryImpl.getCountOfExpensesInSpanByCategoriesIds(
-                startDate = startDate,
-                endDate = endDate,
-                categoriesIds = listOf(financialCategory.categoryId)
-            )
-            return result
-        } else if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
-            val result = incomeCoreRepositoryImpl.getCountOfIncomesInSpanByCategoriesIds(
-                startDate = startDate,
-                endDate = endDate,
-                categoriesIds = listOf(financialCategory.categoryId)
-            )
-            return result
-        } else {
-            return emptyFlow()
+        return when {
+            financialEntity is ExpenseItem && financialCategory is ExpenseCategory -> {
+                expenseCoreRepositoryImpl.getCountOfExpensesInSpanByCategoriesIds(
+                    startDate = startDate,
+                    endDate = endDate,
+                    categoriesIds = listOf(financialCategory.categoryId)
+                )
+            }
+
+            financialEntity is IncomeItem && financialCategory is IncomeCategory -> {
+                incomeCoreRepositoryImpl.getCountOfIncomesInSpanByCategoriesIds(
+                    startDate = startDate,
+                    endDate = endDate,
+                    categoriesIds = listOf(financialCategory.categoryId)
+                )
+            }
+            else -> {
+                emptyFlow()
+            }
         }
     }
-    suspend fun requestValueSummaryNotionForFinancialCard(
+
+    fun requestValueSummaryNotionForFinancialCard(
         financialEntity: FinancialEntity,
         financialCategory: CategoryEntity,
         timeSpan: Range<Date>
     ): Flow<Float> {
         val startDate = timeSpan.lower
         val endDate = timeSpan.upper
-        if (financialEntity is ExpenseItem && financialCategory is ExpenseCategory) {
-            val result =
+        return when{
+            financialEntity is ExpenseItem && financialCategory is ExpenseCategory -> {
                 expenseCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
                     start = startDate.time,
                     end = endDate.time,
                     categoriesIds = listOf(financialCategory.categoryId)
                 )
-            return result
+            }
+            financialEntity is IncomeItem && financialCategory is IncomeCategory -> {
+                incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpanByCategoriesIds(
+                    startDate,
+                    endDate,
+                    listOf(financialCategory.categoryId)
+                )
+            }
+            else -> emptyFlow()
         }
-        if (financialEntity is IncomeItem && financialCategory is IncomeCategory) {
-            val result =
-                incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpanByCategoriesIds(startDate, endDate, listOf(financialCategory.categoryId))
-            return result
-        }
-        return emptyFlow()
     }
 }
