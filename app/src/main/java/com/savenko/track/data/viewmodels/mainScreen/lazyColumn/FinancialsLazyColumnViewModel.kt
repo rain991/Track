@@ -1,12 +1,10 @@
 package com.savenko.track.data.viewmodels.mainScreen.lazyColumn
 
-import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_FEED_DISAPPEARANCE
-import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
-import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
+import com.savenko.track.data.other.converters.dates.startOfMonth
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.models.expenses.ExpenseItem
@@ -26,7 +24,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
+import kotlinx.datetime.TimeZone
+import kotlin.time.Instant
 
 /**
  *  Provides [financialLazyColumnState] and overall month summary via [requestMonthSummary]
@@ -72,30 +71,51 @@ class FinancialsLazyColumnViewModel(
         }
 
         viewModelScope.launch {
-            expensesCategoriesListRepository.getCategoriesList().collect { listOfExpenseCategories ->
-                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expenseCategoriesList = listOfExpenseCategories) }
-            }
+            expensesCategoriesListRepository.getCategoriesList()
+                .collect { listOfExpenseCategories ->
+                    _financialLazyColumnState.update {
+                        _financialLazyColumnState.value.copy(
+                            expenseCategoriesList = listOfExpenseCategories
+                        )
+                    }
+                }
         }
 
         viewModelScope.launch {
             incomesCategoriesListRepository.getCategoriesList().collect { incomeCategoriesList ->
-                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomeCategoriesList = incomeCategoriesList) }
+                _financialLazyColumnState.update {
+                    _financialLazyColumnState.value.copy(
+                        incomeCategoriesList = incomeCategoriesList
+                    )
+                }
             }
         }
         viewModelScope.launch {
             currencyListRepository.getCurrencyList().collect { currenciesList ->
-                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(currenciesList = currenciesList) }
+                _financialLazyColumnState.update {
+                    _financialLazyColumnState.value.copy(
+                        currenciesList = currenciesList
+                    )
+                }
             }
         }
         viewModelScope.launch {
             currenciesPreferenceRepository.getPreferableCurrency().collect { preferableCurrency ->
-                _financialLazyColumnState.update { _financialLazyColumnState.value.copy(preferableCurrency = preferableCurrency) }
+                _financialLazyColumnState.update {
+                    _financialLazyColumnState.value.copy(
+                        preferableCurrency = preferableCurrency
+                    )
+                }
             }
         }
     }
 
     fun setExpandedExpenseCard(value: FinancialEntity?) {
-        _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expandedFinancialEntity = value) }
+        _financialLazyColumnState.update {
+            _financialLazyColumnState.value.copy(
+                expandedFinancialEntity = value
+            )
+        }
     }
 
     fun setScrolledBelow(firstVisibleIndex: Int) {
@@ -114,44 +134,56 @@ class FinancialsLazyColumnViewModel(
         deleteFinancialItemUseCase(financialEntity)
     }
 
-    suspend fun requestMonthSummary(monthDate: Date): FinancialCardNotion {
-        val dateRange = Range(getStartOfMonthDate(monthDate), getEndOfMonthDate(monthDate))
-        return if (_financialLazyColumnState.value.isExpenseLazyColumn) {
-            getPeriodSummaryUseCase.getPeriodSummary(
-                periodStartMillis = dateRange.lower.time,
-                periodEndMillis = dateRange.upper.time,
-                financialTypes = FinancialTypes.Expense
-            ).first()
-        } else {
-            getPeriodSummaryUseCase.getPeriodSummary(
-                periodStartMillis = dateRange.lower.time,
-                periodEndMillis = dateRange.upper.time,
-                financialTypes = FinancialTypes.Income
-            ).first()
-        }
+    suspend fun requestMonthSummary(monthMoment: Instant): FinancialCardNotion {
+        val startOfMonthMoment = startOfMonth(monthMoment, TimeZone.currentSystemDefault())
+        val dateRange = startOfMonthMoment..monthMoment
+        return getPeriodSummaryUseCase.getPeriodSummary(
+            periodStartMillis = dateRange.start.toEpochMilliseconds(),
+            periodEndMillis = dateRange.endInclusive.toEpochMilliseconds(),
+            financialTypes = if (_financialLazyColumnState.value.isExpenseLazyColumn) {
+                FinancialTypes.Expense
+            } else FinancialTypes.Income
+        ).first()
+
     }
 
     private suspend fun initializeExpenseListFinancialNotions(listOfExpenses: List<ExpenseItem>) {
+        val currentTimeZone = TimeZone.currentSystemDefault()
         val map = listOfExpenses.associate { expenseItem ->
             expenseItem.id to getPeriodSummaryUseCase.getPeriodSummaryById(
-                periodStartMillis = getStartOfMonthDate(expenseItem.date).time,
-                periodEndMillis = getEndOfMonthDate(expenseItem.date).time,
+                periodStartMillis = startOfMonth(
+                    Instant.fromEpochMilliseconds(expenseItem.date),
+                    currentTimeZone
+                ).toEpochMilliseconds(),
+                periodEndMillis = expenseItem.date,
                 financialTypes = FinancialTypes.Expense,
                 categoryID = expenseItem.categoryId
             ).first()
         }
-        _financialLazyColumnState.update { _financialLazyColumnState.value.copy(expensesFinancialSummary = map) }
+        _financialLazyColumnState.update {
+            _financialLazyColumnState.value.copy(
+                expensesFinancialSummary = map
+            )
+        }
     }
 
     private suspend fun initializeIncomeListFinancialNotions(listOfIncomes: List<IncomeItem>) {
+        val currentTimeZone = TimeZone.currentSystemDefault()
         val map = listOfIncomes.associate { incomeItem ->
             incomeItem.id to getPeriodSummaryUseCase.getPeriodSummaryById(
-                periodStartMillis = getStartOfMonthDate(incomeItem.date).time,
-                periodEndMillis = getEndOfMonthDate(incomeItem.date).time,
+                periodStartMillis = startOfMonth(
+                    Instant.fromEpochMilliseconds(incomeItem.date),
+                    currentTimeZone
+                ).toEpochMilliseconds(),
+                periodEndMillis = incomeItem.date,
                 financialTypes = FinancialTypes.Income,
                 categoryID = incomeItem.categoryId
             ).first()
         }
-        _financialLazyColumnState.update { _financialLazyColumnState.value.copy(incomesFinancialSummary = map) }
+        _financialLazyColumnState.update {
+            _financialLazyColumnState.value.copy(
+                incomesFinancialSummary = map
+            )
+        }
     }
 }

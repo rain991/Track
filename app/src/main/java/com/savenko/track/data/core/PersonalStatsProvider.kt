@@ -4,7 +4,8 @@ import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
 import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import kotlinx.coroutines.flow.Flow
-import java.util.Date
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /**
  * Provides user stats.
@@ -23,22 +24,22 @@ class PersonalStatsProvider(
 
     fun provideAllTimeIncomesSum(): Flow<Float> {
         return incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
-            startOfSpan = Date(0),
-            endOfSpan = Date(System.currentTimeMillis())
+            startOfSpan = Instant.fromEpochMilliseconds(0),
+            endOfSpan = Clock.System.now()
         )
     }
 
     fun provideAllTimeIncomesCount(): Flow<Int> {
         return incomeCoreRepositoryImpl.getCountOfIncomesInSpan(
-            startDate = Date(0),
-            endDate = Date(System.currentTimeMillis())
+            startDate = Instant.fromEpochMilliseconds(0),
+            endDate = Clock.System.now()
         )
     }
 
     fun provideAllTimeExpensesCount(): Flow<Int> {
         return expensesCoreRepositoryImpl.getCountOfExpensesInSpan(
-            startDate = Date(0),
-            endDate = Date(System.currentTimeMillis())
+            startDate = Instant.fromEpochMilliseconds(0),
+            endDate = Clock.System.now()
         )
     }
 

@@ -37,9 +37,9 @@ import androidx.compose.ui.zIndex
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE
 import com.savenko.track.data.other.constants.MONTH_SUMMARY_MIN_LIST_SIZE
-import com.savenko.track.data.other.converters.dates.areDatesSame
-import com.savenko.track.data.other.converters.dates.areMonthsSame
-import com.savenko.track.data.other.converters.dates.areYearsSame
+import com.savenko.track.data.other.converters.dates.isSameDay
+import com.savenko.track.data.other.converters.dates.isSameMonth
+import com.savenko.track.data.other.converters.dates.isSameYear
 import com.savenko.track.data.viewmodels.mainScreen.lazyColumn.FinancialsLazyColumnViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.expenses.ExpenseItem
@@ -48,7 +48,10 @@ import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialCa
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
+import kotlin.time.Instant
 
 /**
  * Shows [Transactions] as a header of lazy column.
@@ -78,6 +81,7 @@ fun MainScreenLazyColumn(
     val isScrollUpButtonNeeded by remember { derivedStateOf { listState.firstVisibleItemIndex > FIRST_VISIBLE_INDEX_SCROLL_BUTTON_APPEARANCE } }
     var isScrollingUp by remember { mutableStateOf(false) }
     val expenseListFinancialSummary = lazyColumnState.value.expensesFinancialSummary
+    val currentTimeZone = TimeZone.currentSystemDefault()
     Box {
         Box(
             modifier = Modifier
@@ -114,7 +118,8 @@ fun MainScreenLazyColumn(
         }
         Column {
             if (containsInfoCards) {
-                TrackScreenInfoCards(isScrolledBelow = isScrolledBelow,
+                TrackScreenInfoCards(
+                    isScrolledBelow = isScrolledBelow,
                     isExpenseCardSelected = isExpenseLazyColumn,
                     onExpenseCardClick = {
                         if (!isExpenseLazyColumn) {
@@ -143,17 +148,18 @@ fun MainScreenLazyColumn(
                 EmptyMainLazyColumnPlacement(isExpenseLazyColumn = isExpenseLazyColumn)
             } else {
                 LazyColumn(state = listState, modifier = Modifier.fillMaxWidth()) {
-                    itemsIndexed(items = if (isExpenseLazyColumn) {
-                        expensesList
-                    } else {
-                        incomeList
-                    }, key = { _, item: FinancialEntity ->
-                        if (item is ExpenseItem) {
-                            item.id
+                    itemsIndexed(
+                        items = if (isExpenseLazyColumn) {
+                            expensesList
                         } else {
-                            -item.id
+                            incomeList
+                        }, key = { _, item: FinancialEntity ->
+                            if (item is ExpenseItem) {
+                                item.id
+                            } else {
+                                -item.id
+                            }
                         }
-                    }
                     ) { index, currentFinancialEntity ->
                         val currentFinancialCategory =
                             if (isExpenseLazyColumn) {
@@ -178,33 +184,48 @@ fun MainScreenLazyColumn(
                                 incomeList[index - 1]
                             }
                             isPreviousDayDifferent =
-                                !areDatesSame(
-                                    previousFinancialEntity.date,
-                                    currentFinancialEntity.date
+                                !isSameDay(
+                                    Instant.fromEpochMilliseconds(previousFinancialEntity.date),
+                                    Instant.fromEpochMilliseconds(currentFinancialEntity.date),
+                                    currentTimeZone
                                 )
                             isPreviousYearDifferent =
-                                !areYearsSame(
-                                    previousFinancialEntity.date,
-                                    currentFinancialEntity.date
+                                !isSameYear(
+                                    Instant.fromEpochMilliseconds(previousFinancialEntity.date)
+                                        .toLocalDateTime(currentTimeZone),
+                                    Instant.fromEpochMilliseconds(currentFinancialEntity.date)
+                                        .toLocalDateTime(currentTimeZone)
                                 )
                         }
                         if (isExpenseLazyColumn) {
                             if (index < expensesList.size - 1) {
-                                isNextDayDifferent = !areDatesSame(
-                                    expensesList[index + 1].date,
-                                    currentFinancialEntity.date
+                                isNextDayDifferent = !isSameDay(
+                                    Instant.fromEpochMilliseconds(expensesList[index + 1].date),
+                                    Instant.fromEpochMilliseconds(currentFinancialEntity.date),
+                                    currentTimeZone
                                 )
                                 isNextMonthDifferent =
-                                    !areMonthsSame(expensesList[index + 1].date, currentFinancialEntity.date)
+                                    !isSameMonth(
+                                        Instant.fromEpochMilliseconds(expensesList[index + 1].date)
+                                            .toLocalDateTime(currentTimeZone),
+                                        Instant.fromEpochMilliseconds(currentFinancialEntity.date)
+                                            .toLocalDateTime(currentTimeZone),
+                                    )
                             }
                         } else {
                             if (index < incomeList.size - 1) {
-                                isNextDayDifferent = !areDatesSame(
-                                    incomeList[index + 1].date,
-                                    currentFinancialEntity.date
+                                isNextDayDifferent = !isSameDay(
+                                    Instant.fromEpochMilliseconds(incomeList[index + 1].date),
+                                    Instant.fromEpochMilliseconds(currentFinancialEntity.date),
+                                    currentTimeZone
                                 )
                                 isNextMonthDifferent =
-                                    !areMonthsSame(incomeList[index + 1].date, currentFinancialEntity.date)
+                                    !isSameMonth(
+                                        Instant.fromEpochMilliseconds(incomeList[index + 1].date)
+                                            .toLocalDateTime(currentTimeZone),
+                                        Instant.fromEpochMilliseconds(currentFinancialEntity.date)
+                                            .toLocalDateTime(currentTimeZone)
+                                    )
                             }
                         }
                         if (currentFinancialCategory != null) {
@@ -212,22 +233,27 @@ fun MainScreenLazyColumn(
                                 visible = isVisible,
                                 exit = fadeOut()
                             ) {
-                                Box{
+                                Box {
                                     if (isScrollingUp) {
                                         LaunchedEffect(listState) {
                                             listState.animateScrollToItem(index = 0)
                                             isScrollingUp = false
                                         }
                                     }
-                                    var monthSummary by remember { mutableStateOf<FinancialCardNotion?>(null) }
+                                    var monthSummary by remember {
+                                        mutableStateOf<FinancialCardNotion?>(
+                                            null
+                                        )
+                                    }
                                     LaunchedEffect(
                                         key1 = Unit,
                                         key2 = lazyColumnState.value.expensesList,
                                         key3 = lazyColumnState.value.incomeList
                                     ) {
-                                        monthSummary = financialsLazyColumnViewModel.requestMonthSummary(
-                                            currentFinancialEntity.date
-                                        )
+                                        monthSummary =
+                                            financialsLazyColumnViewModel.requestMonthSummary(
+                                                Instant.fromEpochMilliseconds(currentFinancialEntity.date)
+                                            )
                                     }
                                     LazyColumnSingleFinancialComponent(
                                         isExpanded = (expandedItem == currentFinancialEntity),
@@ -260,7 +286,9 @@ fun MainScreenLazyColumn(
                                             isVisible = false
                                             coroutineScope.launch(Dispatchers.IO) {
                                                 delay(500)
-                                                financialsLazyColumnViewModel.deleteFinancialItem(financialEntity)
+                                                financialsLazyColumnViewModel.deleteFinancialItem(
+                                                    financialEntity
+                                                )
                                             }
                                         }
                                     ) { financialEntity ->

@@ -39,16 +39,23 @@ import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.incomePlanSpecificColor
-import com.savenko.track.data.other.converters.dates.formatDateWithYear
-import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.idea.IncomePlans
+import com.savenko.track.presentation.other.formatDateWithYear
+import com.savenko.track.presentation.other.formatDateWithoutYear
 import com.savenko.track.presentation.themes.purpleGreyTheme.purpleGreyNew_DarkColorScheme
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 /*  Contains Card used in expense screen feed to show income plan entity  */
 @Composable
-fun IncomePlanIdeaCard(incomePlans: IncomePlans, completionValue: Float, preferableCurrency: Currency) {
+fun IncomePlanIdeaCard(
+    incomePlans: IncomePlans,
+    completionValue: Float,
+    preferableCurrency: Currency
+) {
     val localContext = LocalContext.current
     var plannedText by remember { mutableStateOf(buildAnnotatedString { }) }
     var completedText by remember { mutableStateOf(buildAnnotatedString { }) }
@@ -188,6 +195,7 @@ private fun SpecifiedEndDateContent(
     plannedText: AnnotatedString,
     completedText: AnnotatedString
 ) {
+    val currentTimeZone = TimeZone.currentSystemDefault()
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -205,8 +213,14 @@ private fun SpecifiedEndDateContent(
         Text(
             text = stringResource(
                 R.string.preferable_period_income_plan_card,
-                formatDateWithoutYear(incomePlans.startDate),
-                formatDateWithoutYear(incomePlans.endDate!!)
+                formatDateWithoutYear(
+                    date = Instant.fromEpochMilliseconds(incomePlans.startDate)
+                        .toLocalDateTime(currentTimeZone)
+                ),
+                formatDateWithoutYear(
+                    Instant.fromEpochMilliseconds(incomePlans.endDate!!)
+                        .toLocalDateTime(currentTimeZone)
+                ),
             ), textAlign = TextAlign.Center
         )
     }
@@ -218,6 +232,7 @@ private fun NonSpecifiedEndDateContent(
     plannedText: AnnotatedString,
     completedText: AnnotatedString
 ) {
+    val currentTimeZone = TimeZone.currentSystemDefault()
     Text(
         text = plannedText
     )
@@ -227,7 +242,10 @@ private fun NonSpecifiedEndDateContent(
     Text(
         text = stringResource(
             R.string.plan_started_income_plan_card,
-            formatDateWithYear(incomePlans.startDate)
+            formatDateWithYear(
+                Instant.fromEpochMilliseconds(incomePlans.startDate)
+                    .toLocalDateTime(currentTimeZone)
+            ),
         ), textAlign = TextAlign.Center
     )
 }

@@ -22,7 +22,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
@@ -30,15 +29,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
+import com.savenko.track.presentation.other.formatDateWithoutYear
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.components.customComponents.CategoryChip
 import com.savenko.track.presentation.components.customComponents.ErrorText
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
 import com.savenko.track.presentation.screens.states.core.common.BottomSheetViewState
-import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -143,7 +140,7 @@ private fun BottomSection(
         ) {
             BottomSheetDateSelection(
                 bottomSheetViewState = viewState.value,
-                isDayOutOfPredefinedSpan = { viewModel.isDateInOtherSpan(it) },
+                isDayOutOfPredefinedSpan = { viewModel.isDateInOtherSpan(it.date) },
                 onSetDatePicked = { viewModel.setDatePicked(it) },
                 onTogglePickerState = { viewModel.togglePickerState() }
             )
@@ -182,7 +179,6 @@ private fun BottomSection(
 private fun SelectedCategoryChip(viewState: BottomSheetViewState, onRemove: () -> Unit) {
     AnimatedVisibility(
         visible = viewState.categoryPicked != null,
-        //modifier = Modifier.align(Alignment.CenterHorizontally)
     ) {
         viewState.categoryPicked?.let { category ->
             CategoryChip(
@@ -200,7 +196,6 @@ private fun SelectedCategoryChip(viewState: BottomSheetViewState, onRemove: () -
 private fun SelectedDateChip(viewState: BottomSheetViewState, onRemove: () -> Unit) {
     AnimatedVisibility(
         visible = viewState.datePicked != null,
-        // modifier = Modifier.align(Alignment.CenterHorizontally)
     ) {
         viewState.datePicked?.let { localDate ->
             BottomSheetDateButton(
@@ -208,7 +203,7 @@ private fun SelectedDateChip(viewState: BottomSheetViewState, onRemove: () -> Un
                 text = when {
                     viewState.todayButtonActiveState -> stringResource(R.string.today)
                     viewState.yesterdayButtonActiveState -> stringResource(R.string.yesterday)
-                    else -> formatDateWithoutYear(convertLocalDateToDate(localDate))
+                    else -> formatDateWithoutYear(localDate)
                 },
                 isSelected = true,
                 date = localDate,

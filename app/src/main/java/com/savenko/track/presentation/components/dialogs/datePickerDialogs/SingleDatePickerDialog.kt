@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import java.util.Date
+import kotlin.time.Instant
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -21,7 +21,7 @@ fun SingleDatePickerDialog(
     isDialogVisible: Boolean,
     futureDatePicker: Boolean,
     onDecline: () -> Unit,
-    onAccept: (Date) -> Unit,
+    onAccept: (Instant) -> Unit,
 ) {
     val dateState = rememberDatePickerState(selectableDates = object : SelectableDates {
         override fun isSelectableDate(utcTimeMillis: Long): Boolean {
@@ -34,12 +34,17 @@ fun SingleDatePickerDialog(
         }
     })
     if (isDialogVisible) {
-        DatePickerDialog(modifier = Modifier.padding(8.dp),
+        DatePickerDialog(
+            modifier = Modifier.padding(8.dp),
             onDismissRequest = { onDecline() },
             confirmButton = {
                 Button(
                     onClick = {
-                        onAccept(Date(dateState.selectedDateMillis ?: System.currentTimeMillis()))
+                        onAccept(
+                            Instant.fromEpochMilliseconds(
+                                dateState.selectedDateMillis ?: System.currentTimeMillis()
+                            )
+                        )
                     }
                 ) {
                     Text(text = stringResource(R.string.confirm))

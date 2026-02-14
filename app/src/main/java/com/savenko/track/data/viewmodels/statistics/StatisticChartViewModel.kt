@@ -1,7 +1,5 @@
 package com.savenko.track.data.viewmodels.statistics
 
-import android.util.Log
-import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.patrykandpatrick.vico.core.cartesian.data.CartesianChartModelProducer
@@ -20,7 +18,8 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
+import kotlin.time.Instant
 
 /**
  * Provides [statisticChartState] for Vico chart used in statistics screen
@@ -82,7 +81,7 @@ class StatisticChartViewModel(
         initializeValues()
     }
 
-    fun setSpecifiedTimePeriod(value: Range<LocalDate>?) {
+    fun setSpecifiedTimePeriod(value: ClosedRange<Instant>?) {
         _statisticChartState.update { _statisticChartState.value.copy(specifiedTimePeriod = value) }
     }
 
@@ -108,24 +107,25 @@ class StatisticChartViewModel(
 
     private suspend fun initializeSeparateFinancialValues() {
         setAdditionalData(null)
-        val data = if(_statisticChartState.value.financialEntities is FinancialEntities.ExpenseFinancialEntity){
-            chartDataProvider.requestExpenseDataForVicoChart(
-                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
-                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
-            )
-        }else{
-            chartDataProvider.requestIncomeDataForVicoChart(
-                statisticChartTimePeriod = _statisticChartState.value.timePeriod,
-                otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
-            )
-        }
+        val data =
+            if (_statisticChartState.value.financialEntities is FinancialEntities.ExpenseFinancialEntity) {
+                chartDataProvider.requestExpenseDataForVicoChart(
+                    statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+                    otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+                )
+            } else {
+                chartDataProvider.requestIncomeDataForVicoChart(
+                    statisticChartTimePeriod = _statisticChartState.value.timePeriod,
+                    otherTimeSpan = _statisticChartState.value.specifiedTimePeriod
+                )
+            }
         data.collect { chartData ->
             setDataSet(chartData)
             val xToDates = chartData.keys.associateBy {
                 try {
-                    it.toEpochDay().toFloat()
-                } catch (exception: Exception) {
-                    Log.e("${this.javaClass.name}","Exception during converting : $exception")
+                    it.toEpochDays().toFloat()
+                } catch (e: Exception) {
+                    e.printStackTrace()
                     0.0f
                 }
             }
@@ -164,9 +164,9 @@ class StatisticChartViewModel(
             setDataSet(expenseChartData)
             setAdditionalData(incomeChartData)
             val expenseXToDates =
-                expenseChartData.keys.associateBy { it.toEpochDay().toFloat() }
+                expenseChartData.keys.associateBy { it.toEpochDays().toFloat() }
             val incomeXToDates =
-                incomeChartData.keys.associateBy { it.toEpochDay().toFloat() }
+                incomeChartData.keys.associateBy { it.toEpochDays().toFloat() }
             modelProducer.runTransaction {
                 if (expenseXToDates.size > 1 || incomeXToDates.size > 1) {
                     lineSeries {

@@ -34,22 +34,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.formatDateWithYear
-import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
-import com.savenko.track.data.other.converters.dates.getStartOfWeekDate
-import com.savenko.track.data.other.converters.dates.getStartOfYearDate
+import com.savenko.track.data.other.converters.dates.startOfMonth
+import com.savenko.track.data.other.converters.dates.startOfWeek
+import com.savenko.track.data.other.converters.dates.startOfYear
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
+import com.savenko.track.presentation.other.formatDateWithYear
 import kotlinx.coroutines.launch
-import java.util.Date
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
 
 /**
  * Composable used for filters in Track Statistic Screen.
  */
 @Composable
-fun TrackStatisticChartOptionsSelector(modifier : Modifier,chartViewModel: StatisticChartViewModel) {
+fun TrackStatisticChartOptionsSelector(
+    modifier: Modifier,
+    chartViewModel: StatisticChartViewModel
+) {
     val coroutineScope = rememberCoroutineScope()
     val chartState = chartViewModel.statisticChartState.collectAsState()
     val financialTypeSelectorItems =
@@ -189,45 +193,42 @@ fun TrackStatisticChartOptionsSelector(modifier : Modifier,chartViewModel: Stati
                 .padding(start = 8.dp, end = 8.dp, bottom = 8.dp),
             horizontalArrangement = Arrangement.Center
         ) {
+            val currentMoment = Clock.System.now()
+            val currentTimeZone = TimeZone.currentSystemDefault()
             val startOfPeriod = when (chartState.value.timePeriod) {
-                is StatisticChartTimePeriod.Month -> {
-                    getStartOfMonthDate(Date(System.currentTimeMillis()))
+                is StatisticChartTimePeriod.Week -> {
+                    startOfWeek(currentMoment, currentTimeZone)
                 }
 
-                is StatisticChartTimePeriod.Week -> {
-                    getStartOfWeekDate(Date(System.currentTimeMillis()))
+                is StatisticChartTimePeriod.Month -> {
+                    startOfMonth(currentMoment, currentTimeZone)
                 }
 
                 is StatisticChartTimePeriod.Year -> {
-                    getStartOfYearDate(Date(System.currentTimeMillis()))
+                    startOfYear(currentMoment, currentTimeZone)
                 }
 
                 is StatisticChartTimePeriod.Other -> {
-                    if (chartState.value.specifiedTimePeriod?.lower != null) {
-                        convertLocalDateToDate(chartState.value.specifiedTimePeriod?.lower!!)
-                    } else {
-                        getStartOfMonthDate(Date(System.currentTimeMillis()))
-                    }
+                    chartState.value.specifiedTimePeriod?.start ?: startOfMonth(
+                        currentMoment,
+                        currentTimeZone
+                    )
                 }
             }
             val endOfPeriod = when (chartState.value.timePeriod) {
                 is StatisticChartTimePeriod.Other -> {
-                    if (chartState.value.specifiedTimePeriod?.upper != null) {
-                        convertLocalDateToDate(chartState.value.specifiedTimePeriod?.upper!!)
-                    } else {
-                        getStartOfMonthDate(Date(System.currentTimeMillis()))
-                    }
+                    chartState.value.specifiedTimePeriod?.endInclusive ?: currentMoment
                 }
 
                 else -> {
-                    Date(System.currentTimeMillis())
+                    currentMoment
                 }
             }
             Text(
                 text = stringResource(
                     R.string.selected_time_period_track_stats_options,
-                    formatDateWithYear(startOfPeriod),
-                    formatDateWithYear(endOfPeriod)
+                    formatDateWithYear(date = startOfPeriod.toLocalDateTime(currentTimeZone)),
+                    formatDateWithYear(date = endOfPeriod.toLocalDateTime(currentTimeZone))
                 ),
                 style = MaterialTheme.typography.labelMedium, textAlign = TextAlign.Center
             )

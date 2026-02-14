@@ -19,21 +19,26 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.IDEA_NOTE_MAX_LENGTH
-import com.savenko.track.data.other.converters.dates.formatDateWithYear
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.customComponents.GradientInputTextField
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
 import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
+import com.savenko.track.presentation.other.formatDateWithYear
 import com.savenko.track.presentation.screens.states.core.common.NewIdeaDialogState
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun SavingsDialogInputs(
     newIdeaDialogState: NewIdeaDialogState
 ) {
+    val currentTimeZone = TimeZone.currentSystemDefault()
     val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     val labelInputText = newIdeaDialogState.label
-    Column(modifier = Modifier.fillMaxWidth().padding(vertical = 4.dp)) {
+    Column(modifier = Modifier
+        .fillMaxWidth()
+        .padding(vertical = 4.dp)) {
         GradientInputTextField(
             value = labelInputText ?: "",
             label = stringResource(R.string.saving_for),
@@ -43,7 +48,7 @@ fun SavingsDialogInputs(
                 newIdeaDialogViewModel.setLabel(it)
             }
         }
-        if(newIdeaDialogState.warningMessage is NewIdeaDialogErrors.IncorrectSavingLabel){
+        if (newIdeaDialogState.warningMessage is NewIdeaDialogErrors.IncorrectSavingLabel) {
             Text(
                 text = stringResource(id = NewIdeaDialogErrors.IncorrectSavingLabel.error),
                 style = MaterialTheme.typography.labelSmall.copy(color = MaterialTheme.colorScheme.error),
@@ -72,7 +77,7 @@ fun SavingsDialogInputs(
         Spacer(modifier = Modifier.width(12.dp))
         Button(onClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(true) }) {
             Text(
-                text = if (newIdeaDialogState.endDate != null) formatDateWithYear(newIdeaDialogState.endDate) else stringResource(
+                text = if (newIdeaDialogState.endDate != null) formatDateWithYear(newIdeaDialogState.endDate.toLocalDateTime(currentTimeZone)) else stringResource(
                     id = R.string.date
                 ),
                 style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center

@@ -9,8 +9,8 @@ abstract class Idea {
     abstract val id: Int
     abstract val goal: Float
     abstract val completed: Boolean
-    abstract val startDate: Date
-    abstract val endDate: Date?
+    abstract val startDate: Long
+    abstract val endDate: Long?
 }
 
 fun Idea.createCompletedInstance(): Idea {

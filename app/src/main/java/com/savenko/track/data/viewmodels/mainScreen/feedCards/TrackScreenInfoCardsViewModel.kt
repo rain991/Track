@@ -3,9 +3,7 @@ package com.savenko.track.data.viewmodels.mainScreen.feedCards
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
-import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
+import com.savenko.track.data.other.converters.dates.startOfMonth
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
@@ -16,7 +14,8 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.time.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlin.time.Clock
 
 /**
  * Provides state for [TrackScreenInfoCards](com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.mainScreenInfoCards.TrackScreenInfoCards)
@@ -38,9 +37,9 @@ class TrackScreenInfoCardsViewModel(
     val cardsState = _cardsState.asStateFlow()
 
     suspend fun initializeValues() {
-        val todayDate = convertLocalDateToDate(LocalDate.now())
-        val startOfMonthDate = getStartOfMonthDate(todayDate)
-        val endOfMonthDate = getEndOfMonthDate(todayDate)
+        val currentTimeZone = TimeZone.currentSystemDefault()
+        val currentMoment = Clock.System.now()
+        val startOfMonth = startOfMonth(currentMoment, currentTimeZone)
         viewModelScope.launch(start = CoroutineStart.DEFAULT) {
             launch {
                 expensesCoreRepositoryImpl.getCurrentMonthSumOfExpense().collect {
@@ -54,8 +53,8 @@ class TrackScreenInfoCardsViewModel(
             }
             launch {
                 expensesCoreRepositoryImpl.getCountOfExpensesInSpan(
-                    startDate = startOfMonthDate,
-                    endDate = endOfMonthDate
+                    startDate = startOfMonth,
+                    endDate = currentMoment
                 ).collect {
                     setCurrentMonthExpensesCount(it)
                 }
@@ -63,16 +62,16 @@ class TrackScreenInfoCardsViewModel(
             }
             launch {
                 incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
-                    startOfSpan = startOfMonthDate,
-                    endOfSpan = endOfMonthDate
+                    startOfSpan = startOfMonth,
+                    endOfSpan = currentMoment
                 ).collect {
                     setCurrentMonthIncomesSum(it)
                 }
             }
             launch {
                 incomeCoreRepositoryImpl.getCountOfIncomesInSpan(
-                    startDate = startOfMonthDate,
-                    endDate = endOfMonthDate
+                    startDate = startOfMonth,
+                    endDate = currentMoment
                 ).collect {
                     setCurrentMonthIncomesCount(it)
                 }

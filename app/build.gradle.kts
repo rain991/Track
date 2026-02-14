@@ -89,6 +89,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.splashscreen)
     implementation(libs.androidx.work.runtime)
+    implementation(libs.kotlinx.datetime)
 
     ksp(libs.androidx.room.compiler)
 

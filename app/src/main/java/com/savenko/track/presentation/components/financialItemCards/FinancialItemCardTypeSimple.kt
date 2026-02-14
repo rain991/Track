@@ -57,17 +57,20 @@ import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE
-import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
+import com.savenko.track.data.other.converters.dates.toLocalDate
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.presentation.other.colors.parseColor
+import com.savenko.track.presentation.other.formatDateWithoutYear
+import com.savenko.track.presentation.other.getMonthResID
 import com.savenko.track.presentation.other.uiText.DatabaseStringResourcesProvider
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.compose.koinInject
-import java.util.Calendar
-import java.util.Locale
+import kotlin.time.Instant
 
 /**
  *  FinancialItemCardTypeSimple used in expenses screen for single expense or income entity in lazy column
@@ -84,10 +87,10 @@ fun FinancialItemCardTypeSimple(
     onClick: () -> Unit,
     onDeleteFinancial: (FinancialEntity) -> Unit
 ) {
-    val locale = Locale.getDefault()
     val density = LocalDensity.current
     val categoryColor = parseColor(categoryEntity.colorId)
     val databaseStringResourcesProvider = koinInject<DatabaseStringResourcesProvider>()
+    val currentTimeZone = TimeZone.currentSystemDefault()
     Card(
         modifier = Modifier
             .fillMaxWidth()
@@ -173,7 +176,11 @@ fun FinancialItemCardTypeSimple(
                         }
                     ) {
                         val resultedNotion = if (!expanded) {
-                            formatDateWithoutYear(financialEntity.date)
+                            formatDateWithoutYear(
+                                Instant.fromEpochMilliseconds(financialEntity.date).toLocalDateTime(
+                                    currentTimeZone
+                                )
+                            )
                         } else {
                             if (preferableCurrency.type == CurrencyTypes.FIAT) {
                                 FIAT_DECIMAL_FORMAT.format(financialEntityMonthSummary)
@@ -187,11 +194,11 @@ fun FinancialItemCardTypeSimple(
                             transitionSpec = {
                                 slideInHorizontally { it } togetherWith fadeOut()
                             }) { notion ->
-                            val calendar = Calendar.getInstance().apply {
-                                time = financialEntity.date
-                            }
-                            val monthName =
-                                calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
+                            val monthResId = getMonthResID(
+                                localDate = Instant.fromEpochMilliseconds(financialEntity.date)
+                                    .toLocalDate(currentTimeZone)
+                            )
+                            val month = stringResource(monthResId)
                             Text(
                                 text = if (!expanded) {
                                     buildAnnotatedString {
@@ -215,7 +222,7 @@ fun FinancialItemCardTypeSimple(
                                                 stringResource(
                                                     R.string.specified_category_fin_item_card,
                                                     categoryName,
-                                                    monthName ?: ""
+                                                    month
                                                 )
                                             )
                                         }
@@ -330,7 +337,8 @@ private fun ExpenseValueCard(
     }
     LaunchedEffect(key1 = Unit) {
         currencyType =
-            currenciesRatesHandler.getCurrencyByTicker(financialEntity.currencyTicker)?.type ?: CurrencyTypes.OTHER
+            currenciesRatesHandler.getCurrencyByTicker(financialEntity.currencyTicker)?.type
+                ?: CurrencyTypes.OTHER
     }
     Card(
         elevation = CardDefaults.cardElevation(defaultElevation = 22.dp, focusedElevation = 14.dp),
@@ -406,7 +414,10 @@ private fun NoteCard(expenseItem: FinancialEntity, cardColor: Color) {
                         R.string.note_exp_list,
                         expenseItem.note
                     )
-                } else expenseItem.note.removeRange(FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE, expenseItem.note.length),
+                } else expenseItem.note.removeRange(
+                    FINANCIAL_CARD_NOTE_LENGTH_CONCATENATE,
+                    expenseItem.note.length
+                ),
                 style = MaterialTheme.typography.bodyMedium, textAlign = TextAlign.Center
             )
         }

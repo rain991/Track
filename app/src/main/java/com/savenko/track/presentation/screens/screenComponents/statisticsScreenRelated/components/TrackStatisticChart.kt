@@ -75,19 +75,19 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
     val chartData = chartState.value.chartData
     val dateTimeFormatter = remember { DateTimeFormatter.ofPattern("d MMM") }
     val monthFormatter = remember { DateTimeFormatter.ofPattern("MMM") }
-    val formatter = remember {
-        CartesianValueFormatter { x, chartValues, _ ->
-            val xToDateMap = chartValues.model.extraStore[xToDateMapKey]
-            val date = xToDateMap[x] ?: LocalDate.ofEpochDay(x.toLong())
-            date.format(
-                if (chartState.value.timePeriod is StatisticChartTimePeriod.Year && chartData.keys.hasDateInDifferentMonth()) {
-                    monthFormatter
-                } else {
-                    dateTimeFormatter
-                }
-            )
-        }
-    }
+//    val formatter = remember {
+//        CartesianValueFormatter { x, chartValues, _ ->
+//            val xToDateMap = chartValues.model.extraStore[xToDateMapKey]
+//            val date = xToDateMap[x] ?: LocalDate.ofEpochDay(x.toLong())
+//            date.format(
+//                if (chartState.value.timePeriod is StatisticChartTimePeriod.Year && chartData.keys.hasDateInDifferentMonth()) {
+//                    monthFormatter
+//                } else {
+//                    dateTimeFormatter
+//                }
+//            )
+//        }
+//    }
     Card(
         modifier = modifier,
         elevation = CardDefaults.cardElevation(defaultElevation = 8.dp, focusedElevation = 8.dp)
@@ -184,7 +184,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                             ),
                             bottomAxis = rememberBottomAxis(
                                 guideline = null,
-                                valueFormatter = formatter,
+                                //valueFormatter = formatter,
                                 itemPlacer = AxisItemPlacer.Horizontal.default(),
                                 tick = null,
                                 label = null
@@ -212,7 +212,7 @@ fun TrackStatisticChart(modifier: Modifier = Modifier, chartViewModel: Statistic
                         chartData.entries.sortedBy { it.key }.forEachIndexed { index, entry ->
                             if (index % valuesStep == 0 || index == 0 || index == chartData.size - 1) {
                                 Text(
-                                    text = dateTimeFormatter.format(entry.key),
+                                    text = "",//dateTimeFormatter.format(entry.key),
                                     style = MaterialTheme.typography.bodySmall, maxLines = 1,
                                     overflow = TextOverflow.Ellipsis
                                 )

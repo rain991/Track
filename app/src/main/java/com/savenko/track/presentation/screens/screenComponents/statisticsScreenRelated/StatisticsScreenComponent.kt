@@ -1,6 +1,5 @@
 package com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated
 
-import android.util.Range
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.fadeIn
@@ -18,8 +17,6 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticInfoCardsViewModel
@@ -27,7 +24,9 @@ import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.presentation.components.bottomSheet.BottomSheet
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.DateRangePickerDialog
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
-import com.savenko.track.presentation.other.composableTypes.provideDateRange
+import com.savenko.track.presentation.other.composableTypes.provideMonthlyDateRange
+import com.savenko.track.presentation.other.composableTypes.provideWeeklyDateRange
+import com.savenko.track.presentation.other.composableTypes.provideYearlyDateRange
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticChart
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticChartOptionsSelector
 import com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticLazyColumn
@@ -53,7 +52,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
         coroutineScope.launch {
             chartViewModel.setTimePeriod(StatisticChartTimePeriod.Other())
         }
-        chartViewModel.setSpecifiedTimePeriod(Range(convertDateToLocalDate(startDate), convertDateToLocalDate(endDate)))
+        chartViewModel.setSpecifiedTimePeriod(startDate..endDate)
         chartViewModel.setTimePeriodDialogVisibility(false)
     }
     Column(
@@ -73,33 +72,26 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
                 modifier = Modifier
                     .fillMaxWidth()
                     .width(300.dp)
-                    .padding(start = 8.dp, end = 8.dp, bottom = 4.dp), chartViewModel = chartViewModel
+                    .padding(start = 8.dp, end = 8.dp, bottom = 4.dp),
+                chartViewModel = chartViewModel
             )
         }
         val dateRange = when (state.value.timePeriod) {
             is StatisticChartTimePeriod.Week -> {
-                StatisticChartTimePeriod.Week().provideDateRange()
+                provideWeeklyDateRange()
             }
 
             is StatisticChartTimePeriod.Month -> {
-                StatisticChartTimePeriod.Month().provideDateRange()
-
+                provideMonthlyDateRange()
             }
 
             is StatisticChartTimePeriod.Year -> {
-                StatisticChartTimePeriod.Year().provideDateRange()
-
+                provideYearlyDateRange()
             }
 
             is StatisticChartTimePeriod.Other -> {
                 val specifiedTimePeriod = state.value.specifiedTimePeriod
-                if (specifiedTimePeriod != null) {
-                    val startOfSpan = convertLocalDateToDate(specifiedTimePeriod.lower)
-                    val endOfSpan = convertLocalDateToDate(specifiedTimePeriod.upper)
-                    Range(startOfSpan, endOfSpan)
-                } else {
-                    StatisticChartTimePeriod.Month().provideDateRange()
-                }
+                specifiedTimePeriod ?: provideWeeklyDateRange()
             }
         }
         TrackStatisticsInfoCards(
@@ -108,7 +100,10 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             financialEntities = state.value.financialEntities,
             dateRange = dateRange
         )
-        TrackStatisticChartOptionsSelector(modifier = Modifier.padding(8.dp), chartViewModel = chartViewModel)
+        TrackStatisticChartOptionsSelector(
+            modifier = Modifier.padding(8.dp),
+            chartViewModel = chartViewModel
+        )
         TrackStatisticLazyColumn(
             modifier = Modifier
                 .fillMaxWidth()

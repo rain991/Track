@@ -1,6 +1,5 @@
 package com.savenko.track.data.viewmodels.statistics
 
-import android.util.Range
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.CURRENCY_DEFAULT
@@ -14,7 +13,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.Date
+import kotlin.time.Instant
 
 /**
  * Handles data for [TrackStatisticsInfoCards](com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticsInfoCards)
@@ -26,12 +25,12 @@ class StatisticInfoCardsViewModel(
     private val _infoCardsState = MutableStateFlow(StatisticInfoCardsState(preferableCurrency = CURRENCY_DEFAULT))
     val infoCardsState = _infoCardsState.asStateFlow()
 
-    suspend fun initializeValues(specifiedTimePeriod: Range<Date>) {
+    fun initializeValues(specifiedTimePeriod: ClosedRange<Instant>) {
         viewModelScope.launch(Dispatchers.IO) {
             val expensesDeferred = async {
                 getPeriodSummaryUseCase.getPeriodSummary(
-                    periodStartMillis = specifiedTimePeriod.lower.time,
-                    periodEndMillis = specifiedTimePeriod.upper.time,
+                    periodStartMillis = specifiedTimePeriod.start.toEpochMilliseconds(),
+                    periodEndMillis = specifiedTimePeriod.endInclusive.toEpochMilliseconds(),
                     financialTypes = FinancialTypes.Expense
                 ).collect { expensesNotion ->
                     _infoCardsState.update {
@@ -45,8 +44,8 @@ class StatisticInfoCardsViewModel(
             }
             val incomesDeferred = async {
                 getPeriodSummaryUseCase.getPeriodSummary(
-                    periodStartMillis = specifiedTimePeriod.lower.time,
-                    periodEndMillis = specifiedTimePeriod.upper.time,
+                    periodStartMillis = specifiedTimePeriod.start.toEpochMilliseconds(),
+                    periodEndMillis = specifiedTimePeriod.endInclusive.toEpochMilliseconds(),
                     financialTypes = FinancialTypes.Income
                 ).collect { incomesNotion ->
                     _infoCardsState.update {

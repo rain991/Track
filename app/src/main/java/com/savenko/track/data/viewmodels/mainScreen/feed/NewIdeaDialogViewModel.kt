@@ -2,8 +2,7 @@ package com.savenko.track.data.viewmodels.mainScreen.feed
 
 import androidx.lifecycle.ViewModel
 import com.savenko.track.data.other.constants.EXPENSE_LIMIT_MAX_CATEGORIES_SELECTED
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
+import com.savenko.track.data.other.converters.dates.startOfMonth
 import com.savenko.track.domain.models.abstractLayer.Idea
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.idea.ExpenseLimits
@@ -16,8 +15,9 @@ import com.savenko.track.presentation.other.composableTypes.options.IdeaSelector
 import com.savenko.track.presentation.screens.states.core.common.NewIdeaDialogState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import java.time.LocalDate
-import java.util.Date
+import kotlinx.datetime.TimeZone
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 /**
  * Handles state of [AddToSavingDialog]
@@ -114,7 +114,7 @@ class NewIdeaDialogViewModel(
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(endDate = null)
     }
 
-    fun setEndDate(value: Date?) {
+    fun setEndDate(value: Instant?) {
         _newIdeaDialogState.value = newIdeaDialogState.value.copy(endDate = value)
     }
 
@@ -156,8 +156,8 @@ class NewIdeaDialogViewModel(
                 Savings(
                     goal = newIdeaDialogState.value.goal,
                     completed = false,
-                    startDate = convertLocalDateToDate(LocalDate.now()),
-                    endDate = newIdeaDialogState.value.endDate,
+                    startDate = Clock.System.now().toEpochMilliseconds(),
+                    endDate = newIdeaDialogState.value.endDate?.toEpochMilliseconds(),
                     label = newIdeaDialogState.value.label ?: "",
                     value = 0f
                 )
@@ -178,8 +178,8 @@ class NewIdeaDialogViewModel(
                 IncomePlans(
                     goal = newIdeaDialogState.value.goal,
                     completed = false,
-                    startDate = convertLocalDateToDate(LocalDate.now()),
-                    endDate = newIdeaDialogState.value.endDate
+                    startDate = Clock.System.now().toEpochMilliseconds(),
+                    endDate = newIdeaDialogState.value.endDate?.toEpochMilliseconds()
                 )
             )
         } else {
@@ -189,17 +189,19 @@ class NewIdeaDialogViewModel(
     }
 
     private suspend fun addNewExpenseLimit() {
+        val currentTimeZone = TimeZone.currentSystemDefault()
+        val currentMoment = Clock.System.now()
         if (newIdeaDialogState.value.relatedToAllCategories != null && newIdeaDialogState.value.goal > 0 && (newIdeaDialogState.value.eachMonth != null || newIdeaDialogState.value.endDate != null) && (newIdeaDialogState.value.relatedToAllCategories == true || newIdeaDialogState.value.listOfSelectedCategories.isNotEmpty())) {
             addNewIdea(
                 ExpenseLimits(
                     goal = newIdeaDialogState.value.goal,
                     completed = false,
                     startDate = if (newIdeaDialogState.value.eachMonth == true) {
-                        getStartOfMonthDate(convertLocalDateToDate(LocalDate.now()))
+                        startOfMonth(currentMoment, currentTimeZone).toEpochMilliseconds()
                     } else {
-                        convertLocalDateToDate(LocalDate.now())
+                        currentMoment.toEpochMilliseconds()
                     },
-                    endDate = newIdeaDialogState.value.endDate,
+                    endDate = newIdeaDialogState.value.endDate?.toEpochMilliseconds(),
                     isEachMonth = newIdeaDialogState.value.eachMonth,
                     isRelatedToAllCategories = newIdeaDialogState.value.relatedToAllCategories!!,
                     firstRelatedCategoryId = newIdeaDialogState.value.listOfSelectedCategories.getOrNull(

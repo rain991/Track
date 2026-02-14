@@ -1,23 +1,35 @@
 package com.savenko.track.presentation.other
 
 import com.savenko.track.R
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.Month
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
 fun getMonthResID(localDate: LocalDate): Int {
-    val monthResId = when (localDate.monthValue) {
-        1 -> R.string.january
-        2 -> R.string.february
-        3 -> R.string.march
-        4 -> R.string.april
-        5 -> R.string.may
-        6 -> R.string.june
-        7 -> R.string.july
-        8 -> R.string.august
-        9 -> R.string.september
-        10 -> R.string.october
-        11 -> R.string.november
-        12 -> R.string.december
-        else -> R.string.unknown_month
+    return when (localDate.month) {
+        Month.JANUARY -> R.string.january
+        Month.FEBRUARY -> R.string.february
+        Month.MARCH -> R.string.march
+        Month.APRIL -> R.string.april
+        Month.MAY -> R.string.may
+        Month.JUNE -> R.string.june
+        Month.JULY -> R.string.july
+        Month.AUGUST -> R.string.august
+        Month.SEPTEMBER -> R.string.september
+        Month.OCTOBER -> R.string.october
+        Month.NOVEMBER -> R.string.november
+        Month.DECEMBER -> R.string.december
     }
-    return monthResId
+}
+
+fun getMonthResID(epochDays: Long): Int {
+    return getMonthResID(LocalDate.fromEpochDays(epochDays))
+}
+
+fun getMonthResID(epochSeconds: Long, timeZone: TimeZone): Int {
+    val instant = Instant.fromEpochSeconds(epochSeconds)
+    val localDate = instant.toLocalDateTime(timeZone).date
+    return getMonthResID(localDate)
 }

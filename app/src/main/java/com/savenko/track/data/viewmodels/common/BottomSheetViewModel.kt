@@ -7,7 +7,7 @@ import androidx.lifecycle.viewModelScope
 import com.savenko.track.data.other.constants.EXPENSE_CATEGORY_GROUPING_ID_DEFAULT
 import com.savenko.track.data.other.constants.GROUPING_CATEGORY_ID_DEFAULT
 import com.savenko.track.data.other.constants.INCOME_CATEGORY_GROUPING_ID_DEFAULT
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
+import com.savenko.track.data.other.converters.dates.toLocalDate
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.currency.Currency
@@ -29,7 +29,12 @@ import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toInstant
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.days
 
 /**
  * Provides state for [BottomSheet](com.savenko.track.presentation.components.bottomSheet.BottomSheet)
@@ -231,18 +236,23 @@ class BottomSheetViewModel(
      *
      * @param date
      */
-    fun setDatePicked(date: LocalDate?) {
+    fun setDatePicked(date: LocalDateTime?) {
+        val currentTimeZone = TimeZone.currentSystemDefault()
         _bottomSheetViewState.update {
             bottomSheetViewState.value.copy(
                 datePicked = date,
-                todayButtonActiveState = (date == LocalDate.now()),
-                yesterdayButtonActiveState = (date == (LocalDate.now().minusDays(1)))
+                todayButtonActiveState = (date?.day == it.datePicked?.day),
+                yesterdayButtonActiveState = (date?.day == (Clock.System.now() - 1.days).toLocalDate(currentTimeZone).day)
             )
         }
     }
 
     fun isDateInOtherSpan(localDate: LocalDate): Boolean {
-        return (localDate != LocalDate.now() && localDate != LocalDate.now().minusDays(1))
+        val instant = Clock.System.now()
+        val timeZone = TimeZone.currentSystemDefault()
+        val todayLocalDate = instant.toLocalDate(timeZone)
+        val yesterdayLocalDate = (instant - 1.days).toLocalDate(timeZone)
+        return (localDate.day != todayLocalDate.day  && localDate.day != yesterdayLocalDate.day)
     }
 
     fun changeSelectedCurrency() {
@@ -262,6 +272,7 @@ class BottomSheetViewModel(
         groupingExpenseCategoryId: Int,
         selectedCurrency: Currency
     ) {
+        val systemTimeZone = TimeZone.currentSystemDefault()
         val expenseCategoryPickedId =
             if (nonCategorisedExpenses && bottomSheetViewState.value.categoryPicked == null && groupingExpenseCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
                 groupingExpenseCategoryId
@@ -275,7 +286,7 @@ class BottomSheetViewModel(
                 expenseCategoryPickedId
             },
             note = bottomSheetViewState.value.note,
-            date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
+            date = bottomSheetViewState.value.datePicked?.toInstant(systemTimeZone)?.toEpochMilliseconds()!!,
             value = bottomSheetViewState.value.inputValue!!,
             currencyTicker = selectedCurrency.ticker
         )
@@ -287,6 +298,7 @@ class BottomSheetViewModel(
         groupingIncomeCategoryId: Int,
         selectedCurrency: Currency
     ) {
+        val systemTimeZone = TimeZone.currentSystemDefault()
         val incomeCategoryPickedId =
             if (nonCategorisedIncomes && bottomSheetViewState.value.categoryPicked == null && groupingIncomeCategoryId != GROUPING_CATEGORY_ID_DEFAULT) {
                 groupingIncomeCategoryId
@@ -300,7 +312,7 @@ class BottomSheetViewModel(
                 incomeCategoryPickedId
             },
             note = bottomSheetViewState.value.note,
-            date = convertLocalDateToDate(bottomSheetViewState.value.datePicked!!),
+            date = bottomSheetViewState.value.datePicked?.toInstant(systemTimeZone)?.toEpochMilliseconds()!!,
             value = bottomSheetViewState.value.inputValue!!,
             currencyTicker = selectedCurrency.ticker
         )

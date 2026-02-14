@@ -1,6 +1,5 @@
 package com.savenko.track.data.core
 
-import android.util.Range
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.expenses.ExpenseCategory
@@ -11,7 +10,7 @@ import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
 import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.emptyFlow
-import java.util.Date
+import kotlin.time.Instant
 
 /**
  * Use to summarize info about financials.
@@ -23,23 +22,23 @@ class FinancialCardNotesProvider(
     fun requestCountNotionForFinancialCard(
         financialEntity: FinancialEntity,
         financialCategory: CategoryEntity,
-        timeSpan: Range<Date>
+        timeSpan: ClosedRange<Instant>
     ): Flow<Int> {
-        val startDate = timeSpan.lower
-        val endDate = timeSpan.upper
+        val startDate = timeSpan.start.toEpochMilliseconds()
+        val endDate = timeSpan.endInclusive.toEpochMilliseconds()
         return when {
             financialEntity is ExpenseItem && financialCategory is ExpenseCategory -> {
                 expenseCoreRepositoryImpl.getCountOfExpensesInSpanByCategoriesIds(
-                    startDate = startDate,
-                    endDate = endDate,
+                    startDate = Instant.fromEpochMilliseconds(startDate),
+                    endDate = Instant.fromEpochMilliseconds(endDate),
                     categoriesIds = listOf(financialCategory.categoryId)
                 )
             }
 
             financialEntity is IncomeItem && financialCategory is IncomeCategory -> {
                 incomeCoreRepositoryImpl.getCountOfIncomesInSpanByCategoriesIds(
-                    startDate = startDate,
-                    endDate = endDate,
+                    startDate = Instant.fromEpochMilliseconds(startDate),
+                    endDate = Instant.fromEpochMilliseconds(endDate),
                     categoriesIds = listOf(financialCategory.categoryId)
                 )
             }
@@ -52,15 +51,15 @@ class FinancialCardNotesProvider(
     fun requestValueSummaryNotionForFinancialCard(
         financialEntity: FinancialEntity,
         financialCategory: CategoryEntity,
-        timeSpan: Range<Date>
+        timeSpan: ClosedRange<Instant>
     ): Flow<Float> {
-        val startDate = timeSpan.lower
-        val endDate = timeSpan.upper
+        val startDate = timeSpan.start
+        val endDate = timeSpan.endInclusive
         return when{
             financialEntity is ExpenseItem && financialCategory is ExpenseCategory -> {
                 expenseCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
-                    start = startDate.time,
-                    end = endDate.time,
+                    start = Instant.fromEpochMilliseconds(startDate.toEpochMilliseconds()),
+                    end = Instant.fromEpochMilliseconds(endDate.toEpochMilliseconds()),
                     categoriesIds = listOf(financialCategory.categoryId)
                 )
             }

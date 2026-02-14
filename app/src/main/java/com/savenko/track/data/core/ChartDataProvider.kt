@@ -1,23 +1,22 @@
 package com.savenko.track.data.core
 
-import android.util.Range
-import com.savenko.track.data.other.converters.dates.areDatesSame
-import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
-import com.savenko.track.data.other.converters.dates.getStartOfWeekDate
-import com.savenko.track.data.other.converters.dates.getStartOfYearDate
+import com.savenko.track.data.other.converters.dates.isSameDay
+import com.savenko.track.data.other.converters.dates.toLocalDate
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.expenses.ExpensesListRepository
 import com.savenko.track.domain.repository.incomes.IncomeListRepository
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
-import com.savenko.track.presentation.other.composableTypes.provideDateRange
+import com.savenko.track.presentation.other.composableTypes.provideMonthlyDateRange
+import com.savenko.track.presentation.other.composableTypes.provideWeeklyDateRange
+import com.savenko.track.presentation.other.composableTypes.provideYearlyDateRange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
-import java.time.LocalDate
-import java.util.Date
+import kotlinx.coroutines.flow.flow
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlin.time.Instant
 
 /**
  * Transforms data to understandable for Vico chart format
@@ -36,34 +35,32 @@ class ChartDataProvider(
      */
     fun requestIncomeDataForVicoChart(
         statisticChartTimePeriod: StatisticChartTimePeriod,
-        otherTimeSpan: Range<LocalDate>? = null
+        otherTimeSpan: ClosedRange<Instant>? = null
     ): Flow<Map<LocalDate, Float>> = channelFlow {
-        when (statisticChartTimePeriod) {
+        val range = when (statisticChartTimePeriod) {
             is StatisticChartTimePeriod.Week -> {
-                val range = StatisticChartTimePeriod.Week().provideDateRange()
-                incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(
-                    range.lower.time,
-                    range.upper.time
-                ).collect { listOfIncomes ->
-                    send(summarizeFinancialValuesByDays(listOfIncomes))
-                }
+                provideWeeklyDateRange()
             }
 
             is StatisticChartTimePeriod.Month -> {
-                val range = StatisticChartTimePeriod.Month().provideDateRange()
-                incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(
-                    range.lower.time,
-                    range.upper.time
-                ).collect { listOfIncomes ->
-                    send(summarizeFinancialValuesByDays(listOfIncomes))
-                }
+                provideMonthlyDateRange()
             }
 
             is StatisticChartTimePeriod.Year -> {
-                val range = StatisticChartTimePeriod.Year().provideDateRange()
+                provideYearlyDateRange()
+            }
+
+            else -> {
+                // Month is default
+                provideMonthlyDateRange()
+            }
+        }
+
+        when (statisticChartTimePeriod) {
+            is StatisticChartTimePeriod.Week, is StatisticChartTimePeriod.Month, is StatisticChartTimePeriod.Year -> {
                 incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(
-                    range.lower.time,
-                    range.upper.time
+                    range.start.toEpochMilliseconds(),
+                    range.endInclusive.toEpochMilliseconds()
                 ).collect { listOfIncomes ->
                     send(summarizeFinancialValuesByDays(listOfIncomes))
                 }
@@ -71,11 +68,9 @@ class ChartDataProvider(
 
             is StatisticChartTimePeriod.Other -> {
                 if (otherTimeSpan != null) {
-                    val startOfSpan = convertLocalDateToDate(otherTimeSpan.lower)
-                    val endOfSpan = convertLocalDateToDate(otherTimeSpan.upper)
                     incomesListRepositoryImpl.getIncomesInTimeSpanDateDesc(
-                        startOfSpan.time,
-                        endOfSpan.time
+                        otherTimeSpan.start.toEpochMilliseconds(),
+                        otherTimeSpan.endInclusive.toEpochMilliseconds()
                     ).collect { listOfIncomes ->
                         send(summarizeFinancialValuesByDays(listOfIncomes))
                     }
@@ -92,51 +87,44 @@ class ChartDataProvider(
      */
     fun requestExpenseDataForVicoChart(
         statisticChartTimePeriod: StatisticChartTimePeriod,
-        otherTimeSpan: Range<LocalDate>? = null
-    ) = channelFlow {
-        when (statisticChartTimePeriod) {
+        otherTimeSpan: ClosedRange<Instant>? = null
+    ) = flow {
+        val range = when (statisticChartTimePeriod) {
             is StatisticChartTimePeriod.Week -> {
-                val currentDate = Date(System.currentTimeMillis())
-                val startOfSpan = getStartOfWeekDate(currentDate)
-                expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(
-                    startOfSpan.time,
-                    currentDate.time
-                ).collect { listOfExpenses ->
-                    send(summarizeFinancialValuesByDays(listOfExpenses))
-                }
+                provideWeeklyDateRange()
             }
 
             is StatisticChartTimePeriod.Month -> {
-                val currentDate = Date(System.currentTimeMillis())
-                val startOfSpan = getStartOfMonthDate(currentDate)
-                expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(
-                    startOfSpan.time,
-                    currentDate.time
-                ).collect { listOfExpenses ->
-                    send(summarizeFinancialValuesByDays(listOfExpenses))
-                }
+                provideMonthlyDateRange()
             }
 
             is StatisticChartTimePeriod.Year -> {
-                val currentDate = Date(System.currentTimeMillis())
-                val startOfSpan = getStartOfYearDate(currentDate)
+                provideYearlyDateRange()
+            }
+
+            else -> {
+                // Month is default
+                provideMonthlyDateRange()
+            }
+        }
+
+        when (statisticChartTimePeriod) {
+            is StatisticChartTimePeriod.Week, is StatisticChartTimePeriod.Month, is StatisticChartTimePeriod.Year -> {
                 expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(
-                    startOfSpan.time,
-                    currentDate.time
-                ).collect { listOfIncomes ->
-                        send(summarizeFinancialValuesByDays(listOfIncomes))
-                    }
+                    range.start.toEpochMilliseconds(),
+                    range.endInclusive.toEpochMilliseconds()
+                ).collect { listOfExpenses ->
+                    emit(summarizeFinancialValuesByDays(listOfExpenses))
+                }
             }
 
             is StatisticChartTimePeriod.Other -> {
                 if (otherTimeSpan != null) {
-                    val startOfSpan = convertLocalDateToDate(otherTimeSpan.lower)
-                    val endOfSpan = convertLocalDateToDate(otherTimeSpan.upper)
                     expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(
-                        startOfSpan.time,
-                        endOfSpan.time
+                        otherTimeSpan.start.toEpochMilliseconds(),
+                        otherTimeSpan.endInclusive.toEpochMilliseconds()
                     ).collect { listOfIncomes ->
-                        send(summarizeFinancialValuesByDays(listOfIncomes))
+                        emit(summarizeFinancialValuesByDays(listOfIncomes))
                     }
                 }
             }
@@ -154,8 +142,10 @@ class ChartDataProvider(
         val resultMap = mutableMapOf<LocalDate, Float>()
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         listOfFinancialEntity.forEach { currentFinancialEntity ->
-            val currentFinEntityDate = convertDateToLocalDate(currentFinancialEntity.date)
-            if (!resultMap.containsKey(currentFinEntityDate)) {
+            val currentFinancialEntityInstant =
+                Instant.fromEpochMilliseconds(currentFinancialEntity.date)
+            val currentTimeZone = TimeZone.currentSystemDefault()
+            if (!resultMap.containsKey(currentFinancialEntityInstant.toLocalDate(currentTimeZone))) {
                 var daySummary =
                     if (currentFinancialEntity.currencyTicker == preferableCurrency.ticker) {
                         currentFinancialEntity.value
@@ -164,10 +154,7 @@ class ChartDataProvider(
                     }
                 val listOfFinItemsWithSameDate = mutableListOf<FinancialEntity>()
                 listOfFinItemsWithSameDate.addAll(listOfFinancialEntity.filter {
-                    areDatesSame(
-                        currentFinancialEntity.date,
-                        it.date
-                    ) && it != currentFinancialEntity
+                    isSameDay(a = currentFinancialEntityInstant, b = Instant.fromEpochMilliseconds(it.date), zone = currentTimeZone) && it != currentFinancialEntity
                 })
                 listOfFinItemsWithSameDate.forEach { sameDateFinancialEntities ->
                     daySummary += if (sameDateFinancialEntities.currencyTicker == preferableCurrency.ticker) {
@@ -176,7 +163,7 @@ class ChartDataProvider(
                         currenciesRatesHandler.convertValueToBasicCurrency(sameDateFinancialEntities)
                     }
                 }
-                resultMap[currentFinEntityDate] = daySummary
+                resultMap[currentFinancialEntityInstant.toLocalDate(currentTimeZone)] = daySummary
             }
         }
         return resultMap

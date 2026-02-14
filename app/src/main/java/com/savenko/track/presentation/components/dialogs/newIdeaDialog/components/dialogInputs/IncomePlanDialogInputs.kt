@@ -18,14 +18,17 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.other.converters.dates.formatDateWithYear
+import com.savenko.track.presentation.other.formatDateWithYear
 import com.savenko.track.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
 import com.savenko.track.presentation.screens.states.core.common.NewIdeaDialogState
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
 
 @Composable
 fun IncomePlanDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
+    val currentTimeZone = TimeZone.currentSystemDefault()
     val newIdeaDialogViewModel = koinViewModel<NewIdeaDialogViewModel>()
     Spacer(modifier = Modifier.height(4.dp))
     Row(
@@ -46,7 +49,7 @@ fun IncomePlanDialogInputs(newIdeaDialogState: NewIdeaDialogState) {
         Spacer(modifier = Modifier.width(12.dp))
         Button(onClick = { newIdeaDialogViewModel.setIsDatePickerDialogVisible(true) }) {
             Text(
-                text = if (newIdeaDialogState.endDate != null) formatDateWithYear(newIdeaDialogState.endDate) else stringResource(
+                text = if (newIdeaDialogState.endDate != null) formatDateWithYear(newIdeaDialogState.endDate.toLocalDateTime(currentTimeZone)) else stringResource(
                     id = R.string.date
                 ),
                 style = MaterialTheme.typography.bodySmall, textAlign = TextAlign.Center

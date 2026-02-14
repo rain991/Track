@@ -36,7 +36,7 @@ data class IncomeItem (
     @ColumnInfo(name = "note")
     override val note: String,
     @ColumnInfo(name = "date")
-    override val date: Date,
+    override val date: Long,
     @ColumnInfo(name = "disabled")
     override val disabled: Boolean = false
 ) : FinancialEntity()

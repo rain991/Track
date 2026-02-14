@@ -1,11 +1,12 @@
 package com.savenko.track.presentation.other.composableTypes
 
-import android.util.Range
 import com.savenko.track.R
-import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
-import com.savenko.track.data.other.converters.dates.getStartOfWeekDate
-import com.savenko.track.data.other.converters.dates.getStartOfYearDate
-import java.util.Date
+import com.savenko.track.data.other.converters.dates.startOfMonth
+import com.savenko.track.data.other.converters.dates.startOfWeek
+import com.savenko.track.data.other.converters.dates.startOfYear
+import kotlinx.datetime.TimeZone
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 sealed class StatisticChartTimePeriod(val nameId: Int) {
     class Week : StatisticChartTimePeriod(R.string.week)
@@ -14,20 +15,29 @@ sealed class StatisticChartTimePeriod(val nameId: Int) {
     class Other : StatisticChartTimePeriod(R.string.other)
 }
 
-fun StatisticChartTimePeriod.Week.provideDateRange(): Range<Date> {
-    val endOfRange = Date(System.currentTimeMillis())
-    val startOfRange = getStartOfWeekDate(endOfRange)
-    return Range(startOfRange, endOfRange)
+/**
+ * Provides instances from *start of the week* to the *current moment()*
+ */
+fun provideWeeklyDateRange(): ClosedRange<Instant> {
+    val endOfRange = Clock.System.now()
+    val startOfRange = startOfWeek(endOfRange, TimeZone.currentSystemDefault())
+    return startOfRange..endOfRange
 }
 
-fun StatisticChartTimePeriod.Month.provideDateRange(): Range<Date> {
-    val endOfRange = Date(System.currentTimeMillis())
-    val startOfRange = getStartOfMonthDate(endOfRange)
-    return Range(startOfRange, endOfRange)
+/**
+ * Provides instances from *start of the month* to the *current moment()*
+ */
+fun provideMonthlyDateRange(): ClosedRange<Instant> {
+    val endOfRange = Clock.System.now()
+    val startOfRange = startOfMonth(endOfRange, TimeZone.currentSystemDefault())
+    return startOfRange..endOfRange
 }
 
-fun StatisticChartTimePeriod.Year.provideDateRange(): Range<Date> {
-    val endOfRange = Date(System.currentTimeMillis())
-    val startOfRange = getStartOfYearDate(endOfRange)
-    return Range(startOfRange, endOfRange)
+/**
+ * Provides instances from *start of the year* to the *current moment()*
+ */
+fun provideYearlyDateRange(): ClosedRange<Instant> {
+    val endOfRange = Clock.System.now()
+    val startOfRange = startOfYear(endOfRange, TimeZone.currentSystemDefault())
+    return startOfRange..endOfRange
 }

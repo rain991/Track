@@ -17,7 +17,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import java.util.Date
+import com.savenko.track.data.other.converters.dates.MILLISECONDS_IN_DAY
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -26,27 +28,28 @@ fun DateRangePickerDialog(
     isDialogVisible: Boolean,
     futureDatePicker: Boolean,
     onDecline: () -> Unit,
-    onAccept: (Date, Date) -> Unit,
+    onAccept: (Instant, Instant) -> Unit,
 ) {
-    val dateRangePickerState = rememberDateRangePickerState(selectableDates = object : SelectableDates {
-        override fun isSelectableDate(utcTimeMillis: Long): Boolean {
-            val currentTimeMillis = System.currentTimeMillis()
-            return (futureDatePicker && utcTimeMillis >= currentTimeMillis) || (!futureDatePicker && utcTimeMillis <= currentTimeMillis)
-        }
+    val currentMoment = Clock.System.now()
+    val dateRangePickerState =
+        rememberDateRangePickerState(selectableDates = object : SelectableDates {
+            override fun isSelectableDate(utcTimeMillis: Long): Boolean {
+                return (futureDatePicker && utcTimeMillis >= currentMoment.toEpochMilliseconds()) || (!futureDatePicker && utcTimeMillis <= currentMoment.toEpochMilliseconds())
+            }
 
-        override fun isSelectableYear(year: Int): Boolean {
-            return true
-        }
-    })
+            override fun isSelectableYear(year: Int): Boolean {
+                return true
+            }
+        })
     val startDate by remember {
         derivedStateOf {
             dateRangePickerState.selectedStartDateMillis?.let {
                 dateRangePickerState.selectedStartDateMillis
             } ?: run {
                 if (futureDatePicker) {
-                    System.currentTimeMillis()
+                    currentMoment.toEpochMilliseconds()
                 } else {
-                    System.currentTimeMillis() - 86400000L
+                    currentMoment.toEpochMilliseconds() - MILLISECONDS_IN_DAY
                 }
             }
         }
@@ -57,19 +60,20 @@ fun DateRangePickerDialog(
                 dateRangePickerState.selectedEndDateMillis
             } ?: run {
                 if (futureDatePicker) {
-                    System.currentTimeMillis() + 86400000L
+                    currentMoment.toEpochMilliseconds() + MILLISECONDS_IN_DAY
                 } else {
-                    System.currentTimeMillis()
+                    currentMoment.toEpochMilliseconds()
                 }
             }
         }
     }
     if (isDialogVisible) {
-        DatePickerDialog(modifier = Modifier.padding(8.dp),
+        DatePickerDialog(
+            modifier = Modifier.padding(8.dp),
             onDismissRequest = {
                 onAccept(
-                    Date(startDate),
-                    Date(endDate)
+                    Instant.fromEpochMilliseconds(startDate),
+                    Instant.fromEpochMilliseconds(endDate)
                 )
             },
             dismissButton = {
@@ -82,8 +86,8 @@ fun DateRangePickerDialog(
             confirmButton = {
                 TextButton(onClick = {
                     onAccept(
-                        Date(startDate),
-                        Date(endDate)
+                        Instant.fromEpochMilliseconds(startDate),
+                        Instant.fromEpochMilliseconds(endDate)
                     )
                 }) {
                     Text(text = stringResource(R.string.confirm))
