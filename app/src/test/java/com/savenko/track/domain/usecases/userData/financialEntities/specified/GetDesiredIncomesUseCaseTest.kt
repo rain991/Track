@@ -40,7 +40,7 @@ class GetDesiredIncomesUseCaseTest {
         val upperDate = Date(10000)
 
         val incomeItems = listOf(
-            IncomeItem(currencyTicker = "UAH", value = 200f, note = "", categoryId = 2, date = Date(6000))
+            IncomeItem(currencyTicker = "UAH", value = 200f, note = "", categoryId = 2, date = 6000)
         )
         val expectedFlow: Flow<List<IncomeItem>> = flowOf(incomeItems)
 
@@ -49,7 +49,7 @@ class GetDesiredIncomesUseCaseTest {
         )
 
         val result = getDesiredIncomesUseCase(lowerDate.time, upperDate.time).first()
-        val expected = incomeItems.filter { it.date.time in lowerDate.time..upperDate.time }
+        val expected = incomeItems.filter { it.date in lowerDate.time..upperDate.time }
         assertEquals(expected, result)
         verify(incomeListRepository).getIncomesInTimeSpanDateDesc(lowerDate.time, upperDate.time)
         verifyNoMoreInteractions(incomeListRepository)

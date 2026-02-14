@@ -18,6 +18,7 @@ import org.mockito.kotlin.doReturn
 import org.mockito.kotlin.mock
 import org.mockito.kotlin.verify
 import java.util.Date
+import kotlin.time.Instant
 
 class ExpensesCoreRepositoryImplTest {
     private lateinit var expensesCoreRepositoryImpl: ExpensesCoreRepositoryImpl
@@ -45,8 +46,8 @@ class ExpensesCoreRepositoryImplTest {
                 on { ticker } doReturn "USD"
             }
             val expenses = listOf(
-                ExpenseItem(1, preferableCurrency.ticker, 100f, "USD", date = Date(3000), categoryId = 5),
-                ExpenseItem(2, preferableCurrency.ticker, 340f, "KSK", date = Date(10000), categoryId = 5),
+                ExpenseItem(1, preferableCurrency.ticker, 100f, "USD", date = 3000L, categoryId = 5),
+                ExpenseItem(2, preferableCurrency.ticker, 340f, "KSK", date = 10000L, categoryId = 5),
             )
             `when`(currenciesPreferenceRepositoryImpl.getPreferableCurrency()).thenReturn(flowOf(preferableCurrency))
             `when`(
@@ -54,7 +55,7 @@ class ExpensesCoreRepositoryImplTest {
                     start,
                     end
                 )
-            ).thenReturn(flowOf(expenses.filter { it.date.time in start..end }))
+            ).thenReturn(flowOf(expenses.filter { it.date in start..end }))
             val result = expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(start, end).first()
 
             assertEquals(100f, result)
@@ -70,8 +71,8 @@ class ExpensesCoreRepositoryImplTest {
         val nonPreferableCurrency = mock<Currency> {
             on { ticker } doReturn "UAH"
         }
-        val expense1 = ExpenseItem(1, preferableCurrency.ticker, 100f, "USD", date = Date(3000), categoryId = 5)
-        val expense2 = ExpenseItem(2, nonPreferableCurrency.ticker, 340f, "KSK", date = Date(4000), categoryId = 5)
+        val expense1 = ExpenseItem(1, preferableCurrency.ticker, 100f, "USD", date = 3000L, categoryId = 5)
+        val expense2 = ExpenseItem(2, nonPreferableCurrency.ticker, 340f, "KSK", date = 4000L, categoryId = 5)
         val expenses = listOf(expense1, expense2)
         `when`(currenciesPreferenceRepositoryImpl.getPreferableCurrency()).thenReturn(flowOf(preferableCurrency))
         `when`(
@@ -79,7 +80,7 @@ class ExpensesCoreRepositoryImplTest {
                 start,
                 end
             )
-        ).thenReturn(flowOf(expenses.filter { it.date.time in start..end }))
+        ).thenReturn(flowOf(expenses.filter { it.date in start..end }))
         `when`(currenciesRatesHandler.convertValueToBasicCurrency(expense2)).thenReturn(340f)
         val result = expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(start, end).first()
 
@@ -97,16 +98,16 @@ class ExpensesCoreRepositoryImplTest {
             on { ticker } doReturn "USD"
         }
 
-        val expenseItem1 = ExpenseItem(1, "USD", 100f, "USD", date = Date(3000), categoryId = 1)
-        val expenseItem2 = ExpenseItem(2, "USD", 200f, "USD", date = Date(4000), categoryId = 3)
+        val expenseItem1 = ExpenseItem(1, "USD", 100f, "USD", date = 3000L, categoryId = 1)
+        val expenseItem2 = ExpenseItem(2, "USD", 200f, "USD", date = 4000L, categoryId = 3)
         val expenseItems = listOf(expenseItem1, expenseItem2)
 
         `when`(currenciesPreferenceRepositoryImpl.getPreferableCurrency()).thenReturn(flowOf(preferableCurrency))
         `when`(expenseItemsDao.getExpensesByCategoriesIdInTimeSpan(start, end, categoriesId)).thenReturn(flowOf(expenseItems))
 
         expensesCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
-            start = start,
-            end = end,
+            start = Instant.fromEpochMilliseconds(start),
+            end = Instant.fromEpochMilliseconds(end),
             categoriesIds = categoriesId
         ).first() // Trigger the flow
 

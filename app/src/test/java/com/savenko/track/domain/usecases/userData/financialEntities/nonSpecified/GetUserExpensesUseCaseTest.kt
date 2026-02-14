@@ -31,8 +31,8 @@ class GetUserExpensesUseCaseTest {
     @Test
     fun `use case returns expenses list sorted dates DESC`() = runTest {
         val listOfExpenses = listOf(
-            ExpenseItem(currencyTicker = "USD", value = 55f, note = "", categoryId = 5, date = Date(2000)),
-            ExpenseItem(currencyTicker = "TRY", value = 30f, note = "s", categoryId = 5, date = Date(5000))
+            ExpenseItem(currencyTicker = "USD", value = 55f, note = "", categoryId = 5, date = 2000L),
+            ExpenseItem(currencyTicker = "TRY", value = 30f, note = "s", categoryId = 5, date = 5000L)
         )
         Mockito.`when`(expensesListRepository.getSortedExpensesListDateDesc())
             .thenReturn(flow { emit(listOfExpenses.sortedByDescending { it.date }) })

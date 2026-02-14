@@ -43,10 +43,10 @@ class GetDesiredFinancialEntitiesUseCaseTest {
         val endOfSpan = Date(10000)
 
         val expenseItems = listOf(
-            ExpenseItem(currencyTicker = "USD", value = 100f, note = "", categoryId = 1, date = Date(5000))
+            ExpenseItem(currencyTicker = "USD", value = 100f, note = "", categoryId = 1, date = 5000)
         )
         val incomeItems = listOf(
-            IncomeItem(currencyTicker = "UAH", value = 200f, note = "", categoryId = 2, date = Date(6000))
+            IncomeItem(currencyTicker = "UAH", value = 200f, note = "", categoryId = 2, date = 6000)
         )
 
         `when`(expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time))
@@ -81,7 +81,7 @@ class GetDesiredFinancialEntitiesUseCaseTest {
         val endOfSpan = Date(10000)
 
         val expenseItems = listOf(
-            ExpenseItem(currencyTicker = "USD", value = 100f, note = "", categoryId = 1, date = Date(5000))
+            ExpenseItem(currencyTicker = "USD", value = 100f, note = "", categoryId = 1, date = 5000)
         )
 
         `when`(expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time))
@@ -102,7 +102,7 @@ class GetDesiredFinancialEntitiesUseCaseTest {
         val endOfSpan = Date(10000)
 
         val incomeItems = listOf(
-            IncomeItem(currencyTicker = "USD", value = 200f, note = "", categoryId = 2, date = Date(6000))
+            IncomeItem(currencyTicker = "USD", value = 200f, note = "", categoryId = 2, date = 6000)
         )
 
         `when`(expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(startOfSpan.time, endOfSpan.time))
