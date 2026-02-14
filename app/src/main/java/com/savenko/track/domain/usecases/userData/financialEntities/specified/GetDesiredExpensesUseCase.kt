@@ -5,12 +5,13 @@ import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.domain.repository.expenses.ExpensesListRepository
 import kotlinx.coroutines.flow.Flow
 import java.util.Date
+import kotlin.time.Instant
 
 class GetDesiredExpensesUseCase(private val expensesListRepositoryImpl: ExpensesListRepository) {
-    operator fun invoke(timePeriod: Range<Date>): Flow<List<ExpenseItem>> {
+    operator fun invoke(timePeriod: ClosedRange<Instant>): Flow<List<ExpenseItem>> {
         return expensesListRepositoryImpl.getExpensesListInTimeSpanDateDesc(
-            timePeriod.lower.time,
-            timePeriod.upper.time
+            timePeriod.start.toEpochMilliseconds(),
+            timePeriod.endInclusive.toEpochMilliseconds()
         )
     }
 }

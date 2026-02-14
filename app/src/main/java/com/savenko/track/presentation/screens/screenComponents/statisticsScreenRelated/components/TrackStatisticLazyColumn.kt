@@ -35,7 +35,6 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.other.converters.dates.toDateRange
 import com.savenko.track.data.viewmodels.statistics.StatisticChartViewModel
 import com.savenko.track.data.viewmodels.statistics.StatisticLazyColumnViewModel
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
@@ -43,7 +42,9 @@ import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.expenses.ExpenseItem
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
-import com.savenko.track.presentation.other.composableTypes.provideDateRange
+import com.savenko.track.presentation.other.composableTypes.provideMonthlyDateRange
+import com.savenko.track.presentation.other.composableTypes.provideWeeklyDateRange
+import com.savenko.track.presentation.other.composableTypes.provideYearlyDateRange
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -103,20 +104,20 @@ fun TrackStatisticLazyColumn(
             derivedStateOf {
                 when (state.value.timePeriod) {
                     is StatisticChartTimePeriod.Week -> {
-                        StatisticChartTimePeriod.Week().provideDateRange()
+                        provideWeeklyDateRange()
                     }
 
                     is StatisticChartTimePeriod.Month -> {
-                        StatisticChartTimePeriod.Month().provideDateRange()
+                        provideMonthlyDateRange()
                     }
 
                     is StatisticChartTimePeriod.Year -> {
-                        StatisticChartTimePeriod.Year().provideDateRange()
+                        provideYearlyDateRange()
                     }
 
                     is StatisticChartTimePeriod.Other -> {
-                        state.value.specifiedTimePeriod?.toDateRange()
-                            ?: StatisticChartTimePeriod.Year().provideDateRange()
+                        state.value.specifiedTimePeriod
+                            ?: provideMonthlyDateRange()
                     }
                 }
             }

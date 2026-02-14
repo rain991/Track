@@ -8,13 +8,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.res.stringResource
 import com.savenko.track.presentation.other.getMonthResID
-import java.time.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 @Composable
-fun FinancialDayLabel(localDate: LocalDate, isPastSmallMarkupNeeded: Boolean = true) {
+fun FinancialDayLabel(localDateTime: LocalDateTime, isPastSmallMarkupNeeded: Boolean = true) {
     Row(verticalAlignment = Alignment.Bottom) {
         Text(
-            text = "${localDate.dayOfMonth}",
+            text = "${localDateTime.day}",
             style = MaterialTheme.typography.titleMedium
         )
         if (isPastSmallMarkupNeeded) {
@@ -23,7 +23,7 @@ fun FinancialDayLabel(localDate: LocalDate, isPastSmallMarkupNeeded: Boolean = t
                 style = MaterialTheme.typography.titleLarge
             )
             Text(
-                text = "${localDate.month.value}",
+                text = localDateTime.month.name,
                 style = MaterialTheme.typography.titleLarge
             )
         }
@@ -31,8 +31,8 @@ fun FinancialDayLabel(localDate: LocalDate, isPastSmallMarkupNeeded: Boolean = t
 }
 
 @Composable
-fun FinancialMonthLabel(localDate: LocalDate) {
-    val monthResId = getMonthResID(localDate)
+fun FinancialMonthLabel(localDateTime: LocalDateTime) {
+    val monthResId = getMonthResID(localDateTime.date)
     val month = stringResource(id = monthResId)
     Box {
         Text(
@@ -43,8 +43,8 @@ fun FinancialMonthLabel(localDate: LocalDate) {
 }
 
 @Composable
-fun FinancialYearLabel(localDate: LocalDate) {
-    val year = localDate.year.toString()
+fun FinancialYearLabel(localDateTime: LocalDateTime) {
+    val year = localDateTime.year.toString()
     Box {
         Text(
             text = year,

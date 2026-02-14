@@ -1,6 +1,5 @@
 package com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components
 
-import android.util.Range
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -43,7 +42,7 @@ import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.presentation.components.customComponents.VerticalDashedDivider
 import com.savenko.track.presentation.screens.states.core.statisticScreen.StatisticInfoCardsState
-import java.util.Date
+import kotlin.time.Instant
 
 /**
  * Contains TrackStatisticsInfoCards and additional functions: SingleFinancialContent, BothFinancialContent
@@ -53,7 +52,7 @@ fun TrackStatisticsInfoCards(
     modifier: Modifier,
     statisticInfoCardsViewModel: StatisticInfoCardsViewModel,
     financialEntities: FinancialEntities,
-    dateRange: Range<Date>
+    dateRange: ClosedRange<Instant>
 ) {
     val state = statisticInfoCardsViewModel.infoCardsState.collectAsState()
     val singleFinancialModifier = Modifier.wrapContentHeight()
@@ -98,7 +97,10 @@ fun TrackStatisticsInfoCards(
                 }
 
                 is FinancialEntities.Both -> {
-                    BothFinancialsContent(state = state.value, preferableCurrency = state.value.preferableCurrency)
+                    BothFinancialsContent(
+                        state = state.value,
+                        preferableCurrency = state.value.preferableCurrency
+                    )
                 }
             }
         }

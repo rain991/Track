@@ -3,7 +3,6 @@ package com.savenko.track.domain.usecases.userData.financialEntities.specified
 import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
 import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
-import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetPeriodSummaryUseCase
 import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialCardNotion
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.Flow
@@ -16,7 +15,7 @@ import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.Mockito.mock
 import org.mockito.MockitoAnnotations
-import java.util.Date
+import kotlin.time.Instant
 
 @ExperimentalCoroutinesApi
 class GetPeriodSummaryUseCaseTest {
@@ -29,7 +28,8 @@ class GetPeriodSummaryUseCaseTest {
     @Before
     fun setUp() {
         MockitoAnnotations.initMocks(this)
-        getPeriodSummaryUseCase = GetPeriodSummaryUseCase(incomeCoreRepository, expenseCoreRepository)
+        getPeriodSummaryUseCase =
+            GetPeriodSummaryUseCase(incomeCoreRepository, expenseCoreRepository)
     }
 
     @Test
@@ -40,11 +40,29 @@ class GetPeriodSummaryUseCaseTest {
         val summary = 1500.0f
         val average = 300.0f
 
-        Mockito.`when`(incomeCoreRepository.getCountOfIncomesInSpan(Date(periodStartMillis), Date(periodEndMillis)))
+        Mockito.`when`(
+            incomeCoreRepository.getCountOfIncomesInSpan(
+                Instant.fromEpochMilliseconds(
+                    periodStartMillis
+                ), Instant.fromEpochMilliseconds(periodEndMillis)
+            )
+        )
             .thenReturn(flowOf(count))
-        Mockito.`when`(incomeCoreRepository.getSumOfIncomesInTimeSpan(Date(periodStartMillis), Date(periodEndMillis)))
+        Mockito.`when`(
+            incomeCoreRepository.getSumOfIncomesInTimeSpan(
+                Instant.fromEpochMilliseconds(
+                    periodStartMillis
+                ), Instant.fromEpochMilliseconds(periodEndMillis)
+            )
+        )
             .thenReturn(flowOf(summary))
-        Mockito.`when`(incomeCoreRepository.getAverageInTimeSpan(Date(periodStartMillis), Date(periodEndMillis)))
+        Mockito.`when`(
+            incomeCoreRepository.getAverageInTimeSpan(
+                Instant.fromEpochMilliseconds(
+                    periodStartMillis
+                ), Instant.fromEpochMilliseconds(periodEndMillis)
+            )
+        )
             .thenReturn(flowOf(average))
 
         val result: Flow<FinancialCardNotion> = getPeriodSummaryUseCase.getPeriodSummary(
@@ -70,11 +88,28 @@ class GetPeriodSummaryUseCaseTest {
         val summary = 2000.0f
         val average = 200.0f
 
-        Mockito.`when`(expenseCoreRepository.getCountOfExpensesInSpan(Date(periodStartMillis), Date(periodEndMillis)))
+        Mockito.`when`(
+            expenseCoreRepository.getCountOfExpensesInSpan(
+                Instant.fromEpochMilliseconds(
+                    periodStartMillis
+                ), Instant.fromEpochMilliseconds(periodEndMillis)
+            )
+        )
             .thenReturn(flowOf(count))
-        Mockito.`when`(expenseCoreRepository.getSumOfExpensesInTimeSpan(periodStartMillis, periodEndMillis))
+        Mockito.`when`(
+            expenseCoreRepository.getSumOfExpensesInTimeSpan(
+                periodStartMillis,
+                periodEndMillis
+            )
+        )
             .thenReturn(flowOf(summary))
-        Mockito.`when`(expenseCoreRepository.getAverageInTimeSpan(Date(periodStartMillis), Date(periodEndMillis)))
+        Mockito.`when`(
+            expenseCoreRepository.getAverageInTimeSpan(
+                Instant.fromEpochMilliseconds(
+                    periodStartMillis
+                ), Instant.fromEpochMilliseconds(periodEndMillis)
+            )
+        )
             .thenReturn(flowOf(average))
 
         val result: Flow<FinancialCardNotion> = getPeriodSummaryUseCase.getPeriodSummary(
@@ -90,6 +125,7 @@ class GetPeriodSummaryUseCaseTest {
         assertEquals(summary, notion.financialSummary, 0.0f)
         assertEquals(average, notion.periodAverage, 0.0f)
     }
+
     @Test
     fun `test getPeriodSummaryById for income`() = runTest {
         val periodStartMillis = 0L
@@ -98,11 +134,21 @@ class GetPeriodSummaryUseCaseTest {
         val count = 5
         val summary = 1500.0f
 
-        Mockito.`when`(incomeCoreRepository.getCountOfIncomesInSpanByCategoriesIds(
-            Date(periodStartMillis), Date(periodEndMillis), listOf(categoryId)))
+        Mockito.`when`(
+            incomeCoreRepository.getCountOfIncomesInSpanByCategoriesIds(
+                Instant.fromEpochMilliseconds(periodStartMillis),
+                Instant.fromEpochMilliseconds(periodEndMillis),
+                listOf(categoryId)
+            )
+        )
             .thenReturn(flowOf(count))
-        Mockito.`when`(incomeCoreRepository.getSumOfIncomesInTimeSpanByCategoriesIds(
-            Date(periodStartMillis), Date(periodEndMillis), listOf(categoryId)))
+        Mockito.`when`(
+            incomeCoreRepository.getSumOfIncomesInTimeSpanByCategoriesIds(
+                Instant.fromEpochMilliseconds(periodStartMillis),
+                Instant.fromEpochMilliseconds(periodEndMillis),
+                listOf(categoryId)
+            )
+        )
             .thenReturn(flowOf(summary))
 
         val result: Flow<FinancialCardNotion> = getPeriodSummaryUseCase.getPeriodSummaryById(
@@ -127,11 +173,21 @@ class GetPeriodSummaryUseCaseTest {
         val count = 10
         val summary = 2000.0f
 
-        Mockito.`when`(expenseCoreRepository.getCountOfExpensesInSpanByCategoriesIds(
-            Date(periodStartMillis), Date(periodEndMillis), listOf(categoryId)))
+        Mockito.`when`(
+            expenseCoreRepository.getCountOfExpensesInSpanByCategoriesIds(
+                Instant.fromEpochMilliseconds(periodStartMillis),
+                Instant.fromEpochMilliseconds(periodEndMillis),
+                listOf(categoryId)
+            )
+        )
             .thenReturn(flowOf(count))
-        Mockito.`when`(expenseCoreRepository.getSumOfExpensesByCategoriesInTimeSpan(
-            periodStartMillis, periodEndMillis, listOf(categoryId)))
+        Mockito.`when`(
+            expenseCoreRepository.getSumOfExpensesByCategoriesInTimeSpan(
+                Instant.fromEpochMilliseconds(periodStartMillis),
+                Instant.fromEpochMilliseconds(periodEndMillis),
+                listOf(categoryId)
+            )
+        )
             .thenReturn(flowOf(summary))
 
         val result: Flow<FinancialCardNotion> = getPeriodSummaryUseCase.getPeriodSummaryById(

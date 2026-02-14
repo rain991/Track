@@ -12,13 +12,11 @@ import com.savenko.track.domain.models.idea.Savings
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
 import com.savenko.track.domain.repository.ideas.objectsRepository.IdeaListRepository
 import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
-import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.first
-import kotlinx.coroutines.withContext
-import java.util.Date
+import kotlinx.coroutines.flow.flow
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.Instant
 
 class IdeaListRepositoryImpl(
     private val expenseLimitsDao: ExpenseLimitsDao,
@@ -41,43 +39,44 @@ class IdeaListRepositoryImpl(
         return savingsDao.getAllData()
     }
 
-    override fun getIdeaCompletedValue(idea: Idea): Flow<Float> = channelFlow {
+    override fun getIdeaCompletedValue(idea: Idea): Flow<Float> = flow {
         val currentTimeMillis = System.currentTimeMillis()
-        withContext(Dispatchers.IO) {
-            when (idea) {
-                is ExpenseLimits -> {
-                    if (idea.isRelatedToAllCategories) {
-                        expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(idea.startDate.time, currentTimeMillis).collect {
-                            send(it)
-                        }
-                    } else {
-                        val relatedGroups =
-                            listOfNotNull(
-                                idea.firstRelatedCategoryId,
-                                idea.secondRelatedCategoryId,
-                                idea.thirdRelatedCategoryId
-                            )
-                        expensesCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
-                            idea.startDate.time,
-                            currentTimeMillis,
-                            relatedGroups
-                        ).collect {
-                                send(it)
-                            }
-                    }
-                }
-
-                is IncomePlans -> {
-                    incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
+        when (idea) {
+            is ExpenseLimits -> {
+                if (idea.isRelatedToAllCategories) {
+                    expensesCoreRepositoryImpl.getSumOfExpensesInTimeSpan(
                         idea.startDate,
-                        Date(currentTimeMillis)
+                        currentTimeMillis
                     ).collect {
-                        send(it)
+                        emit(it)
+                    }
+                } else {
+                    val relatedGroups =
+                        listOfNotNull(
+                            idea.firstRelatedCategoryId,
+                            idea.secondRelatedCategoryId,
+                            idea.thirdRelatedCategoryId
+                        )
+                    expensesCoreRepositoryImpl.getSumOfExpensesByCategoriesInTimeSpan(
+                        Instant.fromEpochMilliseconds(idea.startDate),
+                        Instant.fromEpochMilliseconds(currentTimeMillis),
+                        relatedGroups
+                    ).collect {
+                        emit(it)
                     }
                 }
-
-                is Savings -> send(idea.value)
             }
+
+            is IncomePlans -> {
+                incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
+                    Instant.fromEpochMilliseconds(idea.startDate),
+                    Instant.fromEpochMilliseconds(currentTimeMillis)
+                ).collect {
+                    emit(it)
+                }
+            }
+
+            is Savings -> emit(idea.value)
         }
     }
 

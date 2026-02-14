@@ -6,13 +6,13 @@ import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialCardNotion
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.combine
-import java.util.Date
+import kotlin.time.Instant
 
 class GetPeriodSummaryUseCase(
     private val incomeCoreRepository: IncomeCoreRepository,
     private val expenseCoreRepository: ExpensesCoreRepository
 ) {
-    suspend fun getPeriodSummary(
+    fun getPeriodSummary(
         periodStartMillis: Long,
         periodEndMillis: Long,
         financialTypes: FinancialTypes
@@ -21,44 +21,60 @@ class GetPeriodSummaryUseCase(
             FinancialTypes.Expense -> {
                 val countOfExpensesFlow =
                     expenseCoreRepository.getCountOfExpensesInSpan(
-                        startDate = Date(periodStartMillis),
-                        endDate = Date(periodEndMillis)
+                        startDate = Instant.fromEpochMilliseconds(periodStartMillis),
+                        endDate = Instant.fromEpochMilliseconds(periodEndMillis)
                     )
                 val expensesSummaryFlow = expenseCoreRepository.getSumOfExpensesInTimeSpan(
                     start = periodStartMillis,
                     end = periodEndMillis
                 )
                 val expenseAverageFlow = expenseCoreRepository.getAverageInTimeSpan(
-                    startDate = Date(periodStartMillis),
-                    endDate = Date(periodEndMillis)
+                    startDate = Instant.fromEpochMilliseconds(periodStartMillis),
+                    endDate = Instant.fromEpochMilliseconds(periodEndMillis)
                 )
-                combine(countOfExpensesFlow, expensesSummaryFlow, expenseAverageFlow) { count, summary, average ->
-                    FinancialCardNotion(financialsQuantity = count, financialSummary = summary, periodAverage = average)
+                combine(
+                    countOfExpensesFlow,
+                    expensesSummaryFlow,
+                    expenseAverageFlow
+                ) { count, summary, average ->
+                    FinancialCardNotion(
+                        financialsQuantity = count,
+                        financialSummary = summary,
+                        periodAverage = average
+                    )
                 }
             }
 
             FinancialTypes.Income -> {
                 val countOfIncomesFlow =
                     incomeCoreRepository.getCountOfIncomesInSpan(
-                        startDate = Date(periodStartMillis),
-                        endDate = Date(periodEndMillis)
+                        startDate = Instant.fromEpochMilliseconds(periodStartMillis),
+                        endDate = Instant.fromEpochMilliseconds(periodEndMillis)
                     )
                 val incomesSummaryFlow = incomeCoreRepository.getSumOfIncomesInTimeSpan(
-                    startOfSpan = Date(periodStartMillis),
-                    endOfSpan = Date(periodEndMillis)
+                    startOfSpan = Instant.fromEpochMilliseconds(periodStartMillis),
+                    endOfSpan = Instant.fromEpochMilliseconds(periodEndMillis)
                 )
                 val incomesAverageFlow = incomeCoreRepository.getAverageInTimeSpan(
-                    startDate = Date(periodStartMillis),
-                    endDate = Date(periodEndMillis)
+                    startDate = Instant.fromEpochMilliseconds(periodStartMillis),
+                    endDate = Instant.fromEpochMilliseconds(periodEndMillis)
                 )
-                combine(countOfIncomesFlow, incomesSummaryFlow, incomesAverageFlow) { count, summary, average ->
-                    FinancialCardNotion(financialsQuantity = count, financialSummary = summary, periodAverage = average)
+                combine(
+                    countOfIncomesFlow,
+                    incomesSummaryFlow,
+                    incomesAverageFlow
+                ) { count, summary, average ->
+                    FinancialCardNotion(
+                        financialsQuantity = count,
+                        financialSummary = summary,
+                        periodAverage = average
+                    )
                 }
             }
         }
     }
 
-    suspend fun getPeriodSummaryById(
+    fun getPeriodSummaryById(
         periodStartMillis: Long,
         periodEndMillis: Long,
         categoryID: Int,
@@ -68,15 +84,16 @@ class GetPeriodSummaryUseCase(
             FinancialTypes.Expense -> {
                 val countOfExpensesFlow =
                     expenseCoreRepository.getCountOfExpensesInSpanByCategoriesIds(
-                        startDate = Date(periodStartMillis),
-                        endDate = Date(periodEndMillis),
+                        startDate = Instant.fromEpochMilliseconds(periodStartMillis),
+                        endDate = Instant.fromEpochMilliseconds(periodEndMillis),
                         categoriesIds = listOf(categoryID)
                     )
-                val expensesSummaryFlow = expenseCoreRepository.getSumOfExpensesByCategoriesInTimeSpan(
-                    start = periodStartMillis,
-                    end = periodEndMillis,
-                    categoriesIds = listOf(categoryID)
-                )
+                val expensesSummaryFlow =
+                    expenseCoreRepository.getSumOfExpensesByCategoriesInTimeSpan(
+                        start = Instant.fromEpochMilliseconds(periodStartMillis),
+                        end = Instant.fromEpochMilliseconds(periodEndMillis),
+                        categoriesIds = listOf(categoryID)
+                    )
                 combine(countOfExpensesFlow, expensesSummaryFlow) { count, summary ->
                     FinancialCardNotion(financialsQuantity = count, financialSummary = summary)
                 }
@@ -85,15 +102,16 @@ class GetPeriodSummaryUseCase(
             FinancialTypes.Income -> {
                 val countOfIncomesFlow =
                     incomeCoreRepository.getCountOfIncomesInSpanByCategoriesIds(
-                        startDate = Date(periodStartMillis),
-                        endDate = Date(periodEndMillis),
+                        startDate = Instant.fromEpochMilliseconds(periodStartMillis),
+                        endDate = Instant.fromEpochMilliseconds(periodEndMillis),
                         categoriesIds = listOf(categoryID)
                     )
-                val incomesSummaryFlow = incomeCoreRepository.getSumOfIncomesInTimeSpanByCategoriesIds(
-                    startOfSpan = Date(periodStartMillis),
-                    endOfSpan = Date(periodEndMillis),
-                    categoriesIds = listOf(categoryID)
-                )
+                val incomesSummaryFlow =
+                    incomeCoreRepository.getSumOfIncomesInTimeSpanByCategoriesIds(
+                        startOfSpan = Instant.fromEpochMilliseconds(periodStartMillis),
+                        endOfSpan = Instant.fromEpochMilliseconds(periodEndMillis),
+                        categoriesIds = listOf(categoryID)
+                    )
                 combine(countOfIncomesFlow, incomesSummaryFlow) { count, summary ->
                     FinancialCardNotion(financialsQuantity = count, financialSummary = summary)
                 }

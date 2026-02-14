@@ -29,12 +29,16 @@ import androidx.compose.ui.unit.sp
 import com.savenko.track.R
 import com.savenko.track.data.other.constants.CRYPTO_DECIMAL_FORMAT
 import com.savenko.track.data.other.constants.FIAT_DECIMAL_FORMAT
+import com.savenko.track.data.other.converters.dates.toLocalDate
 import com.savenko.track.data.viewmodels.mainScreen.feed.BudgetIdeaCardViewModel
 import com.savenko.track.domain.models.currency.CurrencyTypes
 import com.savenko.track.presentation.components.customComponents.CustomCircularProgressIndicator
 import com.savenko.track.presentation.other.getMonthResID
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import org.koin.androidx.compose.koinViewModel
-import java.time.LocalDate
+import kotlin.time.Clock
 
 /**
  * Main card of  [TrackScreenFeed](com.savenko.track.presentation.components.ideasCards.TrackScreenFeedKt.TrackScreenFeed)
@@ -59,7 +63,11 @@ fun BudgetFeedCard() {
                 .padding(horizontal = 8.dp),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            val currentMonth = stringResource(id = getMonthResID(localDate = LocalDate.now()))
+            val currentMonth = stringResource(
+                id = getMonthResID(
+                    localDate = Clock.System.now().toLocalDate(TimeZone.currentSystemDefault())
+                )
+            )
             Text(
                 text = stringResource(R.string.budget_main_feed_card, currentMonth),
                 style = MaterialTheme.typography.headlineSmall.copy(fontWeight = FontWeight.W500),
@@ -118,7 +126,7 @@ fun BudgetFeedCard() {
                     )
 
                     Text(
-                        text =buildAnnotatedString {
+                        text = buildAnnotatedString {
                             withStyle(
                                 style = SpanStyle(
                                     fontSize = 16.sp
@@ -160,7 +168,7 @@ fun BudgetFeedCard() {
                         .weight(0.4f)
                         .fillMaxHeight(), horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    val circleHeight= 80f
+                    val circleHeight = 80f
                     CustomCircularProgressIndicator(
                         modifier = Modifier.size(circleHeight.times(1.1f).dp),
                         initialValue = (state.value.budgetExpectancy * 100).toInt(),

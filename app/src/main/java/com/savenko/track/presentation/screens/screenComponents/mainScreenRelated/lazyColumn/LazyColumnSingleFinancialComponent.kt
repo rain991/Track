@@ -28,19 +28,20 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialEntity
 import com.savenko.track.domain.models.abstractLayer.FinancialTypes
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.components.financialItemCards.FinancialItemCardTypeSimple
 import com.savenko.track.presentation.other.colors.parseColor
+import com.savenko.track.presentation.other.getMonthResID
 import com.savenko.track.presentation.screens.states.core.mainScreen.FinancialCardNotion
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import java.util.Calendar
-import java.util.Locale
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
 import kotlin.time.Duration.Companion.milliseconds
+import kotlin.time.Instant
 
 /**
  * LazyColumnSingleFinancialComponent is wrapper of FinancialCard (currently only FinancialCardTypeSimple supported)
@@ -82,7 +83,7 @@ fun LazyColumnSingleFinancialComponent(
     onDeleteFinancial: (FinancialEntity) -> Unit,
     onClick: (FinancialEntity) -> Unit
 ) {
-    val locale = Locale.getDefault()
+    val timezone = TimeZone.currentSystemDefault()
     val coroutineScope = rememberCoroutineScope()
     val categoryColor = parseColor(financialCategory.colorId)
     val swipeToDismissBoxState = rememberSwipeToDismissBoxState(
@@ -109,17 +110,13 @@ fun LazyColumnSingleFinancialComponent(
             if (isPreviousDayDifferent) {
                 if (isPreviousYearDifferent) {
                     FinancialYearLabel(
-                        localDate = convertDateToLocalDate(
-                            financialEntity.date
-                        )
+                        Instant.fromEpochMilliseconds(financialEntity.date).toLocalDateTime(timezone)
                     )
                     Spacer(modifier = Modifier.width(4.dp))
                 }
                 Spacer(modifier = Modifier.width(4.dp))
                 FinancialMonthLabel(
-                    convertDateToLocalDate(
-                        financialEntity.date
-                    )
+                    Instant.fromEpochMilliseconds(financialEntity.date).toLocalDateTime(timezone)
                 )
                 Text(
                     text = ", ",
@@ -128,9 +125,7 @@ fun LazyColumnSingleFinancialComponent(
                     )
                 )
                 FinancialDayLabel(
-                    localDate = convertDateToLocalDate(
-                        financialEntity.date
-                    ),
+                    localDateTime = Instant.fromEpochMilliseconds(financialEntity.date).toLocalDateTime(timezone),
                     isPastSmallMarkupNeeded = false
                 )
             }
@@ -179,13 +174,13 @@ fun LazyColumnSingleFinancialComponent(
             )
         )
         if (containsMonthSummaryRow) {
-            val calendar = Calendar.getInstance().apply { time = financialEntity.date }
-            val monthName = calendar.getDisplayName(Calendar.MONTH, Calendar.LONG, locale)
+            val monthResId = getMonthResID(financialEntity.date)
+            val monthName = stringResource(id = monthResId)
             MonthSummaryRow(
                 modifier = Modifier.fillMaxWidth(),
                 summary = overallMonthSummary?.financialSummary ?: 0.0f,
                 quantity = overallMonthSummary?.financialsQuantity ?: 0,
-                monthName = monthName ?: "",
+                monthName = monthName,
                 preferableCurrency = preferableCurrency,
                 financialTypes = if (isExpenseLazyColumn) {
                     FinancialTypes.Expense

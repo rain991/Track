@@ -1,3 +1,5 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -12,6 +14,13 @@ android {
     android.buildFeatures.buildConfig = true
     namespace = "com.savenko.track"
     compileSdk = 35
+
+
+    kotlin{
+        compilerOptions{
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
+    }
 
     defaultConfig {
         testInstrumentationRunnerArguments += mapOf("runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder")
@@ -39,9 +48,7 @@ android {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
     }
-    kotlinOptions {
-        jvmTarget = "17"
-    }
+
     buildFeatures {
         compose = true
     }
@@ -83,6 +90,7 @@ dependencies {
     implementation(libs.androidx.material3)
     implementation(libs.androidx.splashscreen)
     implementation(libs.androidx.work.runtime)
+    implementation(libs.kotlinx.datetime)
 
     ksp(libs.androidx.room.compiler)
 

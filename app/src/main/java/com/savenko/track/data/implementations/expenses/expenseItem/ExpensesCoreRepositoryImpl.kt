@@ -3,18 +3,16 @@ package com.savenko.track.data.implementations.expenses.expenseItem
 import com.savenko.track.data.core.CurrenciesRatesHandler
 import com.savenko.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.savenko.track.data.other.constants.INCORRECT_CONVERSION_RESULT
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
-import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
+import com.savenko.track.data.other.converters.dates.MILLISECONDS_IN_DAY
 import com.savenko.track.domain.repository.currencies.CurrenciesPreferenceRepository
 import com.savenko.track.domain.repository.expenses.ExpensesCoreRepository
+import com.savenko.track.presentation.other.composableTypes.provideMonthlyDateRange
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.flowOf
-import java.time.LocalDate
-import java.util.Date
+import kotlin.time.Instant
 
 class ExpensesCoreRepositoryImpl(
     private val expenseItemsDao: ExpenseItemsDAO,
@@ -44,14 +42,14 @@ class ExpensesCoreRepositoryImpl(
     }
 
     override fun getSumOfExpensesByCategoriesInTimeSpan(
-        start: Long,
-        end: Long,
+        start: Instant,
+        end: Instant,
         categoriesIds: List<Int>
     ): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         expenseItemsDao.getExpensesByCategoriesIdInTimeSpan(
-            start = start,
-            end = end, listOfCategoriesId = categoriesIds
+            start = start.toEpochMilliseconds(),
+            end = end.toEpochMilliseconds(), listOfCategoriesId = categoriesIds
         ).collect { foundedExpenseItems ->
             var sumOfExpensesInPreferableCurrency = 0.0f
             val listOfExpensesInPreferableCurrency =
@@ -70,45 +68,55 @@ class ExpensesCoreRepositoryImpl(
     }
 
     override fun getCurrentMonthSumOfExpense(): Flow<Float> {
-        val todayDate = convertLocalDateToDate(LocalDate.now())
+        val monthlyRange = provideMonthlyDateRange()
         return getSumOfExpensesInTimeSpan(
-            start = getStartOfMonthDate(todayDate).time,
-            end = getEndOfMonthDate(todayDate).time
+            start = monthlyRange.start.toEpochMilliseconds(),
+            end = monthlyRange.endInclusive.toEpochMilliseconds()
         )
     }
 
     override fun getCurrentMonthSumOfExpensesByCategoriesId(listOfCategoriesId: List<Int>): Flow<Float> {
-        val todayDate = convertLocalDateToDate(LocalDate.now())
+        val monthlyRange = provideMonthlyDateRange()
         return getSumOfExpensesByCategoriesInTimeSpan(
-            start = getStartOfMonthDate(todayDate).time,
-            end = getEndOfMonthDate(todayDate).time,
+            start = monthlyRange.start,
+            end = monthlyRange.endInclusive,
             categoriesIds = listOfCategoriesId
         )
     }
 
-    override fun getCountOfExpensesInSpan(startDate: Date, endDate: Date): Flow<Int> {
+    override fun getCountOfExpensesInSpan(
+        startDate: Instant,
+        endDate: Instant
+    ): Flow<Int> {
         return expenseItemsDao.getCountOfExpensesInTimeSpan(
-            start = startDate.time,
-            end = endDate.time
+            start = startDate.toEpochMilliseconds(),
+            end = endDate.toEpochMilliseconds()
         )
     }
 
     override fun getCountOfExpensesInSpanByCategoriesIds(
-        startDate: Date,
-        endDate: Date,
+        startDate: Instant,
+        endDate: Instant,
         categoriesIds: List<Int>
     ): Flow<Int> {
         return expenseItemsDao.getCountOfExpensesInTimeSpanByCategoriesIds(
-            startDate.time,
-            endDate.time,
+            startDate.toEpochMilliseconds(),
+            endDate.toEpochMilliseconds(),
             categoriesIds
         )
     }
 
-    override fun getAverageInTimeSpan(startDate: Date, endDate: Date): Flow<Float> {
-        val dayDifference = (endDate.time - startDate.time) / 86400000 + 1
+    override fun getAverageInTimeSpan(
+        startDate: Instant,
+        endDate: Instant
+    ): Flow<Float> {
+        val dayDifference =
+            (endDate.toEpochMilliseconds() - startDate.toEpochMilliseconds()) / MILLISECONDS_IN_DAY + 1
         return combine(
-            getSumOfExpensesInTimeSpan(start = startDate.time, end = endDate.time),
+            getSumOfExpensesInTimeSpan(
+                start = startDate.toEpochMilliseconds(),
+                end = endDate.toEpochMilliseconds()
+            ),
             flowOf(dayDifference)
         ) { sumOfExpenses, daysDifference ->
             try {

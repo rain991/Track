@@ -31,34 +31,37 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.savenko.track.R
-import com.savenko.track.data.other.converters.dates.convertDateToLocalDate
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.formatDateAsNumeric
-import com.savenko.track.data.other.converters.dates.formatDateWithoutYear
 import com.savenko.track.presentation.components.customComponents.ErrorText
 import com.savenko.track.presentation.components.dialogs.datePickerDialogs.SingleDatePickerDialog
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
+import com.savenko.track.presentation.other.formatDateAsNumeric
+import com.savenko.track.presentation.other.formatDateWithoutYear
 import com.savenko.track.presentation.screens.states.core.common.BottomSheetViewState
-import java.time.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Clock
+import kotlin.time.Duration.Companion.days
 
 @Composable
 fun BottomSheetDateSelection(
     bottomSheetViewState: BottomSheetViewState,
-    isDayOutOfPredefinedSpan: (LocalDate) -> Boolean,
-    onSetDatePicked: (LocalDate) -> Unit,
+    isDayOutOfPredefinedSpan: (LocalDateTime) -> Boolean,
+    onSetDatePicked: (LocalDateTime) -> Unit,
     onTogglePickerState: () -> Unit
 ) {
     var text by remember { mutableStateOf("") }
     text = if (bottomSheetViewState.datePicked != null && isDayOutOfPredefinedSpan(bottomSheetViewState.datePicked)) {
-        formatDateWithoutYear(convertLocalDateToDate(bottomSheetViewState.datePicked))
+        formatDateWithoutYear(bottomSheetViewState.datePicked)
     } else {
         stringResource(R.string.date)
     }
+    val currentTimeZone = TimeZone.currentSystemDefault()
     val todayDate = remember {
-        derivedStateOf { LocalDate.now() }
+        derivedStateOf { Clock.System.now().toLocalDateTime(currentTimeZone) }
     }
     val yesterdayDate = remember {
-        derivedStateOf { LocalDate.now().minusDays(1) }
+        derivedStateOf { Clock.System.now() - 1.days }
     }
     Column {
         Row(
@@ -70,13 +73,13 @@ fun BottomSheetDateSelection(
                 modifier = Modifier.height(IntrinsicSize.Min),
                 text = stringResource(R.string.today),
                 isSelected = (bottomSheetViewState.todayButtonActiveState), date = todayDate.value
-            ) { onSetDatePicked(LocalDate.now()) }
+            ) { onSetDatePicked(Clock.System.now().toLocalDateTime(currentTimeZone)) }
             BottomSheetDateButton(
                 modifier = Modifier.height(IntrinsicSize.Min),
                 text = stringResource(R.string.yesterday),
                 isSelected = (bottomSheetViewState.yesterdayButtonActiveState),
-                date = yesterdayDate.value
-            ) { onSetDatePicked(LocalDate.now().minusDays(1)) }
+                date = yesterdayDate.value.toLocalDateTime(currentTimeZone)
+            ) { onSetDatePicked((Clock.System.now() - 1.days).toLocalDateTime(currentTimeZone)) }
             Button(onClick = { onTogglePickerState() }) {
                 Text(text = text, style = MaterialTheme.typography.bodyMedium)
             }
@@ -84,7 +87,7 @@ fun BottomSheetDateSelection(
                 isDialogVisible = bottomSheetViewState.timePickerState,
                 futureDatePicker = false,
                 onDecline = { onTogglePickerState() }) { date ->
-                onSetDatePicked(convertDateToLocalDate(date))
+                onSetDatePicked(date.toLocalDateTime(currentTimeZone))
                 onTogglePickerState()
             }
         }
@@ -103,7 +106,7 @@ fun BottomSheetDateButton(
     modifier: Modifier,
     text: String,
     isSelected: Boolean,
-    date: LocalDate,
+    date: LocalDateTime,
     needsAdditionalDateNotation: Boolean = false,
     onSelect: () -> Unit
 ) {
@@ -136,7 +139,7 @@ fun BottomSheetDateButton(
                 )
                 AnimatedVisibility(visible = isSelected && needsAdditionalDateNotation) {
                     Text(
-                        text = formatDateAsNumeric(convertLocalDateToDate(date)),
+                        text = formatDateAsNumeric(date),
                         style = MaterialTheme.typography.labelSmall,
                         textAlign = TextAlign.Center
                     )

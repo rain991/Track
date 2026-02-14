@@ -1,73 +1,72 @@
 package com.savenko.track.data.other.converters.dates
 
-import java.time.LocalDate
-import java.util.Calendar
-import java.util.Date
+import kotlinx.datetime.DateTimeUnit
+import kotlinx.datetime.LocalDate
+import kotlinx.datetime.LocalDateTime
+import kotlinx.datetime.TimeZone
+import kotlinx.datetime.minus
+import kotlinx.datetime.number
+import kotlinx.datetime.toInstant
+import kotlinx.datetime.toLocalDateTime
+import kotlin.time.Instant
 
-fun areDatesSame(date1: Date, date2: Date): Boolean { // day precision
-    val cal1 = Calendar.getInstance()
-    val cal2 = Calendar.getInstance()
-    cal1.time = date1
-    cal2.time = date2
-    return (cal1[Calendar.YEAR] == cal2[Calendar.YEAR] && cal1[Calendar.DAY_OF_YEAR] == cal2[Calendar.DAY_OF_YEAR])
+fun isSameDay(a: Instant, b: Instant, zone: TimeZone): Boolean {
+    return a.toLocalDateTime(zone).date == b.toLocalDateTime(zone).date
 }
 
-fun getStartOfMonthDate(date: Date): Date {
-    val calendar = Calendar.getInstance()
-    calendar.time = date
-    calendar.set(Calendar.DAY_OF_MONTH, 1)
-    return calendar.time
+fun isSameMonth(date1: LocalDateTime, date2: LocalDateTime): Boolean {
+    return date1.year == date2.year && date1.month == date2.month
 }
 
-fun getEndOfMonthDate(date: Date): Date {
-    val calendar = Calendar.getInstance()
-    calendar.time = date
-    calendar.set(Calendar.DAY_OF_MONTH, calendar.getActualMaximum(Calendar.DAY_OF_MONTH))
-    return calendar.time
+fun isSameYear(date1: LocalDateTime, date2: LocalDateTime): Boolean {
+    return date1.year == date2.year
 }
 
-fun getStartOfWeekDate(date: Date): Date {
-    val cal = Calendar.getInstance()
-    cal.time = date
-    cal.set(Calendar.DAY_OF_WEEK, cal.firstDayOfWeek)
-    return cal.time
+fun startOfWeek(now: Instant, timeZone: TimeZone): Instant {
+    val localDateTime = now.toLocalDateTime(timeZone)
+    val localDate = localDateTime.date
+
+    val daysFromMonday = localDate.dayOfWeek.ordinal // Monday = 0
+    val startDate = localDate.minus(daysFromMonday, DateTimeUnit.DAY)
+
+    val startOfWeek = LocalDateTime(
+        year = startDate.year,
+        monthNumber = startDate.month.number,
+        dayOfMonth = startDate.day,
+        hour = 0,
+        minute = 0
+    )
+
+    return startOfWeek.toInstant(timeZone)
 }
 
-fun getEndOfWeekDate(date: Date): Date {
-    val cal = Calendar.getInstance()
-    cal.time = date
-    cal.add(Calendar.WEEK_OF_YEAR, 1)
-    cal.add(Calendar.DAY_OF_YEAR, -1)
-    return cal.time
+
+fun startOfMonth(instant: Instant, timeZone: TimeZone): Instant {
+    val local = instant.toLocalDateTime(timeZone)
+    val startDateTime = LocalDateTime(
+        local.date.year,
+        local.date.month.number,
+        1,
+        0, 0
+    )
+    return startDateTime.toInstant(timeZone)
 }
 
-fun getStartOfYearDate(date: Date): Date {
-    val cal = Calendar.getInstance()
-    cal.time = date
-    cal.set(Calendar.MONTH, Calendar.JANUARY)
-    cal.set(Calendar.DAY_OF_MONTH, 1)
-    return cal.time
+fun startOfYear(instant: Instant, timeZone: TimeZone): Instant {
+    val local = instant.toLocalDateTime(timeZone)
+    val startDateTime = LocalDateTime(
+        local.date.year,
+        1,
+        1,
+        0, 0
+    )
+    return startDateTime.toInstant(timeZone)
 }
 
-fun getEndOfYearDate(date: Date): Date {
-    val cal = Calendar.getInstance()
-    cal.time = date
-    cal.set(Calendar.MONTH, Calendar.DECEMBER)
-    cal.set(Calendar.DAY_OF_MONTH, 31)
-    return cal.time
-}
+fun Instant.toLocalDate(timeZone: TimeZone): LocalDate =
+    this.toLocalDateTime(timeZone).date
 
-fun areMonthsSame(date1: Date, date2: Date): Boolean {
-    val cal1 = Calendar.getInstance().apply { time = date1 }
-    val cal2 = Calendar.getInstance().apply { time = date2 }
-    return (cal1[Calendar.MONTH] == cal2[Calendar.MONTH] && cal1[Calendar.YEAR] == cal2[Calendar.YEAR])
-}
-
-fun areYearsSame(date1: Date, date2: Date): Boolean {
-    val cal1 = Calendar.getInstance().apply { time = date1 }
-    val cal2 = Calendar.getInstance().apply { time = date2 }
-    return (cal1[Calendar.YEAR] == cal2[Calendar.YEAR])
-}
+const val MILLISECONDS_IN_DAY = 86400000L
 
 fun Set<LocalDate>.hasDateInDifferentMonth(): Boolean {
     if (this.size <= 1) {

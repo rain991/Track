@@ -4,7 +4,7 @@ import com.savenko.track.data.other.constants.EXPENSE_LIMIT_MAX_CATEGORIES_SELEC
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.presentation.other.composableTypes.errors.NewIdeaDialogErrors
 import com.savenko.track.presentation.other.composableTypes.options.IdeaSelectorTypes
-import java.util.Date
+import kotlin.time.Instant
 
 /**
  * New idea dialog state
@@ -25,7 +25,7 @@ data class NewIdeaDialogState(
     val typeSelected: IdeaSelectorTypes,
     val includedInBudget: Boolean?,
     val eachMonth: Boolean?,
-    val endDate: Date?,
+    val endDate: Instant?,
     val label: String?,
     val isDateDialogVisible: Boolean,
     val relatedToAllCategories: Boolean?,

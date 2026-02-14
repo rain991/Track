@@ -2,7 +2,7 @@ package com.savenko.track.presentation.screens.states.core.common
 
 import com.savenko.track.domain.models.abstractLayer.CategoryEntity
 import com.savenko.track.presentation.other.composableTypes.errors.BottomSheetErrors
-import java.time.LocalDate
+import kotlinx.datetime.LocalDateTime
 
 /**
  * Bottom sheet view state
@@ -28,7 +28,7 @@ data class BottomSheetViewState(
     val currentSelectedCurrencyIndex: Int,
     val categoryPicked: CategoryEntity?,
     val timePickerState: Boolean,
-    val datePicked: LocalDate?,
+    val datePicked: LocalDateTime?,
     val todayButtonActiveState: Boolean,
     val yesterdayButtonActiveState: Boolean,
     val warningMessage: BottomSheetErrors? = null

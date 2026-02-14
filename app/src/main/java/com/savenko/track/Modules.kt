@@ -29,7 +29,6 @@ import com.savenko.track.data.implementations.incomes.incomeCategories.IncomesCa
 import com.savenko.track.data.implementations.incomes.incomeItem.IncomeCoreRepositoryImpl
 import com.savenko.track.data.implementations.incomes.incomeItem.IncomeItemRepositoryImpl
 import com.savenko.track.data.implementations.incomes.incomeItem.IncomeListRepositoryImpl
-import com.savenko.track.data.implementations.notes.NotesRepositoryImpl
 import com.savenko.track.data.other.dataStore.DataStoreManager
 import com.savenko.track.data.other.workers.CurrenciesRatesWorker
 import com.savenko.track.data.viewmodels.common.BottomSheetViewModel
@@ -66,7 +65,6 @@ import com.savenko.track.domain.repository.incomes.IncomeCoreRepository
 import com.savenko.track.domain.repository.incomes.IncomeItemRepository
 import com.savenko.track.domain.repository.incomes.IncomeListRepository
 import com.savenko.track.domain.repository.incomes.categories.IncomesCategoriesListRepository
-import com.savenko.track.domain.repository.notes.NotesRepository
 import com.savenko.track.domain.usecases.crud.categoriesRelated.CreateCategoryUseCase
 import com.savenko.track.domain.usecases.crud.categoriesRelated.DeleteCategoryUseCase
 import com.savenko.track.domain.usecases.crud.expenseRelated.AddExpenseItemUseCase
@@ -131,7 +129,6 @@ val appModule = module {
 
     // Statistic related
     single<ChartsRepository> { ChartsRepositoryImpl(get(), get(), get(), get()) }
-    single<NotesRepository> { NotesRepositoryImpl(get(), get(), get(), get(), get(), get()) }
 }
 
 val domainModule = module {

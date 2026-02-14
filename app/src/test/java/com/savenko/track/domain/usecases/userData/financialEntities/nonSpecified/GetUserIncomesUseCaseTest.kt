@@ -31,8 +31,8 @@ class GetUserIncomesUseCaseTest {
     @Test
     fun `use case returns incomes list sorted dates DESC`() = runTest {
         val listOfIncomes = listOf(
-            IncomeItem(currencyTicker = "USD", value = 55f, note = "", categoryId = 5, date = Date(2000)),
-            IncomeItem(currencyTicker = "TRY", value = 30f, note = "s", categoryId = 5, date = Date(5000))
+            IncomeItem(currencyTicker = "USD", value = 55f, note = "", categoryId = 5, date = 2000L),
+            IncomeItem(currencyTicker = "TRY", value = 30f, note = "s", categoryId = 5, date = 5000L)
         )
         Mockito.`when`(incomeListRepositoryImpl.getSortedIncomesListDateDesc())
             .thenReturn(flow { emit(listOfIncomes.sortedByDescending { it.date }) })

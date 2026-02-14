@@ -9,46 +9,49 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.channelFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.first
-import java.util.Date
+import kotlinx.coroutines.flow.flow
+import kotlin.time.Instant
 
 class IncomeCoreRepositoryImpl(
     private val incomeDao: IncomeDao,
     private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository,
     private val currenciesRatesHandler: CurrenciesRatesHandler
 ) : IncomeCoreRepository {
-    // Sum of incomes
-    override fun getSumOfIncomesInTimeSpan(startOfSpan: Date, endOfSpan: Date): Flow<Float> = channelFlow {
+    override fun getSumOfIncomesInTimeSpan(
+        startOfSpan: Instant,
+        endOfSpan: Instant
+    ): Flow<Float> = flow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         incomeDao.getIncomesInTimeSpanDateDesc(
-            start = startOfSpan.time,
-            end = endOfSpan.time
+            start = startOfSpan.toEpochMilliseconds(),
+            end = endOfSpan.toEpochMilliseconds()
         ).collect { foundedIncomeItems ->
             var sumOfIncomesInPreferableCurrency = 0.0f
             val listOfIncomesInPreferableCurrency =
                 foundedIncomeItems.filter { it.currencyTicker == preferableCurrency.ticker }
             val listOfIncomesNotInPreferableCurrency =
                 foundedIncomeItems.filter { it.currencyTicker != preferableCurrency.ticker }
-            listOfIncomesInPreferableCurrency.forEach { it -> sumOfIncomesInPreferableCurrency += it.value }
-            listOfIncomesNotInPreferableCurrency.forEach { it ->
+            listOfIncomesInPreferableCurrency.forEach { sumOfIncomesInPreferableCurrency += it.value }
+            listOfIncomesNotInPreferableCurrency.forEach {
                 val convertedValue = currenciesRatesHandler.convertValueToBasicCurrency(it)
                 if (convertedValue != INCORRECT_CONVERSION_RESULT) {
                     sumOfIncomesInPreferableCurrency += convertedValue
                 }
                 // could be broadcast for insufficient currencies rates
             }
-            send(sumOfIncomesInPreferableCurrency)
+            emit(sumOfIncomesInPreferableCurrency)
         }
     }
 
     override fun getSumOfIncomesInTimeSpanByCategoriesIds(
-        startOfSpan: Date,
-        endOfSpan: Date,
+        startOfSpan: Instant,
+        endOfSpan: Instant,
         categoriesIds: List<Int>
     ): Flow<Float> = channelFlow {
         val preferableCurrency = currenciesPreferenceRepositoryImpl.getPreferableCurrency().first()
         incomeDao.findIncomesInTimeSpanByCategoriesIds(
-            start = startOfSpan.time,
-            end = endOfSpan.time, categoriesIds = categoriesIds
+            start = startOfSpan.toEpochMilliseconds(),
+            end = endOfSpan.toEpochMilliseconds(), categoriesIds = categoriesIds
         ).collect { foundedIncomeItems ->
             var sumOfIncomesInPreferableCurrency = 0.0f
             val listOfIncomesInPreferableCurrency =
@@ -66,27 +69,36 @@ class IncomeCoreRepositoryImpl(
         }
     }
 
-    // Count of incomes
-    override fun getCountOfIncomesInSpan(startDate: Date, endDate: Date): Flow<Int> {
-        return incomeDao.getCountOfIncomesInTimeSpan(start = startDate.time, end = endDate.time)
+    override fun getCountOfIncomesInSpan(
+        startDate: Instant,
+        endDate: Instant
+    ): Flow<Int> {
+        return incomeDao.getCountOfIncomesInTimeSpan(
+            start = startDate.toEpochMilliseconds(),
+            end = endDate.toEpochMilliseconds()
+        )
     }
 
     override fun getCountOfIncomesInSpanByCategoriesIds(
-        startDate: Date,
-        endDate: Date,
+        startDate: Instant,
+        endDate: Instant,
         categoriesIds: List<Int>
     ): Flow<Int> {
         return incomeDao.getCountOfIncomesInTimeSpanByCategoriesIds(
-            start = startDate.time.apply { this.minus(1) },
-            end = endDate.time,
+            start = startDate.toEpochMilliseconds().apply { this.minus(1) },
+            end = endDate.toEpochMilliseconds(),
             categoriesIds = categoriesIds
         )
     }
 
-    // Average - average throughout values
-    override fun getAverageInTimeSpan(startDate: Date, endDate: Date): Flow<Float> {
-        return combine(getSumOfIncomesInTimeSpan(startDate,endDate), getCountOfIncomesInSpan(startDate,endDate)){
-            sumOfIncomes, countOfIncomes ->
+    override fun getAverageInTimeSpan(
+        startDate: Instant,
+        endDate: Instant
+    ): Flow<Float> {
+        return combine(
+            getSumOfIncomesInTimeSpan(startDate, endDate),
+            getCountOfIncomesInSpan(startDate, endDate)
+        ) { sumOfIncomes, countOfIncomes ->
             sumOfIncomes.div(countOfIncomes)
         }
     }

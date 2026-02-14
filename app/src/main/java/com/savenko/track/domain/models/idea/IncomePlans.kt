@@ -10,6 +10,6 @@ import java.util.Date
         override val id: Int = 0,
         override val goal: Float,
         override val completed: Boolean,
-        override val startDate: Date,
-        override val endDate: Date?
+        override val startDate: Long,
+        override val endDate: Long?
     ) : Idea()

@@ -1,10 +1,10 @@
 package com.savenko.track.presentation.screens.states.core.statisticScreen
 
-import android.util.Range
 import com.savenko.track.domain.models.abstractLayer.FinancialEntities
 import com.savenko.track.domain.models.currency.Currency
 import com.savenko.track.presentation.other.composableTypes.StatisticChartTimePeriod
-import java.time.LocalDate
+import kotlinx.datetime.LocalDate
+import kotlin.time.Instant
 
 
 /**
@@ -30,6 +30,6 @@ data class StatisticChartState(
     val listOfCurrencies: List<Currency>,
     val financialEntities: FinancialEntities,
     val timePeriod: StatisticChartTimePeriod,
-    val specifiedTimePeriod: Range<LocalDate>?,
+    val specifiedTimePeriod: ClosedRange<Instant>?,
     val isTimePeriodDialogVisible: Boolean
 )

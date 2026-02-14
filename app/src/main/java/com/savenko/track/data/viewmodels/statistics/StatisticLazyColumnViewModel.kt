@@ -1,6 +1,5 @@
 package com.savenko.track.data.viewmodels.statistics
 
-import android.util.Range
 import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -17,7 +16,7 @@ import com.savenko.track.domain.usecases.userData.financialEntities.specified.Ge
 import com.savenko.track.domain.usecases.userData.financialEntities.specified.GetDesiredIncomesUseCase
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.launch
-import java.util.Date
+import kotlin.time.Instant
 
 /**
  * Provides data for [TrackStatisticLazyColumn](com.savenko.track.presentation.screens.screenComponents.statisticsScreenRelated.components.TrackStatisticLazyColumn)
@@ -40,14 +39,17 @@ class StatisticLazyColumnViewModel(
     val incomeCategoriesList: List<IncomeCategory> = _incomeCategoriesList
 
     fun initializeListOfEntities(
-        timePeriod: Range<Date>,
+        timePeriod: ClosedRange<Instant>,
         financialEntities: FinancialEntities
     ) {
         viewModelScope.launch {
             launch {
                 when (financialEntities) {
                     is FinancialEntities.IncomeFinancialEntity -> {
-                        getDesiredIncomesUseCase(timePeriod.lower.time, timePeriod.upper.time).collect {
+                        getDesiredIncomesUseCase(
+                            timePeriod.start.toEpochMilliseconds(),
+                            timePeriod.endInclusive.toEpochMilliseconds()
+                        ).collect {
                             _listOfFilteredFinancialEntities.clear()
                             _listOfFilteredFinancialEntities.addAll(it)
                         }
@@ -63,11 +65,11 @@ class StatisticLazyColumnViewModel(
 
                     is FinancialEntities.Both -> {
                         getDesiredFinancialEntitiesUseCase(
-                            timePeriod.lower.time,
-                            timePeriod.upper.time
+                            timePeriod.start.toEpochMilliseconds(),
+                            timePeriod.endInclusive.toEpochMilliseconds()
                         ).collect { listOfFinancialEntities ->
                             _listOfFilteredFinancialEntities.clear()
-                            _listOfFilteredFinancialEntities.addAll(listOfFinancialEntities.sortedByDescending { it.date.time })
+                            _listOfFilteredFinancialEntities.addAll(listOfFinancialEntities.sortedByDescending { it.date })
                         }
                     }
                 }
@@ -90,7 +92,7 @@ class StatisticLazyColumnViewModel(
     fun requestCountInDateRangeNotion(
         financialEntity: FinancialEntity,
         financialCategory: CategoryEntity,
-        dateRange: Range<Date>
+        dateRange: ClosedRange<Instant>
     ): Flow<Int> {
         return financialCardNotesProvider.requestCountNotionForFinancialCard(
             financialEntity,
@@ -99,10 +101,10 @@ class StatisticLazyColumnViewModel(
         )
     }
 
-    suspend fun requestSummaryInDateRangeNotion(
+    fun requestSummaryInDateRangeNotion(
         financialEntity: FinancialEntity,
         financialCategory: CategoryEntity,
-        dateRange: Range<Date>
+        dateRange: ClosedRange<Instant>
     ): Flow<Float> {
         return financialCardNotesProvider.requestValueSummaryNotionForFinancialCard(
             financialEntity,

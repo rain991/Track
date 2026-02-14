@@ -4,19 +4,17 @@ import com.savenko.track.data.database.expensesRelated.ExpenseCategoryDao
 import com.savenko.track.data.database.expensesRelated.ExpenseItemsDAO
 import com.savenko.track.data.database.incomeRelated.IncomeCategoryDao
 import com.savenko.track.data.database.incomeRelated.IncomeDao
-import com.savenko.track.data.other.converters.dates.convertLocalDateToDate
-import com.savenko.track.data.other.converters.dates.getEndOfMonthDate
-import com.savenko.track.data.other.converters.dates.getEndOfYearDate
-import com.savenko.track.data.other.converters.dates.getStartOfMonthDate
-import com.savenko.track.data.other.converters.dates.getStartOfYearDate
+import com.savenko.track.data.other.converters.dates.startOfMonth
+import com.savenko.track.data.other.converters.dates.startOfYear
 import com.savenko.track.domain.models.expenses.ExpenseCategory
 import com.savenko.track.domain.models.incomes.IncomeCategory
 import com.savenko.track.domain.repository.charts.ChartsRepository
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.withContext
-import java.time.LocalDate
-import java.util.Date
+import kotlinx.datetime.TimeZone
 import kotlin.coroutines.CoroutineContext
+import kotlin.time.Clock
+import kotlin.time.Instant
 
 class ChartsRepositoryImpl(
     private val incomeDao: IncomeDao,
@@ -24,56 +22,61 @@ class ChartsRepositoryImpl(
     private val expenseCategoryDao: ExpenseCategoryDao,
     private val incomeCategoryDao: IncomeCategoryDao
 ) : ChartsRepository {
-    override suspend fun requestCurrentMonthExpensesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
-        val todayDate = convertLocalDateToDate(LocalDate.now())
+    override suspend fun requestCurrentMonthExpensesDateDesc(context: CoroutineContext): List<Pair<Float, Instant>> {
+        val currentMoment = Clock.System.now()
+        val currentTimeZone = TimeZone.currentSystemDefault()
         return withContext(context) {
           val monthExpenses =  expenseItemsDao.getExpensesInTimeSpanDateDesc(
-                start = getStartOfMonthDate(todayDate).time,
-                end = getEndOfMonthDate(todayDate).time
+                start = startOfMonth(currentMoment, currentTimeZone).toEpochMilliseconds(),
+                end = currentMoment.toEpochMilliseconds()
             ).first()
-            monthExpenses.map{it.value to it.date}
+            monthExpenses.map{it.value to Instant.fromEpochMilliseconds(it.date)}
         }
     }
 
-    override suspend fun requestCurrentMonthIncomesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
-        val todayDate = convertLocalDateToDate(LocalDate.now())
+    override suspend fun requestCurrentMonthIncomesDateDesc(context: CoroutineContext): List<Pair<Float, Instant>> {
+        val currentMoment = Clock.System.now()
+        val currentTimeZone = TimeZone.currentSystemDefault()
         return withContext(context) {
            val monthIncomes =  incomeDao.getIncomesInTimeSpanDateDesc(
-                start = getStartOfMonthDate(todayDate).time,
-                end = getEndOfMonthDate(todayDate).time
+               start = startOfMonth(currentMoment, currentTimeZone).toEpochMilliseconds(),
+               end = currentMoment.toEpochMilliseconds()
             ).first()
-            monthIncomes.map{it.value to it.date}
+            monthIncomes.map{it.value to Instant.fromEpochMilliseconds(it.date)}
         }
     }
 
-    override suspend fun requestCurrentYearExpensesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
-        val todayDate = convertLocalDateToDate(LocalDate.now())
+    override suspend fun requestCurrentYearExpensesDateDesc(context: CoroutineContext): List<Pair<Float, Instant>> {
+        val currentMoment = Clock.System.now()
+        val currentTimeZone = TimeZone.currentSystemDefault()
         return withContext(context) {
            val yearExpenses =  expenseItemsDao.getExpensesInTimeSpanDateDesc(
-                start = getStartOfYearDate(todayDate).time,
-                end = getEndOfYearDate(todayDate).time
+               start = startOfYear(currentMoment, currentTimeZone).toEpochMilliseconds(),
+               end = currentMoment.toEpochMilliseconds()
             ).first()
-            yearExpenses.map{it.value to it.date}
+            yearExpenses.map{it.value to Instant.fromEpochMilliseconds(it.date)}
         }
 
     }
 
-    override suspend fun requestCurrentYearIncomesDateDesc(context: CoroutineContext): List<Pair<Float, Date>> {
-        val todayDate = convertLocalDateToDate(LocalDate.now())
+    override suspend fun requestCurrentYearIncomesDateDesc(context: CoroutineContext): List<Pair<Float, Instant>> {
+        val currentMoment = Clock.System.now()
+        val currentTimeZone = TimeZone.currentSystemDefault()
         return withContext(context) {
             val yearIncomes = incomeDao.getIncomesInTimeSpanDateDesc(
-                start = getStartOfYearDate(todayDate).time,
-                end = getEndOfYearDate(todayDate).time
+                start = startOfYear(currentMoment, currentTimeZone).toEpochMilliseconds(),
+                end = currentMoment.toEpochMilliseconds()
             ).first()
-            yearIncomes.map { it.value to it.date }
+            yearIncomes.map { it.value to Instant.fromEpochMilliseconds(it.date)}
         }
     }
 
     override suspend fun requestCurrentMonthExpenseCategoriesDistribution(context: CoroutineContext): Map<ExpenseCategory, Int> {
         return withContext(context) {
-            val todayDate = convertLocalDateToDate(LocalDate.now())
-            val startDate = getStartOfMonthDate(todayDate).time
-            val endDate = getEndOfMonthDate(todayDate).time
+            val currentTimeZone = TimeZone.currentSystemDefault()
+            val currentMoment = Clock.System.now()
+            val startDate = startOfMonth(currentMoment, currentTimeZone).toEpochMilliseconds()
+            val endDate = currentMoment.toEpochMilliseconds()
             val expenseCategoriesList = expenseCategoryDao.getAllCategories().first()
             val resultMap = mutableMapOf<ExpenseCategory, Int>()
             expenseCategoriesList.forEach {
@@ -87,9 +90,10 @@ class ChartsRepositoryImpl(
 
     override suspend fun requestCurrentMonthIncomeCategoriesDistribution(context: CoroutineContext): Map<IncomeCategory, Int> {
         return withContext(context) {
-            val todayDate = convertLocalDateToDate(LocalDate.now())
-            val startDate = getStartOfMonthDate(todayDate).time
-            val endDate = getEndOfMonthDate(todayDate).time
+            val currentTimeZone = TimeZone.currentSystemDefault()
+            val currentMoment = Clock.System.now()
+            val startDate = startOfMonth(currentMoment, currentTimeZone).toEpochMilliseconds()
+            val endDate = currentMoment.toEpochMilliseconds()
             val incomeCategoriesList = incomeCategoryDao.getAllIncomeCategories().first()
             val resultMap = mutableMapOf<IncomeCategory, Int>()
             incomeCategoriesList.forEach {
