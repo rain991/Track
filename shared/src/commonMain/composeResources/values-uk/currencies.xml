@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="currency_uae_dirham">Дирхам ОАЕ</string>
+    <string name="currency_argentine_peso">Аргентинське песо</string>
+    <string name="currency_australian_dollar">Австралійський долар</string>
+    <string name="currency_brazilian_real">Бразильський реал</string>
+    <string name="currency_canadian_dollar">Канадський долар</string>
+    <string name="currency_swiss_franc">Швейцарський франк</string>
+    <string name="currency_chilean_peso">Чилійське песо</string>
+    <string name="currency_chinese_yuan">Китайський юань</string>
+    <string name="currency_colombian_peso">Колумбійське песо</string>
+    <string name="currency_czech_koruna">Чеська крона</string>
+    <string name="currency_danish_krone">Данська крона</string>
+    <string name="currency_egyptian_pound">Єгипетський фунт</string>
+    <string name="currency_euro">Євро</string>
+    <string name="currency_british_pound_sterling">Британський фунт стерлінгів</string>
+    <string name="currency_hong_kong_dollar">Гонконгівський долар</string>
+    <string name="currency_hungarian_forint">Угорський форинт</string>
+    <string name="currency_indonesian_rupiah">Індонезійська рупія</string>
+    <string name="currency_israeli_new_shekel">Ізраїльський новий шекель</string>
+    <string name="currency_indian_rupee">Індійська рупія</string>
+    <string name="currency_japanese_yen">Японська єна</string>
+    <string name="currency_south_korean_won">Південнокорейська вона</string>
+    <string name="currency_mexican_peso">Мексиканське песо</string>
+    <string name="currency_malaysian_ringgit">Малайзійський рингіт</string>
+    <string name="currency_nigerian_naira">Нігерійська найра</string>
+    <string name="currency_norwegian_krone">Норвезька крона</string>
+    <string name="currency_new_zealand_dollar">Новозеландський долар</string>
+    <string name="currency_peruvian_sol">Перуанський сол</string>
+    <string name="currency_philippine_peso">Філіппінське песо</string>
+    <string name="currency_pakistani_rupee">Пакистанська рупія</string>
+    <string name="currency_polish_zloty">Польський злотий</string>
+    <string name="currency_russian_ruble">Російський рубль</string>
+    <string name="currency_saudi_riyal">Саудівський ріал</string>
+    <string name="currency_swedish_krona">Шведська крона</string>
+    <string name="currency_singapore_dollar">Сінгапурський долар</string>
+    <string name="currency_thai_baht">Тайський бат</string>
+    <string name="currency_turkish_lira">Турецька ліра</string>
+    <string name="currency_new_taiwan_dollar">Новий тайванський долар</string>
+    <string name="currency_ukrainian_hryvnia">Українська гривня</string>
+    <string name="currency_united_states_dollar">Долар США</string>
+    <string name="currency_south_african_rand">Південноафриканський ранд</string>
+    <string name="currency_gold">Золото</string>
+    <string name="currency_silver">Срібло</string>
+</resources>

@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="currency_uae_dirham">아랍에미리트 디르함</string>
+
+    <string name="currency_argentine_peso">아르헨티나 페소</string>
+
+    <string name="currency_australian_dollar">호주 달러</string>
+
+    <string name="currency_brazilian_real">브라질 레알</string>
+
+    <string name="currency_canadian_dollar">캐나다 달러</string>
+
+    <string name="currency_swiss_franc">스위스 프랑</string>
+
+    <string name="currency_chilean_peso">칠레 페소</string>
+
+    <string name="currency_chinese_yuan">중국 위안</string>
+
+    <string name="currency_colombian_peso">콜롬비아 페소</string>
+
+    <string name="currency_czech_koruna">체코 코루나</string>
+
+    <string name="currency_danish_krone">덴마크 크로네</string>
+
+    <string name="currency_egyptian_pound">이집트 파운드</string>
+
+    <string name="currency_euro">유로</string>
+
+    <string name="currency_british_pound_sterling">영국 파운드 스털링</string>
+
+    <string name="currency_hong_kong_dollar">홍콩 달러</string>
+
+    <string name="currency_hungarian_forint">헝가리 포린트</string>
+
+    <string name="currency_indonesian_rupiah">인도네시아 루피아</string>
+
+    <string name="currency_israeli_new_shekel">이스라엘 신 셰켈</string>
+
+    <string name="currency_indian_rupee">인도 루피</string>
+
+    <string name="currency_japanese_yen">일본 엔</string>
+
+    <string name="currency_south_korean_won">한국 원</string>
+
+    <string name="currency_mexican_peso">멕시코 페소</string>
+
+    <string name="currency_malaysian_ringgit">말레이시아 링깃</string>
+
+    <string name="currency_nigerian_naira">나이지리아 나이라</string>
+
+    <string name="currency_norwegian_krone">노르웨이 크로네</string>
+
+    <string name="currency_new_zealand_dollar">뉴질랜드 달러</string>
+
+    <string name="currency_peruvian_sol">페루 솔</string>
+
+    <string name="currency_philippine_peso">필리핀 페소</string>
+
+    <string name="currency_pakistani_rupee">파키스탄 루피</string>
+
+    <string name="currency_polish_zloty">폴란드 즐로티</string>
+
+    <string name="currency_russian_ruble">러시아 루블</string>
+
+    <string name="currency_saudi_riyal">사우디 리얄</string>
+
+    <string name="currency_swedish_krona">스웨덴 크로나</string>
+
+    <string name="currency_singapore_dollar">싱가포르 달러</string>
+
+    <string name="currency_thai_baht">태국 바트</string>
+
+    <string name="currency_turkish_lira">터키 리라</string>
+
+    <string name="currency_new_taiwan_dollar">신대만 달러</string>
+
+    <string name="currency_ukrainian_hryvnia">우크라이나 그리브나</string>
+
+    <string name="currency_united_states_dollar">미국 달러</string>
+
+    <string name="currency_south_african_rand">남아프리카 랜드</string>
+
+    <string name="currency_gold">금</string>
+
+    <string name="currency_silver">은</string>
+
+</resources>

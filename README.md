@@ -56,8 +56,7 @@
 - Jetpack compose
 - Datastore, Room Persistence Library
 - Koin DI
-- Retrofit
-- WorkManager
+- Ktor
 - Kotlin Flows, Coroutines
 - Clean architecture and MVVM pattern
 - Testing : JUnit and Mockito

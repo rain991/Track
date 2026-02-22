@@ -1,14 +1,26 @@
 *.iml
-.gradle
-/local.properties
-/.idea
 .DS_Store
-/build
-/captures
-.externalNativeBuild
-.cxx
-.apk
-.aab
+
+# Gradle / Kotlin build outputs and caches
+.gradle/
+.kotlin/
+**/build/
+
+# Android / IntelliJ local files
+/.idea/
 local.properties
+/captures/
+.externalNativeBuild/
+.cxx/
+*.apk
+*.aab
+
+# Local-only secrets / machine config
 gradle.properties
 CurrencyAPI.kt
+iosApp/Config/Secrets.xcconfig
+
+# Xcode user-specific files
+**/xcuserdata/
+**/*.xcuserstate
+iosApp/iosApp.xcodeproj/project.xcworkspace/xcshareddata/WorkspaceSettings.xcsettings

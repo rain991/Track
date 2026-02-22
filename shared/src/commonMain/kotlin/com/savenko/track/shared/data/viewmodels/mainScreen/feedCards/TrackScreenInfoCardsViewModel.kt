@@ -1,0 +1,102 @@
+package com.savenko.track.shared.data.viewmodels.mainScreen.feedCards
+
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
+import com.savenko.track.shared.data.other.constants.CURRENCY_DEFAULT
+import com.savenko.track.shared.data.other.converters.dates.startOfMonth
+import com.savenko.track.shared.domain.models.currency.Currency
+import com.savenko.track.shared.domain.repository.currencies.CurrenciesPreferenceRepository
+import com.savenko.track.shared.domain.repository.expenses.ExpensesCoreRepository
+import com.savenko.track.shared.domain.repository.incomes.IncomeCoreRepository
+import com.savenko.track.shared.presentation.screens.states.core.mainScreen.TrackInfoCardsState
+import kotlinx.coroutines.CoroutineStart
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
+import kotlinx.datetime.TimeZone
+import kotlin.time.Clock
+
+/**
+ * Provides state for [TrackScreenInfoCards](com.savenko.track.presentation.screens.screenComponents.mainScreenRelated.mainScreenInfoCards.TrackScreenInfoCards)
+ */
+class TrackScreenInfoCardsViewModel(
+    private val expensesCoreRepositoryImpl: ExpensesCoreRepository,
+    private val incomeCoreRepositoryImpl: IncomeCoreRepository,
+    private val currenciesPreferenceRepositoryImpl: CurrenciesPreferenceRepository
+) : ViewModel() {
+    private val _cardsState = MutableStateFlow(
+        TrackInfoCardsState(
+            preferableCurrency = CURRENCY_DEFAULT,
+            currentMonthExpensesCount = 0,
+            currentMonthExpensesSum = 0.0f,
+            currentMonthIncomesSum = 0.0f,
+            currentMonthIncomesCount = 0
+        )
+    )
+    val cardsState = _cardsState.asStateFlow()
+
+    suspend fun initializeValues() {
+        val currentTimeZone = TimeZone.currentSystemDefault()
+        val currentMoment = Clock.System.now()
+        val startOfMonth = startOfMonth(currentMoment, currentTimeZone)
+        viewModelScope.launch(start = CoroutineStart.DEFAULT) {
+            launch {
+                expensesCoreRepositoryImpl.getCurrentMonthSumOfExpense().collect {
+                    setCurrentMonthExpensesSum(it)
+                }
+            }
+            launch {
+                currenciesPreferenceRepositoryImpl.getPreferableCurrency().collect {
+                    setPreferableCurrency(it)
+                }
+            }
+            launch {
+                expensesCoreRepositoryImpl.getCountOfExpensesInSpan(
+                    startDate = startOfMonth,
+                    endDate = currentMoment
+                ).collect {
+                    setCurrentMonthExpensesCount(it)
+                }
+
+            }
+            launch {
+                incomeCoreRepositoryImpl.getSumOfIncomesInTimeSpan(
+                    startOfSpan = startOfMonth,
+                    endOfSpan = currentMoment
+                ).collect {
+                    setCurrentMonthIncomesSum(it)
+                }
+            }
+            launch {
+                incomeCoreRepositoryImpl.getCountOfIncomesInSpan(
+                    startDate = startOfMonth,
+                    endDate = currentMoment
+                ).collect {
+                    setCurrentMonthIncomesCount(it)
+                }
+
+            }
+        }
+    }
+
+    private fun setPreferableCurrency(value: Currency) {
+        _cardsState.update { _cardsState.value.copy(preferableCurrency = value) }
+    }
+
+    private fun setCurrentMonthExpensesCount(value: Int) {
+        _cardsState.update { _cardsState.value.copy(currentMonthExpensesCount = value) }
+    }
+
+    private fun setCurrentMonthExpensesSum(value: Float) {
+        _cardsState.update { _cardsState.value.copy(currentMonthExpensesSum = value) }
+    }
+
+    private fun setCurrentMonthIncomesSum(value: Float) {
+        _cardsState.update { _cardsState.value.copy(currentMonthIncomesSum = value) }
+    }
+
+    private fun setCurrentMonthIncomesCount(value: Int) {
+        _cardsState.update { _cardsState.value.copy(currentMonthIncomesCount = value) }
+    }
+}

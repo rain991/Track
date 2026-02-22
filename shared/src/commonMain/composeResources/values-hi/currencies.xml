@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="currency_uae_dirham">यूएई दिरहम</string>
+
+    <string name="currency_argentine_peso">अर्जेंटीनी पेसो</string>
+
+    <string name="currency_australian_dollar">ऑस्ट्रेलियाई डॉलर</string>
+
+    <string name="currency_brazilian_real">ब्राजीली रियल</string>
+
+    <string name="currency_canadian_dollar">कैनेडियन डॉलर</string>
+
+    <string name="currency_swiss_franc">स्विस फ़्रैंक</string>
+
+    <string name="currency_chilean_peso">चिली पेसो</string>
+
+    <string name="currency_chinese_yuan">चीनी युवान</string>
+
+    <string name="currency_colombian_peso">कोलम्बियाई पेसो</string>
+
+    <string name="currency_czech_koruna">चेक कोरुना</string>
+
+    <string name="currency_danish_krone">डेनिश क्रोन</string>
+
+    <string name="currency_egyptian_pound">मिस्री पाउंड</string>
+
+    <string name="currency_euro">यूरो</string>
+
+    <string name="currency_british_pound_sterling">ब्रिटिश पाउंड स्टर्लिंग</string>
+
+    <string name="currency_hong_kong_dollar">हांगकांग का डॉलर</string>
+
+    <string name="currency_hungarian_forint">हंगेरियन फ़ोरिंट</string>
+
+    <string name="currency_indonesian_rupiah">इंडोनेशियाई रुपिया</string>
+
+    <string name="currency_israeli_new_shekel">इजराइली नई शेकेल</string>
+
+    <string name="currency_indian_rupee">भारतीय रुपया</string>
+
+    <string name="currency_japanese_yen">जापानी येन</string>
+
+    <string name="currency_south_korean_won">दक्षिण कोरियाई वोन</string>
+
+    <string name="currency_mexican_peso">मैक्सिकन पेसो</string>
+
+    <string name="currency_malaysian_ringgit">मलेशियाई रिंग्गित</string>
+
+    <string name="currency_nigerian_naira">नाइजीरियाई नाइरा</string>
+
+    <string name="currency_norwegian_krone">नॉर्वेजियन क्रोन</string>
+
+    <string name="currency_new_zealand_dollar">न्यूज़ीलैंड डॉलर</string>
+
+    <string name="currency_peruvian_sol">पेरूवियन सोल</string>
+
+    <string name="currency_philippine_peso">फिलीपीनी पेसो</string>
+
+    <string name="currency_pakistani_rupee">पाकिस्तानी रुपया</string>
+
+    <string name="currency_polish_zloty">पोलिश ज़्लोटी</string>
+
+    <string name="currency_russian_ruble">रूसी रूबल</string>
+
+    <string name="currency_saudi_riyal">सऊदी रियाल</string>
+
+    <string name="currency_swedish_krona">स्वीडिश क्रोना</string>
+
+    <string name="currency_singapore_dollar">सिंगापुर डॉलर</string>
+
+    <string name="currency_thai_baht">थाई बाहत</string>
+
+    <string name="currency_turkish_lira">तुर्की लीरा</string>
+
+    <string name="currency_new_taiwan_dollar">नया ताइवान डॉलर</string>
+
+    <string name="currency_ukrainian_hryvnia">यूक्रेनी रिव्निया</string>
+
+    <string name="currency_united_states_dollar">यूनाइटेड स्टेट का डॉलर</string>
+
+    <string name="currency_south_african_rand">दक्षिण अफ़्रीकी रैंड</string>
+
+    <string name="currency_gold">सोना</string>
+
+    <string name="currency_silver">चाँदी</string>
+
+</resources>

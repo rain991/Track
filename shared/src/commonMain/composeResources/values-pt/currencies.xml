@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?><resources>
+
+    <string name="currency_uae_dirham">Dirham dos Emirados Árabes Unidos</string>
+
+    <string name="currency_argentine_peso">Peso argentino</string>
+
+    <string name="currency_australian_dollar">Dólar australiano</string>
+
+    <string name="currency_brazilian_real">Real Brasileiro</string>
+
+    <string name="currency_canadian_dollar">Dólar canadense</string>
+
+    <string name="currency_swiss_franc">Franco Suíço</string>
+
+    <string name="currency_chilean_peso">Peso chileno</string>
+
+    <string name="currency_chinese_yuan">Yuan chinês</string>
+
+    <string name="currency_colombian_peso">Peso Colombiano</string>
+
+    <string name="currency_czech_koruna">Coroa Checa</string>
+
+    <string name="currency_danish_krone">Coroa dinamarquesa</string>
+
+    <string name="currency_egyptian_pound">Libra egípcia</string>
+
+    <string name="currency_euro">Euro</string>
+
+    <string name="currency_british_pound_sterling">Libra esterlina britânica</string>
+
+    <string name="currency_hong_kong_dollar">Dólar de Hong Kong</string>
+
+    <string name="currency_hungarian_forint">Forint húngaro</string>
+
+    <string name="currency_indonesian_rupiah">Rupia indonésia</string>
+
+    <string name="currency_israeli_new_shekel">Novo Shekel Israelense</string>
+
+    <string name="currency_indian_rupee">Rupia indiana</string>
+
+    <string name="currency_japanese_yen">Iene japonês</string>
+
+    <string name="currency_south_korean_won">Won sul-coreano</string>
+
+    <string name="currency_mexican_peso">Peso mexicano</string>
+
+    <string name="currency_malaysian_ringgit">Ringgit da Malásia</string>
+
+    <string name="currency_nigerian_naira">Naira nigeriana</string>
+
+    <string name="currency_norwegian_krone">Coroa norueguesa</string>
+
+    <string name="currency_new_zealand_dollar">Dólar da Nova Zelândia</string>
+
+    <string name="currency_peruvian_sol">Sol peruano</string>
+
+    <string name="currency_philippine_peso">Peso filipino</string>
+
+    <string name="currency_pakistani_rupee">Rupia paquistanesa</string>
+
+    <string name="currency_polish_zloty">Zloty polonês</string>
+
+    <string name="currency_russian_ruble">Rublo russo</string>
+
+    <string name="currency_saudi_riyal">Rial saudita</string>
+
+    <string name="currency_swedish_krona">Coroa sueca</string>
+
+    <string name="currency_singapore_dollar">Dólar de Singapura</string>
+
+    <string name="currency_thai_baht">Baht tailandês</string>
+
+    <string name="currency_turkish_lira">Lira turca</string>
+
+    <string name="currency_new_taiwan_dollar">Novo Dólar Taiwanês</string>
+
+    <string name="currency_ukrainian_hryvnia">Hryvnia Ucraniana</string>
+
+    <string name="currency_united_states_dollar">Dólar dos Estados Unidos</string>
+
+    <string name="currency_south_african_rand">Rand sul-africano</string>
+
+    <string name="currency_gold">Ouro</string>
+
+    <string name="currency_silver">Prata</string>
+
+</resources>

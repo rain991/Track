@@ -1,0 +1,37 @@
+package com.savenko.track.shared.data.implementations.incomes.incomeItem
+
+import com.savenko.track.shared.data.database.incomeRelated.IncomeDao
+import com.savenko.track.shared.domain.models.incomes.IncomeCategory
+import com.savenko.track.shared.domain.models.incomes.IncomeItem
+import com.savenko.track.shared.domain.repository.incomes.IncomeListRepository
+import kotlinx.coroutines.flow.Flow
+
+class IncomeListRepositoryImpl(private val incomeDao: IncomeDao) : IncomeListRepository {
+    override fun getIncomesList(): Flow<List<IncomeItem>> {
+        return incomeDao.getAllIncomes()
+    }
+
+    override fun getSortedIncomesListDateAsc(): Flow<List<IncomeItem>> {
+        return incomeDao.getAllWithDateAsc()
+    }
+
+    override fun getSortedIncomesListDateDesc(): Flow<List<IncomeItem>> {
+        return incomeDao.getAllWithDateDesc()
+    }
+
+    override fun getIncomesByCategoryInTimeSpan(
+        startOfSpan: Long,
+        endOfSpan: Long,
+        category: IncomeCategory
+    ): Flow<List<IncomeItem>> {
+        return incomeDao.findIncomesInTimeSpanByCategoriesIds(
+            start = startOfSpan,
+            end = endOfSpan,
+            categoriesIds = listOf(category.categoryId)
+        )
+    }
+
+    override fun getIncomesInTimeSpanDateDesc(startOfSpan: Long, endOfSpan: Long): Flow<List<IncomeItem>> {
+        return incomeDao.getIncomesInTimeSpanDateDesc(start = startOfSpan, end = endOfSpan)
+    }
+}
