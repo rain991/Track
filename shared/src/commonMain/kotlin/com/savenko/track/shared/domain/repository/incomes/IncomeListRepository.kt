@@ -1,0 +1,13 @@
+package com.savenko.track.shared.domain.repository.incomes
+
+import com.savenko.track.shared.domain.models.incomes.IncomeCategory
+import com.savenko.track.shared.domain.models.incomes.IncomeItem
+import kotlinx.coroutines.flow.Flow
+
+interface IncomeListRepository {
+    fun getIncomesList(): Flow<List<IncomeItem>>
+    fun getSortedIncomesListDateAsc(): Flow<List<IncomeItem>>
+    fun getSortedIncomesListDateDesc(): Flow<List<IncomeItem>>
+    fun getIncomesByCategoryInTimeSpan(startOfSpan: Long, endOfSpan: Long, category: IncomeCategory): Flow<List<IncomeItem>>
+    fun getIncomesInTimeSpanDateDesc(startOfSpan: Long, endOfSpan: Long): Flow<List<IncomeItem>>
+}

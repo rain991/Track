@@ -16,3 +16,4 @@ dependencyResolutionManagement {
 
 rootProject.name = "Track"
 include(":app")
+include(":shared")

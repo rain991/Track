@@ -1,19 +1,29 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import java.util.Properties
 
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
-    id("com.google.devtools.ksp")
-    id("de.mannodermaus.android-junit5") version "1.11.0.0"
+    //id("com.google.devtools.ksp")
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
-val currenciesApiKey : String = project.findProperty("CURRENCIES_API_KEY") as String? ?: ""
+val localProperties = Properties().apply {
+    val file = rootProject.file("local.properties")
+    if (file.exists()) {
+        file.inputStream().use(::load)
+    }
+}
+
+val currenciesApiKey: String = providers.gradleProperty("CURRENCIES_API_KEY").orNull
+    ?: System.getenv("CURRENCIES_API_KEY")
+    ?: localProperties.getProperty("CURRENCIES_API_KEY")
+    ?: ""
 
 android {
     android.buildFeatures.buildConfig = true
     namespace = "com.savenko.track"
-    compileSdk = 35
+    compileSdk = 36
 
 
     kotlin{
@@ -23,7 +33,6 @@ android {
     }
 
     defaultConfig {
-        testInstrumentationRunnerArguments += mapOf("runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder")
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 35
@@ -70,42 +79,27 @@ android {
 
 
 dependencies {
+    implementation(project(":shared"))
+
     implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.lifecycle.runtime)
-    implementation(libs.androidx.datastore)
-    implementation(libs.androidx.room.ktx)
+    //implementation(libs.androidx.room.ktx)
     implementation(libs.vico.compose)
     implementation(libs.koin.core)
     implementation(libs.koin.android)
     implementation(libs.koin.compose)
-    implementation(libs.koin.workmanager)
-    implementation(libs.retrofit.core)
-    implementation(libs.retrofit.gson)
     implementation(platform(libs.androidx.compose.bom))
-    implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.graphics)
     implementation(libs.androidx.compose.ui.preview)
     implementation(libs.androidx.material3)
     implementation(libs.androidx.splashscreen)
-    implementation(libs.androidx.work.runtime)
     implementation(libs.kotlinx.datetime)
 
-    ksp(libs.androidx.room.compiler)
+    //ksp(libs.androidx.room.compiler)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
 
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(libs.junit4)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.coroutines.test)
-
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testRuntimeOnly(libs.junit.vintage)
-
-    androidTestImplementation(libs.androidx.work.testing)
     androidTestImplementation(libs.espresso.core)
 }

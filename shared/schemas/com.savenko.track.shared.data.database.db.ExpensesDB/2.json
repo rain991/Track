@@ -1,0 +1,561 @@
+{
+  "formatVersion": 1,
+  "database": {
+    "version": 2,
+    "identityHash": "6af77a1130d0d83c5f1f8fe3a8fd9bcf",
+    "entities": [
+      {
+        "tableName": "expenses",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `currencyTicker` TEXT NOT NULL, `value` REAL NOT NULL, `note` TEXT NOT NULL, `date` INTEGER NOT NULL, `disabled` INTEGER NOT NULL, `categoryId` INTEGER NOT NULL, FOREIGN KEY(`categoryId`) REFERENCES `expense_categories`(`categoryId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`currencyTicker`) REFERENCES `currency`(`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currencyTicker",
+            "columnName": "currencyTicker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "disabled",
+            "columnName": "disabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "categoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "expense_categories",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "categoryId"
+            ],
+            "referencedColumns": [
+              "categoryId"
+            ]
+          },
+          {
+            "table": "currency",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "currencyTicker"
+            ],
+            "referencedColumns": [
+              "ticker"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "expense_categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`categoryId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `note` TEXT NOT NULL, `colorId` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "categoryId",
+            "columnName": "categoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "colorId",
+            "columnName": "colorId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "categoryId"
+          ]
+        }
+      },
+      {
+        "tableName": "currency",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`ticker` TEXT NOT NULL, `name` TEXT NOT NULL, `type` TEXT NOT NULL, `rate` REAL, PRIMARY KEY(`ticker`))",
+        "fields": [
+          {
+            "fieldPath": "ticker",
+            "columnName": "ticker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "type",
+            "columnName": "type",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "rate",
+            "columnName": "rate",
+            "affinity": "REAL"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "ticker"
+          ]
+        }
+      },
+      {
+        "tableName": "currenciesPreference",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER NOT NULL, `preferableCurrency` TEXT NOT NULL, `firstAdditionalCurrency` TEXT, `secondAdditionalCurrency` TEXT, `thirdAdditionalCurrency` TEXT, `fourthAdditionalCurrency` TEXT, PRIMARY KEY(`id`), FOREIGN KEY(`preferableCurrency`) REFERENCES `currency`(`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`firstAdditionalCurrency`) REFERENCES `currency`(`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`secondAdditionalCurrency`) REFERENCES `currency`(`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`thirdAdditionalCurrency`) REFERENCES `currency`(`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`fourthAdditionalCurrency`) REFERENCES `currency`(`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "preferableCurrency",
+            "columnName": "preferableCurrency",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstAdditionalCurrency",
+            "columnName": "firstAdditionalCurrency",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "secondAdditionalCurrency",
+            "columnName": "secondAdditionalCurrency",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "thirdAdditionalCurrency",
+            "columnName": "thirdAdditionalCurrency",
+            "affinity": "TEXT"
+          },
+          {
+            "fieldPath": "fourthAdditionalCurrency",
+            "columnName": "fourthAdditionalCurrency",
+            "affinity": "TEXT"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": false,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "currency",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "preferableCurrency"
+            ],
+            "referencedColumns": [
+              "ticker"
+            ]
+          },
+          {
+            "table": "currency",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "firstAdditionalCurrency"
+            ],
+            "referencedColumns": [
+              "ticker"
+            ]
+          },
+          {
+            "table": "currency",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "secondAdditionalCurrency"
+            ],
+            "referencedColumns": [
+              "ticker"
+            ]
+          },
+          {
+            "table": "currency",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "thirdAdditionalCurrency"
+            ],
+            "referencedColumns": [
+              "ticker"
+            ]
+          },
+          {
+            "table": "currency",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "fourthAdditionalCurrency"
+            ],
+            "referencedColumns": [
+              "ticker"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "incomes",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `currencyTicker` TEXT NOT NULL, `categoryId` INTEGER NOT NULL, `value` REAL NOT NULL, `note` TEXT NOT NULL, `date` INTEGER NOT NULL, `disabled` INTEGER NOT NULL, FOREIGN KEY(`categoryId`) REFERENCES `income_categories`(`categoryId`) ON UPDATE CASCADE ON DELETE CASCADE , FOREIGN KEY(`currencyTicker`) REFERENCES `currency`(`ticker`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "currencyTicker",
+            "columnName": "currencyTicker",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "categoryId",
+            "columnName": "categoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "date",
+            "columnName": "date",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "disabled",
+            "columnName": "disabled",
+            "affinity": "INTEGER",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "income_categories",
+            "onDelete": "CASCADE",
+            "onUpdate": "CASCADE",
+            "columns": [
+              "categoryId"
+            ],
+            "referencedColumns": [
+              "categoryId"
+            ]
+          },
+          {
+            "table": "currency",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "currencyTicker"
+            ],
+            "referencedColumns": [
+              "ticker"
+            ]
+          }
+        ]
+      },
+      {
+        "tableName": "income_categories",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`categoryId` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `note` TEXT NOT NULL, `colorId` TEXT NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "categoryId",
+            "columnName": "categoryId",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "note",
+            "columnName": "note",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "colorId",
+            "columnName": "colorId",
+            "affinity": "TEXT",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "categoryId"
+          ]
+        }
+      },
+      {
+        "tableName": "savings",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `goal` REAL NOT NULL, `completed` INTEGER NOT NULL, `startDate` INTEGER NOT NULL, `endDate` INTEGER, `label` TEXT NOT NULL, `value` REAL NOT NULL)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "goal",
+            "columnName": "goal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completed",
+            "columnName": "completed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startDate",
+            "columnName": "startDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endDate",
+            "columnName": "endDate",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "label",
+            "columnName": "label",
+            "affinity": "TEXT",
+            "notNull": true
+          },
+          {
+            "fieldPath": "value",
+            "columnName": "value",
+            "affinity": "REAL",
+            "notNull": true
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "incomePlans",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `goal` REAL NOT NULL, `completed` INTEGER NOT NULL, `startDate` INTEGER NOT NULL, `endDate` INTEGER)",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "goal",
+            "columnName": "goal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completed",
+            "columnName": "completed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startDate",
+            "columnName": "startDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endDate",
+            "columnName": "endDate",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        }
+      },
+      {
+        "tableName": "expenseLimits",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, `goal` REAL NOT NULL, `completed` INTEGER NOT NULL, `startDate` INTEGER NOT NULL, `endDate` INTEGER, `isEachMonth` INTEGER, `isRelatedToAllCategories` INTEGER NOT NULL, `firstRelatedCategoryId` INTEGER, `secondRelatedCategoryId` INTEGER, `thirdRelatedCategoryId` INTEGER, FOREIGN KEY(`firstRelatedCategoryId`) REFERENCES `expense_categories`(`categoryId`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`secondRelatedCategoryId`) REFERENCES `expense_categories`(`categoryId`) ON UPDATE NO ACTION ON DELETE NO ACTION , FOREIGN KEY(`thirdRelatedCategoryId`) REFERENCES `expense_categories`(`categoryId`) ON UPDATE NO ACTION ON DELETE NO ACTION )",
+        "fields": [
+          {
+            "fieldPath": "id",
+            "columnName": "id",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "goal",
+            "columnName": "goal",
+            "affinity": "REAL",
+            "notNull": true
+          },
+          {
+            "fieldPath": "completed",
+            "columnName": "completed",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "startDate",
+            "columnName": "startDate",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "endDate",
+            "columnName": "endDate",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isEachMonth",
+            "columnName": "isEachMonth",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "isRelatedToAllCategories",
+            "columnName": "isRelatedToAllCategories",
+            "affinity": "INTEGER",
+            "notNull": true
+          },
+          {
+            "fieldPath": "firstRelatedCategoryId",
+            "columnName": "firstRelatedCategoryId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "secondRelatedCategoryId",
+            "columnName": "secondRelatedCategoryId",
+            "affinity": "INTEGER"
+          },
+          {
+            "fieldPath": "thirdRelatedCategoryId",
+            "columnName": "thirdRelatedCategoryId",
+            "affinity": "INTEGER"
+          }
+        ],
+        "primaryKey": {
+          "autoGenerate": true,
+          "columnNames": [
+            "id"
+          ]
+        },
+        "foreignKeys": [
+          {
+            "table": "expense_categories",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "firstRelatedCategoryId"
+            ],
+            "referencedColumns": [
+              "categoryId"
+            ]
+          },
+          {
+            "table": "expense_categories",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "secondRelatedCategoryId"
+            ],
+            "referencedColumns": [
+              "categoryId"
+            ]
+          },
+          {
+            "table": "expense_categories",
+            "onDelete": "NO ACTION",
+            "onUpdate": "NO ACTION",
+            "columns": [
+              "thirdRelatedCategoryId"
+            ],
+            "referencedColumns": [
+              "categoryId"
+            ]
+          }
+        ]
+      }
+    ],
+    "setupQueries": [
+      "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, '6af77a1130d0d83c5f1f8fe3a8fd9bcf')"
+    ]
+  }
+}
