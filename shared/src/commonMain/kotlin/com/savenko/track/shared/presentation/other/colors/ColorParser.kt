@@ -9,5 +9,6 @@ fun parseColor(hexColor: String): Color {
         8 -> normalized
         else -> "FF000000"
     }
-    return Color(argb.toULong(16))
+    val colorLong = argb.toLongOrNull(16) ?: 0xFF000000
+    return Color(colorLong)
 }
