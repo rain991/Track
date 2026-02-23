@@ -82,21 +82,10 @@ dependencies {
     implementation(project(":shared"))
 
     implementation(libs.androidx.core.ktx)
-    //implementation(libs.androidx.room.ktx)
-    implementation(libs.vico.compose)
-    implementation(libs.koin.core)
     implementation(libs.koin.android)
-    implementation(libs.koin.compose)
     implementation(platform(libs.androidx.compose.bom))
     implementation(libs.androidx.activity.compose)
-    implementation(libs.androidx.compose.ui)
-    implementation(libs.androidx.compose.ui.graphics)
-    implementation(libs.androidx.compose.ui.preview)
-    implementation(libs.androidx.material3)
     implementation(libs.androidx.splashscreen)
-    implementation(libs.kotlinx.datetime)
-
-    //ksp(libs.androidx.room.compiler)
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
