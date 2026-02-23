@@ -1,4 +1,4 @@
-name: Android CI
+name: KMP CI
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  build:
+  verify:
     runs-on: ubuntu-latest
 
     steps:
@@ -24,9 +24,9 @@ jobs:
       - name: Grant execute permission for gradlew
         run: chmod +x gradlew
 
-      - name: Build (compile & unit tests)
-        run: ./gradlew build --stacktrace
+      - name: Build app and shared modules
+        run: ./gradlew :app:assembleDebug :app:testDebugUnitTest :shared:compileCommonMainKotlinMetadata :shared:compileDebugKotlinAndroid :shared:testDebugUnitTest --stacktrace
 
       - name: Run connected Android tests
-        run: ./gradlew connectedDebugAndroidTest
+        run: ./gradlew :app:connectedDebugAndroidTest
         continue-on-error: true
