@@ -5,7 +5,6 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     //id("com.google.devtools.ksp")
-    id("de.mannodermaus.android-junit5") version "1.11.0.0"
     id("org.jetbrains.kotlin.plugin.compose")
 }
 
@@ -34,7 +33,6 @@ android {
     }
 
     defaultConfig {
-        testInstrumentationRunnerArguments += mapOf("runnerBuilder" to "de.mannodermaus.junit5.AndroidJUnit5Builder")
         applicationId = "com.savenko.track"
         minSdk = 26
         targetSdk = 35
@@ -102,15 +100,6 @@ dependencies {
 
     debugImplementation(libs.androidx.compose.ui.tooling)
     debugImplementation(libs.androidx.compose.ui.test.manifest)
-
-    testImplementation(libs.junit.jupiter.api)
-    testImplementation(libs.junit.jupiter.params)
-    testImplementation(libs.junit4)
-    testImplementation(libs.mockito.kotlin)
-    testImplementation(libs.coroutines.test)
-
-    testRuntimeOnly(libs.junit.jupiter.engine)
-    testRuntimeOnly(libs.junit.vintage)
 
     androidTestImplementation(libs.espresso.core)
 }

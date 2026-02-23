@@ -66,9 +66,15 @@ kotlin {
 
         commonTest.dependencies {
             implementation(kotlin("test"))
+            implementation(libs.coroutines.test)
         }
         androidMain.dependencies {
             implementation(libs.ktor.client.android)
+        }
+        androidUnitTest.dependencies {
+            implementation(libs.junit4)
+            implementation(libs.mockito.kotlin)
+            implementation(libs.coroutines.test)
         }
         iosMain.dependencies {
             implementation(libs.ktor.client.darwin)
@@ -97,6 +103,12 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
+    }
+
+    testOptions {
+        unitTests.all {
+            it.jvmArgs("-Dnet.bytebuddy.experimental=true")
+        }
     }
 }
 
