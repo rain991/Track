@@ -22,6 +22,34 @@ val currenciesApiKey: String = providers.gradleProperty("CURRENCIES_API_KEY").or
     ?: System.getenv("CURRENCIES_API_KEY")
     ?: localProperties.getProperty("CURRENCIES_API_KEY")
     ?: ""
+val generatedConfigDir = layout.buildDirectory.dir("generated/source/runtimeConfig/commonMain/kotlin")
+val escapedCurrenciesApiKey = currenciesApiKey
+    .replace("\\", "\\\\")
+    .replace("\"", "\\\"")
+val generateRuntimeConfig by tasks.registering {
+    outputs.dir(generatedConfigDir)
+    doLast {
+        val outputFile = generatedConfigDir.get()
+            .file("com/savenko/track/shared/data/ktor/GeneratedRuntimeConfig.kt")
+            .asFile
+        outputFile.parentFile.mkdirs()
+        outputFile.writeText(
+            """
+            package com.savenko.track.shared.data.ktor
+
+            internal object GeneratedRuntimeConfig {
+                const val CURRENCIES_API_KEY: String = "$escapedCurrenciesApiKey"
+            }
+            """.trimIndent() + "\n"
+        )
+    }
+}
+
+tasks.matching {
+    it.name.startsWith("compileKotlin") || it.name.startsWith("kspKotlin")
+}.configureEach {
+    dependsOn(generateRuntimeConfig)
+}
 
 kotlin {
     androidTarget {
@@ -42,18 +70,21 @@ kotlin {
     }
 
     sourceSets {
+        commonMain {
+            kotlin.srcDir(generatedConfigDir)
+        }
         commonMain.dependencies {
+            api(libs.androidx.lifecycle.viewmodel)
+            api(libs.koin.core)
+            api(libs.koin.compose)
+            api(libs.koin.compose.viewmodel.navigation)
+
             implementation(compose.ui)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.materialIconsExtended)
             implementation(compose.material3)
-            api(libs.androidx.lifecycle.viewmodel)
-            api(libs.koin.core)
-            api(libs.koin.compose)
-            api(libs.koin.compose.viewmodel.navigation)
             implementation(compose.components.resources)
-
             implementation(libs.androidx.datastore)
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.datetime)
@@ -62,6 +93,7 @@ kotlin {
             implementation(libs.ktor.serialization.kotlinx.json)
             implementation(libs.androidx.room.runtime)
             implementation(libs.androidx.sqlite.bundled)
+            implementation(libs.kermit)
         }
 
         commonTest.dependencies {

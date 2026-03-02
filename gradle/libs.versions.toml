@@ -27,10 +27,9 @@ koin = "4.1.1"
 ktor = "3.4.0"
 
 # Third-party
-vico = "2.0.0-alpha.22"
+kermit = "2.0.4"
 
 # Testing
-junit5 = "5.11.0"
 junit4 = "4.13.2"
 mockitoKotlin = "5.3.1"
 espresso = "3.6.1"
@@ -52,14 +51,8 @@ androidx-room-compiler = { module = "androidx.room:room-compiler", version.ref =
 navigation-compose = { module = "org.jetbrains.androidx.navigation:navigation-compose", version.ref = "navigationCompose" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "activityCompose" }
 androidx-compose-bom = { module = "androidx.compose:compose-bom", version.ref = "composeBom" }
-androidx-compose-ui = { module = "androidx.compose.ui:ui" }
-androidx-compose-ui-graphics = { module = "androidx.compose.ui:ui-graphics" }
-androidx-compose-ui-preview = { module = "androidx.compose.ui:ui-tooling-preview" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling" }
 androidx-compose-ui-test-manifest = { module = "androidx.compose.ui:ui-test-manifest" }
-androidx-material3 = { module = "androidx.compose.material3:material3", version.ref = "material3" }
-androidx-material = { module = "androidx.compose.material:material" }
-androidx-material-icons-extended = { module = "androidx.compose.material:material-icons-extended" }
 
 # Koin
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
@@ -74,21 +67,17 @@ ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negoti
 ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
 ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktor" }
 
-# Charts
-vico-compose = { module = "com.patrykandpatrick.vico:compose-m3", version.ref = "vico" }
-
 # Splash
 androidx-splashscreen = { module = "androidx.core:core-splashscreen", version.ref = "splashscreen" }
 
 # Testing
-junit-jupiter-api = { module = "org.junit.jupiter:junit-jupiter-api", version.ref = "junit5" }
-junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit5" }
-junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit5" }
 junit4 = { module = "junit:junit", version.ref = "junit4" }
-junit-vintage = { module = "org.junit.vintage:junit-vintage-engine", version.ref = "junit5" }
 mockito-kotlin = { module = "org.mockito.kotlin:mockito-kotlin", version.ref = "mockitoKotlin" }
 espresso-core = { module = "androidx.test.espresso:espresso-core", version.ref = "espresso" }
 coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", version.ref = "coroutinesTest" }
+
+# Other
+kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

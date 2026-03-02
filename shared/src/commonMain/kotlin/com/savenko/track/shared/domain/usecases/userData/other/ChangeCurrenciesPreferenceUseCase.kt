@@ -1,6 +1,7 @@
 package com.savenko.track.shared.domain.usecases.userData.other
 
 import com.savenko.track.shared.data.core.CurrenciesRatesHandler
+import com.savenko.track.shared.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.savenko.track.shared.data.other.dataStore.DataStoreManager
 import com.savenko.track.shared.domain.models.currency.Currency
 import com.savenko.track.shared.domain.repository.currencies.CurrenciesPreferenceRepository
@@ -27,13 +28,16 @@ class ChangeCurrenciesPreferenceUseCase(
         if (firstAdditionalCurrency != targetCurrency && secondAdditionalCurrency != targetCurrency &&
             thirdAdditionalCurrency != targetCurrency && fourthAdditionalCurrency != targetCurrency
         ) {
+            val convertedBudget = currenciesRatesHandler.convertValueToAnyCurrency(
+                dataStoreManager.budgetFlow.first(),
+                currentPreferableCurrency,
+                targetCurrency
+            )
+            if (convertedBudget == INCORRECT_CONVERSION_RESULT) {
+                return false
+            }
             dataStoreManager.setPreference(
-                key = DataStoreManager.BUDGET, value =
-                currenciesRatesHandler.convertValueToAnyCurrency(
-                    dataStoreManager.budgetFlow.first(),
-                    currentPreferableCurrency,
-                    targetCurrency
-                )
+                key = DataStoreManager.BUDGET, value = convertedBudget
             )
             ideaListRepositoryImpl.changePreferableCurrenciesOnIdeas(targetCurrency, currentPreferableCurrency)
             currenciesPreferenceRepositoryImpl.setPreferableCurrency(targetCurrency)

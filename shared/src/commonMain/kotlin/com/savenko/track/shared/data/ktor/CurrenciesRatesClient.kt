@@ -1,5 +1,6 @@
 package com.savenko.track.shared.data.ktor
 
+import co.touchlab.kermit.Logger
 import com.savenko.track.shared.data.other.constants.ACCEPTABLE_EMPTY_CURRENCIES_RATES
 import com.savenko.track.shared.data.other.constants.CURRENCY_CALL_URL_DEFAULT
 import com.savenko.track.shared.domain.repository.currencies.CurrencyListRepository
@@ -13,6 +14,7 @@ import kotlinx.coroutines.flow.first
 import kotlinx.serialization.json.Json
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
+import org.koin.ext.getFullName
 
 object CurrenciesRatesClient : KoinComponent {
     private val currencyListRepository: CurrencyListRepository by inject()
@@ -38,11 +40,18 @@ object CurrenciesRatesClient : KoinComponent {
 
     suspend fun fetchAndPersistRates(symbols: String) {
         val apiKey = CurrenciesApiKeyProvider.get().trim()
-        if (apiKey.isEmpty()) return
+        if (apiKey.isEmpty()) {
+            Logger.w(tag = TAG, messageString = "Empty currencies API key when fetching newest currencies rates.")
+            return
+        }
 
         val response = getLatestRates(apiKey = apiKey, symbols = symbols)
-        if (response.rates.isEmpty()) return
+        if (response.rates.isEmpty()){
+            Logger.w(tag = TAG, messageString = "Response with currencies rates was empty")
+            return
+        }
 
+        Logger.w(tag = TAG, messageString = "Request of currencies rates was successful")
         response.rates.forEach { (currency, rate) ->
             val parsedRate = rate.toDoubleOrNull() ?: return@forEach
             currencyListRepository.editCurrencyRate(
@@ -62,4 +71,6 @@ object CurrenciesRatesClient : KoinComponent {
             CurrencyResponse()
         }
     }
+
+    private const val TAG = "CurrenciesRatesClient"
 }
