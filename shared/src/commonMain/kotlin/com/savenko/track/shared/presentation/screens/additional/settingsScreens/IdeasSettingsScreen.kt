@@ -18,6 +18,8 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.savenko.track.shared.Platform
+import com.savenko.track.shared.PlatformTarget
 import com.savenko.track.shared.data.viewmodels.mainScreen.feed.AddToSavingIdeaDialogViewModel
 import com.savenko.track.shared.data.viewmodels.mainScreen.feed.NewIdeaDialogViewModel
 import com.savenko.track.shared.data.viewmodels.settingsScreen.ideas.IdeasSettingsScreenViewModel
@@ -42,7 +44,7 @@ fun IdeasSettingsScreen(navController: NavHostController) {
     val isNewIdeaDialogVisible = newIdeaDialogViewModel.isNewIdeaDialogVisible.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            SettingsSpecifiedScreenHeader(stringResource(Res.string.ideas)) {
+            SettingsSpecifiedScreenHeader(stringResource(Res.string.ideas), hasBackButton = Platform.type == PlatformTarget.Android) {
                 navController.navigate(Screen.MainScreen.route)
             }
         },

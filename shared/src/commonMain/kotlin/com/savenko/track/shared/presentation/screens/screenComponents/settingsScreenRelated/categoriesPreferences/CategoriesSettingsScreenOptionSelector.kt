@@ -43,7 +43,7 @@ fun CategoriesScreenOptionsSelector(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp).scale(0.94f)
+            .padding(8.dp)
     ) {
         Column(modifier = Modifier.padding(8.dp)) {
             Row(

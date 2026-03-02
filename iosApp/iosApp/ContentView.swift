@@ -11,7 +11,7 @@ import shared
 struct ContentView: View {
     var body: some View {
         ComposeRootViewController()
-            .ignoresSafeArea(.all)
+            .ignoresSafeArea(.container, edges: .bottom)
     }
 }
 

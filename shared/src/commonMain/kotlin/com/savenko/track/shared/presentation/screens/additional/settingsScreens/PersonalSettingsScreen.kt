@@ -11,15 +11,21 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.navigation.NavHostController
+import com.savenko.track.shared.Platform
+import com.savenko.track.shared.PlatformTarget
 import com.savenko.track.shared.presentation.screens.screenComponents.additional.PersonalSettingsScreenComponent
 import com.savenko.track.shared.presentation.components.screenRelated.SettingsSpecifiedScreenHeader
 import com.savenko.track.shared.presentation.navigation.Screen
 
 @Composable
 fun PersonalSettingsScreen(navController: NavHostController) {
-    Scaffold(modifier = Modifier.fillMaxSize(),
+    Scaffold(
+        modifier = Modifier.fillMaxSize(),
         topBar = {
-            SettingsSpecifiedScreenHeader(stringResource(Res.string.personal)) {
+            SettingsSpecifiedScreenHeader(
+                stringResource(Res.string.personal),
+                hasBackButton = Platform.type == PlatformTarget.Android
+            ) {
                 navController.navigate(Screen.MainScreen.route)
             }
         }

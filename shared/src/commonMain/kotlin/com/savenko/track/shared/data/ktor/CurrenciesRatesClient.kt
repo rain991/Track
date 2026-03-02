@@ -38,21 +38,28 @@ object CurrenciesRatesClient : KoinComponent {
 
     suspend fun fetchAndPersistRates(symbols: String) {
         val apiKey = CurrenciesApiKeyProvider.get().trim()
-        require(apiKey.isNotEmpty()) { "Currencies API key is missing." }
+        if (apiKey.isEmpty()) return
 
         val response = getLatestRates(apiKey = apiKey, symbols = symbols)
+        if (response.rates.isEmpty()) return
+
         response.rates.forEach { (currency, rate) ->
+            val parsedRate = rate.toDoubleOrNull() ?: return@forEach
             currencyListRepository.editCurrencyRate(
-                rate = (1.0 / rate.toDouble()),
+                rate = (1.0 / parsedRate),
                 currencyTicker = currency
             )
         }
     }
 
     private suspend fun getLatestRates(apiKey: String, symbols: String): CurrencyResponse {
-        return httpClient.get("$CURRENCY_CALL_URL_DEFAULT/v2.0/rates/latest") {
-            parameter("apikey", apiKey)
-            parameter("symbols", symbols)
-        }.body()
+        return runCatching {
+            httpClient.get("$CURRENCY_CALL_URL_DEFAULT/v2.0/rates/latest") {
+                parameter("apikey", apiKey)
+                parameter("symbols", symbols)
+            }.body<CurrencyResponse>()
+        }.getOrElse {
+            CurrencyResponse()
+        }
     }
 }

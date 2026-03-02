@@ -20,6 +20,11 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavHostController
 import com.savenko.track.shared.presentation.navigation.Screen
 
+/**
+ * Clickable links to user preferences screens like personal, ideas, currencies and categories preferences.
+ *
+ * Part of Track's settings screen.
+ */
 @Composable
 fun SettingsScreenAccountPreferences(modifier : Modifier, navHostController: NavHostController) {
     Column(modifier = modifier, verticalArrangement = Arrangement.spacedBy(8.dp)) {
@@ -32,7 +37,7 @@ fun SettingsScreenAccountPreferences(modifier : Modifier, navHostController: Nav
                 ),
                 color = MaterialTheme.colorScheme.onPrimary
             )
-        }
+         }
         SettingsLinkedRow(
             modifier = Modifier
                 .fillMaxWidth()

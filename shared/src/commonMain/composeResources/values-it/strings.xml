@@ -59,7 +59,7 @@
 
     <string name="empty_exp_lazyColumn_title">Non hai ancora aggiunto spese</string>
 
-    <string name="empty_exp_lazyColumn_additional1">Provalo utilizzando il pulsante nell\'angolo in basso a destra, è disponibile in ogni schermata dell\'app</string>
+    <string name="empty_exp_lazyColumn_additional1">Provalo utilizzando il pulsante nell'angolo in basso a destra, è disponibile in ogni schermata dell'app</string>
 
     <string name="account">Account</string>
 
@@ -85,7 +85,7 @@
 
     <string name="extra_currency_settings_screen">Valuta extra</string>
 
-    <string name="delete_latest_currency_settings_screen">Elimina l\'ultima valuta</string>
+    <string name="delete_latest_currency_settings_screen">Elimina l'ultima valuta</string>
 
     <string name="warning_message_idea_settings_screen">Nessuna idea trovata per i filtri specificati</string>
 
@@ -145,7 +145,7 @@
 
     <string name="second_notion_new_idea_card">Tipi di idee disponibili: risparmi, limiti di spesa e piani di reddito</string>
 
-    <string name="third_notion_new_idea_card">Le idee ti informeranno sui tuoi obiettivi nell\'app</string>
+    <string name="third_notion_new_idea_card">Le idee ti informeranno sui tuoi obiettivi nell'app</string>
 
     <string name="date">Data</string>
 
@@ -193,13 +193,13 @@
 
     <string name="income_categories_RentalIncome">Reddito da locazione</string>
 
-    <string name="income_categories_BusinessIncome">Reddito d\'impresa</string>
+    <string name="income_categories_BusinessIncome">Reddito d'impresa</string>
 
     <string name="income_categories_Dividends">Dividendi</string>
 
     <string name="income_categories_Grants">Sovvenzioni</string>
 
-    <string name="income_categories_Royalties">Diritti d\'autore</string>
+    <string name="income_categories_Royalties">Diritti d'autore</string>
 
     <string name="expense_limit">Limite di spesa</string>
 
@@ -291,11 +291,11 @@
 
     <string name="spent_main_track_screen">Speso</string>
 
-    <string name="scroll_up_CD">scorrere verso l\'alto</string>
+    <string name="scroll_up_CD">scorrere verso l'alto</string>
 
     <string name="budget_main_feed_card">%1$s bilancio</string>
 
-    <string name="empty_income_lazyColumn_additional1">Provalo utilizzando il pulsante nell\'angolo in basso a destra, è disponibile in ogni schermata dell\'app</string>
+    <string name="empty_income_lazyColumn_additional1">Provalo utilizzando il pulsante nell'angolo in basso a destra, è disponibile in ogni schermata dell'app</string>
 
     <string name="add_to_adding_to_saving_idea_dialog">aggiungere a </string>
 
