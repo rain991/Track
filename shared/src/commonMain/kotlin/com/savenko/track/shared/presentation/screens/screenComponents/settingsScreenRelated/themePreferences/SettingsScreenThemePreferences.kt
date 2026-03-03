@@ -35,13 +35,13 @@ import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
- * Part of TrackSettingsScreen
- *
  * User can select Track material theme via [ThemeSelectorRow]
  *
  * User can enable Dynamic Colors instead of Track predefined themes on supported platforms.
  *
  * User can change visibility of Track pages name
+ *
+ * Part of Track's settings screen.
  */
 @Composable
 fun SettingsScreenThemePreferences(modifier: Modifier) {

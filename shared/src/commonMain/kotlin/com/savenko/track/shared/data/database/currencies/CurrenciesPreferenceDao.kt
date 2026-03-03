@@ -23,7 +23,14 @@ interface CurrenciesPreferenceDao {
     suspend fun delete(currenciesPreference: CurrenciesPreference)
 
     @Query("SELECT * FROM currenciesPreference WHERE id = :currenciesPreferenceId")
-    fun getCurrenciesPreferences(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<CurrenciesPreference>
+    fun getCurrenciesPreferences(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<CurrenciesPreference?>
+
+    @Query(
+        "INSERT OR IGNORE INTO currenciesPreference " +
+            "(id, preferableCurrency, firstAdditionalCurrency, secondAdditionalCurrency, thirdAdditionalCurrency, fourthAdditionalCurrency) " +
+            "VALUES (:currenciesPreferenceId, :preferableCurrencyTicker, NULL, NULL, NULL, NULL)"
+    )
+    suspend fun insertIfMissing(preferableCurrencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
 
     @Query("UPDATE currenciesPreference SET preferableCurrency=:currencyTicker WHERE id = :currenciesPreferenceId")
     suspend fun updatePreferableCurrency(currencyTicker: String, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
@@ -41,7 +48,7 @@ interface CurrenciesPreferenceDao {
     suspend fun updateForthAdditionalCurrency(currencyTicker: String?, currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID)
 
     @Query("SELECT * FROM currency WHERE ticker = (SELECT preferableCurrency FROM currenciesPreference WHERE id=:currenciesPreferenceId)")
-    fun getPreferableCurrency(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<Currency>
+    fun getPreferableCurrency(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<Currency?>
 
     @Query("SELECT * FROM currency WHERE ticker = (SELECT firstAdditionalCurrency FROM currenciesPreference WHERE id=:currenciesPreferenceId)")
     fun getFirstAdditionalCurrency(currenciesPreferenceId : Int = CURRENCIES_PREFERENCE_ID): Flow<Currency?>

@@ -11,6 +11,8 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.navigation.NavHostController
+import com.savenko.track.shared.Platform
+import com.savenko.track.shared.PlatformTarget
 import com.savenko.track.shared.data.viewmodels.settingsScreen.currencies.CurrenciesSettingsViewModel
 import com.savenko.track.shared.presentation.components.screenRelated.SettingsSpecifiedScreenHeader
 import com.savenko.track.shared.presentation.navigation.Screen
@@ -31,7 +33,7 @@ fun CurrenciesSettingsScreen(navController: NavHostController) {
     val filteredCurrencies = currenciesSettingsScreenViewModel.filteredCurrencies.collectAsState()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            SettingsSpecifiedScreenHeader(stringResource(Res.string.currencies)) {
+            SettingsSpecifiedScreenHeader(stringResource(Res.string.currencies), hasBackButton = Platform.type == PlatformTarget.Android) {
                 navController.navigate(Screen.MainScreen.route)
             }
         }

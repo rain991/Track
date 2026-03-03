@@ -1,6 +1,7 @@
 package com.savenko.track.shared.domain.usecases.userData.other
 
 import com.savenko.track.shared.data.core.CurrenciesRatesHandler
+import com.savenko.track.shared.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.savenko.track.shared.data.other.dataStore.DataStoreManager
 import com.savenko.track.shared.domain.models.currency.Currency
 import com.savenko.track.shared.domain.models.currency.CurrencyTypes
@@ -15,6 +16,8 @@ import org.junit.Before
 import org.junit.Test
 import org.mockito.Mockito
 import org.mockito.kotlin.mock
+import org.mockito.kotlin.never
+import org.mockito.kotlin.verify
 import org.mockito.kotlin.whenever
 
 class ChangeCurrenciesPreferenceUseCaseTest {
@@ -91,6 +94,8 @@ class ChangeCurrenciesPreferenceUseCaseTest {
         )
 
         assertTrue(result)
+        verify(dataStoreManager).setPreference(DataStoreManager.BUDGET, convertedValue)
+        verify(currenciesPreferenceRepositoryImpl).setPreferableCurrency(targetCurrency)
     }
 
     @Test
@@ -106,5 +111,39 @@ class ChangeCurrenciesPreferenceUseCaseTest {
         )
 
         assertFalse(result)
+        verify(dataStoreManager, never()).budgetFlow
+        verify(currenciesPreferenceRepositoryImpl, never()).setPreferableCurrency(targetCurrency)
+    }
+
+    @Test
+    fun `use case does not update budget or currency when conversion is incorrect`() = runTest {
+        val firstAdditionalCurrency = Currency("UAH", "Hr", type = CurrencyTypes.FIAT, 0.0)
+        val budgetValue = 100.0f
+
+        whenever(dataStoreManager.budgetFlow).thenReturn(flow { emit(budgetValue) })
+        whenever(
+            currenciesRatesHandler.convertValueToAnyCurrency(
+                budgetValue,
+                currentPreferableCurrency,
+                targetCurrency
+            )
+        ).thenReturn(INCORRECT_CONVERSION_RESULT)
+
+        val result = changeCurrenciesPreferenceUseCase.invoke(
+            targetCurrency,
+            currentPreferableCurrency,
+            firstAdditionalCurrency,
+            secondAdditionalCurrency,
+            thirdAdditionalCurrency,
+            fourthAdditionalCurrency
+        )
+
+        assertFalse(result)
+        verify(dataStoreManager, never()).setPreference(DataStoreManager.BUDGET, INCORRECT_CONVERSION_RESULT)
+        verify(currenciesPreferenceRepositoryImpl, never()).setPreferableCurrency(targetCurrency)
+        verify(ideaListRepositoryImpl, never()).changePreferableCurrenciesOnIdeas(
+            targetCurrency,
+            currentPreferableCurrency
+        )
     }
 }

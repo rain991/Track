@@ -27,7 +27,7 @@ class BudgetIdeaCardViewModel(
         )
     )
     val budgetCardState = _budgetCardState.asStateFlow()
-    suspend fun initializeStates() {
+    fun initializeStates() {
         viewModelScope.launch {
             launch {
                 budgetIdeaCardRepositoryImpl.requestCurrentMonthExpenses().collect {

@@ -1,4 +1,3 @@
 // Shared iOS build settings.
 // Secrets are loaded from local file if it exists.
-CURRENCIES_API_KEY=
 #include? "Secrets.xcconfig"

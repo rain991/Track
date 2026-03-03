@@ -2,7 +2,6 @@ package com.savenko.track.shared.presentation.components.screenRelated
 
 import com.savenko.track.shared.resources.Res
 import com.savenko.track.shared.resources.*
-
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -31,37 +30,47 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 
 @Composable
-fun SettingsSpecifiedScreenHeader(screenName: String, onBackPressed: () -> Unit) {
+fun SettingsSpecifiedScreenHeader(
+    screenName: String,
+    hasBackButton: Boolean,
+    onBackPressed: () -> Unit
+) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .height(48.dp)
             .padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically
     ) {
-        Box(
-            modifier = Modifier
-                .size(32.dp)
-                .clip(CircleShape)
-                .background(MaterialTheme.colorScheme.primary)
-                .clickable { onBackPressed() }
-        ) {
-            Icon(
-                imageVector = Icons.AutoMirrored.Filled.ArrowBack,
-                contentDescription = stringResource(Res.string.back_to_settings_screen_CD),
+        if (hasBackButton) {
+            Box(
                 modifier = Modifier
-                    .align(Alignment.Center)
-                    .scale(0.75f),
-                tint = MaterialTheme.colorScheme.onPrimary
-            )
+                    .size(32.dp)
+                    .clip(CircleShape)
+                    .background(MaterialTheme.colorScheme.primary)
+                    .clickable { onBackPressed() }
+            ) {
+                Icon(
+                    imageVector = Icons.AutoMirrored.Filled.ArrowBack,
+                    contentDescription = stringResource(Res.string.back_to_settings_screen_CD),
+                    modifier = Modifier
+                        .align(Alignment.Center)
+                        .scale(0.75f),
+                    tint = MaterialTheme.colorScheme.onPrimary
+                )
+            }
         }
         Spacer(modifier = Modifier.weight(1f))
-        Image(painter = painterResource(Res.drawable.track_new_icon), contentDescription = null, modifier = Modifier.size(36.dp))
+        Image(
+            painter = painterResource(Res.drawable.track_new_icon),
+            contentDescription = null,
+            modifier = Modifier.size(36.dp)
+        )
         Spacer(modifier = Modifier.width(2.dp))
         Text(
             text = screenName,
             style = MaterialTheme.typography.titleMedium.copy(fontWeight = FontWeight.SemiBold),
             color = MaterialTheme.colorScheme.onBackground
         )
-        Spacer(modifier = Modifier.weight(1.36f))
+        Spacer(modifier = Modifier.weight(if (hasBackButton) 1.36f else 1f))
     }
 }

@@ -34,9 +34,9 @@ import kotlinx.coroutines.launch
 import org.koin.compose.viewmodel.koinViewModel
 
 /**
- * Part of *Settings Track screen*
- *
  * User can change additional preferences here, such as non-categorized financials
+ *
+ * Part of Track's settings screen.
  *
  * @see [SettingsTrackScreen]
  */

@@ -5,7 +5,7 @@
     <string name="currency">Currency</string>
     <string name="error">Error</string>
     <string name="unknown">Unknown</string>
-    <string name="lets_start">Let\'s start!</string>
+    <string name="lets_start">Let's start!</string>
     <string name="name">Name</string>
     <string name="expenses">Expenses</string>
     <string name="incomes">Incomes</string>
@@ -29,7 +29,7 @@
     <string name="your_note_adding_exp">Note</string>
     <string name="checked_category_add_exp_CD">Checked category</string>
     <string name="note_exp_list">Note: %1$s</string>
-    <string name="empty_exp_lazyColumn_title">You haven\'t added expenses yet</string>
+    <string name="empty_exp_lazyColumn_title">You haven't added expenses yet</string>
     <string name="empty_exp_lazyColumn_additional1">Try it out using button in right bottom corner, it is available in every app screen</string>
     <string name="account">Account</string>
     <string name="personal">Personal</string>
@@ -57,9 +57,9 @@
     <string name="decline">Decline</string>
     <string name="save">Save</string>
     <string name="your_stats_personal_settings_screen">Your stats</string>
-    <string name="not_added_any_expenses_yet_personal_settings_screen">You haven\'t added any expenses yet</string>
+    <string name="not_added_any_expenses_yet_personal_settings_screen">You haven't added any expenses yet</string>
     <string name="you_have_already_added_expenses_worth_of">You have already added %1$s expenses, worth of %2$s %3$s</string>
-    <string name="not_added_any_incomes_yet_personal_settings_screen">You haven\'t added any incomes yet</string>
+    <string name="not_added_any_incomes_yet_personal_settings_screen">You haven't added any incomes yet</string>
     <string name="you_have_already_added_incomes_worth_of">You have already added %1$s incomes, worth of %2$s %3$s</string>
     <string name="login_message_personal_settings_screen">You have entered Track %1$s times</string>
     <string name="expense_categories_categories_settings_screen">Expense categories</string>
@@ -123,7 +123,7 @@
     <string name="add">Add</string>
     <string name="add_it">Add it</string>
     <string name="aprox_month_income_login_screen">Aprox. month income</string>
-    <string name="you_havent_added_incomes_yet_lazy_column">You haven\'t added incomes yet</string>
+    <string name="you_havent_added_incomes_yet_lazy_column">You haven't added incomes yet</string>
     <string name="add_expense">Add Expenses</string>
     <string name="add_incomes">Add Incomes</string>
     <string name="create_new_category">Create new category</string>

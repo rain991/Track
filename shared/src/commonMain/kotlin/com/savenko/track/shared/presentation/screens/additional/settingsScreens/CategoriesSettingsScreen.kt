@@ -20,6 +20,8 @@ import androidx.compose.ui.Modifier
 import org.jetbrains.compose.resources.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavHostController
+import com.savenko.track.shared.Platform
+import com.savenko.track.shared.PlatformTarget
 import com.savenko.track.shared.data.viewmodels.settingsScreen.category.CategoriesSettingsScreenViewModel
 import com.savenko.track.shared.data.viewmodels.settingsScreen.category.NewCategoryViewModel
 import com.savenko.track.shared.presentation.components.dialogs.newCategoryDialog.NewCategoryDialog
@@ -43,7 +45,7 @@ fun CategoriesSettingsScreen(navController: NavHostController) {
     val coroutineScope = rememberCoroutineScope()
     Scaffold(modifier = Modifier.fillMaxSize(),
         topBar = {
-            SettingsSpecifiedScreenHeader(stringResource(Res.string.categories)) {
+            SettingsSpecifiedScreenHeader(screenName = stringResource(Res.string.categories), hasBackButton = Platform.type == PlatformTarget.Android) {
                 navController.navigate(Screen.MainScreen.route)
             }
         },

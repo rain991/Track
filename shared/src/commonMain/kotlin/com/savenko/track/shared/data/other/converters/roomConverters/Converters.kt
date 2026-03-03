@@ -6,10 +6,10 @@ import com.savenko.track.shared.domain.models.currency.CurrencyTypes
 class Converters {
     @TypeConverter
     fun fromCurrencyType(value: String): CurrencyTypes {
-        return when (value) {
-            "default" -> CurrencyTypes.FIAT
-            "crypto" -> CurrencyTypes.CRYPTO
-            "other" -> CurrencyTypes.OTHER
+        return when (value.trim().uppercase()) {
+            "DEFAULT", "FIAT" -> CurrencyTypes.FIAT
+            "CRYPTO" -> CurrencyTypes.CRYPTO
+            "OTHER" -> CurrencyTypes.OTHER
             else -> throw IllegalArgumentException("Unknown currency type: $value")
         }
     }

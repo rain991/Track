@@ -5,7 +5,7 @@
     <string name="error">Помилка</string>
     <string name="unknown">Невідомо</string>
     <string name="lets_start">Починаємо!</string>
-    <string name="name">Ім\'я</string>
+    <string name="name">Ім'я</string>
     <string name="expenses">Витрати</string>
     <string name="incomes">Доходи</string>
     <string name="january">Січень</string>
@@ -49,10 +49,10 @@
     <string name="newest_first_idea_settings_screen">спочатку нові</string>
     <string name="oldest_first_idea_settings_screen">спочаткі старі</string>
     <string name="message_currencies_settings_screen">Ви можете переключати валюту натискаючи на її назву. Пріоритетна валюта завжди показуватиметься першою</string>
-    <string name="name_personal_settings_screen">Ім\'я : %1$s</string>
+    <string name="name_personal_settings_screen">Ім'я : %1$s</string>
     <string name="budget_personal_settings_screen">Бюджет : %1$s %2$s</string>
     <string name="new_budget_personal_settings_screen">Новий бюджет</string>
-    <string name="new_name_personal_settings_screen">Нове ім\'я</string>
+    <string name="new_name_personal_settings_screen">Нове ім'я</string>
     <string name="decline">Відмінити</string>
     <string name="save">Зберегти</string>
     <string name="your_stats_personal_settings_screen">Ваша статистика</string>

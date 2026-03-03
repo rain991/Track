@@ -18,7 +18,8 @@ class BudgetIdeaCardRepositoryImpl(
     }
     override fun requestBudgetExpectancy(): Flow<Float> {
         return requestMonthBudget().combine(requestCurrentMonthExpenses()){
-            monthBudget, currentMonthExpense -> currentMonthExpense.div(monthBudget)
+            monthBudget, currentMonthExpense ->
+            if (monthBudget > 0f) currentMonthExpense.div(monthBudget) else 0f
         }
     }
 }
