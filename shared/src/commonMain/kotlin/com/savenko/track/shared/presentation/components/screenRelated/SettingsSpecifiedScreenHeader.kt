@@ -2,6 +2,8 @@ package com.savenko.track.shared.presentation.components.screenRelated
 
 import com.savenko.track.shared.resources.Res
 import com.savenko.track.shared.resources.*
+import com.savenko.track.shared.Platform
+import com.savenko.track.shared.PlatformTarget
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -12,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
@@ -35,8 +38,13 @@ fun SettingsSpecifiedScreenHeader(
     hasBackButton: Boolean,
     onBackPressed: () -> Unit
 ) {
+    val statusBarAwareModifier = if (Platform.type == PlatformTarget.Android) {
+        Modifier.statusBarsPadding()
+    } else {
+        Modifier
+    }
     Row(
-        modifier = Modifier
+        modifier = statusBarAwareModifier
             .fillMaxWidth()
             .height(48.dp)
             .padding(start = 4.dp), verticalAlignment = Alignment.CenterVertically

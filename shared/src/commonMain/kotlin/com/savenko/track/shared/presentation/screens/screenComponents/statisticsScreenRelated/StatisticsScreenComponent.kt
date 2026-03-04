@@ -59,7 +59,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
         modifier = Modifier
             .fillMaxSize()
             .padding(innerPadding)
-            .padding(horizontal = 8.dp)
+            .padding(horizontal = 4.dp)
             .animateContentSize()
     ) {
         BottomSheet(bottomSheetViewModel)
@@ -71,8 +71,7 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
             TrackStatisticChart(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .width(300.dp)
-                    .padding(start = 8.dp, end = 8.dp, bottom = 4.dp),
+                    .width(300.dp),
                 chartViewModel = chartViewModel
             )
         }
@@ -107,7 +106,8 @@ fun StatisticsScreenComponent(innerPadding: PaddingValues) {
         TrackStatisticLazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .weight(3f),
+                .weight(3f)
+                .padding(horizontal = 4.dp),
             chartViewModel = chartViewModel,
             statisticLazyColumnViewModel = statisticLazyColumnViewModel
         )
