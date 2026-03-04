@@ -10,6 +10,7 @@ import com.savenko.track.shared.domain.repository.currencies.CurrencyListReposit
 import com.savenko.track.shared.presentation.other.composableTypes.StatisticChartTimePeriod
 import com.savenko.track.shared.presentation.screens.states.core.statisticScreen.StatisticChartState
 import kotlinx.coroutines.Job
+import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -55,21 +56,32 @@ class StatisticChartViewModel(
     }
 
     fun setFinancialEntity(financialEntities: FinancialEntities) {
+        if (_statisticChartState.value.financialEntities.nameId == financialEntities.nameId) return
         _statisticChartState.update { it.copy(financialEntities = financialEntities) }
         refreshChartData()
     }
 
     fun setTimePeriod(timePeriod: StatisticChartTimePeriod) {
+        if (_statisticChartState.value.timePeriod.nameId == timePeriod.nameId) return
+        val updatedSpecifiedTimePeriod =
+            if (timePeriod is StatisticChartTimePeriod.Other) {
+                _statisticChartState.value.specifiedTimePeriod
+            } else {
+                null
+            }
         _statisticChartState.update {
             it.copy(
                 timePeriod = timePeriod,
-                specifiedTimePeriod = if (timePeriod is StatisticChartTimePeriod.Other) it.specifiedTimePeriod else null
+                specifiedTimePeriod = updatedSpecifiedTimePeriod
             )
         }
-        refreshChartData()
+        if (timePeriod !is StatisticChartTimePeriod.Other || updatedSpecifiedTimePeriod != null) {
+            refreshChartData()
+        }
     }
 
     fun setSpecifiedTimePeriod(specifiedTimePeriod: ClosedRange<Instant>?) {
+        if (_statisticChartState.value.specifiedTimePeriod == specifiedTimePeriod) return
         _statisticChartState.update { it.copy(specifiedTimePeriod = specifiedTimePeriod) }
         refreshChartData()
     }
@@ -86,6 +98,10 @@ class StatisticChartViewModel(
         chartDataJob?.cancel()
         chartDataJob = viewModelScope.launch {
             val state = _statisticChartState.value
+            if (state.timePeriod is StatisticChartTimePeriod.Other && state.specifiedTimePeriod == null) {
+                _statisticChartState.update { it.copy(chartData = emptyMap(), additionalChartData = null) }
+                return@launch
+            }
             when (state.financialEntities) {
                 is FinancialEntities.ExpenseFinancialEntity -> {
                     chartDataProvider.requestExpenseDataForVicoChart(
@@ -110,24 +126,19 @@ class StatisticChartViewModel(
                 }
 
                 is FinancialEntities.Both -> {
-                    launch {
-                        chartDataProvider.requestExpenseDataForVicoChart(
-                            state.timePeriod,
-                            state.specifiedTimePeriod
-                        ).collect { expenseData ->
-                            _statisticChartState.update {
-                                it.copy(chartData = expenseData)
-                            }
-                        }
-                    }
-                    launch {
+                    chartDataProvider.requestExpenseDataForVicoChart(
+                        state.timePeriod,
+                        state.specifiedTimePeriod
+                    ).combine(
                         chartDataProvider.requestIncomeDataForVicoChart(
                             state.timePeriod,
                             state.specifiedTimePeriod
-                        ).collect { incomeData ->
-                            _statisticChartState.update {
-                                it.copy(additionalChartData = incomeData)
-                            }
+                        )
+                    ) { expenseData, incomeData ->
+                        expenseData to incomeData
+                    }.collect { (expenseData, incomeData) ->
+                        _statisticChartState.update {
+                            it.copy(chartData = expenseData, additionalChartData = incomeData)
                         }
                     }
                 }

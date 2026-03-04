@@ -85,6 +85,7 @@ kotlin {
             implementation(compose.materialIconsExtended)
             implementation(compose.material3)
             implementation(compose.components.resources)
+            implementation(libs.dautovicharis.charts.line)
             implementation(libs.androidx.datastore)
             implementation(libs.navigation.compose)
             implementation(libs.kotlinx.datetime)

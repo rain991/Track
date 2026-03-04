@@ -28,6 +28,7 @@ ktor = "3.4.0"
 
 # Third-party
 kermit = "2.0.4"
+dautovicharis-charts = "2.2.0"
 
 # Testing
 junit4 = "4.13.2"
@@ -78,6 +79,7 @@ coroutines-test = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-test", ve
 
 # Other
 kermit = { module = "co.touchlab:kermit", version.ref = "kermit" }
+dautovicharis-charts-line  = { module = "io.github.dautovicharis:charts-line", version.ref = "dautovicharis-charts"}
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
