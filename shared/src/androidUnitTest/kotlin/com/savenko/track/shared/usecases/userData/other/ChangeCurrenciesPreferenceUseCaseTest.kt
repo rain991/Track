@@ -99,8 +99,20 @@ class ChangeCurrenciesPreferenceUseCaseTest {
     }
 
     @Test
-    fun `use case does not change currency when target is one of the additional currencies`() = runTest {
+    fun `use case swaps with additional currency when target is one of the additional currencies`() = runTest {
         val firstAdditionalCurrency = Currency("USD", "US", type = CurrencyTypes.FIAT, 0.0)
+        val budgetValue = 100.0f
+        val convertedValue = 120.0f
+
+        whenever(dataStoreManager.budgetFlow).thenReturn(flow { emit(budgetValue) })
+        whenever(
+            currenciesRatesHandler.convertValueToAnyCurrency(
+                budgetValue,
+                currentPreferableCurrency,
+                targetCurrency
+            )
+        ).thenReturn(convertedValue)
+
         val result = changeCurrenciesPreferenceUseCase.invoke(
             com.savenko.track.shared.domain.usecases.userData.other.ChangeCurrenciesPreferenceUseCaseTest.Companion.targetCurrency,
             com.savenko.track.shared.domain.usecases.userData.other.ChangeCurrenciesPreferenceUseCaseTest.Companion.currentPreferableCurrency,
@@ -110,9 +122,10 @@ class ChangeCurrenciesPreferenceUseCaseTest {
             com.savenko.track.shared.domain.usecases.userData.other.ChangeCurrenciesPreferenceUseCaseTest.Companion.fourthAdditionalCurrency
         )
 
-        assertFalse(result)
-        verify(dataStoreManager, never()).budgetFlow
-        verify(currenciesPreferenceRepositoryImpl, never()).setPreferableCurrency(targetCurrency)
+        assertTrue(result)
+        verify(dataStoreManager).setPreference(DataStoreManager.BUDGET, convertedValue)
+        verify(currenciesPreferenceRepositoryImpl).setPreferableCurrency(targetCurrency)
+        verify(currenciesPreferenceRepositoryImpl).setFirstAdditionalCurrency(currentPreferableCurrency)
     }
 
     @Test

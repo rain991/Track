@@ -3,6 +3,7 @@ package com.savenko.track.shared.data.ktor
 import co.touchlab.kermit.Logger
 import com.savenko.track.shared.data.other.constants.ACCEPTABLE_EMPTY_CURRENCIES_RATES
 import com.savenko.track.shared.data.other.constants.CURRENCY_CALL_URL_DEFAULT
+import com.savenko.track.shared.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.shared.domain.repository.currencies.CurrencyListRepository
 import io.ktor.client.HttpClient
 import io.ktor.client.call.body
@@ -32,8 +33,14 @@ object CurrenciesRatesClient : KoinComponent {
 
     suspend fun fetchLatestRates() {
         val currencyList = currencyListRepository.getCurrencyList().first()
+        if (currencyList.any { it.ticker == CURRENCY_DEFAULT.ticker && it.rate == null }) {
+            currencyListRepository.editCurrencyRate(
+                rate = 1.0,
+                currencyTicker = CURRENCY_DEFAULT.ticker
+            )
+        }
         if (currencyList.filter { it.rate != null }.size < currencyList.size.times(ACCEPTABLE_EMPTY_CURRENCIES_RATES)) {
-            val symbols = currencyList.joinToString(separator = ", ") { it.ticker }
+            val symbols = currencyList.joinToString(separator = ",") { it.ticker }
             fetchAndPersistRates(symbols)
         }
     }
@@ -52,6 +59,16 @@ object CurrenciesRatesClient : KoinComponent {
         }
 
         Logger.w(tag = TAG, messageString = "Request of currencies rates was successful")
+        val baseCurrencyTicker = response.base
+            ?.trim()
+            ?.uppercase()
+            ?.ifEmpty { null }
+            ?: CURRENCY_DEFAULT.ticker
+        currencyListRepository.editCurrencyRate(
+            rate = 1.0,
+            currencyTicker = baseCurrencyTicker
+        )
+
         response.rates.forEach { (currency, rate) ->
             val parsedRate = rate.toDoubleOrNull() ?: return@forEach
             currencyListRepository.editCurrencyRate(

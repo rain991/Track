@@ -2,6 +2,7 @@ package com.savenko.track.shared.data.viewmodels.settingsScreen.currencies
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import co.touchlab.kermit.Logger
 import com.savenko.track.shared.data.core.CurrenciesRatesHandler
 import com.savenko.track.shared.data.other.constants.CURRENCY_DEFAULT
 import com.savenko.track.shared.domain.models.abstractLayer.CurrenciesOptions
@@ -256,6 +257,9 @@ class CurrenciesSettingsViewModel(
             thirdAdditionalCurrency = currenciesPreferencesUI.thirdAdditionalCurrency,
             fourthAdditionalCurrency = currenciesPreferencesUI.fourthAdditionalCurrency
         )
+        Logger.w("CurrenciesSettingsViewModel"){
+            "Changing of preferable currency was successful : $isChangingSuccess"
+        }
         if (!isChangingSuccess) {
             _currenciesSettingsScreenState.update { _currenciesSettingsScreenState.value.copy(error = CurrenciesSettingsScreenErrors.IncorrectCurrencyConversion) }
         }

@@ -1,5 +1,6 @@
 package com.savenko.track.shared.domain.usecases.userData.other
 
+import co.touchlab.kermit.Logger
 import com.savenko.track.shared.data.core.CurrenciesRatesHandler
 import com.savenko.track.shared.data.other.constants.INCORRECT_CONVERSION_RESULT
 import com.savenko.track.shared.data.other.dataStore.DataStoreManager
@@ -25,25 +26,51 @@ class ChangeCurrenciesPreferenceUseCase(
         thirdAdditionalCurrency: Currency?,
         fourthAdditionalCurrency: Currency?,
     ): Boolean {
-        if (firstAdditionalCurrency != targetCurrency && secondAdditionalCurrency != targetCurrency &&
-            thirdAdditionalCurrency != targetCurrency && fourthAdditionalCurrency != targetCurrency
-        ) {
-            val convertedBudget = currenciesRatesHandler.convertValueToAnyCurrency(
-                dataStoreManager.budgetFlow.first(),
-                currentPreferableCurrency,
-                targetCurrency
-            )
-            if (convertedBudget == INCORRECT_CONVERSION_RESULT) {
-                return false
-            }
-            dataStoreManager.setPreference(
-                key = DataStoreManager.BUDGET, value = convertedBudget
-            )
-            ideaListRepositoryImpl.changePreferableCurrenciesOnIdeas(targetCurrency, currentPreferableCurrency)
-            currenciesPreferenceRepositoryImpl.setPreferableCurrency(targetCurrency)
+        if (currentPreferableCurrency.ticker == targetCurrency.ticker) {
             return true
-        } else {
+        }
+
+        val previousBudget = dataStoreManager.budgetFlow.first()
+        val convertedBudget = currenciesRatesHandler.convertValueToAnyCurrency(
+            previousBudget,
+            currentPreferableCurrency,
+            targetCurrency
+        )
+        Logger.d("ChangeCurrenciesPreferenceUseCase") {
+            "Converted budget when changing preferable currency : $convertedBudget, previousBudget : $previousBudget, $currentPreferableCurrency, for target currency $targetCurrency"
+        }
+        if (convertedBudget == INCORRECT_CONVERSION_RESULT) {
             return false
         }
+
+        dataStoreManager.setPreference(
+            key = DataStoreManager.BUDGET,
+            value = convertedBudget
+        )
+        ideaListRepositoryImpl.changePreferableCurrenciesOnIdeas(
+            targetCurrency,
+            currentPreferableCurrency
+        )
+        currenciesPreferenceRepositoryImpl.setPreferableCurrency(targetCurrency)
+
+        when (targetCurrency.ticker) {
+            firstAdditionalCurrency?.ticker -> currenciesPreferenceRepositoryImpl.setFirstAdditionalCurrency(
+                currentPreferableCurrency
+            )
+
+            secondAdditionalCurrency?.ticker -> currenciesPreferenceRepositoryImpl.setSecondAdditionalCurrency(
+                currentPreferableCurrency
+            )
+
+            thirdAdditionalCurrency?.ticker -> currenciesPreferenceRepositoryImpl.setThirdAdditionalCurrency(
+                currentPreferableCurrency
+            )
+
+            fourthAdditionalCurrency?.ticker -> currenciesPreferenceRepositoryImpl.setFourthAdditionalCurrency(
+                currentPreferableCurrency
+            )
+        }
+
+        return true
     }
 }

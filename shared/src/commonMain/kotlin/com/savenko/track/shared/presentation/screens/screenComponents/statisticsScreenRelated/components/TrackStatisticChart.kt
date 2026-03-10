@@ -200,9 +200,9 @@ private fun TrackChartPlacement(
             xAxisLabelMaxCount = 5,
             yAxisLabelCount = 5,
             chartViewStyle = ChartViewDefaults.style(
-                width = maxWidth,
+                width = maxWidth - 5.dp,
                 outerPadding = 0.dp,
-                innerPadding = 0.dp,
+                innerPadding = 15.dp,
                 cornerRadius = 12.dp
             )
         )
@@ -260,11 +260,11 @@ private fun formatChartValue(value: Float): String {
 
 private fun createExpandedChartStyle(baseStyle: LineChartStyle): LineChartStyle {
     val chartViewStyle = ChartViewStyle(
-        modifierMain = baseStyle.chartViewStyle.modifierMain,
+        modifierMain = baseStyle.chartViewStyle.modifierMain.padding(8.dp),
         styleTitle = baseStyle.chartViewStyle.styleTitle.copy(color = Color.Transparent),
         modifierTopTitle = baseStyle.chartViewStyle.modifierTopTitle,
         modifierLegend = baseStyle.chartViewStyle.modifierLegend,
-        innerPadding = baseStyle.chartViewStyle.innerPadding,
+        innerPadding = 0.dp,
         width = baseStyle.chartViewStyle.width,
         backgroundColor = baseStyle.chartViewStyle.backgroundColor
     )
