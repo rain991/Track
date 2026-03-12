@@ -54,7 +54,7 @@ class DataStoreManager(private val dataStore: DataStore<Preferences>) {
     val nameFlow: Flow<String> = dataStore.data.map { preferences -> preferences[NAME] ?: NAME_DEFAULT }
 
     val budgetFlow: Flow<Float> = dataStore.data.map { preferences ->
-        preferences[BUDGET]?.takeIf { it >= 0f } ?: BUDGET_DEFAULT
+        preferences[BUDGET] ?: BUDGET_DEFAULT
     }
 
     val isShowPageName: Flow<Boolean> =
